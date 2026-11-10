@@ -96,11 +96,19 @@ export function createWorkersColumnFit(host: WorkersColumnFitHost) {
 	function measureOverflow() {
 		const viewport = host.viewport();
 		if (!viewport) return;
+		const viewportStyle = getComputedStyle(viewport);
+		// `scrollWidth` covers the whole padding box, so the scrollbar's gutter counts
+		// towards reaching the end even though `clientWidth` leaves it out. Without it a
+		// classic scrollbar (macOS "Always", Linux) keeps the fade up at the far right.
+		const border =
+			(parseFloat(viewportStyle.borderLeftWidth) || 0) +
+			(parseFloat(viewportStyle.borderRightWidth) || 0);
+		const gutter = Math.max(0, viewport.offsetWidth - viewport.clientWidth - border);
 		overflowing = viewport.scrollWidth > viewport.clientWidth + 1;
-		scrolledToEnd = viewport.scrollLeft + viewport.clientWidth >= viewport.scrollWidth - 1;
+		scrolledToEnd = viewport.scrollLeft + viewport.clientWidth + gutter >= viewport.scrollWidth - 1;
 		const rootFont = parseFloat(getComputedStyle(document.documentElement).fontSize);
 		if (!(rootFont > 0)) return;
-		const rawName = getComputedStyle(viewport).getPropertyValue('--workers-table-name-w').trim();
+		const rawName = viewportStyle.getPropertyValue('--workers-table-name-w').trim();
 		const namePx = namePxFrom(rawName, host.nameRem(), rootFont);
 		const { minPx, prefPx } = columnWidthsPx(host.columns(), namePx, rootFont);
 		const next = shrinkFactor(viewport.clientWidth, minPx, prefPx);

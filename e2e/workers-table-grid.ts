@@ -306,6 +306,11 @@ export async function gridReport(page: Page) {
 		const firstRow = workerRows[0];
 
 		const table = viewport.querySelector('table[data-slot="table"]');
+		const viewportStyle = getComputedStyle(viewport);
+		const borders =
+			(parseFloat(viewportStyle.borderLeftWidth) || 0) +
+			(parseFloat(viewportStyle.borderRightWidth) || 0);
+		const scrollbar = Math.max(0, viewport.offsetWidth - viewport.clientWidth - borders);
 
 		return {
 			widths: headers.map((th) => ({ label: label(th), ...box(th) })),
@@ -317,9 +322,10 @@ export async function gridReport(page: Page) {
 			viewportOffsetWidth: viewport.offsetWidth,
 			viewportScrollWidth: viewport.scrollWidth,
 			viewportScrollLeft: viewport.scrollLeft,
-			maxScrollLeft: viewport.scrollWidth - viewport.clientWidth,
-			endGap: viewport.scrollWidth - viewport.clientWidth - viewport.scrollLeft,
-			computedOverflowX: getComputedStyle(viewport).overflowX,
+			viewportScrollbarWidth: scrollbar,
+			maxScrollLeft: viewport.scrollWidth - viewport.clientWidth - scrollbar,
+			endGap: viewport.scrollWidth - viewport.clientWidth - scrollbar - viewport.scrollLeft,
+			computedOverflowX: viewportStyle.overflowX,
 			tableScrollWidth: table ? table.scrollWidth : 0,
 			documentOverflowX: document.documentElement.scrollWidth > window.innerWidth + 1
 		};

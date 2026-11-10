@@ -100,12 +100,14 @@ test.describe('readable Workers table', () => {
 		// The scrollport reached its far right edge.
 		const scroll = await gridReport(page);
 		expect(
-			scroll.viewportScrollLeft + scroll.viewportWidth >= scroll.viewportScrollWidth - 2,
+			scroll.viewportScrollLeft + scroll.viewportWidth + scroll.viewportScrollbarWidth >=
+				scroll.viewportScrollWidth - 2,
 			`scroll end metrics: ${JSON.stringify({
 				clientWidth: scroll.viewportWidth,
 				offsetWidth: scroll.viewportOffsetWidth,
 				scrollWidth: scroll.viewportScrollWidth,
 				scrollLeft: scroll.viewportScrollLeft,
+				scrollbarWidth: scroll.viewportScrollbarWidth,
 				maxScrollLeft: scroll.maxScrollLeft,
 				endGap: scroll.endGap,
 				overflowX: scroll.computedOverflowX
@@ -224,6 +226,7 @@ test.describe('readable Workers table', () => {
 				offsetWidth: scroll.viewportOffsetWidth,
 				scrollWidth: scroll.viewportScrollWidth,
 				scrollLeft: scroll.viewportScrollLeft,
+				scrollbarWidth: scroll.viewportScrollbarWidth,
 				maxScrollLeft: scroll.maxScrollLeft,
 				endGap: scroll.endGap,
 				overflowX: scroll.computedOverflowX

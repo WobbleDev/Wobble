@@ -56,6 +56,7 @@ test('scrolled fully right, the fade is hidden', async ({ page, request }) => {
 			offsetWidth: scroll.viewportOffsetWidth,
 			scrollWidth: scroll.viewportScrollWidth,
 			scrollLeft: scroll.viewportScrollLeft,
+			scrollbarWidth: scroll.viewportScrollbarWidth,
 			maxScrollLeft: scroll.maxScrollLeft,
 			endGap: scroll.endGap,
 			overflowX: scroll.computedOverflowX
