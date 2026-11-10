@@ -1,0 +1,1241 @@
+/* Scan only src/ for class names. Left to detect its own sources, Tailwind walked
+   the agent worktrees under .claude/ (~1.3M files, mostly each worktree's cloned
+   target/ and node_modules/; gitignored but scanned anyway) and the first dev load
+   after each start waited ~26s on this file. */
+@import 'tailwindcss' source('../');
+@import 'tw-animate-css';
+@import 'shadcn-svelte/tailwind.css';
+/* Public Sans, from the US Web Design System. It was drawn for exactly the
+   material this app is made of — public records, notices and forms — and its own
+   brief was to be strong, neutral and simple, which is the brief here. It is also
+   not the face every generated interface reaches for, and a plain scheme with no
+   accent has nothing else to hide behind. */
+@import '@fontsource-variable/public-sans';
+/* The label voice. A monospace is a monospace everywhere, so the system stack
+   would have made the app's own labels differ between a Mac and a Windows
+   machine — and in this system the label is a whole role, not a fallback. */
+@import '@fontsource-variable/roboto-mono';
+
+@custom-variant dark (&:is(.dark *));
+/* The physical touch floor: a coarse pointer gets the tap size even where a fine
+   pointer keeps the dense desktop row. */
+@custom-variant coarse (@media (pointer: coarse));
+
+@theme {
+	/* The responsive tiers in CSS. The runtime constants in is-mobile.svelte.ts
+	   must match these three; a spec test pins all of them.
+	   Narrow  40rem = 640px: content reflows.
+	   Compact 48rem = 768px: forms, dialogs, and option panels release the floor.
+	   Shell   64rem = 1024px: the sidebar and Workers table threshold. */
+	--breakpoint-sm: 40rem;
+	--breakpoint-md: 48rem;
+	--breakpoint-lg: 64rem;
+}
+
+/* The swap from the local fallback to Public Sans holds the line box at every
+   size, so a slow font file cannot reflow the Workers table. Public Sans sets about 4%
+   narrower than Arial, so the fallback is scaled to match it: measured, not
+   guessed — a sample sentence is 3309px in Public Sans and 3174px in Arial at
+   100px, and 3174 / 3309 is the 95.9% below. */
+@font-face {
+	font-family: 'Public Sans Fallback';
+	src: local('Arial'), local('Helvetica'), local('Liberation Sans');
+	size-adjust: 95.9%;
+	ascent-override: 95%;
+	descent-override: 25%;
+	line-gap-override: 0%;
+}
+
+/* Roboto Mono and Menlo both advance 0.6em, but Menlo's line box is shorter
+   (measured at 16px: 21px against 19px, and 201.6px against 202.3px across a
+   sample string). The scale and vertical metrics below are Roboto Mono's own,
+   so the swap moves neither a legend sideways nor a count down a pixel. */
+@font-face {
+	font-family: 'Mono Fallback';
+	src:
+		local('Menlo Regular'), local('Menlo-Regular'), local('Menlo'), local('Consolas'),
+		local('DejaVu Sans Mono');
+	size-adjust: 99.7%;
+	ascent-override: 105.1%;
+	descent-override: 27.2%;
+	line-gap-override: 0%;
+}
+
+/* =====================================================================
+   Wobble design system
+   ---------------------------------------------------------------------
+   Tier 1  primitives        the eleven-step grayscale ramp, named by stop
+   Tier 2  semantic roles    what components consume
+   Tier 3  component tokens  per-component decisions
+   Components never read Tier 1. Move a stop and every role moves with it.
+   ===================================================================== */
+
+:root {
+	/* --- Tier 1 · the eleven-step ramp ------------------------------- */
+	/* One achromatic ramp from the darkest stop (z0) to white (z10). Every
+	   surface in the app is one of these eleven stops: there is no second neutral
+	   family and no surface is drawn from an alpha, so a panel resting on the
+	   page always differs from it by a known number of stops, in either theme. */
+	--z0: oklch(0.275 0 0);
+	--z1: oklch(0.351 0 0);
+	--z2: oklch(0.427 0 0);
+	--z3: oklch(0.503 0 0);
+	--z4: oklch(0.579 0 0);
+	--z5: oklch(0.656 0 0);
+	--z6: oklch(0.732 0 0);
+	--z7: oklch(0.808 0 0);
+	--z8: oklch(0.884 0 0);
+	--z9: oklch(0.96 0 0);
+	--z10: oklch(1 0 0);
+
+	/* Assessment — functional data colour, never chrome: Apple's system colours
+	   (Green, Blue, Teal, Orange, Red, Gray), with their dark-appearance variants
+	   in .dark. Readable as a dot beside its label. These tokens
+	   are what src/lib/shared/assessment.ts references, so SVG and CSS cannot drift. */
+	--assess-unassessed: #868686;
+	--assess-leader: #00a461;
+	--assess-activist: #337aef;
+	--assess-supporter: #b865cb;
+	--assess-disengaged: #c17000;
+	--assess-hostile: #e23248;
+
+	/* Functional state. The error role is text as well as border, so it clears
+	   4.5:1 on the panel and on the wash it draws under itself. */
+	--ok-600: oklch(0.52 0.09 152);
+	--warn-600: oklch(0.6 0.1 75);
+	--err-600: oklch(0.47 0.13 27);
+	--err-300: oklch(0.76 0.11 25);
+
+	/* Aggregate data roles — the Support / Other split. A data cohort never
+	   borrows the action role, and a chart never reads a token we did not set. */
+	--data-support-600: oklch(0.5 0.09 155);
+	--data-support-300: oklch(0.74 0.08 155);
+
+	/* --- Tier 2 · semantic roles ------------------------------------- */
+	/* Neutral roles: literals declared once per theme — light here, dark in
+	   .dark below — from the approved token contract. The eleven-stop
+	   ramp above is untouched and still read wherever a named stop is wanted
+	   (--data-other, the direct stop references), but the chrome roles no longer
+	   alias it: they carry the approved neutral values, so a role moves only when
+	   the reference moves it.
+
+	   Three nested surfaces, with the navigation and the toolbar outside them —
+	   the same nesting as before, in neutral tones. */
+	--page: #f7f7f7;
+	--panel: #ffffff;
+	--inset: #f0f0f0;
+	--nav: #ffffff;
+	--hover: #ebebeb;
+	/* A chip fill that stays distinct on hovered and selected Workers table rows, which
+	   tint toward the action colour; --inset is the hover colour there. */
+	--chip: color-mix(in oklab, var(--ink) 18%, var(--panel));
+	/* The toolbar fill. Configuration's save bar is the one surface that paints
+	   with it: a bar holding a commit while the form it belongs to scrolls. */
+	--toolbar: #f3f3f3;
+
+	--ink: #1f1f1f;
+	--ink-2: #3d3d3d;
+	/* The AA-safe floor for the smallest type: nothing smaller than body may go
+	   lighter than this, and it must clear 4.5:1 wherever it paints — the panel,
+	   the page, the inset and the toolbar. #66748a only cleared the first two. */
+	--ink-3: #555555;
+	--ink-inverse: #ffffff;
+
+	/* Rules are hairlines drawn from a gray rule tone, not from an alpha, so
+	   one rule holds on the panel, the page and the navigation alike. The strong
+	   step is not a hairline: it is the boundary of a control, held to 3:1 by
+	   WCAG 1.4.11. #808080 measures 3.95:1 on the panel and 3.69:1 on the page:
+	   accessibility outranks the visual. */
+	--rule: #e5e5e5;
+	--rule-strong: #808080;
+
+	/* Action is the near-black extreme, still not an accent hue: a neutral scheme
+	   that spends an accent has stopped being neutral. White is its label in
+	   light; dark inverts the pair. */
+	--action: #1f1f1f;
+	--action-hover: #3a3a3a;
+	--on-action: #ffffff;
+	--focus: #1f1f1f;
+
+	/* --- Tier 2 · material roles ------------------------------------- */
+	/* The six shared materials. Blur is allowed only on chrome and
+	   inspectors; surfaces that carry reading stay opaque. The wash gives blur
+	   something to filter. */
+	--surface-glass: color-mix(in srgb, #ffffff 68%, transparent);
+	--surface-glass-solid: #f3f3f3;
+	--surface-blur: 24px;
+	--surface-shadow: 0 5px 20px #3957780a, 0 1px 3px #39577805;
+	--rail-shadow: 0 8px 26px #3957780d;
+	--wash: #eeeeee;
+
+	--state-success: var(--ok-600);
+	--state-warning: var(--warn-600);
+	--state-error: var(--err-600);
+
+	--assessment-unassessed: var(--assess-unassessed);
+	--assessment-leader: var(--assess-leader);
+	--assessment-activist: var(--assess-activist);
+	--assessment-supporter: var(--assess-supporter);
+	--assessment-disengaged: var(--assess-disengaged);
+	--assessment-hostile: var(--assess-hostile);
+
+	--data-support: var(--assess-leader);
+	--data-other: var(--z4);
+
+	/* --- Tier 3 · component tokens ----------------------------------- */
+	/* Comfortable is the default, not an option: a control is 36px and a Workers table
+	   row 44px at Standard density, and the density setting moves both together
+	   with the rem base. */
+	--control-h: 2.25rem;
+	--control-h-sm: 1.875rem;
+	--control-h-lg: 2.625rem;
+	--row-h: 2.75rem;
+	/* --row-h-compact was declared but never read (a recorded divergence): the
+	   Compact density scales the Workers table row with the rem base and no rule asked
+	   for a fixed 36px row, so the unused token is deleted rather than wired. */
+	--panel-padding: 1.5rem;
+	--panel-padding-sm: 1rem;
+	/* The touch floor is physical, not typographic: it must not shrink when
+	   density scales the rem base, or Compact quietly breaks the 44px rule. */
+	--tap-target: max(2.75rem, 44px);
+
+	--radius-base: 0.125rem;
+	--radius-sm: var(--radius-base);
+	--radius-md: calc(var(--radius-base) * 1.5);
+	--radius-item: calc(var(--radius-base) * 4);
+	--radius-control: calc(var(--radius-base) * 2);
+	--radius-lg: calc(var(--radius-base) * 2);
+	--radius-xl: calc(var(--radius-base) * 3);
+	--radius-2xl: calc(var(--radius-base) * 4);
+	--radius-surface: calc(var(--radius-base) * 4);
+	--radius-3xl: calc(var(--radius-base) * 5);
+	--radius-4xl: calc(var(--radius-base) * 6);
+
+	/* How far the bullseye ground runs left of the content frame, under
+	   the glass rail: more than the rail and its gutter, clipped at the viewport. */
+	--overview-rail-reach: 20rem;
+
+	/* The map-tooltip shadow. The hover card on a graph node and the bullseye's
+	   name callout ride further above the page than a lifted control does but stay
+	   short of a menu or a dialog. */
+	--tooltip-shadow:
+		0 4px 6px -1px color-mix(in oklch, var(--z0) 10%, transparent),
+		0 2px 4px -2px color-mix(in oklch, var(--z0) 10%, transparent);
+
+	/* --- shadcn role compatibility ----------------------------------- */
+	--background: var(--page);
+	--foreground: var(--ink);
+	--card: var(--panel);
+	--card-foreground: var(--ink);
+	--popover: var(--panel);
+	--popover-foreground: var(--ink);
+	--primary: var(--action);
+	--primary-foreground: var(--on-action);
+	--secondary: var(--inset);
+	--secondary-foreground: var(--ink);
+	--muted: var(--inset);
+	--muted-foreground: var(--ink-3);
+	--accent: var(--hover);
+	--accent-foreground: var(--ink);
+	--destructive: var(--state-error);
+	--border: var(--rule);
+	--input: var(--rule-strong);
+	--ring: var(--focus);
+	--radius: var(--radius-control);
+	--sidebar: var(--nav);
+	--sidebar-foreground: var(--ink);
+	--sidebar-primary: var(--action);
+	--sidebar-primary-foreground: var(--on-action);
+	--sidebar-accent: var(--panel);
+	--sidebar-accent-foreground: var(--ink);
+	--sidebar-border: var(--rule);
+	--sidebar-ring: var(--focus);
+
+	color-scheme: light;
+}
+
+/* Dark overrides the semantic layer only, at the reference's dark material
+   table. The ramp keeps its order and stays declared once in :root, so a stop
+   number is the same tone in either theme and only the roles move. */
+.dark {
+	--page: #0f0f0f;
+	--panel: #181818;
+	--inset: #090909;
+	--nav: #181818;
+	--hover: #252525;
+	/* A touch stronger than light: on a hovered row (--hover) 9% ink is ~0.04 lighter. */
+	--chip: color-mix(in oklab, var(--ink) 24%, var(--panel));
+	--toolbar: #0f0f0f;
+
+	--ink: #eeeeee;
+	--ink-2: #cacaca;
+	--ink-3: #a4a4a4;
+	--ink-inverse: #101419;
+
+	--rule: #2e2e2e;
+	/* Dark: #717171 measures 3.64:1 on the dark panel and 3.14:1 on the
+	   hover/selected-row fills the boundary also paints on. */
+	--rule-strong: #717171;
+
+	--action: #eeeeee;
+	--action-hover: #cecece;
+	--on-action: #0f0f0f;
+	--focus: #eeeeee;
+
+	/* --- Tier 2 · material roles ------------------------------------- */
+	--surface-glass: color-mix(in srgb, #181818 74%, transparent);
+	--surface-glass-solid: #181818;
+	--surface-blur: 24px;
+	--surface-shadow: 0 5px 20px #0000004d, 0 1px 3px #00000033;
+	--rail-shadow: 0 8px 26px #00000059;
+	--wash: #090909;
+
+	--state-error: var(--err-300);
+	--data-support: var(--assess-leader);
+	--data-other: var(--z5);
+
+	/* A worker's colour means the same thing in either theme, so the six hues
+	   lift together rather than swapping families. */
+	--assess-unassessed: #9e9e9e;
+	--assess-leader: #3be59d;
+	--assess-activist: #71aaff;
+	--assess-supporter: #db90ec;
+	--assess-disengaged: #ffbb49;
+	--assess-hostile: #ff646f;
+
+	color-scheme: dark;
+}
+
+/* =====================================================================
+   Increase contrast
+   ---------------------------------------------------------------------
+   A plain on/off override: it never reads prefers-contrast. Both themes
+   step the rule and ink roles one stop stronger, so borders and text
+   separate further without swapping the palette. Focus moves with them.
+   ===================================================================== */
+html[data-contrast='on'] {
+	--rule: #b0b0b0;
+	--rule-strong: #5a5a5a;
+	--ink-2: #1f1f1f;
+	--ink-3: #3d3d3d;
+	--focus: #111111;
+}
+
+.dark[data-contrast='on'] {
+	--rule: #4d4d4d;
+	--rule-strong: #a0a0a0;
+	--ink-2: #eeeeee;
+	--ink-3: #cccccc;
+	--focus: #ffffff;
+}
+
+@theme inline {
+	/* Two roles, one family each. The sans carries names, prose and the values
+	   an organizer reads; the mono carries every label, key, count and time. */
+	/* System-first, with Public Sans as a local fallback: the reference's stack.
+	   The @font-face fallback blocks above still hold the line box at every size. */
+	--font-sans:
+		ui-sans-serif, system-ui, -apple-system, 'Segoe UI', 'Public Sans Variable',
+		'Public Sans Fallback', sans-serif;
+	--font-mono:
+		'Roboto Mono Variable', 'Mono Fallback', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+	/* Documented type scale. Body is 14px: a Workers table read between shifts is read
+	   comfortably or it is read wrong. The two smallest steps hold a legibility
+	   floor, so Compact stops shrinking them where mono labels start to lose
+	   their counters — the same reasoning as the touch floor, applied to type. */
+	--text-2xs: max(0.65625rem, 10.5px);
+	--text-2xs--line-height: max(0.9375rem, 15px);
+	--text-xs: max(0.6875rem, 11px);
+	--text-xs--line-height: max(1rem, 16px);
+	--text-sm: 0.875rem;
+	--text-sm--line-height: 1.3125rem;
+	--text-base: 0.875rem;
+	--text-base--line-height: 1.3125rem;
+	--text-lg: 1rem;
+	--text-lg--line-height: 1.5rem;
+	--text-xl: 1.25rem;
+	--text-xl--line-height: 1.75rem;
+	--text-2xl: 1.625rem;
+	--text-2xl--line-height: 2rem;
+	--text-3xl: 2rem;
+	--text-3xl--line-height: 2.25rem;
+
+	/* Tracking belongs to a role, not a size: a heading tightens as it grows, a
+	   mono label opens as it shrinks. The label needs the opening more than the
+	   heading needs the tightening — at 11px its counters close without it. */
+	--tracking-display: -0.022em;
+	--tracking-headline: -0.018em;
+	--tracking-title: -0.01em;
+	--tracking-key: 0.08em;
+
+	--radius-base: 0.125rem;
+	--radius-sm: var(--radius-base);
+	--radius-md: calc(var(--radius-base) * 1.5);
+	--radius-item: calc(var(--radius-base) * 4);
+	--radius-control: calc(var(--radius-base) * 2);
+	--radius-lg: calc(var(--radius-base) * 2);
+	--radius-xl: calc(var(--radius-base) * 3);
+	--radius-2xl: calc(var(--radius-base) * 4);
+	--radius-surface: calc(var(--radius-base) * 4);
+	--radius-3xl: calc(var(--radius-base) * 5);
+	--radius-4xl: calc(var(--radius-base) * 6);
+
+	/* Semantic surfaces, ink, rule, action, state */
+	--color-page: var(--page);
+	--color-panel: var(--panel);
+	--color-inset: var(--inset);
+	--color-chip: var(--chip);
+	--color-nav: var(--nav);
+	--color-hover: var(--hover);
+	--color-toolbar: var(--toolbar);
+	--color-ink: var(--ink);
+	--color-ink-2: var(--ink-2);
+	--color-ink-3: var(--ink-3);
+	--color-ink-inverse: var(--ink-inverse);
+	--color-rule: var(--rule);
+	--color-rule-strong: var(--rule-strong);
+	--color-action: var(--action);
+	--color-action-hover: var(--action-hover);
+	--color-on-action: var(--on-action);
+	--shadow-tooltip: var(--tooltip-shadow);
+	--color-state-success: var(--state-success);
+	--color-state-warning: var(--state-warning);
+	--color-state-error: var(--state-error);
+
+	/* Aggregate data roles */
+	--color-data-support: var(--data-support);
+	--color-data-other: var(--data-other);
+
+	/* Physical touch floor */
+	--spacing-tap: var(--tap-target);
+
+	/* Assessment roles */
+	--color-assessment-unassessed: var(--assessment-unassessed);
+	--color-assessment-leader: var(--assessment-leader);
+	--color-assessment-activist: var(--assessment-activist);
+	--color-assessment-supporter: var(--assessment-supporter);
+	--color-assessment-disengaged: var(--assessment-disengaged);
+	--color-assessment-hostile: var(--assessment-hostile);
+
+	/* shadcn role utilities */
+	--color-sidebar-ring: var(--sidebar-ring);
+	--color-sidebar-border: var(--sidebar-border);
+	--color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+	--color-sidebar-accent: var(--sidebar-accent);
+	--color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+	--color-sidebar-primary: var(--sidebar-primary);
+	--color-sidebar-foreground: var(--sidebar-foreground);
+	--color-sidebar: var(--sidebar);
+	--color-ring: var(--ring);
+	--color-input: var(--input);
+	--color-border: var(--border);
+	--color-destructive: var(--destructive);
+	--color-accent-foreground: var(--accent-foreground);
+	--color-accent: var(--accent);
+	--color-muted-foreground: var(--muted-foreground);
+	--color-muted: var(--muted);
+	--color-secondary-foreground: var(--secondary-foreground);
+	--color-secondary: var(--secondary);
+	--color-primary-foreground: var(--primary-foreground);
+	--color-primary: var(--primary);
+	--color-popover-foreground: var(--popover-foreground);
+	--color-popover: var(--popover);
+	--color-card-foreground: var(--card-foreground);
+	--color-card: var(--card);
+	--color-foreground: var(--foreground);
+	--color-background: var(--background);
+}
+
+/* =====================================================================
+   The color-blind Assessment palette
+   ---------------------------------------------------------------------
+   An opt-in swap for the six Assessment tokens. All three chains are
+   re-declared together: --assess-* feeds assessment.ts and the CSS marks,
+   --assessment-* is the compatibility alias, and --color-assessment-*
+   is the Tailwind utility chain that @theme inline builds from it. The
+   blocks sit after @theme inline so every chain resolves to the swap.
+   The light set is the diverging scale from the mapping dataviz study.
+   The dark set is the validated variant from the palette validation.
+   ===================================================================== */
+html[data-assessment-palette='colorblind'] {
+	--assess-unassessed: #6e7178;
+	--assess-leader: #104281;
+	--assess-activist: #2a78d6;
+	--assess-supporter: #86b6ef;
+	--assess-disengaged: #8a877e;
+	--assess-hostile: #e34948;
+
+	--assessment-unassessed: var(--assess-unassessed);
+	--assessment-leader: var(--assess-leader);
+	--assessment-activist: var(--assess-activist);
+	--assessment-supporter: var(--assess-supporter);
+	--assessment-disengaged: var(--assess-disengaged);
+	--assessment-hostile: var(--assess-hostile);
+
+	--color-assessment-unassessed: var(--assessment-unassessed);
+	--color-assessment-leader: var(--assessment-leader);
+	--color-assessment-activist: var(--assessment-activist);
+	--color-assessment-supporter: var(--assessment-supporter);
+	--color-assessment-disengaged: var(--assessment-disengaged);
+	--color-assessment-hostile: var(--assessment-hostile);
+}
+
+.dark[data-assessment-palette='colorblind'] {
+	--assess-unassessed: #9aa3b0;
+	--assess-leader: #9ec5f4;
+	--assess-activist: #5d9fe6;
+	--assess-supporter: #2f6fc0;
+	--assess-disengaged: #b0a294;
+	--assess-hostile: #ef6b6a;
+
+	--assessment-unassessed: var(--assess-unassessed);
+	--assessment-leader: var(--assess-leader);
+	--assessment-activist: var(--assess-activist);
+	--assessment-supporter: var(--assess-supporter);
+	--assessment-disengaged: var(--assess-disengaged);
+	--assessment-hostile: var(--assess-hostile);
+
+	--color-assessment-unassessed: var(--assessment-unassessed);
+	--color-assessment-leader: var(--assessment-leader);
+	--color-assessment-activist: var(--assessment-activist);
+	--color-assessment-supporter: var(--assessment-supporter);
+	--color-assessment-disengaged: var(--assessment-disengaged);
+	--color-assessment-hostile: var(--assessment-hostile);
+}
+
+@layer utilities {
+	/* Figures that line up in a column. */
+	.num,
+	.tabular {
+		font-variant-numeric: tabular-nums;
+	}
+	/* The label role: every column header, field key, section eyebrow, count and
+	   time. Mono, opened as it shrinks, and the one role that is always upper
+	   case — which is what tells a label apart from a sentence at a glance. */
+	.label {
+		font-family: var(--font-mono);
+		font-size: var(--text-xs);
+		line-height: var(--text-xs--line-height);
+		font-weight: 500;
+		letter-spacing: var(--tracking-key);
+		text-transform: uppercase;
+		color: var(--ink-2);
+	}
+	/* A card or section heading: sentence-case sans at the Title step, where a
+	   .label eyebrow would read as machine labelling. The heading voice for
+	   Configuration and Settings cards — .label stays untouched as the eyebrow
+	   voice. At 16px it stands one role step above the 14px body its card holds,
+	   so a card reads as a titled section rather than a body paragraph whose
+	   first line happens to be bold. */
+	.section-title {
+		font-family: var(--font-sans);
+		font-size: var(--text-lg);
+		line-height: var(--text-lg--line-height);
+		font-weight: 600;
+		letter-spacing: var(--tracking-title);
+		color: var(--ink);
+	}
+	/* A key inside an open record reads one step down from a column label. */
+	.key {
+		font-family: var(--font-mono);
+		font-size: var(--text-2xs);
+		line-height: var(--text-2xs--line-height);
+		font-weight: 500;
+		letter-spacing: var(--tracking-key);
+		text-transform: uppercase;
+		color: var(--ink-3);
+	}
+	/* A key standing on the toolbar fill steps up one ink stop: ink-3 measures
+	   4.19:1 there and clears nothing, while ink-2 clears 4.5:1 in both themes.
+	   Scoped to the fill rather than redefining the role, because a key on a
+	   panel or an inset is fine where it is. */
+	.bg-toolbar .key {
+		color: var(--ink-2);
+	}
+	/* An essential field label: the label on a form control or a long
+	   interactive menu, set sentence-case in the sans at the 12px floor.
+	   Eyebrows, keys, counts and times stay mono uppercase in .label and .key —
+	   this role is only for text the reader must read as language. */
+	.field-label {
+		font-family: var(--font-sans);
+		font-size: max(0.75rem, 12px);
+		line-height: max(1.125rem, 18px);
+		font-weight: 500;
+		color: var(--ink-2);
+		/* The vendored Label this role composes onto carries `uppercase`, and
+		   `text-transform` inherits, so the role has to state the reset itself or
+		   a field label silently keeps the eyebrow's casing. */
+		text-transform: none;
+	}
+	/* A value the reader supplied: a Name, an address, a Note, an Attribute answer.
+	   Its length is the reader's business, not the layout's, so it breaks inside a
+	   word rather than pushing the page wider than the window or being clipped.
+	   `break-words` alone only helps where a break opportunity already exists. */
+	.prose-value {
+		overflow-wrap: anywhere;
+		word-break: normal;
+		min-width: 0;
+	}
+}
+
+@layer base {
+	* {
+		/* The ring is the focus indicator, so it is the one outline that cannot
+		   ride at an alpha: 30% measures well under the 3:1 that WCAG 1.4.11 asks
+		   for. The action ink clears it in light, and white clears it in dark. */
+		@apply border-border outline-ring;
+	}
+	body {
+		@apply bg-background text-base text-foreground;
+		/* Native feel: the page is chrome, not a document. The arrow stays on
+		   everything but text fields and pannable surfaces, and chrome text is not
+		   selectable — see the opt-ins below. */
+		cursor: default;
+		-webkit-user-select: none;
+		user-select: none;
+		/* The fixed wash: a radial bloom of the theme's wash tone at the
+	   leading corner, so glass chrome has something to filter while it blurs.
+	   Fixed, so it stays put under the floating surfaces. */
+		background-color: var(--page);
+		background-image: radial-gradient(
+			80rem 60rem at 0% 0%,
+			color-mix(in srgb, var(--wash) 55%, transparent),
+			transparent 60%
+		);
+		background-attachment: fixed;
+	}
+	html {
+		@apply font-sans;
+		/* The shell owns its scrollers; the document itself never rubber-bands. */
+		overscroll-behavior: none;
+		/* The caret and the native check are browser surfaces the palette still
+		   has to own; `color-scheme` alone leaves both at the UA default. */
+		caret-color: var(--action);
+		accent-color: var(--action);
+	}
+
+	/* Browser typographic surfaces. A selection is the reader's own mark on the
+	   text, so it takes the ramp's own extreme at a wash, not a system blue. */
+	::selection {
+		background-color: color-mix(in oklch, var(--ink) 22%, transparent);
+		color: var(--ink);
+	}
+
+	/* Text a reader may want to copy, and fields they type into. */
+	input,
+	textarea,
+	[contenteditable],
+	[data-selectable],
+	.prose-value,
+	[role='alert'] {
+		-webkit-user-select: text;
+		user-select: text;
+	}
+	input,
+	textarea {
+		cursor: text;
+	}
+	/* The arrow is the default, but whatever answers a click says so: the
+	   checkbox, and the Worker name that opens the record panel. */
+	input[type='checkbox'],
+	[data-name-cell] {
+		cursor: pointer;
+	}
+	a,
+	img,
+	svg {
+		-webkit-user-drag: none;
+	}
+	/* One scrollbar for every scroller, in the palette; inner scrollers keep
+	   their leftover scroll rather than handing it to the shell. */
+	* {
+		scrollbar-width: thin;
+		scrollbar-color: var(--rule-strong) transparent;
+	}
+	[data-scroll-region],
+	.overflow-auto,
+	.overflow-y-auto,
+	.overflow-x-auto {
+		overscroll-behavior: contain;
+	}
+	/* Scrollers whose content must not shift when a bar appears. */
+	[data-scrollbar-stable] {
+		scrollbar-gutter: stable;
+	}
+	/* Low specificity so components that draw their own ring or outline win. */
+	:where(:focus-visible) {
+		outline: 2px solid var(--ring);
+		outline-offset: 2px;
+	}
+	/* The themed field draws its own affordances; WebKit's would double them. */
+	input[type='search']::-webkit-search-cancel-button,
+	input[type='search']::-webkit-search-decoration {
+		-webkit-appearance: none;
+		appearance: none;
+	}
+
+	h1,
+	h2,
+	h3,
+	h4 {
+		text-wrap: balance;
+	}
+	p,
+	li,
+	dd,
+	figcaption {
+		text-wrap: pretty;
+	}
+
+	/* Density scales the rem base, so spacing and type move together. Text size
+	   multiplies that same base, so the two compose rather than overwrite each other. */
+	html {
+		--density-scale: 1;
+		--text-scale: 1;
+		font-size: calc(100% * var(--density-scale) * var(--text-scale));
+	}
+	html[data-density='compact'] {
+		--density-scale: 0.9375;
+	}
+	html[data-density='standard'] {
+		--density-scale: 1;
+	}
+	html[data-density='comfortable'] {
+		--density-scale: 1.0625;
+	}
+	html[data-text-size='110'] {
+		--text-scale: 1.1;
+	}
+	html[data-text-size='125'] {
+		--text-scale: 1.25;
+	}
+	html[data-text-size='150'] {
+		--text-scale: 1.5;
+	}
+
+	/* iOS Safari zooms the page when a focused field's own text is under 16px,
+	   which breaks the form it was trying to help. Coarse pointers only. */
+	@media (pointer: coarse) {
+		input,
+		select,
+		textarea {
+			font-size: max(1rem, 16px);
+		}
+	}
+}
+
+/* =====================================================================
+   The bullseye base layer's pointer pass-through
+   ---------------------------------------------------------------------
+   The bullseye is drawn behind the header, the page title and the panel, so
+   those layers win the pointer over the whole page and no dot can be
+   hovered. While the base layer is shown, the shell's own children stop
+   taking the pointer; the real controls re-enable it where they sit, and the
+   worker dots already do. The marker is scoped to the route and mode that
+   draw the base layer, so the surfaces that can still scroll below the floor
+   keep ordinary hit-testing.
+   ===================================================================== */
+[data-bullseye-base-surface] > * {
+	pointer-events: none;
+}
+
+/* The dashboard sits over the inert floor and takes the pointer back for its
+   whole subtree; the ground beneath it is inert and catches nothing. While the
+   bullseye is focused the dashboard is inert instead, so it gives the pointer
+   up and the ground answers where it lies. */
+[data-bullseye-base-surface] [data-dashboard-root]:not([data-focused='true']) {
+	pointer-events: auto;
+}
+
+/* The focus tab and the focused ground's reset sit above both layers and answer
+   in either state, so they take the pointer back where they sit. */
+[data-bullseye-base-surface] [data-focus-edge],
+[data-bullseye-base-surface] [data-focus-reset] {
+	pointer-events: auto;
+}
+
+/* =====================================================================
+   Reduced motion
+   ---------------------------------------------------------------------
+   One general rule: nothing travels and nothing eases. State still changes
+   at once, so the control answers; it just does not animate there.
+
+   The setting is the root's data-motion attribute: 'system' follows the OS
+   media query, 'reduce' always freezes, and 'full' opts out even on an OS
+   that asks for less. Every prefers-reduced-motion rule below is gated the
+   same way, so the three values stay one decision.
+   ===================================================================== */
+@media (prefers-reduced-motion: reduce) {
+	/* The root is its own element: without the bare selector its transition and
+	   scroll-behavior stay live even though everything under it freezes. */
+	html:not([data-motion='full']),
+	html:not([data-motion='full']) *,
+	html:not([data-motion='full'])::before,
+	html:not([data-motion='full'])::after,
+	html:not([data-motion='full']) ::before,
+	html:not([data-motion='full']) ::after {
+		animation-duration: 0.01ms !important;
+		animation-delay: 0ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+		transition-delay: 0ms !important;
+		scroll-behavior: auto !important;
+	}
+}
+html[data-motion='reduce'],
+html[data-motion='reduce'] *,
+html[data-motion='reduce'] ::before,
+html[data-motion='reduce'] ::after {
+	animation-duration: 0.01ms !important;
+	animation-delay: 0ms !important;
+	animation-iteration-count: 1 !important;
+	transition-duration: 0.01ms !important;
+	transition-delay: 0ms !important;
+	scroll-behavior: auto !important;
+}
+
+/* =====================================================================
+   The navigation
+   ---------------------------------------------------------------------
+   The navigation is the outermost stop in the ramp — z8 in light, z0 in dark
+   — so it sits outside the page rather than on it, and it flips with the
+   theme because the stop it reads flips.
+
+   The three item states are tints of the one ink, so they step in a single
+   direction and flip with the theme with no per-theme values. The panel
+   stop cannot carry them: it reads about 1.03:1 against the navigation, so
+   a panel-coloured fill is nearly invisible, and it left hover and active
+   looking the same. Hover is the faintest tint, pressed one step stronger,
+   and the active item the strongest at rest.
+
+   With no rule or marker, the active tint is the only fill cue, so it sits
+   clearly above hover and press, and the item also takes medium weight and
+   aria-current="page" so the state is not tone alone.
+   ===================================================================== */
+[data-slot='sidebar-menu-button'] {
+	transition: background-color 120ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+[data-slot='sidebar-menu-button']:not([data-active='true']):hover {
+	background-color: color-mix(in srgb, var(--ink) 5%, transparent);
+	color: var(--ink);
+}
+[data-slot='sidebar-menu-button']:not([data-active='true']):active {
+	background-color: color-mix(in srgb, var(--ink) 9%, transparent);
+}
+[data-slot='sidebar-menu-button'][data-active='true'],
+[data-slot='sidebar-menu-button'][data-active='true']:hover {
+	background-color: color-mix(in srgb, var(--ink) 11%, transparent);
+	color: var(--ink);
+}
+@media (prefers-reduced-motion: reduce) {
+	html:not([data-motion='full']) [data-slot='sidebar-menu-button'] {
+		transition: none;
+	}
+}
+html[data-motion='reduce'] [data-slot='sidebar-menu-button'] {
+	transition: none;
+}
+
+/* The mobile navigation carries a close control in its header, so the header
+   keeps clear of it. */
+[data-slot='sidebar'][data-mobile='true'] [data-slot='sidebar-header'] {
+	padding-inline-end: 3.25rem;
+}
+[data-slot='sidebar'][data-mobile='true'] [data-slot='sheet-close'] {
+	background-color: transparent;
+	color: var(--ink);
+}
+[data-slot='sidebar'][data-mobile='true'] [data-slot='sheet-close']:hover {
+	background-color: var(--panel);
+	color: var(--ink);
+}
+
+/* =====================================================================
+   The rail card's shape
+   ---------------------------------------------------------------------
+   The floating card ships from the vendored primitive with an 8px
+   item radius, the shared small shadow and a hairline ring. The rail is
+   chrome a step out from the page, so it takes the surface radius (14px)
+   and the deeper rail shadow, which is what carries it as a floating
+   card on a 1.03:1 fallback fill. Both are set here, unlayered, so they
+   outrank the primitive's own layered utilities. The background is not
+   repeated: the glass utility below owns it.
+   The ring is painted here rather than left to the primitive's `ring-1`,
+   because in Tailwind 4 `ring-1` and `shadow-sm` both write `box-shadow`:
+   replacing that property drops the ring layer with it. Composing it into
+   the one shadow keeps the documented navigation hairline.
+   ===================================================================== */
+[data-slot='sidebar-inner'] {
+	border-radius: 0.875rem;
+	box-shadow:
+		0 0 0 1px var(--sidebar-border),
+		var(--rail-shadow);
+}
+
+/* =====================================================================
+   No-scroll surfaces
+   ---------------------------------------------------------------------
+   At or above the viewport floor — 1024×640 — a no-scroll surface may not
+   scroll: the shared tab container stops scrolling and the content wrapper
+   takes a definite height so its panels can page against it. Below the
+   floor the guarantee lapses and the container scrolls again. rem in media
+   queries resolves against the initial font size, so density never moves
+   the floor. The 64rem width is the shared 1024px threshold (--breakpoint-lg,
+   DEFAULT_MOBILE_BREAKPOINT); CSS cannot read a custom property inside a
+   media condition, so it is spelled here.
+
+   The height floor is the 40rem in the query below, and the e2e matrix's
+   smallest viewport. It is a fit point, not a hope: raising it without
+   re-measuring lets a real browser window scroll again, and lowering it
+   past what the composition can compress to makes the container clip
+   instead. Move both together, or neither.
+   ===================================================================== */
+/* Below the desktop floor the shell wrapper only has a minimum height, so every
+   `h-full` under it resolves to auto and the Mapping canvas settles past the fold.
+   Giving the Mapping wrapper the scroller's height keeps the canvas inside the
+   first screen; the options panel below it scrolls. Overview stays out of this:
+   its contract below the floor is to scroll, and a fixed wrapper would clip it. */
+@media (max-width: 63.999rem) or (max-height: 39.999rem) {
+	/* INTERIM: mobile floor just below desktop minHeight/minWidth */
+	.mapping-fill {
+		height: 100%;
+		min-height: 0;
+	}
+}
+
+@media (min-width: 64rem) and (min-height: 40rem) {
+	.no-scroll-enforced {
+		overflow: hidden;
+	}
+	/* The floor is a fit point only if the frame above the panels gives its own
+	   height back. The panels keep their own padding — that separates, it does
+	   not spend height. */
+	.surface-no-scroll {
+		--page-header-lead: 0.5rem;
+	}
+	.surface-no-scroll [data-testid='tab-scroll-viewport'] > :first-child {
+		padding: 0;
+	}
+	.surface-no-scroll [data-slot='card'] {
+		--card-spacing: 0px;
+		padding-block: 0;
+	}
+	.surface-no-scroll [data-slot='card'] > :first-child {
+		padding-block: 0.5rem;
+	}
+	.surface-no-scroll [data-slot='card'] > :last-child {
+		padding: 0;
+	}
+	.no-scroll-fill {
+		height: 100%;
+		min-height: 0;
+	}
+	.no-scroll-rows {
+		grid-template-rows: minmax(0, max-content) minmax(0, 1fr);
+	}
+	.no-scroll-chart {
+		display: flex;
+		/* Shrink-wrapped, so the chart tracks the column rather than the viewport. */
+		align-self: start;
+		min-width: 0;
+		min-height: 0;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+	}
+}
+
+/* =====================================================================
+   Glass material
+   ---------------------------------------------------------------------
+   One utility for chrome and inspectors — the navigation rail, Mapping's
+   options rail and floating toolbar, the Worker inspector. The app header
+   paints nothing. The opaque solid paints first so an unsupporting browser
+   keeps a legible surface; the translucent glass lands only inside
+   @supports; and a reduced-transparency or forced-colors reader gets the
+   solid back with no blur. Reading surfaces never take this material.
+   ===================================================================== */
+[data-material='glass'],
+[data-slot='sidebar-inner'] {
+	background-color: var(--surface-glass-solid);
+	-webkit-backdrop-filter: blur(var(--surface-blur));
+	backdrop-filter: blur(var(--surface-blur));
+}
+@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+	[data-material='glass'],
+	[data-slot='sidebar-inner'] {
+		background-color: var(--surface-glass);
+	}
+}
+@media (prefers-reduced-transparency: reduce), (forced-colors: active) {
+	[data-material='glass'],
+	[data-slot='sidebar-inner'] {
+		background-color: var(--surface-glass-solid);
+		-webkit-backdrop-filter: none;
+		backdrop-filter: none;
+	}
+}
+/* A glass control still answers the pointer: its fill is set here, so the
+   button's own hover and open tones would otherwise never show. */
+button[data-material='glass']:not(:disabled):is(:hover, [aria-expanded='true']) {
+	background-color: var(--hover);
+}
+/* Forced-colors agents remove box shadows, including our hairline ring. Keep
+   a system-colour edge when that happens without changing the rail's box. */
+@media (forced-colors: active) {
+	[data-material='glass'][data-rail],
+	[data-slot='sidebar-inner'] {
+		outline: 1px solid CanvasText;
+		outline-offset: -1px;
+	}
+}
+
+/* =====================================================================
+   Glass rails
+   ---------------------------------------------------------------------
+   Chrome that floats beside the surface it shares a row with — the Mapping
+   options rail beside the map, the Worker inspector beside the Workers table. Its
+   fill is the glass fallback and the panel behind it is --panel, so the two
+   sit within about 1.03:1 and tone alone cannot separate them. The rail
+   shadow and the --rule hairline ring are what lift it, exactly as they
+   carry the navigation rail. Composed into one box-shadow because in
+   Tailwind 4 a ring utility and a shadow utility both write box-shadow.
+   ===================================================================== */
+[data-material='glass'][data-rail] {
+	box-shadow:
+		0 0 0 1px var(--rule),
+		var(--rail-shadow);
+}
+
+/* =====================================================================
+   Reading-sheet material
+   ---------------------------------------------------------------------
+   A transparent, borderless panel, so the bullseye shows through the sheet. Tables, forms, menus and dialogs stay
+   opaque without the shadow — blur stays on chrome.
+   ===================================================================== */
+/* A scroller's edge fades only while rows lie beyond it (see scroll-fade.ts). */
+.scroll-fade {
+	--fade-top: 0px;
+	--fade-bottom: 0px;
+	mask-image: linear-gradient(
+		to bottom,
+		transparent,
+		#000 var(--fade-top),
+		#000 calc(100% - var(--fade-bottom)),
+		transparent
+	);
+}
+.scroll-fade[data-fade-top] {
+	--fade-top: 1.25rem;
+}
+.scroll-fade[data-fade-bottom] {
+	--fade-bottom: 1.25rem;
+}
+
+[data-material='reading-sheet'] {
+	background-color: transparent;
+	border-radius: var(--radius-surface);
+}
+
+/* =====================================================================
+   Ruled-sheet menus
+   ---------------------------------------------------------------------
+   Dropdown and select menus are drawn like the rest of the app: a hairline
+   frame, full-width rows split by rules, a mono caption. The vendored shadcn
+   primitives under #lib/components/ui stay as upstream ships them; these rules
+   are unlayered, so they win over the utilities those components carry.
+   Selection is a tint, a weight and a mark. Nothing else changes: no bar.
+   ===================================================================== */
+[data-slot='dropdown-menu-content'],
+[data-slot='dropdown-menu-sub-content'],
+[data-slot='select-content'] {
+	padding: 0;
+	overflow-x: hidden;
+	border: 1px solid var(--rule-strong);
+	border-radius: var(--radius-control);
+	background-color: var(--panel);
+}
+
+[data-slot='select-group'],
+[data-slot='dropdown-menu-group'] {
+	padding: 0;
+}
+
+[data-slot='dropdown-menu-item'],
+[data-slot='dropdown-menu-checkbox-item'],
+[data-slot='dropdown-menu-radio-item'],
+[data-slot='dropdown-menu-sub-trigger'],
+[data-slot='select-item'] {
+	border-radius: 0;
+	border-bottom: 1px solid var(--rule);
+	padding-inline: 0.75rem;
+}
+[data-slot='dropdown-menu-item']:last-child,
+[data-slot='dropdown-menu-checkbox-item']:last-child,
+[data-slot='dropdown-menu-radio-item']:last-child,
+[data-slot='dropdown-menu-sub-trigger']:last-child,
+[data-slot='select-item']:last-child {
+	border-bottom-width: 0;
+}
+/* A separator draws the line under the row before it. */
+[data-slot^='dropdown-menu-']:has(+ [data-slot='dropdown-menu-separator']),
+[data-slot^='select-']:has(+ [data-slot='select-separator']) {
+	border-bottom-width: 0;
+}
+@media (min-width: 64rem) {
+	[data-slot='dropdown-menu-item'],
+	[data-slot='dropdown-menu-checkbox-item'],
+	[data-slot='dropdown-menu-radio-item'],
+	[data-slot='dropdown-menu-sub-trigger'],
+	[data-slot='select-item'] {
+		min-height: var(--control-h);
+	}
+}
+
+/* The current value: a tint and a weight, with its mark. */
+[data-slot='select-item'][data-selected],
+[data-slot='dropdown-menu-radio-item'][data-state='checked'] {
+	background-color: var(--inset);
+	font-weight: 600;
+}
+
+/* A multi-select option carries its own square checkbox, ahead of the label. */
+[data-slot='dropdown-menu-checkbox-item'] {
+	padding-right: 0.75rem;
+}
+[data-slot='dropdown-menu-checkbox-item-indicator'] {
+	position: static;
+	order: -1;
+	box-sizing: border-box;
+	width: 1rem;
+	height: 1rem;
+	flex-shrink: 0;
+	border: 1px solid var(--rule-strong);
+	border-radius: var(--radius-sm);
+}
+[data-slot='dropdown-menu-checkbox-item-indicator'] svg {
+	width: 0.75rem;
+	height: 0.75rem;
+}
+[data-slot='dropdown-menu-checkbox-item'][data-state='checked']
+	[data-slot='dropdown-menu-checkbox-item-indicator'],
+[data-slot='dropdown-menu-checkbox-item'][data-state='indeterminate']
+	[data-slot='dropdown-menu-checkbox-item-indicator'] {
+	background-color: var(--action);
+	color: var(--on-action);
+}
+/* The row's focus rule recolours every descendant; the mark inside a filled box
+   must stay legible on it. */
+[data-slot='dropdown-menu-checkbox-item'][data-state='checked']
+	[data-slot='dropdown-menu-checkbox-item-indicator']
+	svg,
+[data-slot='dropdown-menu-checkbox-item'][data-state='indeterminate']
+	[data-slot='dropdown-menu-checkbox-item-indicator']
+	svg {
+	color: var(--on-action);
+}
+
+/* A caption names what the menu is about, in the label voice. */
+[data-slot='dropdown-menu-label'],
+[data-slot='dropdown-menu-group-heading'],
+[data-slot='select-label'],
+[data-slot='select-group-heading'] {
+	padding: 0.5rem 0.75rem;
+	border-bottom: 1px solid var(--rule);
+	color: var(--ink-3);
+	font-family: var(--font-mono);
+	font-size: 0.6875rem;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+}
+
+/* A separator is the same hairline a row draws, with no margin around it. */
+[data-slot='dropdown-menu-separator'],
+[data-slot='select-separator'] {
+	margin: 0;
+	height: 1px;
+	background-color: var(--rule);
+}
+
+/* Two strings repeated across panels and labels, each defined once. The shadow
+   matches the arbitrary value it replaces: the same box-shadow stack Tailwind
+   emits for shadow-[var(--surface-shadow)]. */
+@utility shadow-surface {
+	--tw-shadow: var(--surface-shadow);
+	box-shadow:
+		var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow),
+		var(--tw-ring-shadow), var(--tw-shadow);
+}
+
+/* The mono uppercase label: column headers, field keys and section eyebrows. */
+@utility eyebrow {
+	@apply font-mono text-xs font-medium tracking-key uppercase;
+}
+
+/* The arrival flicker: an old neon sign catching, hard on/off flicks (step-end), never
+   a fade. Some bulbs false-start twice, some stutter once, some hang dim before they
+   take. Used by the bullseye's dots. */
+@keyframes arrival-flicker-a {
+	0%,
+	16%,
+	36% {
+		opacity: 0;
+	}
+	10% {
+		opacity: 1;
+	}
+	30% {
+		opacity: 1;
+	}
+	52% {
+		opacity: 1;
+	}
+	58% {
+		opacity: 0.25;
+	}
+	66%,
+	100% {
+		opacity: 1;
+	}
+}
+
+@keyframes arrival-flicker-b {
+	0%,
+	22% {
+		opacity: 0;
+	}
+	14% {
+		opacity: 0.8;
+	}
+	45% {
+		opacity: 1;
+	}
+	52% {
+		opacity: 0.35;
+	}
+	60%,
+	100% {
+		opacity: 1;
+	}
+}
+
+@keyframes arrival-flicker-c {
+	0%,
+	34% {
+		opacity: 0;
+	}
+	20% {
+		opacity: 0.3;
+	}
+	48% {
+		opacity: 0.55;
+	}
+	62% {
+		opacity: 0.2;
+	}
+	78%,
+	100% {
+		opacity: 1;
+	}
+}

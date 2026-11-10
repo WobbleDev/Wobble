@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="text-scale" content="scale" />
+		<script>
+			// The interface locale for this launch, resolved before any bundle loads so
+			// the splash and document metadata are already in the right language. The
+			// saved preference lives in the app; the cache holds only the last confirmed
+			// one. `system` walks the WebView's ordered preferences. Keep this resolver
+			// in step with src/lib/i18n/locale.ts, including its malformed-tag handling.
+			(function () {
+				try {
+					var preference = 'system';
+					try {
+						var cached = JSON.parse(localStorage.getItem('wobble.language') ?? 'null');
+						if (cached && ['system', 'en', 'es-419'].indexOf(cached.preference) !== -1) {
+							preference = cached.preference;
+						}
+					} catch {}
+
+					var preferred = [];
+					try {
+						if (navigator.languages && navigator.languages.length) {
+							preferred = Array.prototype.slice.call(navigator.languages);
+						} else if (navigator.language) {
+							preferred = [navigator.language];
+						}
+					} catch {}
+
+					function family(tag) {
+						if (typeof tag !== 'string') return null;
+						var trimmed = tag.trim().replace(/_/g, '-');
+						if (!trimmed || trimmed.length > 64) return null;
+						var parts = trimmed.split('-');
+						for (var i = 0; i < parts.length; i += 1) {
+							if (!/^[a-zA-Z0-9]{1,8}$/.test(parts[i])) return null;
+						}
+						var language = parts[0].toLowerCase();
+						if (language === 'es') return 'es-419';
+						if (language === 'en') return 'en';
+						return null;
+					}
+
+					var locale = null;
+					if (preference === 'en' || preference === 'es-419') {
+						locale = preference;
+					} else {
+						for (var j = 0; j < preferred.length; j += 1) {
+							locale = family(preferred[j]);
+							if (locale) break;
+						}
+					}
+
+					locale = locale || 'en';
+					document.documentElement.lang = locale;
+					document.documentElement.dir = 'ltr';
+					window.__wobbleLocale = locale;
+				} catch {}
+			})();
+		</script>
+		<script>
+			// The appearance settings live in the app, but the document no longer
+			// carries them from the server. Read the copy the app cached in webview
+			// storage last time, so even the first paint is right: theme, density,
+			// motion, contrast, text size and the Assessment palette. 'system' is the
+			// one theme and motion preference that needs a media query; resolve it
+			// here, synchronously. Only allowlisted values reach an attribute, so a
+			// stale or hand-edited cache paints the defaults rather than inventing one.
+			// Keep the key in step with src/lib/client/appearance-cache.ts and the
+			// mapping in src/lib/shell/appearance-attributes.ts.
+			try {
+				const cached = JSON.parse(localStorage.getItem('wobble.appearance') ?? 'null');
+				const root = document.documentElement;
+				if (cached && typeof cached.theme === 'string') {
+					root.dataset.theme = cached.theme;
+					if (
+						cached.theme === 'dark' ||
+						(cached.theme === 'system' && matchMedia('(prefers-color-scheme: dark)').matches)
+					) {
+						root.classList.add('dark');
+					}
+				}
+				if (cached && typeof cached.density === 'string') {
+					root.dataset.density = cached.density;
+				}
+				if (cached && ['system', 'reduce', 'full'].includes(cached.reduceMotion)) {
+					root.dataset.motion = cached.reduceMotion;
+				}
+				if (cached && ['100', '110', '125', '150'].includes(cached.textSize)) {
+					root.dataset.textSize = cached.textSize;
+				}
+				if (cached && cached.increaseContrast === true) {
+					root.dataset.contrast = 'on';
+				}
+				if (cached && cached.colorBlindAssessments === true) {
+					root.dataset.assessmentPalette = 'colorblind';
+				}
+			} catch {}
+		</script>
+		<style>
+			/* The start-up screen: the document's own first paint, before the app has
+			   loaded. Plain HTML so it shows without waiting for any script bundle;
+			   the layout removes it once mounted (src/lib/shell/dismiss-splash.ts).
+			   Colours mirror --page, --wash and --ink-3 in layout.css, which has not
+			   loaded yet. The chrome rules (arrow cursor, no selection, no overscroll)
+			   mirror the body and html rules there for the same reason. */
+			html {
+				background: #f7f7f7;
+				overscroll-behavior: none;
+			}
+			html.dark {
+				background: #0f0f0f;
+			}
+			#splash {
+				position: fixed;
+				inset: 0;
+				z-index: 100;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				gap: 1.25rem;
+				overflow: hidden;
+				cursor: default;
+				-webkit-user-select: none;
+				user-select: none;
+				background-color: #f7f7f7;
+				background-image: radial-gradient(
+					80rem 60rem at 0% 0%,
+					color-mix(in srgb, #eeeeee 55%, transparent),
+					transparent 60%
+				);
+				color: #555555;
+				font:
+					0.875rem ui-sans-serif,
+					system-ui,
+					-apple-system,
+					'Segoe UI',
+					sans-serif;
+			}
+			.dark #splash {
+				background-color: #0f0f0f;
+				background-image: radial-gradient(
+					80rem 60rem at 0% 0%,
+					color-mix(in srgb, #090909 55%, transparent),
+					transparent 60%
+				);
+				color: #a4a4a4;
+			}
+			/* A first launch has no cached theme: follow the system until the app knows. */
+			@media (prefers-color-scheme: dark) {
+				html:not([data-theme]) {
+					background: #0f0f0f;
+				}
+				html:not([data-theme]) #splash {
+					background-color: #0f0f0f;
+					background-image: radial-gradient(
+						80rem 60rem at 0% 0%,
+						color-mix(in srgb, #090909 55%, transparent),
+						transparent 60%
+					);
+					color: #a4a4a4;
+				}
+			}
+			/* Leaving: the content goes first (100ms), then the ground fades (150ms), so
+			   the spinner never ghosts over the app showing through. */
+			/* Arriving: hold the content back a beat, so a fast start shows only the
+			   ground and never flashes a spinner that is gone before it can be read. */
+			#splash > * {
+				transition: opacity 100ms ease-out;
+				animation: splash-in 200ms ease-out 300ms backwards;
+			}
+			@keyframes splash-in {
+				from {
+					opacity: 0;
+				}
+			}
+			#splash[data-leaving] {
+				opacity: 0;
+				pointer-events: none;
+				transition: opacity 150ms ease-out 100ms;
+			}
+			#splash[data-leaving] > * {
+				opacity: 0 !important;
+				transition-duration: 100ms;
+			}
+			#splash svg {
+				width: 2rem;
+				height: 2rem;
+				animation: splash-spin 1s linear infinite;
+			}
+			/* The line keeps one size whatever the phrase. If its box shrank to fit a
+			   shorter phrase, WebKit would repaint only the new box and leave the longer
+			   phrase's ends on screen. */
+			#splash p {
+				width: min(32rem, calc(100vw - 2rem));
+				margin: 0;
+				overflow: hidden;
+				text-align: center;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+				transition: opacity 300ms ease-in-out;
+			}
+			#splash .splash-sr {
+				position: absolute;
+				width: 1px;
+				height: 1px;
+				overflow: hidden;
+				clip-path: inset(50%);
+				white-space: nowrap;
+			}
+			@keyframes splash-spin {
+				to {
+					transform: rotate(360deg);
+				}
+			}
+			/* The app's reduced-motion rule (layout.css) would freeze this, and a frozen
+			   arc reads as a hang. A slow turn is the one motion that stays: it is the
+			   signal that the app is alive. */
+			@media (prefers-reduced-motion: reduce) {
+				#splash svg {
+					animation-duration: 3s !important;
+					animation-iteration-count: infinite !important;
+				}
+			}
+		</style>
+		%sveltekit.head%
+	</head>
+	<body data-sveltekit-preload-data="hover">
+		<script type="application/json" id="wobble-splash-data">
+			%wobble.splash%
+		</script>
+		<div id="splash" role="status">
+			<span class="splash-sr">Loading Wobble</span>
+			<svg
+				aria-hidden="true"
+				xmlns="http://www.w3.org/2000/svg"
+				viewBox="0 0 24 24"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="2"
+				stroke-linecap="round"
+				stroke-linejoin="round"
+			>
+				<path d="M21 12a9 9 0 1 1-6.219-8.56" />
+			</svg>
+			<p aria-hidden="true" id="splash-line">Joining the grand industrial band...</p>
+		</div>
+		<script>
+			// Cycles the line under the spinner. Stops itself once the layout removes
+			// the splash. The lines are decoration, hidden from screen readers so they
+			// are not read out every few seconds; the status says "Loading Wobble".
+			// If the app has not mounted after 20s (a bundle failed to load), say so
+			// instead of spinning for good.
+			(function () {
+				var fallbackPhrases = [
+					'Joining the grand industrial band...',
+					'Dumping bosses off backs...',
+					'Rolling the union on...',
+					'Looking for neutrals in Harlan County...',
+					'Showing a card to the National Guard...'
+				];
+				var splash = null;
+				try {
+					var data = document.getElementById('wobble-splash-data');
+					var parsed = JSON.parse(data ? data.textContent : 'null');
+					var locale = window.__wobbleLocale || 'en';
+					splash = parsed && parsed[locale] ? parsed[locale] : null;
+				} catch {}
+
+				var phrases =
+					splash && splash.phrases && splash.phrases.length
+						? splash.phrases.slice()
+						: fallbackPhrases;
+				// Fisher-Yates over the copy, so each launch cycles in a new order.
+				for (var k = phrases.length - 1; k > 0; k -= 1) {
+					var pick = Math.floor(Math.random() * (k + 1));
+					var swap = phrases[k];
+					phrases[k] = phrases[pick];
+					phrases[pick] = swap;
+				}
+				var loading = splash && splash.loading ? splash.loading : 'Loading Wobble';
+				var stillLoading =
+					splash && splash.stillLoading
+						? splash.stillLoading
+						: 'Still loading. Try quitting and reopening Wobble.';
+
+				var status = document.querySelector('#splash .splash-sr');
+				if (status) status.textContent = loading;
+				var line = document.getElementById('splash-line');
+				if (line) line.textContent = phrases[0];
+
+				var i = 0;
+				var started = Date.now();
+				var ticker = setInterval(function () {
+					if (!line || !line.isConnected) return clearInterval(ticker);
+					if (Date.now() - started > 20000) {
+						clearInterval(ticker);
+						line.textContent = stillLoading;
+						line.removeAttribute('aria-hidden');
+						line.style.opacity = '1';
+						return;
+					}
+					line.style.opacity = '0';
+					setTimeout(function () {
+						i = (i + 1) % phrases.length;
+						line.textContent = phrases[i];
+						line.style.opacity = '1';
+					}, 300);
+				}, 3200);
+			})();
+		</script>
+		<div style="display: contents">%sveltekit.body%</div>
+	</body>
+</html>

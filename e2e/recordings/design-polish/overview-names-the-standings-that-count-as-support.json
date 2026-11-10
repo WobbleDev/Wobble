@@ -1,0 +1,188 @@
+{
+	"pages": [
+		{
+			"method": "GET",
+			"path": "/api/boot-status",
+			"status": 200,
+			"body": {
+				"encrypted": true,
+				"firstRun": false,
+				"legacyPlaintext": false,
+				"markerPending": false,
+				"state": "open"
+			}
+		},
+		{
+			"method": "GET",
+			"path": "/api/dataset",
+			"status": 200,
+			"body": {
+				"agitations": [],
+				"attributes": [],
+				"languages": [],
+				"settings": {
+					"colorBlindAssessments": false,
+					"dateFormat": "system",
+					"density": "standard",
+					"increaseContrast": false,
+					"language": "system",
+					"reduceMotion": "system",
+					"rememberWindow": true,
+					"textSize": "100",
+					"theme": "system",
+					"timeFormat": "system"
+				},
+				"workers": [
+					{
+						"agitations": [],
+						"assessment": "Supporter",
+						"attributes": {},
+						"email": "",
+						"id": "748a60c3-04ef-419d-b957-a9a5da675ba9",
+						"languages": [],
+						"name": "Ada Lovelace",
+						"notes": [],
+						"phone": "",
+						"relationships": []
+					},
+					{
+						"agitations": [],
+						"assessment": "Supporter",
+						"attributes": {},
+						"email": "",
+						"id": "7a0d7243-66a1-4c1d-8d9f-2654cf22c792",
+						"languages": [],
+						"name": "Grace Hopper",
+						"notes": [],
+						"phone": "",
+						"relationships": []
+					}
+				],
+				"worksite": {
+					"committeeTarget": 5,
+					"id": "d7e8a889-ea11-4ddf-99c5-98fdfcd4473e",
+					"name": "My Worksite 2"
+				},
+				"worksites": [
+					{
+						"committeeTarget": 5,
+						"id": "945df0ac-d4f7-4298-a80a-63cde69d2984",
+						"name": "My Worksite"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "d7e8a889-ea11-4ddf-99c5-98fdfcd4473e",
+						"name": "My Worksite 2"
+					}
+				]
+			}
+		},
+		{
+			"method": "GET",
+			"path": "/api/settings",
+			"status": 200,
+			"body": {
+				"settings": {
+					"colorBlindAssessments": false,
+					"dateFormat": "system",
+					"density": "standard",
+					"increaseContrast": false,
+					"language": "system",
+					"reduceMotion": "system",
+					"rememberWindow": true,
+					"textSize": "100",
+					"theme": "system",
+					"timeFormat": "system"
+				}
+			}
+		}
+	],
+	"seed": [
+		{
+			"method": "GET",
+			"path": "/api/worksite",
+			"status": 200,
+			"body": {
+				"worksite": {
+					"committeeTarget": 5,
+					"id": "d7e8a889-ea11-4ddf-99c5-98fdfcd4473e",
+					"name": "My Worksite 2"
+				}
+			}
+		},
+		{
+			"method": "PUT",
+			"path": "/api/attributes",
+			"requestBody": [],
+			"status": 200,
+			"body": {
+				"attributes": []
+			}
+		},
+		{
+			"method": "POST",
+			"path": "/api/workers",
+			"requestBody": {
+				"name": "Ada Lovelace",
+				"email": "",
+				"phone": "",
+				"assessment": "Supporter",
+				"attributes": {},
+				"agitations": [],
+				"languages": [],
+				"relationships": [],
+				"notes": []
+			},
+			"status": 201,
+			"body": {
+				"worker": {
+					"agitations": [],
+					"assessment": "Supporter",
+					"attributes": {},
+					"email": "",
+					"id": "748a60c3-04ef-419d-b957-a9a5da675ba9",
+					"languages": [],
+					"name": "Ada Lovelace",
+					"notes": [],
+					"phone": "",
+					"relationships": []
+				}
+			}
+		},
+		{
+			"method": "POST",
+			"path": "/api/workers",
+			"requestBody": {
+				"name": "Grace Hopper",
+				"email": "",
+				"phone": "",
+				"assessment": "Supporter",
+				"attributes": {},
+				"agitations": [],
+				"languages": [],
+				"relationships": [],
+				"notes": []
+			},
+			"status": 201,
+			"body": {
+				"worker": {
+					"agitations": [],
+					"assessment": "Supporter",
+					"attributes": {},
+					"email": "",
+					"id": "7a0d7243-66a1-4c1d-8d9f-2654cf22c792",
+					"languages": [],
+					"name": "Grace Hopper",
+					"notes": [],
+					"phone": "",
+					"relationships": []
+				}
+			}
+		}
+	],
+	"worksite": {
+		"committeeTarget": 5,
+		"id": "d7e8a889-ea11-4ddf-99c5-98fdfcd4473e",
+		"name": "My Worksite 2"
+	}
+}

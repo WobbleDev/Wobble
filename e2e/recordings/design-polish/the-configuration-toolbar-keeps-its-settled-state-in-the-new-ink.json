@@ -1,0 +1,141 @@
+{
+	"pages": [
+		{
+			"method": "GET",
+			"path": "/api/boot-status",
+			"status": 200,
+			"body": {
+				"encrypted": true,
+				"firstRun": false,
+				"legacyPlaintext": false,
+				"markerPending": false,
+				"state": "open"
+			}
+		},
+		{
+			"method": "POST",
+			"path": "/api/configuration/short-forms",
+			"status": 200,
+			"body": {
+				"shortForms": []
+			}
+		},
+		{
+			"method": "GET",
+			"path": "/api/dataset",
+			"status": 200,
+			"body": {
+				"agitations": [],
+				"attributes": [
+					{
+						"id": "f10962df-7399-4d26-86ef-e898e99ff019",
+						"kind": "category",
+						"name": "Department",
+						"options": []
+					},
+					{
+						"id": "950da6c6-0ddc-44bf-bdf7-bc3a5e175faf",
+						"kind": "category",
+						"name": "Role",
+						"options": []
+					},
+					{
+						"id": "6951e6e9-8140-489f-867f-f9cd47987343",
+						"kind": "tag",
+						"name": "Shifts",
+						"options": []
+					}
+				],
+				"languages": [],
+				"settings": {
+					"colorBlindAssessments": false,
+					"dateFormat": "system",
+					"density": "standard",
+					"increaseContrast": false,
+					"language": "system",
+					"reduceMotion": "system",
+					"rememberWindow": true,
+					"textSize": "100",
+					"theme": "system",
+					"timeFormat": "system"
+				},
+				"workers": [],
+				"worksite": {
+					"committeeTarget": 5,
+					"id": "7abc6415-5f71-4345-bfa7-879d923ac5f6",
+					"name": "My Worksite 5"
+				},
+				"worksites": [
+					{
+						"committeeTarget": 5,
+						"id": "945df0ac-d4f7-4298-a80a-63cde69d2984",
+						"name": "My Worksite"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "d7e8a889-ea11-4ddf-99c5-98fdfcd4473e",
+						"name": "My Worksite 2"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "33d8ac47-c9ac-49d8-9f78-0542615dd3a3",
+						"name": "My Worksite 3"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "89349663-7945-44bb-8890-4f3969ea502c",
+						"name": "My Worksite 4"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "7abc6415-5f71-4345-bfa7-879d923ac5f6",
+						"name": "My Worksite 5"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "5fca8385-2963-4dca-be59-5c1ed0f200bb",
+						"name": "My Worksite 6"
+					}
+				]
+			}
+		},
+		{
+			"method": "GET",
+			"path": "/api/settings",
+			"status": 200,
+			"body": {
+				"settings": {
+					"colorBlindAssessments": false,
+					"dateFormat": "system",
+					"density": "standard",
+					"increaseContrast": false,
+					"language": "system",
+					"reduceMotion": "system",
+					"rememberWindow": true,
+					"textSize": "100",
+					"theme": "system",
+					"timeFormat": "system"
+				}
+			}
+		}
+	],
+	"seed": [
+		{
+			"method": "GET",
+			"path": "/api/worksite",
+			"status": 200,
+			"body": {
+				"worksite": {
+					"committeeTarget": 5,
+					"id": "7abc6415-5f71-4345-bfa7-879d923ac5f6",
+					"name": "My Worksite 5"
+				}
+			}
+		}
+	],
+	"worksite": {
+		"committeeTarget": 5,
+		"id": "7abc6415-5f71-4345-bfa7-879d923ac5f6",
+		"name": "My Worksite 5"
+	}
+}

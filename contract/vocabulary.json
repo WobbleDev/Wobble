@@ -1,0 +1,22 @@
+{
+	"assessment": ["Unassessed", "Leader", "Activist", "Supporter", "Disengaged", "Hostile"],
+	"theme": ["system", "light", "dark"],
+	"density": ["compact", "standard", "comfortable"],
+	"reduceMotion": ["system", "reduce", "full"],
+	"textSize": ["100", "110", "125", "150"],
+	"dateFormat": ["system", "dmy", "mdy", "iso"],
+	"timeFormat": ["system", "12", "24"],
+	"language": ["system", "en", "es-419"],
+	"defaults": {
+		"theme": "system",
+		"density": "standard",
+		"reduceMotion": "system",
+		"increaseContrast": false,
+		"colorBlindAssessments": false,
+		"textSize": "100",
+		"rememberWindow": true,
+		"dateFormat": "system",
+		"timeFormat": "system",
+		"language": "system"
+	}
+}

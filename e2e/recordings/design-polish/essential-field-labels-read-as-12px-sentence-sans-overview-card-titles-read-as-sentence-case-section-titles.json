@@ -1,0 +1,224 @@
+{
+	"pages": [
+		{
+			"method": "GET",
+			"path": "/api/boot-status",
+			"status": 200,
+			"body": {
+				"encrypted": true,
+				"firstRun": false,
+				"legacyPlaintext": false,
+				"markerPending": false,
+				"state": "open"
+			}
+		},
+		{
+			"method": "GET",
+			"path": "/api/boot-status",
+			"status": 200,
+			"body": {
+				"encrypted": true,
+				"firstRun": false,
+				"legacyPlaintext": false,
+				"markerPending": false,
+				"state": "open"
+			}
+		},
+		{
+			"method": "GET",
+			"path": "/api/dataset",
+			"status": 200,
+			"body": {
+				"agitations": [],
+				"attributes": [
+					{
+						"id": "6c2b54c4-eda5-4921-8cde-5f000dd033cc",
+						"kind": "category",
+						"name": "Department",
+						"options": [
+							{
+								"id": "6c2b54c4-eda5-4921-8cde-5f000dd033cc~Front of House",
+								"shortForm": "Front of …",
+								"shortFormOrigin": "generated",
+								"value": "Front of House"
+							}
+						]
+					}
+				],
+				"languages": [],
+				"settings": {
+					"colorBlindAssessments": false,
+					"dateFormat": "system",
+					"density": "standard",
+					"increaseContrast": false,
+					"language": "system",
+					"reduceMotion": "system",
+					"rememberWindow": true,
+					"textSize": "100",
+					"theme": "system",
+					"timeFormat": "system"
+				},
+				"workers": [],
+				"worksite": {
+					"committeeTarget": 5,
+					"id": "33d8ac47-c9ac-49d8-9f78-0542615dd3a3",
+					"name": "My Worksite 3"
+				},
+				"worksites": [
+					{
+						"committeeTarget": 5,
+						"id": "945df0ac-d4f7-4298-a80a-63cde69d2984",
+						"name": "My Worksite"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "d7e8a889-ea11-4ddf-99c5-98fdfcd4473e",
+						"name": "My Worksite 2"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "33d8ac47-c9ac-49d8-9f78-0542615dd3a3",
+						"name": "My Worksite 3"
+					}
+				]
+			}
+		},
+		{
+			"method": "GET",
+			"path": "/api/dataset",
+			"status": 200,
+			"body": {
+				"agitations": [],
+				"attributes": [
+					{
+						"id": "6c2b54c4-eda5-4921-8cde-5f000dd033cc",
+						"kind": "category",
+						"name": "Department",
+						"options": [
+							{
+								"id": "6c2b54c4-eda5-4921-8cde-5f000dd033cc~Front of House",
+								"shortForm": "Front of …",
+								"shortFormOrigin": "generated",
+								"value": "Front of House"
+							}
+						]
+					}
+				],
+				"languages": [],
+				"settings": {
+					"colorBlindAssessments": false,
+					"dateFormat": "system",
+					"density": "standard",
+					"increaseContrast": false,
+					"language": "system",
+					"reduceMotion": "system",
+					"rememberWindow": true,
+					"textSize": "100",
+					"theme": "system",
+					"timeFormat": "system"
+				},
+				"workers": [],
+				"worksite": {
+					"committeeTarget": 5,
+					"id": "33d8ac47-c9ac-49d8-9f78-0542615dd3a3",
+					"name": "My Worksite 3"
+				},
+				"worksites": [
+					{
+						"committeeTarget": 5,
+						"id": "945df0ac-d4f7-4298-a80a-63cde69d2984",
+						"name": "My Worksite"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "d7e8a889-ea11-4ddf-99c5-98fdfcd4473e",
+						"name": "My Worksite 2"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "33d8ac47-c9ac-49d8-9f78-0542615dd3a3",
+						"name": "My Worksite 3"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "89349663-7945-44bb-8890-4f3969ea502c",
+						"name": "My Worksite 4"
+					}
+				]
+			}
+		},
+		{
+			"method": "GET",
+			"path": "/api/settings",
+			"status": 200,
+			"body": {
+				"settings": {
+					"colorBlindAssessments": false,
+					"dateFormat": "system",
+					"density": "standard",
+					"increaseContrast": false,
+					"language": "system",
+					"reduceMotion": "system",
+					"rememberWindow": true,
+					"textSize": "100",
+					"theme": "system",
+					"timeFormat": "system"
+				}
+			}
+		}
+	],
+	"seed": [
+		{
+			"method": "GET",
+			"path": "/api/worksite",
+			"status": 200,
+			"body": {
+				"worksite": {
+					"committeeTarget": 5,
+					"id": "33d8ac47-c9ac-49d8-9f78-0542615dd3a3",
+					"name": "My Worksite 3"
+				}
+			}
+		},
+		{
+			"method": "PUT",
+			"path": "/api/attributes",
+			"requestBody": [
+				{
+					"id": "6c2b54c4-eda5-4921-8cde-5f000dd033cc",
+					"name": "Department",
+					"kind": "category",
+					"options": [
+						{
+							"id": "6c2b54c4-eda5-4921-8cde-5f000dd033cc~Front of House",
+							"value": "Front of House"
+						}
+					]
+				}
+			],
+			"status": 200,
+			"body": {
+				"attributes": [
+					{
+						"id": "6c2b54c4-eda5-4921-8cde-5f000dd033cc",
+						"kind": "category",
+						"name": "Department",
+						"options": [
+							{
+								"id": "6c2b54c4-eda5-4921-8cde-5f000dd033cc~Front of House",
+								"shortForm": "Front of …",
+								"shortFormOrigin": "generated",
+								"value": "Front of House"
+							}
+						]
+					}
+				]
+			}
+		}
+	],
+	"worksite": {
+		"committeeTarget": 5,
+		"id": "33d8ac47-c9ac-49d8-9f78-0542615dd3a3",
+		"name": "My Worksite 3"
+	}
+}

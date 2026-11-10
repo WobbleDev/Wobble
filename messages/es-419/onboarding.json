@@ -1,0 +1,12 @@
+{
+	"$schema": "https://inlang.com/schema/inlang-message-format",
+	"onboarding_setup_title": "Configura tu lugar de trabajo",
+	"onboarding_setup_description": "Ponle un nombre a este lugar de trabajo o importa contactos. Puedes configurar los Atributos y los Asuntos laborales más adelante en Configuración.",
+	"onboarding_worksite_name": "Nombre del lugar de trabajo",
+	"onboarding_skip_setup": "Omitir configuración",
+	"onboarding_import_contacts": "Importar contactos",
+	"onboarding_finish_setup": "Terminar configuración",
+	"onboarding_saving": "Guardando…",
+	"onboarding_save_name_failed": "No se pudo guardar el nombre del lugar de trabajo.",
+	"onboarding_create_failed": "No se pudo crear el lugar de trabajo."
+}

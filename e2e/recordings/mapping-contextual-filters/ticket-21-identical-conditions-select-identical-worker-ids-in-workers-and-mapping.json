@@ -1,0 +1,3508 @@
+{
+	"pages": [
+		{
+			"method": "GET",
+			"path": "/api/boot-status",
+			"status": 200,
+			"body": {
+				"encrypted": true,
+				"firstRun": false,
+				"legacyPlaintext": false,
+				"markerPending": false,
+				"state": "open"
+			}
+		},
+		{
+			"method": "GET",
+			"path": "/api/boot-status",
+			"status": 200,
+			"body": {
+				"encrypted": true,
+				"firstRun": false,
+				"legacyPlaintext": false,
+				"markerPending": false,
+				"state": "open"
+			}
+		},
+		{
+			"method": "GET",
+			"path": "/api/boot-status",
+			"status": 200,
+			"body": {
+				"encrypted": true,
+				"firstRun": false,
+				"legacyPlaintext": false,
+				"markerPending": false,
+				"state": "open"
+			}
+		},
+		{
+			"method": "GET",
+			"path": "/api/boot-status",
+			"status": 200,
+			"body": {
+				"encrypted": true,
+				"firstRun": false,
+				"legacyPlaintext": false,
+				"markerPending": false,
+				"state": "open"
+			}
+		},
+		{
+			"method": "GET",
+			"path": "/api/boot-status",
+			"status": 200,
+			"body": {
+				"encrypted": true,
+				"firstRun": false,
+				"legacyPlaintext": false,
+				"markerPending": false,
+				"state": "open"
+			}
+		},
+		{
+			"method": "GET",
+			"path": "/api/boot-status",
+			"status": 200,
+			"body": {
+				"encrypted": true,
+				"firstRun": false,
+				"legacyPlaintext": false,
+				"markerPending": false,
+				"state": "open"
+			}
+		},
+		{
+			"method": "GET",
+			"path": "/api/dataset",
+			"status": 200,
+			"body": {
+				"agitations": [],
+				"attributes": [
+					{
+						"id": "territory-30fb0906-eac5-4ad5-804f-05c1f260aad3",
+						"kind": "tag",
+						"name": "Territory",
+						"options": [
+							{
+								"id": "territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Downtown",
+								"shortForm": "Downtown",
+								"shortFormOrigin": "generated",
+								"value": "Downtown"
+							},
+							{
+								"id": "territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Store A",
+								"parentId": "territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Downtown",
+								"shortForm": "Store A",
+								"shortFormOrigin": "generated",
+								"value": "Store A"
+							},
+							{
+								"id": "territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Store B",
+								"parentId": "territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Downtown",
+								"shortForm": "Store B",
+								"shortFormOrigin": "generated",
+								"value": "Store B"
+							},
+							{
+								"id": "territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Uptown",
+								"shortForm": "Uptown",
+								"shortFormOrigin": "generated",
+								"value": "Uptown"
+							},
+							{
+								"id": "territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~North Store",
+								"parentId": "territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Uptown",
+								"shortForm": "N. Store",
+								"shortFormOrigin": "generated",
+								"value": "North Store"
+							}
+						]
+					},
+					{
+						"id": "position-184782fd-9301-4383-8930-a9485f3baa59",
+						"kind": "tag",
+						"name": "Position",
+						"options": [
+							{
+								"id": "position-184782fd-9301-4383-8930-a9485f3baa59~Cashier",
+								"shortForm": "Cashier",
+								"shortFormOrigin": "generated",
+								"value": "Cashier"
+							},
+							{
+								"id": "position-184782fd-9301-4383-8930-a9485f3baa59~Stocker",
+								"shortForm": "Stocker",
+								"shortFormOrigin": "generated",
+								"value": "Stocker"
+							}
+						]
+					},
+					{
+						"id": "shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49",
+						"kind": "tag",
+						"name": "Shift",
+						"options": [
+							{
+								"id": "shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49~Days",
+								"shortForm": "Days",
+								"shortFormOrigin": "generated",
+								"value": "Days"
+							},
+							{
+								"id": "shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49~Nights",
+								"shortForm": "Nights",
+								"shortFormOrigin": "generated",
+								"value": "Nights"
+							}
+						]
+					},
+					{
+						"id": "team-4dc3f710-09cf-45b9-881b-5d2eb8878513",
+						"kind": "category",
+						"name": "Team",
+						"options": [
+							{
+								"id": "team-4dc3f710-09cf-45b9-881b-5d2eb8878513~Team A",
+								"shortForm": "Team A",
+								"shortFormOrigin": "generated",
+								"value": "Team A"
+							},
+							{
+								"id": "team-4dc3f710-09cf-45b9-881b-5d2eb8878513~Team B",
+								"shortForm": "Team B",
+								"shortFormOrigin": "generated",
+								"value": "Team B"
+							}
+						]
+					}
+				],
+				"languages": [],
+				"settings": {
+					"colorBlindAssessments": false,
+					"dateFormat": "system",
+					"density": "standard",
+					"increaseContrast": false,
+					"language": "system",
+					"reduceMotion": "system",
+					"rememberWindow": true,
+					"textSize": "100",
+					"theme": "system",
+					"timeFormat": "system"
+				},
+				"workers": [
+					{
+						"agitations": [],
+						"assessment": "Unassessed",
+						"attributes": {
+							"position-184782fd-9301-4383-8930-a9485f3baa59": [
+								"position-184782fd-9301-4383-8930-a9485f3baa59~Cashier",
+								"position-184782fd-9301-4383-8930-a9485f3baa59~Stocker"
+							],
+							"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49": [
+								"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49~Days",
+								"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49~Nights"
+							],
+							"team-4dc3f710-09cf-45b9-881b-5d2eb8878513": "team-4dc3f710-09cf-45b9-881b-5d2eb8878513~Team A",
+							"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3": [
+								"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Store A",
+								"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Store B"
+							]
+						},
+						"email": "",
+						"id": "5c971cb0-ce22-4a8c-a83b-6fcb07cf7b0b",
+						"languages": [],
+						"name": "Marie Curie",
+						"notes": [],
+						"phone": "",
+						"relationships": [
+							"0133c77e-305e-47d9-82bc-19e7a76673f7",
+							"5d644b80-23e8-4ab7-9565-d5c6c61c3d5f"
+						]
+					},
+					{
+						"agitations": [],
+						"assessment": "Unassessed",
+						"attributes": {
+							"position-184782fd-9301-4383-8930-a9485f3baa59": [
+								"position-184782fd-9301-4383-8930-a9485f3baa59~Stocker"
+							],
+							"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49": [
+								"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49~Nights"
+							],
+							"team-4dc3f710-09cf-45b9-881b-5d2eb8878513": "team-4dc3f710-09cf-45b9-881b-5d2eb8878513~Team B",
+							"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3": [
+								"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Store B"
+							]
+						},
+						"email": "",
+						"id": "0133c77e-305e-47d9-82bc-19e7a76673f7",
+						"languages": [],
+						"name": "Grace Hopper",
+						"notes": [],
+						"phone": "",
+						"relationships": [
+							"5c971cb0-ce22-4a8c-a83b-6fcb07cf7b0b",
+							"d773eaa8-af83-41fd-8566-aeb043b96dc6"
+						]
+					},
+					{
+						"agitations": [],
+						"assessment": "Unassessed",
+						"attributes": {
+							"position-184782fd-9301-4383-8930-a9485f3baa59": [
+								"position-184782fd-9301-4383-8930-a9485f3baa59~Cashier"
+							],
+							"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49": [
+								"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49~Days",
+								"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49~Nights"
+							],
+							"team-4dc3f710-09cf-45b9-881b-5d2eb8878513": "team-4dc3f710-09cf-45b9-881b-5d2eb8878513~Team A",
+							"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3": [
+								"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Store B"
+							]
+						},
+						"email": "",
+						"id": "5d644b80-23e8-4ab7-9565-d5c6c61c3d5f",
+						"languages": [],
+						"name": "Isaac Newton",
+						"notes": [],
+						"phone": "",
+						"relationships": [
+							"5c971cb0-ce22-4a8c-a83b-6fcb07cf7b0b"
+						]
+					},
+					{
+						"agitations": [],
+						"assessment": "Unassessed",
+						"attributes": {
+							"position-184782fd-9301-4383-8930-a9485f3baa59": [
+								"position-184782fd-9301-4383-8930-a9485f3baa59~Cashier"
+							],
+							"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49": [
+								"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49~Days"
+							],
+							"team-4dc3f710-09cf-45b9-881b-5d2eb8878513": "team-4dc3f710-09cf-45b9-881b-5d2eb8878513~Team A",
+							"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3": [
+								"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~North Store"
+							]
+						},
+						"email": "",
+						"id": "0c3e9dec-b02d-46c6-8d8b-4d0f7c35c602",
+						"languages": [],
+						"name": "Carl Sagan",
+						"notes": [],
+						"phone": "",
+						"relationships": []
+					},
+					{
+						"agitations": [],
+						"assessment": "Unassessed",
+						"attributes": {
+							"position-184782fd-9301-4383-8930-a9485f3baa59": [
+								"position-184782fd-9301-4383-8930-a9485f3baa59~Cashier"
+							],
+							"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49": [
+								"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49~Days"
+							],
+							"team-4dc3f710-09cf-45b9-881b-5d2eb8878513": "team-4dc3f710-09cf-45b9-881b-5d2eb8878513~Team A",
+							"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3": [
+								"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Downtown"
+							]
+						},
+						"email": "",
+						"id": "075600ee-44f7-4b75-9498-cc48e7e04042",
+						"languages": [],
+						"name": "Pierre Curie",
+						"notes": [],
+						"phone": "",
+						"relationships": []
+					},
+					{
+						"agitations": [],
+						"assessment": "Unassessed",
+						"attributes": {
+							"position-184782fd-9301-4383-8930-a9485f3baa59": [],
+							"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49": [],
+							"team-4dc3f710-09cf-45b9-881b-5d2eb8878513": "team-4dc3f710-09cf-45b9-881b-5d2eb8878513~Team A",
+							"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3": [
+								"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Store B"
+							]
+						},
+						"email": "",
+						"id": "83738f76-624d-43df-9e7e-5b5e7af366fe",
+						"languages": [],
+						"name": "Otto Hahn",
+						"notes": [],
+						"phone": "",
+						"relationships": []
+					},
+					{
+						"agitations": [],
+						"assessment": "Unassessed",
+						"attributes": {
+							"position-184782fd-9301-4383-8930-a9485f3baa59": [],
+							"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49": [],
+							"team-4dc3f710-09cf-45b9-881b-5d2eb8878513": "",
+							"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3": []
+						},
+						"email": "",
+						"id": "d773eaa8-af83-41fd-8566-aeb043b96dc6",
+						"languages": [],
+						"name": "Dian Fossey",
+						"notes": [],
+						"phone": "",
+						"relationships": [
+							"0133c77e-305e-47d9-82bc-19e7a76673f7"
+						]
+					}
+				],
+				"worksite": {
+					"committeeTarget": 5,
+					"id": "b5f1bd5a-f614-4fb1-a1c8-de30e5acedb0",
+					"name": "My Worksite 32"
+				},
+				"worksites": [
+					{
+						"committeeTarget": 5,
+						"id": "945df0ac-d4f7-4298-a80a-63cde69d2984",
+						"name": "My Worksite"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "d7e8a889-ea11-4ddf-99c5-98fdfcd4473e",
+						"name": "My Worksite 2"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "33d8ac47-c9ac-49d8-9f78-0542615dd3a3",
+						"name": "My Worksite 3"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "89349663-7945-44bb-8890-4f3969ea502c",
+						"name": "My Worksite 4"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "7abc6415-5f71-4345-bfa7-879d923ac5f6",
+						"name": "My Worksite 5"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "5fca8385-2963-4dca-be59-5c1ed0f200bb",
+						"name": "My Worksite 6"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "92397821-71cc-474e-b064-bdf8b527c26a",
+						"name": "My Worksite 7"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "60947975-40a6-47e8-b533-2810d2c348a1",
+						"name": "My Worksite 8"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "f8bbe7cf-7942-4ed1-b906-77a3091653d1",
+						"name": "My Worksite 9"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "666f90a7-601a-4002-8924-a5ddaca6bdff",
+						"name": "My Worksite 10"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "954029dd-64f9-4c9b-86ba-84a5dc7d654d",
+						"name": "My Worksite 11"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "7727aaff-fe52-4175-8fc0-8b285310458d",
+						"name": "My Worksite 12"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "0a2696aa-aa0a-4774-bc40-2e7716a6a28a",
+						"name": "My Worksite 13"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "6039346f-4c1c-4aea-b32c-4f9b29dd6018",
+						"name": "My Worksite 14"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "ee7db246-e819-4be9-b46f-08e3e772a545",
+						"name": "My Worksite 15"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "7b5bd7c9-bb8b-437c-a540-cb2e699fa9c3",
+						"name": "My Worksite 16"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "51ef0b1d-86ff-4a43-ac16-2b296d6a5872",
+						"name": "My Worksite 17"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "ab839a53-4702-41a2-8a74-fd9f652504ac",
+						"name": "My Worksite 18"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "4eb420d6-74fb-4eeb-ae3a-84a6554198e8",
+						"name": "My Worksite 19"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "82b8bfa8-607e-4a95-a82e-33383d104eb3",
+						"name": "My Worksite 20"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "330699d9-2324-486f-b6bd-56131679e8ee",
+						"name": "My Worksite 21"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "46777b92-bcd0-49c2-bb52-0117f4b1fcda",
+						"name": "My Worksite 22"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "75cdfb23-ccc6-492b-8166-889ce4a22140",
+						"name": "My Worksite 23"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "92d4e370-9a4a-46e7-9d79-bfedb701f2cb",
+						"name": "My Worksite 24"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "5ee1a75e-138e-451f-b5fa-c317d323baff",
+						"name": "My Worksite 25"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "d0202313-834f-466e-a932-f9eaad48fb4f",
+						"name": "My Worksite 26"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "370f7795-ff7d-4f33-9769-51ecba767d51",
+						"name": "My Worksite 27"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "cf8eb6ee-1881-4312-b256-8f9291524ae8",
+						"name": "My Worksite 28"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "72d3fb5a-abfd-4ce4-b9ed-880b46ff677e",
+						"name": "My Worksite 29"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "c7d81386-d818-4271-833b-59cfe463d4c1",
+						"name": "My Worksite 30"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "67a2fb13-2ec9-48a4-b2bd-44f8dcdf2604",
+						"name": "My Worksite 31"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "b5f1bd5a-f614-4fb1-a1c8-de30e5acedb0",
+						"name": "My Worksite 32"
+					}
+				]
+			}
+		},
+		{
+			"method": "GET",
+			"path": "/api/dataset",
+			"status": 200,
+			"body": {
+				"agitations": [],
+				"attributes": [
+					{
+						"id": "territory-30fb0906-eac5-4ad5-804f-05c1f260aad3",
+						"kind": "tag",
+						"name": "Territory",
+						"options": [
+							{
+								"id": "territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Downtown",
+								"shortForm": "Downtown",
+								"shortFormOrigin": "generated",
+								"value": "Downtown"
+							},
+							{
+								"id": "territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Store A",
+								"parentId": "territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Downtown",
+								"shortForm": "Store A",
+								"shortFormOrigin": "generated",
+								"value": "Store A"
+							},
+							{
+								"id": "territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Store B",
+								"parentId": "territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Downtown",
+								"shortForm": "Store B",
+								"shortFormOrigin": "generated",
+								"value": "Store B"
+							},
+							{
+								"id": "territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Uptown",
+								"shortForm": "Uptown",
+								"shortFormOrigin": "generated",
+								"value": "Uptown"
+							},
+							{
+								"id": "territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~North Store",
+								"parentId": "territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Uptown",
+								"shortForm": "N. Store",
+								"shortFormOrigin": "generated",
+								"value": "North Store"
+							}
+						]
+					},
+					{
+						"id": "position-184782fd-9301-4383-8930-a9485f3baa59",
+						"kind": "tag",
+						"name": "Position",
+						"options": [
+							{
+								"id": "position-184782fd-9301-4383-8930-a9485f3baa59~Cashier",
+								"shortForm": "Cashier",
+								"shortFormOrigin": "generated",
+								"value": "Cashier"
+							},
+							{
+								"id": "position-184782fd-9301-4383-8930-a9485f3baa59~Stocker",
+								"shortForm": "Stocker",
+								"shortFormOrigin": "generated",
+								"value": "Stocker"
+							}
+						]
+					},
+					{
+						"id": "shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49",
+						"kind": "tag",
+						"name": "Shift",
+						"options": [
+							{
+								"id": "shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49~Days",
+								"shortForm": "Days",
+								"shortFormOrigin": "generated",
+								"value": "Days"
+							},
+							{
+								"id": "shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49~Nights",
+								"shortForm": "Nights",
+								"shortFormOrigin": "generated",
+								"value": "Nights"
+							}
+						]
+					},
+					{
+						"id": "team-4dc3f710-09cf-45b9-881b-5d2eb8878513",
+						"kind": "category",
+						"name": "Team",
+						"options": [
+							{
+								"id": "team-4dc3f710-09cf-45b9-881b-5d2eb8878513~Team A",
+								"shortForm": "Team A",
+								"shortFormOrigin": "generated",
+								"value": "Team A"
+							},
+							{
+								"id": "team-4dc3f710-09cf-45b9-881b-5d2eb8878513~Team B",
+								"shortForm": "Team B",
+								"shortFormOrigin": "generated",
+								"value": "Team B"
+							}
+						]
+					}
+				],
+				"languages": [],
+				"settings": {
+					"colorBlindAssessments": false,
+					"dateFormat": "system",
+					"density": "standard",
+					"increaseContrast": false,
+					"language": "system",
+					"reduceMotion": "system",
+					"rememberWindow": true,
+					"textSize": "100",
+					"theme": "system",
+					"timeFormat": "system"
+				},
+				"workers": [
+					{
+						"agitations": [],
+						"assessment": "Unassessed",
+						"attributes": {
+							"position-184782fd-9301-4383-8930-a9485f3baa59": [
+								"position-184782fd-9301-4383-8930-a9485f3baa59~Cashier",
+								"position-184782fd-9301-4383-8930-a9485f3baa59~Stocker"
+							],
+							"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49": [
+								"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49~Days",
+								"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49~Nights"
+							],
+							"team-4dc3f710-09cf-45b9-881b-5d2eb8878513": "team-4dc3f710-09cf-45b9-881b-5d2eb8878513~Team A",
+							"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3": [
+								"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Store A",
+								"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Store B"
+							]
+						},
+						"email": "",
+						"id": "5c971cb0-ce22-4a8c-a83b-6fcb07cf7b0b",
+						"languages": [],
+						"name": "Marie Curie",
+						"notes": [],
+						"phone": "",
+						"relationships": [
+							"0133c77e-305e-47d9-82bc-19e7a76673f7",
+							"5d644b80-23e8-4ab7-9565-d5c6c61c3d5f"
+						]
+					},
+					{
+						"agitations": [],
+						"assessment": "Unassessed",
+						"attributes": {
+							"position-184782fd-9301-4383-8930-a9485f3baa59": [
+								"position-184782fd-9301-4383-8930-a9485f3baa59~Stocker"
+							],
+							"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49": [
+								"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49~Nights"
+							],
+							"team-4dc3f710-09cf-45b9-881b-5d2eb8878513": "team-4dc3f710-09cf-45b9-881b-5d2eb8878513~Team B",
+							"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3": [
+								"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Store B"
+							]
+						},
+						"email": "",
+						"id": "0133c77e-305e-47d9-82bc-19e7a76673f7",
+						"languages": [],
+						"name": "Grace Hopper",
+						"notes": [],
+						"phone": "",
+						"relationships": [
+							"5c971cb0-ce22-4a8c-a83b-6fcb07cf7b0b",
+							"d773eaa8-af83-41fd-8566-aeb043b96dc6"
+						]
+					},
+					{
+						"agitations": [],
+						"assessment": "Unassessed",
+						"attributes": {
+							"position-184782fd-9301-4383-8930-a9485f3baa59": [
+								"position-184782fd-9301-4383-8930-a9485f3baa59~Cashier"
+							],
+							"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49": [
+								"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49~Days",
+								"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49~Nights"
+							],
+							"team-4dc3f710-09cf-45b9-881b-5d2eb8878513": "team-4dc3f710-09cf-45b9-881b-5d2eb8878513~Team A",
+							"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3": [
+								"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Store B"
+							]
+						},
+						"email": "",
+						"id": "5d644b80-23e8-4ab7-9565-d5c6c61c3d5f",
+						"languages": [],
+						"name": "Isaac Newton",
+						"notes": [],
+						"phone": "",
+						"relationships": [
+							"5c971cb0-ce22-4a8c-a83b-6fcb07cf7b0b"
+						]
+					},
+					{
+						"agitations": [],
+						"assessment": "Unassessed",
+						"attributes": {
+							"position-184782fd-9301-4383-8930-a9485f3baa59": [
+								"position-184782fd-9301-4383-8930-a9485f3baa59~Cashier"
+							],
+							"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49": [
+								"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49~Days"
+							],
+							"team-4dc3f710-09cf-45b9-881b-5d2eb8878513": "team-4dc3f710-09cf-45b9-881b-5d2eb8878513~Team A",
+							"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3": [
+								"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~North Store"
+							]
+						},
+						"email": "",
+						"id": "0c3e9dec-b02d-46c6-8d8b-4d0f7c35c602",
+						"languages": [],
+						"name": "Carl Sagan",
+						"notes": [],
+						"phone": "",
+						"relationships": []
+					},
+					{
+						"agitations": [],
+						"assessment": "Unassessed",
+						"attributes": {
+							"position-184782fd-9301-4383-8930-a9485f3baa59": [
+								"position-184782fd-9301-4383-8930-a9485f3baa59~Cashier"
+							],
+							"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49": [
+								"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49~Days"
+							],
+							"team-4dc3f710-09cf-45b9-881b-5d2eb8878513": "team-4dc3f710-09cf-45b9-881b-5d2eb8878513~Team A",
+							"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3": [
+								"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Downtown"
+							]
+						},
+						"email": "",
+						"id": "075600ee-44f7-4b75-9498-cc48e7e04042",
+						"languages": [],
+						"name": "Pierre Curie",
+						"notes": [],
+						"phone": "",
+						"relationships": []
+					},
+					{
+						"agitations": [],
+						"assessment": "Unassessed",
+						"attributes": {
+							"position-184782fd-9301-4383-8930-a9485f3baa59": [],
+							"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49": [],
+							"team-4dc3f710-09cf-45b9-881b-5d2eb8878513": "team-4dc3f710-09cf-45b9-881b-5d2eb8878513~Team A",
+							"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3": [
+								"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Store B"
+							]
+						},
+						"email": "",
+						"id": "83738f76-624d-43df-9e7e-5b5e7af366fe",
+						"languages": [],
+						"name": "Otto Hahn",
+						"notes": [],
+						"phone": "",
+						"relationships": []
+					},
+					{
+						"agitations": [],
+						"assessment": "Unassessed",
+						"attributes": {
+							"position-184782fd-9301-4383-8930-a9485f3baa59": [],
+							"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49": [],
+							"team-4dc3f710-09cf-45b9-881b-5d2eb8878513": "",
+							"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3": []
+						},
+						"email": "",
+						"id": "d773eaa8-af83-41fd-8566-aeb043b96dc6",
+						"languages": [],
+						"name": "Dian Fossey",
+						"notes": [],
+						"phone": "",
+						"relationships": [
+							"0133c77e-305e-47d9-82bc-19e7a76673f7"
+						]
+					}
+				],
+				"worksite": {
+					"committeeTarget": 5,
+					"id": "b5f1bd5a-f614-4fb1-a1c8-de30e5acedb0",
+					"name": "My Worksite 32"
+				},
+				"worksites": [
+					{
+						"committeeTarget": 5,
+						"id": "945df0ac-d4f7-4298-a80a-63cde69d2984",
+						"name": "My Worksite"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "d7e8a889-ea11-4ddf-99c5-98fdfcd4473e",
+						"name": "My Worksite 2"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "33d8ac47-c9ac-49d8-9f78-0542615dd3a3",
+						"name": "My Worksite 3"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "89349663-7945-44bb-8890-4f3969ea502c",
+						"name": "My Worksite 4"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "7abc6415-5f71-4345-bfa7-879d923ac5f6",
+						"name": "My Worksite 5"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "5fca8385-2963-4dca-be59-5c1ed0f200bb",
+						"name": "My Worksite 6"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "92397821-71cc-474e-b064-bdf8b527c26a",
+						"name": "My Worksite 7"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "60947975-40a6-47e8-b533-2810d2c348a1",
+						"name": "My Worksite 8"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "f8bbe7cf-7942-4ed1-b906-77a3091653d1",
+						"name": "My Worksite 9"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "666f90a7-601a-4002-8924-a5ddaca6bdff",
+						"name": "My Worksite 10"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "954029dd-64f9-4c9b-86ba-84a5dc7d654d",
+						"name": "My Worksite 11"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "7727aaff-fe52-4175-8fc0-8b285310458d",
+						"name": "My Worksite 12"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "0a2696aa-aa0a-4774-bc40-2e7716a6a28a",
+						"name": "My Worksite 13"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "6039346f-4c1c-4aea-b32c-4f9b29dd6018",
+						"name": "My Worksite 14"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "ee7db246-e819-4be9-b46f-08e3e772a545",
+						"name": "My Worksite 15"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "7b5bd7c9-bb8b-437c-a540-cb2e699fa9c3",
+						"name": "My Worksite 16"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "51ef0b1d-86ff-4a43-ac16-2b296d6a5872",
+						"name": "My Worksite 17"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "ab839a53-4702-41a2-8a74-fd9f652504ac",
+						"name": "My Worksite 18"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "4eb420d6-74fb-4eeb-ae3a-84a6554198e8",
+						"name": "My Worksite 19"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "82b8bfa8-607e-4a95-a82e-33383d104eb3",
+						"name": "My Worksite 20"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "330699d9-2324-486f-b6bd-56131679e8ee",
+						"name": "My Worksite 21"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "46777b92-bcd0-49c2-bb52-0117f4b1fcda",
+						"name": "My Worksite 22"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "75cdfb23-ccc6-492b-8166-889ce4a22140",
+						"name": "My Worksite 23"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "92d4e370-9a4a-46e7-9d79-bfedb701f2cb",
+						"name": "My Worksite 24"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "5ee1a75e-138e-451f-b5fa-c317d323baff",
+						"name": "My Worksite 25"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "d0202313-834f-466e-a932-f9eaad48fb4f",
+						"name": "My Worksite 26"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "370f7795-ff7d-4f33-9769-51ecba767d51",
+						"name": "My Worksite 27"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "cf8eb6ee-1881-4312-b256-8f9291524ae8",
+						"name": "My Worksite 28"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "72d3fb5a-abfd-4ce4-b9ed-880b46ff677e",
+						"name": "My Worksite 29"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "c7d81386-d818-4271-833b-59cfe463d4c1",
+						"name": "My Worksite 30"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "67a2fb13-2ec9-48a4-b2bd-44f8dcdf2604",
+						"name": "My Worksite 31"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "b5f1bd5a-f614-4fb1-a1c8-de30e5acedb0",
+						"name": "My Worksite 32"
+					}
+				]
+			}
+		},
+		{
+			"method": "GET",
+			"path": "/api/dataset",
+			"status": 200,
+			"body": {
+				"agitations": [],
+				"attributes": [
+					{
+						"id": "territory-30fb0906-eac5-4ad5-804f-05c1f260aad3",
+						"kind": "tag",
+						"name": "Territory",
+						"options": [
+							{
+								"id": "territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Downtown",
+								"shortForm": "Downtown",
+								"shortFormOrigin": "generated",
+								"value": "Downtown"
+							},
+							{
+								"id": "territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Store A",
+								"parentId": "territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Downtown",
+								"shortForm": "Store A",
+								"shortFormOrigin": "generated",
+								"value": "Store A"
+							},
+							{
+								"id": "territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Store B",
+								"parentId": "territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Downtown",
+								"shortForm": "Store B",
+								"shortFormOrigin": "generated",
+								"value": "Store B"
+							},
+							{
+								"id": "territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Uptown",
+								"shortForm": "Uptown",
+								"shortFormOrigin": "generated",
+								"value": "Uptown"
+							},
+							{
+								"id": "territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~North Store",
+								"parentId": "territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Uptown",
+								"shortForm": "N. Store",
+								"shortFormOrigin": "generated",
+								"value": "North Store"
+							}
+						]
+					},
+					{
+						"id": "position-184782fd-9301-4383-8930-a9485f3baa59",
+						"kind": "tag",
+						"name": "Position",
+						"options": [
+							{
+								"id": "position-184782fd-9301-4383-8930-a9485f3baa59~Cashier",
+								"shortForm": "Cashier",
+								"shortFormOrigin": "generated",
+								"value": "Cashier"
+							},
+							{
+								"id": "position-184782fd-9301-4383-8930-a9485f3baa59~Stocker",
+								"shortForm": "Stocker",
+								"shortFormOrigin": "generated",
+								"value": "Stocker"
+							}
+						]
+					},
+					{
+						"id": "shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49",
+						"kind": "tag",
+						"name": "Shift",
+						"options": [
+							{
+								"id": "shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49~Days",
+								"shortForm": "Days",
+								"shortFormOrigin": "generated",
+								"value": "Days"
+							},
+							{
+								"id": "shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49~Nights",
+								"shortForm": "Nights",
+								"shortFormOrigin": "generated",
+								"value": "Nights"
+							}
+						]
+					},
+					{
+						"id": "team-4dc3f710-09cf-45b9-881b-5d2eb8878513",
+						"kind": "category",
+						"name": "Team",
+						"options": [
+							{
+								"id": "team-4dc3f710-09cf-45b9-881b-5d2eb8878513~Team A",
+								"shortForm": "Team A",
+								"shortFormOrigin": "generated",
+								"value": "Team A"
+							},
+							{
+								"id": "team-4dc3f710-09cf-45b9-881b-5d2eb8878513~Team B",
+								"shortForm": "Team B",
+								"shortFormOrigin": "generated",
+								"value": "Team B"
+							}
+						]
+					}
+				],
+				"languages": [],
+				"settings": {
+					"colorBlindAssessments": false,
+					"dateFormat": "system",
+					"density": "standard",
+					"increaseContrast": false,
+					"language": "system",
+					"reduceMotion": "system",
+					"rememberWindow": true,
+					"textSize": "100",
+					"theme": "system",
+					"timeFormat": "system"
+				},
+				"workers": [
+					{
+						"agitations": [],
+						"assessment": "Unassessed",
+						"attributes": {
+							"position-184782fd-9301-4383-8930-a9485f3baa59": [
+								"position-184782fd-9301-4383-8930-a9485f3baa59~Cashier",
+								"position-184782fd-9301-4383-8930-a9485f3baa59~Stocker"
+							],
+							"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49": [
+								"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49~Days",
+								"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49~Nights"
+							],
+							"team-4dc3f710-09cf-45b9-881b-5d2eb8878513": "team-4dc3f710-09cf-45b9-881b-5d2eb8878513~Team A",
+							"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3": [
+								"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Store A",
+								"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Store B"
+							]
+						},
+						"email": "",
+						"id": "5c971cb0-ce22-4a8c-a83b-6fcb07cf7b0b",
+						"languages": [],
+						"name": "Marie Curie",
+						"notes": [],
+						"phone": "",
+						"relationships": [
+							"0133c77e-305e-47d9-82bc-19e7a76673f7",
+							"5d644b80-23e8-4ab7-9565-d5c6c61c3d5f"
+						]
+					},
+					{
+						"agitations": [],
+						"assessment": "Unassessed",
+						"attributes": {
+							"position-184782fd-9301-4383-8930-a9485f3baa59": [
+								"position-184782fd-9301-4383-8930-a9485f3baa59~Stocker"
+							],
+							"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49": [
+								"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49~Nights"
+							],
+							"team-4dc3f710-09cf-45b9-881b-5d2eb8878513": "team-4dc3f710-09cf-45b9-881b-5d2eb8878513~Team B",
+							"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3": [
+								"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Store B"
+							]
+						},
+						"email": "",
+						"id": "0133c77e-305e-47d9-82bc-19e7a76673f7",
+						"languages": [],
+						"name": "Grace Hopper",
+						"notes": [],
+						"phone": "",
+						"relationships": [
+							"5c971cb0-ce22-4a8c-a83b-6fcb07cf7b0b",
+							"d773eaa8-af83-41fd-8566-aeb043b96dc6"
+						]
+					},
+					{
+						"agitations": [],
+						"assessment": "Unassessed",
+						"attributes": {
+							"position-184782fd-9301-4383-8930-a9485f3baa59": [
+								"position-184782fd-9301-4383-8930-a9485f3baa59~Cashier"
+							],
+							"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49": [
+								"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49~Days",
+								"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49~Nights"
+							],
+							"team-4dc3f710-09cf-45b9-881b-5d2eb8878513": "team-4dc3f710-09cf-45b9-881b-5d2eb8878513~Team A",
+							"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3": [
+								"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Store B"
+							]
+						},
+						"email": "",
+						"id": "5d644b80-23e8-4ab7-9565-d5c6c61c3d5f",
+						"languages": [],
+						"name": "Isaac Newton",
+						"notes": [],
+						"phone": "",
+						"relationships": [
+							"5c971cb0-ce22-4a8c-a83b-6fcb07cf7b0b"
+						]
+					},
+					{
+						"agitations": [],
+						"assessment": "Unassessed",
+						"attributes": {
+							"position-184782fd-9301-4383-8930-a9485f3baa59": [
+								"position-184782fd-9301-4383-8930-a9485f3baa59~Cashier"
+							],
+							"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49": [
+								"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49~Days"
+							],
+							"team-4dc3f710-09cf-45b9-881b-5d2eb8878513": "team-4dc3f710-09cf-45b9-881b-5d2eb8878513~Team A",
+							"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3": [
+								"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~North Store"
+							]
+						},
+						"email": "",
+						"id": "0c3e9dec-b02d-46c6-8d8b-4d0f7c35c602",
+						"languages": [],
+						"name": "Carl Sagan",
+						"notes": [],
+						"phone": "",
+						"relationships": []
+					},
+					{
+						"agitations": [],
+						"assessment": "Unassessed",
+						"attributes": {
+							"position-184782fd-9301-4383-8930-a9485f3baa59": [
+								"position-184782fd-9301-4383-8930-a9485f3baa59~Cashier"
+							],
+							"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49": [
+								"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49~Days"
+							],
+							"team-4dc3f710-09cf-45b9-881b-5d2eb8878513": "team-4dc3f710-09cf-45b9-881b-5d2eb8878513~Team A",
+							"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3": [
+								"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Downtown"
+							]
+						},
+						"email": "",
+						"id": "075600ee-44f7-4b75-9498-cc48e7e04042",
+						"languages": [],
+						"name": "Pierre Curie",
+						"notes": [],
+						"phone": "",
+						"relationships": []
+					},
+					{
+						"agitations": [],
+						"assessment": "Unassessed",
+						"attributes": {
+							"position-184782fd-9301-4383-8930-a9485f3baa59": [],
+							"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49": [],
+							"team-4dc3f710-09cf-45b9-881b-5d2eb8878513": "team-4dc3f710-09cf-45b9-881b-5d2eb8878513~Team A",
+							"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3": [
+								"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Store B"
+							]
+						},
+						"email": "",
+						"id": "83738f76-624d-43df-9e7e-5b5e7af366fe",
+						"languages": [],
+						"name": "Otto Hahn",
+						"notes": [],
+						"phone": "",
+						"relationships": []
+					},
+					{
+						"agitations": [],
+						"assessment": "Unassessed",
+						"attributes": {
+							"position-184782fd-9301-4383-8930-a9485f3baa59": [],
+							"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49": [],
+							"team-4dc3f710-09cf-45b9-881b-5d2eb8878513": "",
+							"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3": []
+						},
+						"email": "",
+						"id": "d773eaa8-af83-41fd-8566-aeb043b96dc6",
+						"languages": [],
+						"name": "Dian Fossey",
+						"notes": [],
+						"phone": "",
+						"relationships": [
+							"0133c77e-305e-47d9-82bc-19e7a76673f7"
+						]
+					}
+				],
+				"worksite": {
+					"committeeTarget": 5,
+					"id": "b5f1bd5a-f614-4fb1-a1c8-de30e5acedb0",
+					"name": "My Worksite 32"
+				},
+				"worksites": [
+					{
+						"committeeTarget": 5,
+						"id": "945df0ac-d4f7-4298-a80a-63cde69d2984",
+						"name": "My Worksite"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "d7e8a889-ea11-4ddf-99c5-98fdfcd4473e",
+						"name": "My Worksite 2"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "33d8ac47-c9ac-49d8-9f78-0542615dd3a3",
+						"name": "My Worksite 3"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "89349663-7945-44bb-8890-4f3969ea502c",
+						"name": "My Worksite 4"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "7abc6415-5f71-4345-bfa7-879d923ac5f6",
+						"name": "My Worksite 5"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "5fca8385-2963-4dca-be59-5c1ed0f200bb",
+						"name": "My Worksite 6"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "92397821-71cc-474e-b064-bdf8b527c26a",
+						"name": "My Worksite 7"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "60947975-40a6-47e8-b533-2810d2c348a1",
+						"name": "My Worksite 8"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "f8bbe7cf-7942-4ed1-b906-77a3091653d1",
+						"name": "My Worksite 9"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "666f90a7-601a-4002-8924-a5ddaca6bdff",
+						"name": "My Worksite 10"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "954029dd-64f9-4c9b-86ba-84a5dc7d654d",
+						"name": "My Worksite 11"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "7727aaff-fe52-4175-8fc0-8b285310458d",
+						"name": "My Worksite 12"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "0a2696aa-aa0a-4774-bc40-2e7716a6a28a",
+						"name": "My Worksite 13"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "6039346f-4c1c-4aea-b32c-4f9b29dd6018",
+						"name": "My Worksite 14"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "ee7db246-e819-4be9-b46f-08e3e772a545",
+						"name": "My Worksite 15"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "7b5bd7c9-bb8b-437c-a540-cb2e699fa9c3",
+						"name": "My Worksite 16"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "51ef0b1d-86ff-4a43-ac16-2b296d6a5872",
+						"name": "My Worksite 17"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "ab839a53-4702-41a2-8a74-fd9f652504ac",
+						"name": "My Worksite 18"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "4eb420d6-74fb-4eeb-ae3a-84a6554198e8",
+						"name": "My Worksite 19"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "82b8bfa8-607e-4a95-a82e-33383d104eb3",
+						"name": "My Worksite 20"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "330699d9-2324-486f-b6bd-56131679e8ee",
+						"name": "My Worksite 21"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "46777b92-bcd0-49c2-bb52-0117f4b1fcda",
+						"name": "My Worksite 22"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "75cdfb23-ccc6-492b-8166-889ce4a22140",
+						"name": "My Worksite 23"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "92d4e370-9a4a-46e7-9d79-bfedb701f2cb",
+						"name": "My Worksite 24"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "5ee1a75e-138e-451f-b5fa-c317d323baff",
+						"name": "My Worksite 25"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "d0202313-834f-466e-a932-f9eaad48fb4f",
+						"name": "My Worksite 26"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "370f7795-ff7d-4f33-9769-51ecba767d51",
+						"name": "My Worksite 27"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "cf8eb6ee-1881-4312-b256-8f9291524ae8",
+						"name": "My Worksite 28"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "72d3fb5a-abfd-4ce4-b9ed-880b46ff677e",
+						"name": "My Worksite 29"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "c7d81386-d818-4271-833b-59cfe463d4c1",
+						"name": "My Worksite 30"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "67a2fb13-2ec9-48a4-b2bd-44f8dcdf2604",
+						"name": "My Worksite 31"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "b5f1bd5a-f614-4fb1-a1c8-de30e5acedb0",
+						"name": "My Worksite 32"
+					}
+				]
+			}
+		},
+		{
+			"method": "GET",
+			"path": "/api/dataset",
+			"status": 200,
+			"body": {
+				"agitations": [],
+				"attributes": [
+					{
+						"id": "territory-30fb0906-eac5-4ad5-804f-05c1f260aad3",
+						"kind": "tag",
+						"name": "Territory",
+						"options": [
+							{
+								"id": "territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Downtown",
+								"shortForm": "Downtown",
+								"shortFormOrigin": "generated",
+								"value": "Downtown"
+							},
+							{
+								"id": "territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Store A",
+								"parentId": "territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Downtown",
+								"shortForm": "Store A",
+								"shortFormOrigin": "generated",
+								"value": "Store A"
+							},
+							{
+								"id": "territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Store B",
+								"parentId": "territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Downtown",
+								"shortForm": "Store B",
+								"shortFormOrigin": "generated",
+								"value": "Store B"
+							},
+							{
+								"id": "territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Uptown",
+								"shortForm": "Uptown",
+								"shortFormOrigin": "generated",
+								"value": "Uptown"
+							},
+							{
+								"id": "territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~North Store",
+								"parentId": "territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Uptown",
+								"shortForm": "N. Store",
+								"shortFormOrigin": "generated",
+								"value": "North Store"
+							}
+						]
+					},
+					{
+						"id": "position-184782fd-9301-4383-8930-a9485f3baa59",
+						"kind": "tag",
+						"name": "Position",
+						"options": [
+							{
+								"id": "position-184782fd-9301-4383-8930-a9485f3baa59~Cashier",
+								"shortForm": "Cashier",
+								"shortFormOrigin": "generated",
+								"value": "Cashier"
+							},
+							{
+								"id": "position-184782fd-9301-4383-8930-a9485f3baa59~Stocker",
+								"shortForm": "Stocker",
+								"shortFormOrigin": "generated",
+								"value": "Stocker"
+							}
+						]
+					},
+					{
+						"id": "shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49",
+						"kind": "tag",
+						"name": "Shift",
+						"options": [
+							{
+								"id": "shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49~Days",
+								"shortForm": "Days",
+								"shortFormOrigin": "generated",
+								"value": "Days"
+							},
+							{
+								"id": "shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49~Nights",
+								"shortForm": "Nights",
+								"shortFormOrigin": "generated",
+								"value": "Nights"
+							}
+						]
+					},
+					{
+						"id": "team-4dc3f710-09cf-45b9-881b-5d2eb8878513",
+						"kind": "category",
+						"name": "Team",
+						"options": [
+							{
+								"id": "team-4dc3f710-09cf-45b9-881b-5d2eb8878513~Team A",
+								"shortForm": "Team A",
+								"shortFormOrigin": "generated",
+								"value": "Team A"
+							},
+							{
+								"id": "team-4dc3f710-09cf-45b9-881b-5d2eb8878513~Team B",
+								"shortForm": "Team B",
+								"shortFormOrigin": "generated",
+								"value": "Team B"
+							}
+						]
+					}
+				],
+				"languages": [],
+				"settings": {
+					"colorBlindAssessments": false,
+					"dateFormat": "system",
+					"density": "standard",
+					"increaseContrast": false,
+					"language": "system",
+					"reduceMotion": "system",
+					"rememberWindow": true,
+					"textSize": "100",
+					"theme": "system",
+					"timeFormat": "system"
+				},
+				"workers": [
+					{
+						"agitations": [],
+						"assessment": "Unassessed",
+						"attributes": {
+							"position-184782fd-9301-4383-8930-a9485f3baa59": [
+								"position-184782fd-9301-4383-8930-a9485f3baa59~Cashier",
+								"position-184782fd-9301-4383-8930-a9485f3baa59~Stocker"
+							],
+							"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49": [
+								"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49~Days",
+								"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49~Nights"
+							],
+							"team-4dc3f710-09cf-45b9-881b-5d2eb8878513": "team-4dc3f710-09cf-45b9-881b-5d2eb8878513~Team A",
+							"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3": [
+								"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Store A",
+								"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Store B"
+							]
+						},
+						"email": "",
+						"id": "5c971cb0-ce22-4a8c-a83b-6fcb07cf7b0b",
+						"languages": [],
+						"name": "Marie Curie",
+						"notes": [],
+						"phone": "",
+						"relationships": [
+							"0133c77e-305e-47d9-82bc-19e7a76673f7",
+							"5d644b80-23e8-4ab7-9565-d5c6c61c3d5f"
+						]
+					},
+					{
+						"agitations": [],
+						"assessment": "Unassessed",
+						"attributes": {
+							"position-184782fd-9301-4383-8930-a9485f3baa59": [
+								"position-184782fd-9301-4383-8930-a9485f3baa59~Stocker"
+							],
+							"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49": [
+								"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49~Nights"
+							],
+							"team-4dc3f710-09cf-45b9-881b-5d2eb8878513": "team-4dc3f710-09cf-45b9-881b-5d2eb8878513~Team B",
+							"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3": [
+								"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Store B"
+							]
+						},
+						"email": "",
+						"id": "0133c77e-305e-47d9-82bc-19e7a76673f7",
+						"languages": [],
+						"name": "Grace Hopper",
+						"notes": [],
+						"phone": "",
+						"relationships": [
+							"5c971cb0-ce22-4a8c-a83b-6fcb07cf7b0b",
+							"d773eaa8-af83-41fd-8566-aeb043b96dc6"
+						]
+					},
+					{
+						"agitations": [],
+						"assessment": "Unassessed",
+						"attributes": {
+							"position-184782fd-9301-4383-8930-a9485f3baa59": [
+								"position-184782fd-9301-4383-8930-a9485f3baa59~Cashier"
+							],
+							"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49": [
+								"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49~Days",
+								"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49~Nights"
+							],
+							"team-4dc3f710-09cf-45b9-881b-5d2eb8878513": "team-4dc3f710-09cf-45b9-881b-5d2eb8878513~Team A",
+							"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3": [
+								"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Store B"
+							]
+						},
+						"email": "",
+						"id": "5d644b80-23e8-4ab7-9565-d5c6c61c3d5f",
+						"languages": [],
+						"name": "Isaac Newton",
+						"notes": [],
+						"phone": "",
+						"relationships": [
+							"5c971cb0-ce22-4a8c-a83b-6fcb07cf7b0b"
+						]
+					},
+					{
+						"agitations": [],
+						"assessment": "Unassessed",
+						"attributes": {
+							"position-184782fd-9301-4383-8930-a9485f3baa59": [
+								"position-184782fd-9301-4383-8930-a9485f3baa59~Cashier"
+							],
+							"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49": [
+								"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49~Days"
+							],
+							"team-4dc3f710-09cf-45b9-881b-5d2eb8878513": "team-4dc3f710-09cf-45b9-881b-5d2eb8878513~Team A",
+							"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3": [
+								"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~North Store"
+							]
+						},
+						"email": "",
+						"id": "0c3e9dec-b02d-46c6-8d8b-4d0f7c35c602",
+						"languages": [],
+						"name": "Carl Sagan",
+						"notes": [],
+						"phone": "",
+						"relationships": []
+					},
+					{
+						"agitations": [],
+						"assessment": "Unassessed",
+						"attributes": {
+							"position-184782fd-9301-4383-8930-a9485f3baa59": [
+								"position-184782fd-9301-4383-8930-a9485f3baa59~Cashier"
+							],
+							"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49": [
+								"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49~Days"
+							],
+							"team-4dc3f710-09cf-45b9-881b-5d2eb8878513": "team-4dc3f710-09cf-45b9-881b-5d2eb8878513~Team A",
+							"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3": [
+								"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Downtown"
+							]
+						},
+						"email": "",
+						"id": "075600ee-44f7-4b75-9498-cc48e7e04042",
+						"languages": [],
+						"name": "Pierre Curie",
+						"notes": [],
+						"phone": "",
+						"relationships": []
+					},
+					{
+						"agitations": [],
+						"assessment": "Unassessed",
+						"attributes": {
+							"position-184782fd-9301-4383-8930-a9485f3baa59": [],
+							"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49": [],
+							"team-4dc3f710-09cf-45b9-881b-5d2eb8878513": "team-4dc3f710-09cf-45b9-881b-5d2eb8878513~Team A",
+							"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3": [
+								"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Store B"
+							]
+						},
+						"email": "",
+						"id": "83738f76-624d-43df-9e7e-5b5e7af366fe",
+						"languages": [],
+						"name": "Otto Hahn",
+						"notes": [],
+						"phone": "",
+						"relationships": []
+					},
+					{
+						"agitations": [],
+						"assessment": "Unassessed",
+						"attributes": {
+							"position-184782fd-9301-4383-8930-a9485f3baa59": [],
+							"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49": [],
+							"team-4dc3f710-09cf-45b9-881b-5d2eb8878513": "",
+							"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3": []
+						},
+						"email": "",
+						"id": "d773eaa8-af83-41fd-8566-aeb043b96dc6",
+						"languages": [],
+						"name": "Dian Fossey",
+						"notes": [],
+						"phone": "",
+						"relationships": [
+							"0133c77e-305e-47d9-82bc-19e7a76673f7"
+						]
+					}
+				],
+				"worksite": {
+					"committeeTarget": 5,
+					"id": "b5f1bd5a-f614-4fb1-a1c8-de30e5acedb0",
+					"name": "My Worksite 32"
+				},
+				"worksites": [
+					{
+						"committeeTarget": 5,
+						"id": "945df0ac-d4f7-4298-a80a-63cde69d2984",
+						"name": "My Worksite"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "d7e8a889-ea11-4ddf-99c5-98fdfcd4473e",
+						"name": "My Worksite 2"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "33d8ac47-c9ac-49d8-9f78-0542615dd3a3",
+						"name": "My Worksite 3"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "89349663-7945-44bb-8890-4f3969ea502c",
+						"name": "My Worksite 4"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "7abc6415-5f71-4345-bfa7-879d923ac5f6",
+						"name": "My Worksite 5"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "5fca8385-2963-4dca-be59-5c1ed0f200bb",
+						"name": "My Worksite 6"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "92397821-71cc-474e-b064-bdf8b527c26a",
+						"name": "My Worksite 7"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "60947975-40a6-47e8-b533-2810d2c348a1",
+						"name": "My Worksite 8"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "f8bbe7cf-7942-4ed1-b906-77a3091653d1",
+						"name": "My Worksite 9"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "666f90a7-601a-4002-8924-a5ddaca6bdff",
+						"name": "My Worksite 10"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "954029dd-64f9-4c9b-86ba-84a5dc7d654d",
+						"name": "My Worksite 11"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "7727aaff-fe52-4175-8fc0-8b285310458d",
+						"name": "My Worksite 12"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "0a2696aa-aa0a-4774-bc40-2e7716a6a28a",
+						"name": "My Worksite 13"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "6039346f-4c1c-4aea-b32c-4f9b29dd6018",
+						"name": "My Worksite 14"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "ee7db246-e819-4be9-b46f-08e3e772a545",
+						"name": "My Worksite 15"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "7b5bd7c9-bb8b-437c-a540-cb2e699fa9c3",
+						"name": "My Worksite 16"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "51ef0b1d-86ff-4a43-ac16-2b296d6a5872",
+						"name": "My Worksite 17"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "ab839a53-4702-41a2-8a74-fd9f652504ac",
+						"name": "My Worksite 18"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "4eb420d6-74fb-4eeb-ae3a-84a6554198e8",
+						"name": "My Worksite 19"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "82b8bfa8-607e-4a95-a82e-33383d104eb3",
+						"name": "My Worksite 20"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "330699d9-2324-486f-b6bd-56131679e8ee",
+						"name": "My Worksite 21"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "46777b92-bcd0-49c2-bb52-0117f4b1fcda",
+						"name": "My Worksite 22"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "75cdfb23-ccc6-492b-8166-889ce4a22140",
+						"name": "My Worksite 23"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "92d4e370-9a4a-46e7-9d79-bfedb701f2cb",
+						"name": "My Worksite 24"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "5ee1a75e-138e-451f-b5fa-c317d323baff",
+						"name": "My Worksite 25"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "d0202313-834f-466e-a932-f9eaad48fb4f",
+						"name": "My Worksite 26"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "370f7795-ff7d-4f33-9769-51ecba767d51",
+						"name": "My Worksite 27"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "cf8eb6ee-1881-4312-b256-8f9291524ae8",
+						"name": "My Worksite 28"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "72d3fb5a-abfd-4ce4-b9ed-880b46ff677e",
+						"name": "My Worksite 29"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "c7d81386-d818-4271-833b-59cfe463d4c1",
+						"name": "My Worksite 30"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "67a2fb13-2ec9-48a4-b2bd-44f8dcdf2604",
+						"name": "My Worksite 31"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "b5f1bd5a-f614-4fb1-a1c8-de30e5acedb0",
+						"name": "My Worksite 32"
+					}
+				]
+			}
+		},
+		{
+			"method": "GET",
+			"path": "/api/dataset",
+			"status": 200,
+			"body": {
+				"agitations": [],
+				"attributes": [
+					{
+						"id": "territory-30fb0906-eac5-4ad5-804f-05c1f260aad3",
+						"kind": "tag",
+						"name": "Territory",
+						"options": [
+							{
+								"id": "territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Downtown",
+								"shortForm": "Downtown",
+								"shortFormOrigin": "generated",
+								"value": "Downtown"
+							},
+							{
+								"id": "territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Store A",
+								"parentId": "territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Downtown",
+								"shortForm": "Store A",
+								"shortFormOrigin": "generated",
+								"value": "Store A"
+							},
+							{
+								"id": "territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Store B",
+								"parentId": "territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Downtown",
+								"shortForm": "Store B",
+								"shortFormOrigin": "generated",
+								"value": "Store B"
+							},
+							{
+								"id": "territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Uptown",
+								"shortForm": "Uptown",
+								"shortFormOrigin": "generated",
+								"value": "Uptown"
+							},
+							{
+								"id": "territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~North Store",
+								"parentId": "territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Uptown",
+								"shortForm": "N. Store",
+								"shortFormOrigin": "generated",
+								"value": "North Store"
+							}
+						]
+					},
+					{
+						"id": "position-184782fd-9301-4383-8930-a9485f3baa59",
+						"kind": "tag",
+						"name": "Position",
+						"options": [
+							{
+								"id": "position-184782fd-9301-4383-8930-a9485f3baa59~Cashier",
+								"shortForm": "Cashier",
+								"shortFormOrigin": "generated",
+								"value": "Cashier"
+							},
+							{
+								"id": "position-184782fd-9301-4383-8930-a9485f3baa59~Stocker",
+								"shortForm": "Stocker",
+								"shortFormOrigin": "generated",
+								"value": "Stocker"
+							}
+						]
+					},
+					{
+						"id": "shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49",
+						"kind": "tag",
+						"name": "Shift",
+						"options": [
+							{
+								"id": "shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49~Days",
+								"shortForm": "Days",
+								"shortFormOrigin": "generated",
+								"value": "Days"
+							},
+							{
+								"id": "shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49~Nights",
+								"shortForm": "Nights",
+								"shortFormOrigin": "generated",
+								"value": "Nights"
+							}
+						]
+					},
+					{
+						"id": "team-4dc3f710-09cf-45b9-881b-5d2eb8878513",
+						"kind": "category",
+						"name": "Team",
+						"options": [
+							{
+								"id": "team-4dc3f710-09cf-45b9-881b-5d2eb8878513~Team A",
+								"shortForm": "Team A",
+								"shortFormOrigin": "generated",
+								"value": "Team A"
+							},
+							{
+								"id": "team-4dc3f710-09cf-45b9-881b-5d2eb8878513~Team B",
+								"shortForm": "Team B",
+								"shortFormOrigin": "generated",
+								"value": "Team B"
+							}
+						]
+					}
+				],
+				"languages": [],
+				"settings": {
+					"colorBlindAssessments": false,
+					"dateFormat": "system",
+					"density": "standard",
+					"increaseContrast": false,
+					"language": "system",
+					"reduceMotion": "system",
+					"rememberWindow": true,
+					"textSize": "100",
+					"theme": "system",
+					"timeFormat": "system"
+				},
+				"workers": [
+					{
+						"agitations": [],
+						"assessment": "Unassessed",
+						"attributes": {
+							"position-184782fd-9301-4383-8930-a9485f3baa59": [
+								"position-184782fd-9301-4383-8930-a9485f3baa59~Cashier",
+								"position-184782fd-9301-4383-8930-a9485f3baa59~Stocker"
+							],
+							"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49": [
+								"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49~Days",
+								"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49~Nights"
+							],
+							"team-4dc3f710-09cf-45b9-881b-5d2eb8878513": "team-4dc3f710-09cf-45b9-881b-5d2eb8878513~Team A",
+							"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3": [
+								"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Store A",
+								"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Store B"
+							]
+						},
+						"email": "",
+						"id": "5c971cb0-ce22-4a8c-a83b-6fcb07cf7b0b",
+						"languages": [],
+						"name": "Marie Curie",
+						"notes": [],
+						"phone": "",
+						"relationships": [
+							"0133c77e-305e-47d9-82bc-19e7a76673f7",
+							"5d644b80-23e8-4ab7-9565-d5c6c61c3d5f"
+						]
+					},
+					{
+						"agitations": [],
+						"assessment": "Unassessed",
+						"attributes": {
+							"position-184782fd-9301-4383-8930-a9485f3baa59": [
+								"position-184782fd-9301-4383-8930-a9485f3baa59~Stocker"
+							],
+							"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49": [
+								"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49~Nights"
+							],
+							"team-4dc3f710-09cf-45b9-881b-5d2eb8878513": "team-4dc3f710-09cf-45b9-881b-5d2eb8878513~Team B",
+							"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3": [
+								"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Store B"
+							]
+						},
+						"email": "",
+						"id": "0133c77e-305e-47d9-82bc-19e7a76673f7",
+						"languages": [],
+						"name": "Grace Hopper",
+						"notes": [],
+						"phone": "",
+						"relationships": [
+							"5c971cb0-ce22-4a8c-a83b-6fcb07cf7b0b",
+							"d773eaa8-af83-41fd-8566-aeb043b96dc6"
+						]
+					},
+					{
+						"agitations": [],
+						"assessment": "Unassessed",
+						"attributes": {
+							"position-184782fd-9301-4383-8930-a9485f3baa59": [
+								"position-184782fd-9301-4383-8930-a9485f3baa59~Cashier"
+							],
+							"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49": [
+								"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49~Days",
+								"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49~Nights"
+							],
+							"team-4dc3f710-09cf-45b9-881b-5d2eb8878513": "team-4dc3f710-09cf-45b9-881b-5d2eb8878513~Team A",
+							"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3": [
+								"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Store B"
+							]
+						},
+						"email": "",
+						"id": "5d644b80-23e8-4ab7-9565-d5c6c61c3d5f",
+						"languages": [],
+						"name": "Isaac Newton",
+						"notes": [],
+						"phone": "",
+						"relationships": [
+							"5c971cb0-ce22-4a8c-a83b-6fcb07cf7b0b"
+						]
+					},
+					{
+						"agitations": [],
+						"assessment": "Unassessed",
+						"attributes": {
+							"position-184782fd-9301-4383-8930-a9485f3baa59": [
+								"position-184782fd-9301-4383-8930-a9485f3baa59~Cashier"
+							],
+							"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49": [
+								"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49~Days"
+							],
+							"team-4dc3f710-09cf-45b9-881b-5d2eb8878513": "team-4dc3f710-09cf-45b9-881b-5d2eb8878513~Team A",
+							"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3": [
+								"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~North Store"
+							]
+						},
+						"email": "",
+						"id": "0c3e9dec-b02d-46c6-8d8b-4d0f7c35c602",
+						"languages": [],
+						"name": "Carl Sagan",
+						"notes": [],
+						"phone": "",
+						"relationships": []
+					},
+					{
+						"agitations": [],
+						"assessment": "Unassessed",
+						"attributes": {
+							"position-184782fd-9301-4383-8930-a9485f3baa59": [
+								"position-184782fd-9301-4383-8930-a9485f3baa59~Cashier"
+							],
+							"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49": [
+								"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49~Days"
+							],
+							"team-4dc3f710-09cf-45b9-881b-5d2eb8878513": "team-4dc3f710-09cf-45b9-881b-5d2eb8878513~Team A",
+							"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3": [
+								"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Downtown"
+							]
+						},
+						"email": "",
+						"id": "075600ee-44f7-4b75-9498-cc48e7e04042",
+						"languages": [],
+						"name": "Pierre Curie",
+						"notes": [],
+						"phone": "",
+						"relationships": []
+					},
+					{
+						"agitations": [],
+						"assessment": "Unassessed",
+						"attributes": {
+							"position-184782fd-9301-4383-8930-a9485f3baa59": [],
+							"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49": [],
+							"team-4dc3f710-09cf-45b9-881b-5d2eb8878513": "team-4dc3f710-09cf-45b9-881b-5d2eb8878513~Team A",
+							"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3": [
+								"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Store B"
+							]
+						},
+						"email": "",
+						"id": "83738f76-624d-43df-9e7e-5b5e7af366fe",
+						"languages": [],
+						"name": "Otto Hahn",
+						"notes": [],
+						"phone": "",
+						"relationships": []
+					},
+					{
+						"agitations": [],
+						"assessment": "Unassessed",
+						"attributes": {
+							"position-184782fd-9301-4383-8930-a9485f3baa59": [],
+							"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49": [],
+							"team-4dc3f710-09cf-45b9-881b-5d2eb8878513": "",
+							"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3": []
+						},
+						"email": "",
+						"id": "d773eaa8-af83-41fd-8566-aeb043b96dc6",
+						"languages": [],
+						"name": "Dian Fossey",
+						"notes": [],
+						"phone": "",
+						"relationships": [
+							"0133c77e-305e-47d9-82bc-19e7a76673f7"
+						]
+					}
+				],
+				"worksite": {
+					"committeeTarget": 5,
+					"id": "b5f1bd5a-f614-4fb1-a1c8-de30e5acedb0",
+					"name": "My Worksite 32"
+				},
+				"worksites": [
+					{
+						"committeeTarget": 5,
+						"id": "945df0ac-d4f7-4298-a80a-63cde69d2984",
+						"name": "My Worksite"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "d7e8a889-ea11-4ddf-99c5-98fdfcd4473e",
+						"name": "My Worksite 2"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "33d8ac47-c9ac-49d8-9f78-0542615dd3a3",
+						"name": "My Worksite 3"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "89349663-7945-44bb-8890-4f3969ea502c",
+						"name": "My Worksite 4"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "7abc6415-5f71-4345-bfa7-879d923ac5f6",
+						"name": "My Worksite 5"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "5fca8385-2963-4dca-be59-5c1ed0f200bb",
+						"name": "My Worksite 6"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "92397821-71cc-474e-b064-bdf8b527c26a",
+						"name": "My Worksite 7"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "60947975-40a6-47e8-b533-2810d2c348a1",
+						"name": "My Worksite 8"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "f8bbe7cf-7942-4ed1-b906-77a3091653d1",
+						"name": "My Worksite 9"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "666f90a7-601a-4002-8924-a5ddaca6bdff",
+						"name": "My Worksite 10"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "954029dd-64f9-4c9b-86ba-84a5dc7d654d",
+						"name": "My Worksite 11"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "7727aaff-fe52-4175-8fc0-8b285310458d",
+						"name": "My Worksite 12"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "0a2696aa-aa0a-4774-bc40-2e7716a6a28a",
+						"name": "My Worksite 13"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "6039346f-4c1c-4aea-b32c-4f9b29dd6018",
+						"name": "My Worksite 14"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "ee7db246-e819-4be9-b46f-08e3e772a545",
+						"name": "My Worksite 15"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "7b5bd7c9-bb8b-437c-a540-cb2e699fa9c3",
+						"name": "My Worksite 16"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "51ef0b1d-86ff-4a43-ac16-2b296d6a5872",
+						"name": "My Worksite 17"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "ab839a53-4702-41a2-8a74-fd9f652504ac",
+						"name": "My Worksite 18"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "4eb420d6-74fb-4eeb-ae3a-84a6554198e8",
+						"name": "My Worksite 19"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "82b8bfa8-607e-4a95-a82e-33383d104eb3",
+						"name": "My Worksite 20"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "330699d9-2324-486f-b6bd-56131679e8ee",
+						"name": "My Worksite 21"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "46777b92-bcd0-49c2-bb52-0117f4b1fcda",
+						"name": "My Worksite 22"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "75cdfb23-ccc6-492b-8166-889ce4a22140",
+						"name": "My Worksite 23"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "92d4e370-9a4a-46e7-9d79-bfedb701f2cb",
+						"name": "My Worksite 24"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "5ee1a75e-138e-451f-b5fa-c317d323baff",
+						"name": "My Worksite 25"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "d0202313-834f-466e-a932-f9eaad48fb4f",
+						"name": "My Worksite 26"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "370f7795-ff7d-4f33-9769-51ecba767d51",
+						"name": "My Worksite 27"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "cf8eb6ee-1881-4312-b256-8f9291524ae8",
+						"name": "My Worksite 28"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "72d3fb5a-abfd-4ce4-b9ed-880b46ff677e",
+						"name": "My Worksite 29"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "c7d81386-d818-4271-833b-59cfe463d4c1",
+						"name": "My Worksite 30"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "67a2fb13-2ec9-48a4-b2bd-44f8dcdf2604",
+						"name": "My Worksite 31"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "b5f1bd5a-f614-4fb1-a1c8-de30e5acedb0",
+						"name": "My Worksite 32"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "41c8092b-e779-4a99-b82b-4108d1d2db56",
+						"name": "My Worksite 33"
+					}
+				]
+			}
+		},
+		{
+			"method": "GET",
+			"path": "/api/dataset",
+			"status": 200,
+			"body": {
+				"agitations": [],
+				"attributes": [
+					{
+						"id": "territory-30fb0906-eac5-4ad5-804f-05c1f260aad3",
+						"kind": "tag",
+						"name": "Territory",
+						"options": [
+							{
+								"id": "territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Downtown",
+								"shortForm": "Downtown",
+								"shortFormOrigin": "generated",
+								"value": "Downtown"
+							},
+							{
+								"id": "territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Store A",
+								"parentId": "territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Downtown",
+								"shortForm": "Store A",
+								"shortFormOrigin": "generated",
+								"value": "Store A"
+							},
+							{
+								"id": "territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Store B",
+								"parentId": "territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Downtown",
+								"shortForm": "Store B",
+								"shortFormOrigin": "generated",
+								"value": "Store B"
+							},
+							{
+								"id": "territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Uptown",
+								"shortForm": "Uptown",
+								"shortFormOrigin": "generated",
+								"value": "Uptown"
+							},
+							{
+								"id": "territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~North Store",
+								"parentId": "territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Uptown",
+								"shortForm": "N. Store",
+								"shortFormOrigin": "generated",
+								"value": "North Store"
+							}
+						]
+					},
+					{
+						"id": "position-184782fd-9301-4383-8930-a9485f3baa59",
+						"kind": "tag",
+						"name": "Position",
+						"options": [
+							{
+								"id": "position-184782fd-9301-4383-8930-a9485f3baa59~Cashier",
+								"shortForm": "Cashier",
+								"shortFormOrigin": "generated",
+								"value": "Cashier"
+							},
+							{
+								"id": "position-184782fd-9301-4383-8930-a9485f3baa59~Stocker",
+								"shortForm": "Stocker",
+								"shortFormOrigin": "generated",
+								"value": "Stocker"
+							}
+						]
+					},
+					{
+						"id": "shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49",
+						"kind": "tag",
+						"name": "Shift",
+						"options": [
+							{
+								"id": "shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49~Days",
+								"shortForm": "Days",
+								"shortFormOrigin": "generated",
+								"value": "Days"
+							},
+							{
+								"id": "shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49~Nights",
+								"shortForm": "Nights",
+								"shortFormOrigin": "generated",
+								"value": "Nights"
+							}
+						]
+					},
+					{
+						"id": "team-4dc3f710-09cf-45b9-881b-5d2eb8878513",
+						"kind": "category",
+						"name": "Team",
+						"options": [
+							{
+								"id": "team-4dc3f710-09cf-45b9-881b-5d2eb8878513~Team A",
+								"shortForm": "Team A",
+								"shortFormOrigin": "generated",
+								"value": "Team A"
+							},
+							{
+								"id": "team-4dc3f710-09cf-45b9-881b-5d2eb8878513~Team B",
+								"shortForm": "Team B",
+								"shortFormOrigin": "generated",
+								"value": "Team B"
+							}
+						]
+					}
+				],
+				"languages": [],
+				"settings": {
+					"colorBlindAssessments": false,
+					"dateFormat": "system",
+					"density": "standard",
+					"increaseContrast": false,
+					"language": "system",
+					"reduceMotion": "system",
+					"rememberWindow": true,
+					"textSize": "100",
+					"theme": "system",
+					"timeFormat": "system"
+				},
+				"workers": [
+					{
+						"agitations": [],
+						"assessment": "Unassessed",
+						"attributes": {
+							"position-184782fd-9301-4383-8930-a9485f3baa59": [
+								"position-184782fd-9301-4383-8930-a9485f3baa59~Cashier",
+								"position-184782fd-9301-4383-8930-a9485f3baa59~Stocker"
+							],
+							"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49": [
+								"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49~Days",
+								"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49~Nights"
+							],
+							"team-4dc3f710-09cf-45b9-881b-5d2eb8878513": "team-4dc3f710-09cf-45b9-881b-5d2eb8878513~Team A",
+							"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3": [
+								"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Store A",
+								"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Store B"
+							]
+						},
+						"email": "",
+						"id": "5c971cb0-ce22-4a8c-a83b-6fcb07cf7b0b",
+						"languages": [],
+						"name": "Marie Curie",
+						"notes": [],
+						"phone": "",
+						"relationships": [
+							"0133c77e-305e-47d9-82bc-19e7a76673f7",
+							"5d644b80-23e8-4ab7-9565-d5c6c61c3d5f"
+						]
+					},
+					{
+						"agitations": [],
+						"assessment": "Unassessed",
+						"attributes": {
+							"position-184782fd-9301-4383-8930-a9485f3baa59": [
+								"position-184782fd-9301-4383-8930-a9485f3baa59~Stocker"
+							],
+							"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49": [
+								"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49~Nights"
+							],
+							"team-4dc3f710-09cf-45b9-881b-5d2eb8878513": "team-4dc3f710-09cf-45b9-881b-5d2eb8878513~Team B",
+							"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3": [
+								"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Store B"
+							]
+						},
+						"email": "",
+						"id": "0133c77e-305e-47d9-82bc-19e7a76673f7",
+						"languages": [],
+						"name": "Grace Hopper",
+						"notes": [],
+						"phone": "",
+						"relationships": [
+							"5c971cb0-ce22-4a8c-a83b-6fcb07cf7b0b",
+							"d773eaa8-af83-41fd-8566-aeb043b96dc6"
+						]
+					},
+					{
+						"agitations": [],
+						"assessment": "Unassessed",
+						"attributes": {
+							"position-184782fd-9301-4383-8930-a9485f3baa59": [
+								"position-184782fd-9301-4383-8930-a9485f3baa59~Cashier"
+							],
+							"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49": [
+								"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49~Days",
+								"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49~Nights"
+							],
+							"team-4dc3f710-09cf-45b9-881b-5d2eb8878513": "team-4dc3f710-09cf-45b9-881b-5d2eb8878513~Team A",
+							"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3": [
+								"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Store B"
+							]
+						},
+						"email": "",
+						"id": "5d644b80-23e8-4ab7-9565-d5c6c61c3d5f",
+						"languages": [],
+						"name": "Isaac Newton",
+						"notes": [],
+						"phone": "",
+						"relationships": [
+							"5c971cb0-ce22-4a8c-a83b-6fcb07cf7b0b"
+						]
+					},
+					{
+						"agitations": [],
+						"assessment": "Unassessed",
+						"attributes": {
+							"position-184782fd-9301-4383-8930-a9485f3baa59": [
+								"position-184782fd-9301-4383-8930-a9485f3baa59~Cashier"
+							],
+							"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49": [
+								"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49~Days"
+							],
+							"team-4dc3f710-09cf-45b9-881b-5d2eb8878513": "team-4dc3f710-09cf-45b9-881b-5d2eb8878513~Team A",
+							"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3": [
+								"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~North Store"
+							]
+						},
+						"email": "",
+						"id": "0c3e9dec-b02d-46c6-8d8b-4d0f7c35c602",
+						"languages": [],
+						"name": "Carl Sagan",
+						"notes": [],
+						"phone": "",
+						"relationships": []
+					},
+					{
+						"agitations": [],
+						"assessment": "Unassessed",
+						"attributes": {
+							"position-184782fd-9301-4383-8930-a9485f3baa59": [
+								"position-184782fd-9301-4383-8930-a9485f3baa59~Cashier"
+							],
+							"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49": [
+								"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49~Days"
+							],
+							"team-4dc3f710-09cf-45b9-881b-5d2eb8878513": "team-4dc3f710-09cf-45b9-881b-5d2eb8878513~Team A",
+							"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3": [
+								"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Downtown"
+							]
+						},
+						"email": "",
+						"id": "075600ee-44f7-4b75-9498-cc48e7e04042",
+						"languages": [],
+						"name": "Pierre Curie",
+						"notes": [],
+						"phone": "",
+						"relationships": []
+					},
+					{
+						"agitations": [],
+						"assessment": "Unassessed",
+						"attributes": {
+							"position-184782fd-9301-4383-8930-a9485f3baa59": [],
+							"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49": [],
+							"team-4dc3f710-09cf-45b9-881b-5d2eb8878513": "team-4dc3f710-09cf-45b9-881b-5d2eb8878513~Team A",
+							"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3": [
+								"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Store B"
+							]
+						},
+						"email": "",
+						"id": "83738f76-624d-43df-9e7e-5b5e7af366fe",
+						"languages": [],
+						"name": "Otto Hahn",
+						"notes": [],
+						"phone": "",
+						"relationships": []
+					},
+					{
+						"agitations": [],
+						"assessment": "Unassessed",
+						"attributes": {
+							"position-184782fd-9301-4383-8930-a9485f3baa59": [],
+							"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49": [],
+							"team-4dc3f710-09cf-45b9-881b-5d2eb8878513": "",
+							"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3": []
+						},
+						"email": "",
+						"id": "d773eaa8-af83-41fd-8566-aeb043b96dc6",
+						"languages": [],
+						"name": "Dian Fossey",
+						"notes": [],
+						"phone": "",
+						"relationships": [
+							"0133c77e-305e-47d9-82bc-19e7a76673f7"
+						]
+					}
+				],
+				"worksite": {
+					"committeeTarget": 5,
+					"id": "b5f1bd5a-f614-4fb1-a1c8-de30e5acedb0",
+					"name": "My Worksite 32"
+				},
+				"worksites": [
+					{
+						"committeeTarget": 5,
+						"id": "945df0ac-d4f7-4298-a80a-63cde69d2984",
+						"name": "My Worksite"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "d7e8a889-ea11-4ddf-99c5-98fdfcd4473e",
+						"name": "My Worksite 2"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "33d8ac47-c9ac-49d8-9f78-0542615dd3a3",
+						"name": "My Worksite 3"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "89349663-7945-44bb-8890-4f3969ea502c",
+						"name": "My Worksite 4"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "7abc6415-5f71-4345-bfa7-879d923ac5f6",
+						"name": "My Worksite 5"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "5fca8385-2963-4dca-be59-5c1ed0f200bb",
+						"name": "My Worksite 6"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "92397821-71cc-474e-b064-bdf8b527c26a",
+						"name": "My Worksite 7"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "60947975-40a6-47e8-b533-2810d2c348a1",
+						"name": "My Worksite 8"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "f8bbe7cf-7942-4ed1-b906-77a3091653d1",
+						"name": "My Worksite 9"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "666f90a7-601a-4002-8924-a5ddaca6bdff",
+						"name": "My Worksite 10"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "954029dd-64f9-4c9b-86ba-84a5dc7d654d",
+						"name": "My Worksite 11"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "7727aaff-fe52-4175-8fc0-8b285310458d",
+						"name": "My Worksite 12"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "0a2696aa-aa0a-4774-bc40-2e7716a6a28a",
+						"name": "My Worksite 13"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "6039346f-4c1c-4aea-b32c-4f9b29dd6018",
+						"name": "My Worksite 14"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "ee7db246-e819-4be9-b46f-08e3e772a545",
+						"name": "My Worksite 15"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "7b5bd7c9-bb8b-437c-a540-cb2e699fa9c3",
+						"name": "My Worksite 16"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "51ef0b1d-86ff-4a43-ac16-2b296d6a5872",
+						"name": "My Worksite 17"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "ab839a53-4702-41a2-8a74-fd9f652504ac",
+						"name": "My Worksite 18"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "4eb420d6-74fb-4eeb-ae3a-84a6554198e8",
+						"name": "My Worksite 19"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "82b8bfa8-607e-4a95-a82e-33383d104eb3",
+						"name": "My Worksite 20"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "330699d9-2324-486f-b6bd-56131679e8ee",
+						"name": "My Worksite 21"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "46777b92-bcd0-49c2-bb52-0117f4b1fcda",
+						"name": "My Worksite 22"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "75cdfb23-ccc6-492b-8166-889ce4a22140",
+						"name": "My Worksite 23"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "92d4e370-9a4a-46e7-9d79-bfedb701f2cb",
+						"name": "My Worksite 24"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "5ee1a75e-138e-451f-b5fa-c317d323baff",
+						"name": "My Worksite 25"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "d0202313-834f-466e-a932-f9eaad48fb4f",
+						"name": "My Worksite 26"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "370f7795-ff7d-4f33-9769-51ecba767d51",
+						"name": "My Worksite 27"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "cf8eb6ee-1881-4312-b256-8f9291524ae8",
+						"name": "My Worksite 28"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "72d3fb5a-abfd-4ce4-b9ed-880b46ff677e",
+						"name": "My Worksite 29"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "c7d81386-d818-4271-833b-59cfe463d4c1",
+						"name": "My Worksite 30"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "67a2fb13-2ec9-48a4-b2bd-44f8dcdf2604",
+						"name": "My Worksite 31"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "b5f1bd5a-f614-4fb1-a1c8-de30e5acedb0",
+						"name": "My Worksite 32"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "41c8092b-e779-4a99-b82b-4108d1d2db56",
+						"name": "My Worksite 33"
+					}
+				]
+			}
+		},
+		{
+			"method": "GET",
+			"path": "/api/settings",
+			"status": 200,
+			"body": {
+				"settings": {
+					"colorBlindAssessments": false,
+					"dateFormat": "system",
+					"density": "standard",
+					"increaseContrast": false,
+					"language": "system",
+					"reduceMotion": "system",
+					"rememberWindow": true,
+					"textSize": "100",
+					"theme": "system",
+					"timeFormat": "system"
+				}
+			}
+		}
+	],
+	"seed": [
+		{
+			"method": "GET",
+			"path": "/api/worksite",
+			"status": 200,
+			"body": {
+				"worksite": {
+					"committeeTarget": 5,
+					"id": "b5f1bd5a-f614-4fb1-a1c8-de30e5acedb0",
+					"name": "My Worksite 32"
+				}
+			}
+		},
+		{
+			"method": "PUT",
+			"path": "/api/attributes",
+			"requestBody": [
+				{
+					"id": "territory-30fb0906-eac5-4ad5-804f-05c1f260aad3",
+					"name": "Territory",
+					"kind": "tag",
+					"options": [
+						{
+							"id": "territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Downtown",
+							"value": "Downtown"
+						},
+						{
+							"id": "territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Store A",
+							"value": "Store A",
+							"parentId": "territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Downtown"
+						},
+						{
+							"id": "territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Store B",
+							"value": "Store B",
+							"parentId": "territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Downtown"
+						},
+						{
+							"id": "territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Uptown",
+							"value": "Uptown"
+						},
+						{
+							"id": "territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~North Store",
+							"value": "North Store",
+							"parentId": "territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Uptown"
+						}
+					]
+				},
+				{
+					"id": "position-184782fd-9301-4383-8930-a9485f3baa59",
+					"name": "Position",
+					"kind": "tag",
+					"options": [
+						{
+							"id": "position-184782fd-9301-4383-8930-a9485f3baa59~Cashier",
+							"value": "Cashier"
+						},
+						{
+							"id": "position-184782fd-9301-4383-8930-a9485f3baa59~Stocker",
+							"value": "Stocker"
+						}
+					]
+				},
+				{
+					"id": "shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49",
+					"name": "Shift",
+					"kind": "tag",
+					"options": [
+						{
+							"id": "shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49~Days",
+							"value": "Days"
+						},
+						{
+							"id": "shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49~Nights",
+							"value": "Nights"
+						}
+					]
+				},
+				{
+					"id": "team-4dc3f710-09cf-45b9-881b-5d2eb8878513",
+					"name": "Team",
+					"kind": "category",
+					"options": [
+						{
+							"id": "team-4dc3f710-09cf-45b9-881b-5d2eb8878513~Team A",
+							"value": "Team A"
+						},
+						{
+							"id": "team-4dc3f710-09cf-45b9-881b-5d2eb8878513~Team B",
+							"value": "Team B"
+						}
+					]
+				}
+			],
+			"status": 200,
+			"body": {
+				"attributes": [
+					{
+						"id": "territory-30fb0906-eac5-4ad5-804f-05c1f260aad3",
+						"kind": "tag",
+						"name": "Territory",
+						"options": [
+							{
+								"id": "territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Downtown",
+								"shortForm": "Downtown",
+								"shortFormOrigin": "generated",
+								"value": "Downtown"
+							},
+							{
+								"id": "territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Store A",
+								"parentId": "territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Downtown",
+								"shortForm": "Store A",
+								"shortFormOrigin": "generated",
+								"value": "Store A"
+							},
+							{
+								"id": "territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Store B",
+								"parentId": "territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Downtown",
+								"shortForm": "Store B",
+								"shortFormOrigin": "generated",
+								"value": "Store B"
+							},
+							{
+								"id": "territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Uptown",
+								"shortForm": "Uptown",
+								"shortFormOrigin": "generated",
+								"value": "Uptown"
+							},
+							{
+								"id": "territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~North Store",
+								"parentId": "territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Uptown",
+								"shortForm": "N. Store",
+								"shortFormOrigin": "generated",
+								"value": "North Store"
+							}
+						]
+					},
+					{
+						"id": "position-184782fd-9301-4383-8930-a9485f3baa59",
+						"kind": "tag",
+						"name": "Position",
+						"options": [
+							{
+								"id": "position-184782fd-9301-4383-8930-a9485f3baa59~Cashier",
+								"shortForm": "Cashier",
+								"shortFormOrigin": "generated",
+								"value": "Cashier"
+							},
+							{
+								"id": "position-184782fd-9301-4383-8930-a9485f3baa59~Stocker",
+								"shortForm": "Stocker",
+								"shortFormOrigin": "generated",
+								"value": "Stocker"
+							}
+						]
+					},
+					{
+						"id": "shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49",
+						"kind": "tag",
+						"name": "Shift",
+						"options": [
+							{
+								"id": "shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49~Days",
+								"shortForm": "Days",
+								"shortFormOrigin": "generated",
+								"value": "Days"
+							},
+							{
+								"id": "shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49~Nights",
+								"shortForm": "Nights",
+								"shortFormOrigin": "generated",
+								"value": "Nights"
+							}
+						]
+					},
+					{
+						"id": "team-4dc3f710-09cf-45b9-881b-5d2eb8878513",
+						"kind": "category",
+						"name": "Team",
+						"options": [
+							{
+								"id": "team-4dc3f710-09cf-45b9-881b-5d2eb8878513~Team A",
+								"shortForm": "Team A",
+								"shortFormOrigin": "generated",
+								"value": "Team A"
+							},
+							{
+								"id": "team-4dc3f710-09cf-45b9-881b-5d2eb8878513~Team B",
+								"shortForm": "Team B",
+								"shortFormOrigin": "generated",
+								"value": "Team B"
+							}
+						]
+					}
+				]
+			}
+		},
+		{
+			"method": "POST",
+			"path": "/api/workers",
+			"requestBody": {
+				"name": "Marie Curie",
+				"email": "",
+				"phone": "",
+				"assessment": "Unassessed",
+				"attributes": {
+					"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3": [
+						"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Store A",
+						"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Store B"
+					],
+					"position-184782fd-9301-4383-8930-a9485f3baa59": [
+						"position-184782fd-9301-4383-8930-a9485f3baa59~Cashier",
+						"position-184782fd-9301-4383-8930-a9485f3baa59~Stocker"
+					],
+					"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49": [
+						"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49~Days",
+						"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49~Nights"
+					],
+					"team-4dc3f710-09cf-45b9-881b-5d2eb8878513": "team-4dc3f710-09cf-45b9-881b-5d2eb8878513~Team A"
+				},
+				"agitations": [],
+				"languages": [],
+				"relationships": [],
+				"notes": []
+			},
+			"status": 201,
+			"body": {
+				"worker": {
+					"agitations": [],
+					"assessment": "Unassessed",
+					"attributes": {
+						"position-184782fd-9301-4383-8930-a9485f3baa59": [
+							"position-184782fd-9301-4383-8930-a9485f3baa59~Cashier",
+							"position-184782fd-9301-4383-8930-a9485f3baa59~Stocker"
+						],
+						"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49": [
+							"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49~Days",
+							"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49~Nights"
+						],
+						"team-4dc3f710-09cf-45b9-881b-5d2eb8878513": "team-4dc3f710-09cf-45b9-881b-5d2eb8878513~Team A",
+						"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3": [
+							"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Store A",
+							"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Store B"
+						]
+					},
+					"email": "",
+					"id": "5c971cb0-ce22-4a8c-a83b-6fcb07cf7b0b",
+					"languages": [],
+					"name": "Marie Curie",
+					"notes": [],
+					"phone": "",
+					"relationships": []
+				}
+			}
+		},
+		{
+			"method": "POST",
+			"path": "/api/workers",
+			"requestBody": {
+				"name": "Grace Hopper",
+				"email": "",
+				"phone": "",
+				"assessment": "Unassessed",
+				"attributes": {
+					"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3": [
+						"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Store B"
+					],
+					"position-184782fd-9301-4383-8930-a9485f3baa59": [
+						"position-184782fd-9301-4383-8930-a9485f3baa59~Stocker"
+					],
+					"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49": [
+						"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49~Nights"
+					],
+					"team-4dc3f710-09cf-45b9-881b-5d2eb8878513": "team-4dc3f710-09cf-45b9-881b-5d2eb8878513~Team B"
+				},
+				"agitations": [],
+				"languages": [],
+				"relationships": [],
+				"notes": []
+			},
+			"status": 201,
+			"body": {
+				"worker": {
+					"agitations": [],
+					"assessment": "Unassessed",
+					"attributes": {
+						"position-184782fd-9301-4383-8930-a9485f3baa59": [
+							"position-184782fd-9301-4383-8930-a9485f3baa59~Stocker"
+						],
+						"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49": [
+							"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49~Nights"
+						],
+						"team-4dc3f710-09cf-45b9-881b-5d2eb8878513": "team-4dc3f710-09cf-45b9-881b-5d2eb8878513~Team B",
+						"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3": [
+							"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Store B"
+						]
+					},
+					"email": "",
+					"id": "0133c77e-305e-47d9-82bc-19e7a76673f7",
+					"languages": [],
+					"name": "Grace Hopper",
+					"notes": [],
+					"phone": "",
+					"relationships": []
+				}
+			}
+		},
+		{
+			"method": "POST",
+			"path": "/api/workers",
+			"requestBody": {
+				"name": "Isaac Newton",
+				"email": "",
+				"phone": "",
+				"assessment": "Unassessed",
+				"attributes": {
+					"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3": [
+						"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Store B"
+					],
+					"position-184782fd-9301-4383-8930-a9485f3baa59": [
+						"position-184782fd-9301-4383-8930-a9485f3baa59~Cashier"
+					],
+					"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49": [
+						"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49~Days",
+						"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49~Nights"
+					],
+					"team-4dc3f710-09cf-45b9-881b-5d2eb8878513": "team-4dc3f710-09cf-45b9-881b-5d2eb8878513~Team A"
+				},
+				"agitations": [],
+				"languages": [],
+				"relationships": [],
+				"notes": []
+			},
+			"status": 201,
+			"body": {
+				"worker": {
+					"agitations": [],
+					"assessment": "Unassessed",
+					"attributes": {
+						"position-184782fd-9301-4383-8930-a9485f3baa59": [
+							"position-184782fd-9301-4383-8930-a9485f3baa59~Cashier"
+						],
+						"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49": [
+							"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49~Days",
+							"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49~Nights"
+						],
+						"team-4dc3f710-09cf-45b9-881b-5d2eb8878513": "team-4dc3f710-09cf-45b9-881b-5d2eb8878513~Team A",
+						"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3": [
+							"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Store B"
+						]
+					},
+					"email": "",
+					"id": "5d644b80-23e8-4ab7-9565-d5c6c61c3d5f",
+					"languages": [],
+					"name": "Isaac Newton",
+					"notes": [],
+					"phone": "",
+					"relationships": []
+				}
+			}
+		},
+		{
+			"method": "POST",
+			"path": "/api/workers",
+			"requestBody": {
+				"name": "Carl Sagan",
+				"email": "",
+				"phone": "",
+				"assessment": "Unassessed",
+				"attributes": {
+					"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3": [
+						"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~North Store"
+					],
+					"position-184782fd-9301-4383-8930-a9485f3baa59": [
+						"position-184782fd-9301-4383-8930-a9485f3baa59~Cashier"
+					],
+					"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49": [
+						"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49~Days"
+					],
+					"team-4dc3f710-09cf-45b9-881b-5d2eb8878513": "team-4dc3f710-09cf-45b9-881b-5d2eb8878513~Team A"
+				},
+				"agitations": [],
+				"languages": [],
+				"relationships": [],
+				"notes": []
+			},
+			"status": 201,
+			"body": {
+				"worker": {
+					"agitations": [],
+					"assessment": "Unassessed",
+					"attributes": {
+						"position-184782fd-9301-4383-8930-a9485f3baa59": [
+							"position-184782fd-9301-4383-8930-a9485f3baa59~Cashier"
+						],
+						"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49": [
+							"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49~Days"
+						],
+						"team-4dc3f710-09cf-45b9-881b-5d2eb8878513": "team-4dc3f710-09cf-45b9-881b-5d2eb8878513~Team A",
+						"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3": [
+							"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~North Store"
+						]
+					},
+					"email": "",
+					"id": "0c3e9dec-b02d-46c6-8d8b-4d0f7c35c602",
+					"languages": [],
+					"name": "Carl Sagan",
+					"notes": [],
+					"phone": "",
+					"relationships": []
+				}
+			}
+		},
+		{
+			"method": "POST",
+			"path": "/api/workers",
+			"requestBody": {
+				"name": "Pierre Curie",
+				"email": "",
+				"phone": "",
+				"assessment": "Unassessed",
+				"attributes": {
+					"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3": [
+						"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Downtown"
+					],
+					"position-184782fd-9301-4383-8930-a9485f3baa59": [
+						"position-184782fd-9301-4383-8930-a9485f3baa59~Cashier"
+					],
+					"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49": [
+						"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49~Days"
+					],
+					"team-4dc3f710-09cf-45b9-881b-5d2eb8878513": "team-4dc3f710-09cf-45b9-881b-5d2eb8878513~Team A"
+				},
+				"agitations": [],
+				"languages": [],
+				"relationships": [],
+				"notes": []
+			},
+			"status": 201,
+			"body": {
+				"worker": {
+					"agitations": [],
+					"assessment": "Unassessed",
+					"attributes": {
+						"position-184782fd-9301-4383-8930-a9485f3baa59": [
+							"position-184782fd-9301-4383-8930-a9485f3baa59~Cashier"
+						],
+						"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49": [
+							"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49~Days"
+						],
+						"team-4dc3f710-09cf-45b9-881b-5d2eb8878513": "team-4dc3f710-09cf-45b9-881b-5d2eb8878513~Team A",
+						"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3": [
+							"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Downtown"
+						]
+					},
+					"email": "",
+					"id": "075600ee-44f7-4b75-9498-cc48e7e04042",
+					"languages": [],
+					"name": "Pierre Curie",
+					"notes": [],
+					"phone": "",
+					"relationships": []
+				}
+			}
+		},
+		{
+			"method": "POST",
+			"path": "/api/workers",
+			"requestBody": {
+				"name": "Otto Hahn",
+				"email": "",
+				"phone": "",
+				"assessment": "Unassessed",
+				"attributes": {
+					"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3": [
+						"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Store B"
+					],
+					"position-184782fd-9301-4383-8930-a9485f3baa59": [],
+					"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49": [],
+					"team-4dc3f710-09cf-45b9-881b-5d2eb8878513": "team-4dc3f710-09cf-45b9-881b-5d2eb8878513~Team A"
+				},
+				"agitations": [],
+				"languages": [],
+				"relationships": [],
+				"notes": []
+			},
+			"status": 201,
+			"body": {
+				"worker": {
+					"agitations": [],
+					"assessment": "Unassessed",
+					"attributes": {
+						"position-184782fd-9301-4383-8930-a9485f3baa59": [],
+						"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49": [],
+						"team-4dc3f710-09cf-45b9-881b-5d2eb8878513": "team-4dc3f710-09cf-45b9-881b-5d2eb8878513~Team A",
+						"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3": [
+							"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Store B"
+						]
+					},
+					"email": "",
+					"id": "83738f76-624d-43df-9e7e-5b5e7af366fe",
+					"languages": [],
+					"name": "Otto Hahn",
+					"notes": [],
+					"phone": "",
+					"relationships": []
+				}
+			}
+		},
+		{
+			"method": "POST",
+			"path": "/api/workers",
+			"requestBody": {
+				"name": "Dian Fossey",
+				"email": "",
+				"phone": "",
+				"assessment": "Unassessed",
+				"attributes": {
+					"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3": [],
+					"position-184782fd-9301-4383-8930-a9485f3baa59": [],
+					"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49": [],
+					"team-4dc3f710-09cf-45b9-881b-5d2eb8878513": ""
+				},
+				"agitations": [],
+				"languages": [],
+				"relationships": [],
+				"notes": []
+			},
+			"status": 201,
+			"body": {
+				"worker": {
+					"agitations": [],
+					"assessment": "Unassessed",
+					"attributes": {
+						"position-184782fd-9301-4383-8930-a9485f3baa59": [],
+						"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49": [],
+						"team-4dc3f710-09cf-45b9-881b-5d2eb8878513": "",
+						"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3": []
+					},
+					"email": "",
+					"id": "d773eaa8-af83-41fd-8566-aeb043b96dc6",
+					"languages": [],
+					"name": "Dian Fossey",
+					"notes": [],
+					"phone": "",
+					"relationships": []
+				}
+			}
+		},
+		{
+			"method": "PATCH",
+			"path": "/api/workers/5c971cb0-ce22-4a8c-a83b-6fcb07cf7b0b",
+			"requestBody": {
+				"field": "relationships",
+				"action": "add",
+				"value": {
+					"id": "0133c77e-305e-47d9-82bc-19e7a76673f7"
+				}
+			},
+			"status": 200,
+			"body": {
+				"worker": {
+					"agitations": [],
+					"assessment": "Unassessed",
+					"attributes": {
+						"position-184782fd-9301-4383-8930-a9485f3baa59": [
+							"position-184782fd-9301-4383-8930-a9485f3baa59~Cashier",
+							"position-184782fd-9301-4383-8930-a9485f3baa59~Stocker"
+						],
+						"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49": [
+							"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49~Days",
+							"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49~Nights"
+						],
+						"team-4dc3f710-09cf-45b9-881b-5d2eb8878513": "team-4dc3f710-09cf-45b9-881b-5d2eb8878513~Team A",
+						"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3": [
+							"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Store A",
+							"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Store B"
+						]
+					},
+					"email": "",
+					"id": "5c971cb0-ce22-4a8c-a83b-6fcb07cf7b0b",
+					"languages": [],
+					"name": "Marie Curie",
+					"notes": [],
+					"phone": "",
+					"relationships": [
+						"0133c77e-305e-47d9-82bc-19e7a76673f7"
+					]
+				}
+			}
+		},
+		{
+			"method": "PATCH",
+			"path": "/api/workers/5c971cb0-ce22-4a8c-a83b-6fcb07cf7b0b",
+			"requestBody": {
+				"field": "relationships",
+				"action": "add",
+				"value": {
+					"id": "5d644b80-23e8-4ab7-9565-d5c6c61c3d5f"
+				}
+			},
+			"status": 200,
+			"body": {
+				"worker": {
+					"agitations": [],
+					"assessment": "Unassessed",
+					"attributes": {
+						"position-184782fd-9301-4383-8930-a9485f3baa59": [
+							"position-184782fd-9301-4383-8930-a9485f3baa59~Cashier",
+							"position-184782fd-9301-4383-8930-a9485f3baa59~Stocker"
+						],
+						"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49": [
+							"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49~Days",
+							"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49~Nights"
+						],
+						"team-4dc3f710-09cf-45b9-881b-5d2eb8878513": "team-4dc3f710-09cf-45b9-881b-5d2eb8878513~Team A",
+						"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3": [
+							"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Store A",
+							"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Store B"
+						]
+					},
+					"email": "",
+					"id": "5c971cb0-ce22-4a8c-a83b-6fcb07cf7b0b",
+					"languages": [],
+					"name": "Marie Curie",
+					"notes": [],
+					"phone": "",
+					"relationships": [
+						"0133c77e-305e-47d9-82bc-19e7a76673f7",
+						"5d644b80-23e8-4ab7-9565-d5c6c61c3d5f"
+					]
+				}
+			}
+		},
+		{
+			"method": "PATCH",
+			"path": "/api/workers/0133c77e-305e-47d9-82bc-19e7a76673f7",
+			"requestBody": {
+				"field": "relationships",
+				"action": "add",
+				"value": {
+					"id": "d773eaa8-af83-41fd-8566-aeb043b96dc6"
+				}
+			},
+			"status": 200,
+			"body": {
+				"worker": {
+					"agitations": [],
+					"assessment": "Unassessed",
+					"attributes": {
+						"position-184782fd-9301-4383-8930-a9485f3baa59": [
+							"position-184782fd-9301-4383-8930-a9485f3baa59~Stocker"
+						],
+						"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49": [
+							"shift-146229b5-d94c-4b91-8f53-19aa8d3a9a49~Nights"
+						],
+						"team-4dc3f710-09cf-45b9-881b-5d2eb8878513": "team-4dc3f710-09cf-45b9-881b-5d2eb8878513~Team B",
+						"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3": [
+							"territory-30fb0906-eac5-4ad5-804f-05c1f260aad3~Store B"
+						]
+					},
+					"email": "",
+					"id": "0133c77e-305e-47d9-82bc-19e7a76673f7",
+					"languages": [],
+					"name": "Grace Hopper",
+					"notes": [],
+					"phone": "",
+					"relationships": [
+						"5c971cb0-ce22-4a8c-a83b-6fcb07cf7b0b",
+						"d773eaa8-af83-41fd-8566-aeb043b96dc6"
+					]
+				}
+			}
+		}
+	],
+	"worksite": {
+		"committeeTarget": 5,
+		"id": "b5f1bd5a-f614-4fb1-a1c8-de30e5acedb0",
+		"name": "My Worksite 32"
+	}
+}

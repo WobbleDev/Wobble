@@ -1,0 +1,12 @@
+{
+	"$schema": "https://inlang.com/schema/inlang-message-format",
+	"onboarding_setup_title": "Set up your worksite",
+	"onboarding_setup_description": "Give this worksite a name or import contacts. You can configure Attributes and Agitations later in Configuration.",
+	"onboarding_worksite_name": "Worksite name",
+	"onboarding_skip_setup": "Skip setup",
+	"onboarding_import_contacts": "Import contacts",
+	"onboarding_finish_setup": "Finish setup",
+	"onboarding_saving": "Saving…",
+	"onboarding_save_name_failed": "Could not save the worksite name.",
+	"onboarding_create_failed": "Could not create the worksite."
+}

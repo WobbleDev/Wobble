@@ -1,0 +1,42 @@
+{
+	"pages": [
+		{
+			"method": "GET",
+			"path": "/api/settings",
+			"status": 200,
+			"body": {
+				"settings": {
+					"colorBlindAssessments": false,
+					"dateFormat": "system",
+					"density": "standard",
+					"increaseContrast": false,
+					"language": "system",
+					"reduceMotion": "system",
+					"rememberWindow": true,
+					"textSize": "100",
+					"theme": "system",
+					"timeFormat": "system"
+				}
+			}
+		}
+	],
+	"seed": [
+		{
+			"method": "GET",
+			"path": "/api/worksite",
+			"status": 200,
+			"body": {
+				"worksite": {
+					"committeeTarget": 5,
+					"id": "7b5bd7c9-bb8b-437c-a540-cb2e699fa9c3",
+					"name": "My Worksite 16"
+				}
+			}
+		}
+	],
+	"worksite": {
+		"committeeTarget": 5,
+		"id": "7b5bd7c9-bb8b-437c-a540-cb2e699fa9c3",
+		"name": "My Worksite 16"
+	}
+}

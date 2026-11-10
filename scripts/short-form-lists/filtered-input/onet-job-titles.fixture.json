@@ -1,0 +1,14 @@
+[
+	{
+		"onetsoc_code": "11-2011.00",
+		"title": "Public Relations Managers",
+		"job_title": "Public Relations (PR) Specialist"
+	},
+	{ "onetsoc_code": "43-3051.00", "title": "Payroll Clerks", "job_title": "Payroll (PR) Clerk" },
+	{
+		"onetsoc_code": "43-4051.00",
+		"title": "Customer Service Representatives",
+		"job_title": "Customer Service (XX) Representative"
+	},
+	{ "onetsoc_code": "43-3051.00", "title": "Payroll Clerks", "job_title": "Payroll (XP) Clerk" }
+]

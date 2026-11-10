@@ -1,0 +1,16 @@
+{
+	"items": [
+		{
+			"id": "Q11661",
+			"label": { "en": "information technology" },
+			"aliases": { "en": ["I.T.", "TI", "Shelf:Information technology"], "es": [] },
+			"p1813": { "en": ["IT"], "es": [] }
+		},
+		{
+			"id": "Q000",
+			"label": { "en": "test concept" },
+			"aliases": { "en": ["OK"], "es": [] },
+			"p1813": { "en": [], "es": [] }
+		}
+	]
+}

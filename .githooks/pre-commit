@@ -1,0 +1,24 @@
+#!/bin/sh
+# Pre-commit guardrail: format/lint the staged files, then the type-check and unit tests.
+# The full `npm run lint` (whole repo, plus knip) stays the check before calling a change done.
+# E2e is deliberately excluded (slow, and it carries a long-tail propagation contract).
+staged=$(git diff --cached --name-only --diff-filter=ACMR)
+
+# Scratch-only commits (tickets, handoffs) skip the code checks.
+if [ -z "$(printf '%s\n' "$staged" | grep -v '^\.scratch/' | grep .)" ]; then
+	exit 0
+fi
+
+prettier_files=$(printf '%s\n' "$staged" | grep -v '^\.scratch/')
+eslint_files=$(printf '%s\n' "$staged" | grep -E '\.(ts|js|mjs|cjs|svelte)$' | grep -v '^\.scratch/')
+# shellcheck disable=SC2086
+npx prettier --check --ignore-unknown $prettier_files || exit 1
+if [ -n "$eslint_files" ]; then
+	# shellcheck disable=SC2086
+	npx eslint --no-warn-ignored $eslint_files || exit 1
+fi
+npm run check || exit 1
+npm test || exit 1
+
+# Rust (fmt, clippy, tests) is not gated here: `npm run verify` runs `test:rust` when Rust or Cargo
+# files change, and that is the check before calling a change done.

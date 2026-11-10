@@ -1,0 +1,125 @@
+{
+	"revision": "sf05-fixture-1",
+	"generatedBy": "scripts/short-form-lists/build.mjs",
+	"inputs": [
+		{
+			"path": "onet-job-titles.fixture.json",
+			"sha256": "90c027407ec08b9d6f15e8ce5085e865f24f2a516317ef4c6c6dd26c35c38381",
+			"source": "O*NET Job Titles (fixture sample)",
+			"pin": "Database 31.0, job_titles.json from db_31_0_json",
+			"records": 4
+		},
+		{
+			"path": "kaikki-en.fixture.jsonl",
+			"sha256": "6de58d1690221090860bade3c6d22d95c9137cbab1af9916f664c73bd75af0d0",
+			"source": "Wiktionary via kaikki.org, English (fixture sample)",
+			"pin": "enwiktionary dump 2026-10-01, wiktextract 19f9a30, wikitextprocessor 6f96ddf",
+			"records": 25
+		},
+		{
+			"path": "kaikki-es.fixture.jsonl",
+			"sha256": "66d70ccb01d261f89c150fa555830527f36b08216ccdf9d53ba51571f25fddea",
+			"source": "Wiktionary via kaikki.org, Spanish (fixture sample)",
+			"pin": "es extraction as of 2026-10-01, wiktextract 19f9a30, wikitextprocessor 6f96ddf",
+			"records": 8
+		},
+		{
+			"path": "wikidata.fixture.json",
+			"sha256": "f69410cc0724bf178c4ff5a7a17db5fdf2fd5da3dc9d8d6772bc1ad548cbaedc",
+			"source": "Wikidata concept entities (fixture sample)",
+			"pin": "per-item revision ids recorded in fetch.mjs PINS.wikidata",
+			"records": 2
+		}
+	],
+	"kept": {
+		"en": {
+			"words": 21,
+			"acronyms": 4
+		},
+		"es": {
+			"words": 7,
+			"acronyms": 0
+		}
+	},
+	"droppedTotal": 11,
+	"duplicatePairs": 0,
+	"dropped": [
+		{
+			"short": "PR",
+			"expansion": "Clerk",
+			"reason": "first-letter",
+			"source": "onet",
+			"language": "en"
+		},
+		{
+			"short": "XP",
+			"expansion": "Clerk",
+			"reason": "first-letter",
+			"source": "onet",
+			"language": "en"
+		},
+		{
+			"short": "XX",
+			"expansion": "Customer Service",
+			"reason": "first-letter",
+			"source": "onet",
+			"language": "en"
+		},
+		{
+			"short": "XX",
+			"expansion": "Customer Service",
+			"reason": "first-letter",
+			"source": "kaikki",
+			"language": "en"
+		},
+		{
+			"short": "department",
+			"expansion": "dept",
+			"reason": "not-shorter",
+			"source": "kaikki",
+			"language": "en"
+		},
+		{
+			"short": "TI",
+			"expansion": "information technology",
+			"reason": "first-letter",
+			"source": "wikidata",
+			"language": "en"
+		},
+		{
+			"short": "XP",
+			"expansion": "Payroll",
+			"reason": "first-letter",
+			"source": "onet",
+			"language": "en"
+		},
+		{
+			"short": "XX",
+			"expansion": "Representative",
+			"reason": "first-letter",
+			"source": "onet",
+			"language": "en"
+		},
+		{
+			"short": "xyz",
+			"expansion": "servicio",
+			"reason": "first-letter",
+			"source": "kaikki",
+			"language": "es"
+		},
+		{
+			"short": "PR",
+			"expansion": "Specialist",
+			"reason": "first-letter",
+			"source": "onet",
+			"language": "en"
+		},
+		{
+			"short": "OK",
+			"expansion": "test concept",
+			"reason": "first-letter",
+			"source": "wikidata",
+			"language": "en"
+		}
+	]
+}

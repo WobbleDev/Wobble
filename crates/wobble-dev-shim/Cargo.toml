@@ -1,0 +1,7 @@
+[package]
+name = "wobble-dev-shim"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+wobble-core = { path = "../wobble-core" }

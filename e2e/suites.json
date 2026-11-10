@@ -1,0 +1,14 @@
+{
+	"boot-lifecycle": ["**/boot-lifecycle.spec.ts"],
+	"mapping": [
+		"**/mapping-scene.spec.ts",
+		"**/mapping-density.spec.ts",
+		"**/mapping-dot-drag.spec.ts",
+		"**/mapping-touch.spec.ts"
+	],
+	"onboarding": ["**/create-first-worksite.spec.ts"],
+	"settings": ["**/settings.spec.ts"],
+	"delete-worksite": ["**/delete-worksite.spec.ts"],
+	"no-scroll-density": ["**/no-scroll-density.spec.ts"],
+	"benchmark": ["**/mapping-responsiveness-benchmark.spec.ts"]
+}

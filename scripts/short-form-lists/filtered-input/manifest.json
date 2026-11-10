@@ -1,0 +1,34 @@
+{
+	"revision": "sf05-fixture-1",
+	"note": "Fixture inputs: this sandbox had no network access while ticket 05 was implemented, so a live fetch could not run. A maintainer with network access runs fetch.mjs to replace these with the full pinned extracts; the build, gates and report below behave the same. Rebuilding from these files is byte-identical.",
+	"files": [
+		{
+			"path": "onet-job-titles.fixture.json",
+			"sha256": "90c027407ec08b9d6f15e8ce5085e865f24f2a516317ef4c6c6dd26c35c38381",
+			"source": "O*NET Job Titles (fixture sample)",
+			"pin": "Database 31.0, job_titles.json from db_31_0_json",
+			"records": 4
+		},
+		{
+			"path": "kaikki-en.fixture.jsonl",
+			"sha256": "6de58d1690221090860bade3c6d22d95c9137cbab1af9916f664c73bd75af0d0",
+			"source": "Wiktionary via kaikki.org, English (fixture sample)",
+			"pin": "enwiktionary dump 2026-10-01, wiktextract 19f9a30, wikitextprocessor 6f96ddf",
+			"records": 25
+		},
+		{
+			"path": "kaikki-es.fixture.jsonl",
+			"sha256": "66d70ccb01d261f89c150fa555830527f36b08216ccdf9d53ba51571f25fddea",
+			"source": "Wiktionary via kaikki.org, Spanish (fixture sample)",
+			"pin": "es extraction as of 2026-10-01, wiktextract 19f9a30, wikitextprocessor 6f96ddf",
+			"records": 8
+		},
+		{
+			"path": "wikidata.fixture.json",
+			"sha256": "f69410cc0724bf178c4ff5a7a17db5fdf2fd5da3dc9d8d6772bc1ad548cbaedc",
+			"source": "Wikidata concept entities (fixture sample)",
+			"pin": "per-item revision ids recorded in fetch.mjs PINS.wikidata",
+			"records": 2
+		}
+	]
+}

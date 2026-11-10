@@ -1,0 +1,104 @@
+node_modules
+
+# Output
+.output
+.vercel
+.netlify
+.wrangler
+/.svelte-kit
+/build
+/.data
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Env
+.env
+.env.*
+!.env.example
+!.env.test
+
+# Vite
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
+
+# Playwright
+.playwright-mcp
+/test-results
+/playwright-report
+
+# Local agent tooling: install roots and per-tool state, never app code
+/.dsh
+/.claude/
+/.impeccable
+/.freebuff
+/.agents
+/skills-lock.json
+
+# Session handoff notes: rewritten per thread, never a tracked artefact
+/HANDOFF.md
+
+# Python (scratch scripts under .scratch/)
+__pycache__/
+*.py[cod]
+
+# Scratch probes and verification artifacts under .scratch/
+# (.scratch/ itself is the local issue tracker: specs and tickets are tracked.)
+.scratch/verify/
+.scratch/architecture-pipeline/
+.scratch/layout-assessment/
+.scratch/mapping-critique/
+.scratch/**/*.png
+.scratch/**/*.webp
+.scratch/**/*.mjs
+.scratch/**/*.py
+# Throwaway databases and server logs from local probes.
+.scratch/**/*.sqlite
+.scratch/**/*.sqlite-shm
+.scratch/**/*.sqlite-wal
+.scratch/**/*.log
+# Render surfaces: specimen pages and the font binaries they load.
+.scratch/**/renders/
+# Compare-only mockup surfaces: throwaway HTML/CSS/JS, no app code.
+.mockups-hybrid/
+.scratch/appearance-hybrids/
+.scratch/appearance-mockups/
+.scratch/mapping-layout-methods/
+
+# Nested migration worktrees (D12)
+.worktrees/
+
+# Rust / Tauri build output and generated artefacts
+/target/
+/src-tauri/gen/
+
+# Generated development-only stress catalog
+/messages/en-XA.json
+/messages/en-XA/
+
+# Lint caches
+.eslintcache
+
+# Local copies of the Intent skills; they differ from the installed plugin copies (kept untracked, 2026-10-24)
+/agent/
+
+# Scratch research notes (untracked analysis; keeps prettier --check clean)
+/research/
+
+# Local-only: agent tooling and project docs (kept on disk, never published)
+/AGENTS.md
+/CLAUDE.md
+/GEMINI.md
+/DESIGN.md
+/GLOSSARY.md
+/PRODUCT.md
+/docs/adr/
+/docs/agents/
+/docs/product-context.md
+/.mcp.json
+/.vscode/
+/.superpowers/
+/.github/copilot-instructions.md
+/scripts/launchd/
+/.scratch/

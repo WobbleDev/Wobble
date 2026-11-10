@@ -1,0 +1,17 @@
+#!/bin/sh
+# Set up a freshly created worktree so it can build and commit straight away.
+# `git worktree add` runs this with an all-zero previous HEAD; ordinary
+# checkouts in an existing worktree are left alone.
+case "$1" in *[!0]*) exit 0 ;; esac
+[ -d node_modules ] && exit 0
+
+main=$(cd "$(git rev-parse --git-common-dir)/.." && pwd)
+[ "$main" = "$(pwd)" ] && exit 0
+echo "post-checkout: preparing new worktree from $main"
+# Copy-on-write clones: fast on APFS and no extra disk until changed.
+cp -Rc "$main/node_modules" node_modules || exit 0
+[ -d "$main/target" ] && cp -Rc "$main/target" target
+# Gitignored, but the pre-commit Rust check needs them.
+[ -d "$main/src-tauri/icons" ] && cp -Rc "$main/src-tauri/icons" src-tauri/icons
+npx svelte-kit sync >/dev/null 2>&1 || true
+exit 0

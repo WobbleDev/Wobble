@@ -1,0 +1,501 @@
+{
+	"pages": [
+		{
+			"method": "GET",
+			"path": "/api/boot-status",
+			"status": 200,
+			"body": {
+				"encrypted": true,
+				"firstRun": false,
+				"legacyPlaintext": false,
+				"markerPending": false,
+				"state": "open"
+			}
+		},
+		{
+			"method": "GET",
+			"path": "/api/dataset",
+			"status": 200,
+			"body": {
+				"agitations": [],
+				"attributes": [
+					{
+						"id": "c041f122-702b-4698-8fe6-c966796bc4a0",
+						"kind": "category",
+						"name": "Department",
+						"options": [
+							{
+								"id": "c041f122-702b-4698-8fe6-c966796bc4a0~Front of House",
+								"shortForm": "Front of …",
+								"shortFormOrigin": "generated",
+								"value": "Front of House"
+							},
+							{
+								"id": "c041f122-702b-4698-8fe6-c966796bc4a0~Back of House",
+								"shortForm": "Back of H…",
+								"shortFormOrigin": "generated",
+								"value": "Back of House"
+							}
+						]
+					},
+					{
+						"id": "356cf91c-f85d-4888-9f49-084bd8f40c94",
+						"kind": "category",
+						"name": "Role",
+						"options": [
+							{
+								"id": "356cf91c-f85d-4888-9f49-084bd8f40c94~Server",
+								"shortForm": "Server",
+								"shortFormOrigin": "generated",
+								"value": "Server"
+							},
+							{
+								"id": "356cf91c-f85d-4888-9f49-084bd8f40c94~Cook",
+								"shortForm": "Cook",
+								"shortFormOrigin": "generated",
+								"value": "Cook"
+							}
+						]
+					}
+				],
+				"languages": [],
+				"settings": {
+					"colorBlindAssessments": false,
+					"dateFormat": "system",
+					"density": "standard",
+					"increaseContrast": false,
+					"language": "system",
+					"reduceMotion": "system",
+					"rememberWindow": true,
+					"textSize": "100",
+					"theme": "system",
+					"timeFormat": "system"
+				},
+				"workers": [
+					{
+						"agitations": [],
+						"assessment": "Leader",
+						"attributes": {
+							"356cf91c-f85d-4888-9f49-084bd8f40c94": "356cf91c-f85d-4888-9f49-084bd8f40c94~Server",
+							"c041f122-702b-4698-8fe6-c966796bc4a0": "c041f122-702b-4698-8fe6-c966796bc4a0~Front of House"
+						},
+						"email": "",
+						"id": "95e2ad1b-f343-4ac3-8383-184b0e71df89",
+						"languages": [],
+						"name": "Ana",
+						"notes": [],
+						"phone": "",
+						"relationships": [
+							"bd0226a9-0592-4a5b-afbb-7192fe194448"
+						]
+					},
+					{
+						"agitations": [],
+						"assessment": "Supporter",
+						"attributes": {
+							"356cf91c-f85d-4888-9f49-084bd8f40c94": "356cf91c-f85d-4888-9f49-084bd8f40c94~Cook",
+							"c041f122-702b-4698-8fe6-c966796bc4a0": "c041f122-702b-4698-8fe6-c966796bc4a0~Front of House"
+						},
+						"email": "",
+						"id": "bd0226a9-0592-4a5b-afbb-7192fe194448",
+						"languages": [],
+						"name": "Beto",
+						"notes": [],
+						"phone": "",
+						"relationships": [
+							"95e2ad1b-f343-4ac3-8383-184b0e71df89"
+						]
+					},
+					{
+						"agitations": [],
+						"assessment": "Disengaged",
+						"attributes": {
+							"356cf91c-f85d-4888-9f49-084bd8f40c94": "356cf91c-f85d-4888-9f49-084bd8f40c94~Server",
+							"c041f122-702b-4698-8fe6-c966796bc4a0": "c041f122-702b-4698-8fe6-c966796bc4a0~Back of House"
+						},
+						"email": "",
+						"id": "a9dff7bd-d212-4963-9210-969208b95511",
+						"languages": [],
+						"name": "Carla",
+						"notes": [],
+						"phone": "",
+						"relationships": []
+					},
+					{
+						"agitations": [],
+						"assessment": "Unassessed",
+						"attributes": {
+							"356cf91c-f85d-4888-9f49-084bd8f40c94": "356cf91c-f85d-4888-9f49-084bd8f40c94~Cook",
+							"c041f122-702b-4698-8fe6-c966796bc4a0": "c041f122-702b-4698-8fe6-c966796bc4a0~Back of House"
+						},
+						"email": "",
+						"id": "b68869d0-b0a5-4e3c-9c16-5286593bc289",
+						"languages": [],
+						"name": "Diego",
+						"notes": [],
+						"phone": "",
+						"relationships": []
+					}
+				],
+				"worksite": {
+					"committeeTarget": 5,
+					"id": "f8bbe7cf-7942-4ed1-b906-77a3091653d1",
+					"name": "My Worksite 9"
+				},
+				"worksites": [
+					{
+						"committeeTarget": 5,
+						"id": "945df0ac-d4f7-4298-a80a-63cde69d2984",
+						"name": "My Worksite"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "d7e8a889-ea11-4ddf-99c5-98fdfcd4473e",
+						"name": "My Worksite 2"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "33d8ac47-c9ac-49d8-9f78-0542615dd3a3",
+						"name": "My Worksite 3"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "89349663-7945-44bb-8890-4f3969ea502c",
+						"name": "My Worksite 4"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "7abc6415-5f71-4345-bfa7-879d923ac5f6",
+						"name": "My Worksite 5"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "5fca8385-2963-4dca-be59-5c1ed0f200bb",
+						"name": "My Worksite 6"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "92397821-71cc-474e-b064-bdf8b527c26a",
+						"name": "My Worksite 7"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "60947975-40a6-47e8-b533-2810d2c348a1",
+						"name": "My Worksite 8"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "f8bbe7cf-7942-4ed1-b906-77a3091653d1",
+						"name": "My Worksite 9"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "666f90a7-601a-4002-8924-a5ddaca6bdff",
+						"name": "My Worksite 10"
+					}
+				]
+			}
+		},
+		{
+			"method": "GET",
+			"path": "/api/settings",
+			"status": 200,
+			"body": {
+				"settings": {
+					"colorBlindAssessments": false,
+					"dateFormat": "system",
+					"density": "standard",
+					"increaseContrast": false,
+					"language": "system",
+					"reduceMotion": "system",
+					"rememberWindow": true,
+					"textSize": "100",
+					"theme": "system",
+					"timeFormat": "system"
+				}
+			}
+		}
+	],
+	"seed": [
+		{
+			"method": "GET",
+			"path": "/api/worksite",
+			"status": 200,
+			"body": {
+				"worksite": {
+					"committeeTarget": 5,
+					"id": "f8bbe7cf-7942-4ed1-b906-77a3091653d1",
+					"name": "My Worksite 9"
+				}
+			}
+		},
+		{
+			"method": "PUT",
+			"path": "/api/attributes",
+			"requestBody": [
+				{
+					"id": "c041f122-702b-4698-8fe6-c966796bc4a0",
+					"name": "Department",
+					"kind": "category",
+					"options": [
+						{
+							"id": "c041f122-702b-4698-8fe6-c966796bc4a0~Front of House",
+							"value": "Front of House"
+						},
+						{
+							"id": "c041f122-702b-4698-8fe6-c966796bc4a0~Back of House",
+							"value": "Back of House"
+						}
+					]
+				},
+				{
+					"id": "356cf91c-f85d-4888-9f49-084bd8f40c94",
+					"name": "Role",
+					"kind": "category",
+					"options": [
+						{
+							"id": "356cf91c-f85d-4888-9f49-084bd8f40c94~Server",
+							"value": "Server"
+						},
+						{
+							"id": "356cf91c-f85d-4888-9f49-084bd8f40c94~Cook",
+							"value": "Cook"
+						}
+					]
+				}
+			],
+			"status": 200,
+			"body": {
+				"attributes": [
+					{
+						"id": "c041f122-702b-4698-8fe6-c966796bc4a0",
+						"kind": "category",
+						"name": "Department",
+						"options": [
+							{
+								"id": "c041f122-702b-4698-8fe6-c966796bc4a0~Front of House",
+								"shortForm": "Front of …",
+								"shortFormOrigin": "generated",
+								"value": "Front of House"
+							},
+							{
+								"id": "c041f122-702b-4698-8fe6-c966796bc4a0~Back of House",
+								"shortForm": "Back of H…",
+								"shortFormOrigin": "generated",
+								"value": "Back of House"
+							}
+						]
+					},
+					{
+						"id": "356cf91c-f85d-4888-9f49-084bd8f40c94",
+						"kind": "category",
+						"name": "Role",
+						"options": [
+							{
+								"id": "356cf91c-f85d-4888-9f49-084bd8f40c94~Server",
+								"shortForm": "Server",
+								"shortFormOrigin": "generated",
+								"value": "Server"
+							},
+							{
+								"id": "356cf91c-f85d-4888-9f49-084bd8f40c94~Cook",
+								"shortForm": "Cook",
+								"shortFormOrigin": "generated",
+								"value": "Cook"
+							}
+						]
+					}
+				]
+			}
+		},
+		{
+			"method": "POST",
+			"path": "/api/workers",
+			"requestBody": {
+				"name": "Ana",
+				"email": "",
+				"phone": "",
+				"assessment": "Leader",
+				"attributes": {
+					"c041f122-702b-4698-8fe6-c966796bc4a0": "c041f122-702b-4698-8fe6-c966796bc4a0~Front of House",
+					"356cf91c-f85d-4888-9f49-084bd8f40c94": "356cf91c-f85d-4888-9f49-084bd8f40c94~Server"
+				},
+				"agitations": [],
+				"languages": [],
+				"relationships": [],
+				"notes": []
+			},
+			"status": 201,
+			"body": {
+				"worker": {
+					"agitations": [],
+					"assessment": "Leader",
+					"attributes": {
+						"356cf91c-f85d-4888-9f49-084bd8f40c94": "356cf91c-f85d-4888-9f49-084bd8f40c94~Server",
+						"c041f122-702b-4698-8fe6-c966796bc4a0": "c041f122-702b-4698-8fe6-c966796bc4a0~Front of House"
+					},
+					"email": "",
+					"id": "95e2ad1b-f343-4ac3-8383-184b0e71df89",
+					"languages": [],
+					"name": "Ana",
+					"notes": [],
+					"phone": "",
+					"relationships": []
+				}
+			}
+		},
+		{
+			"method": "POST",
+			"path": "/api/workers",
+			"requestBody": {
+				"name": "Beto",
+				"email": "",
+				"phone": "",
+				"assessment": "Supporter",
+				"attributes": {
+					"c041f122-702b-4698-8fe6-c966796bc4a0": "c041f122-702b-4698-8fe6-c966796bc4a0~Front of House",
+					"356cf91c-f85d-4888-9f49-084bd8f40c94": "356cf91c-f85d-4888-9f49-084bd8f40c94~Cook"
+				},
+				"agitations": [],
+				"languages": [],
+				"relationships": [],
+				"notes": []
+			},
+			"status": 201,
+			"body": {
+				"worker": {
+					"agitations": [],
+					"assessment": "Supporter",
+					"attributes": {
+						"356cf91c-f85d-4888-9f49-084bd8f40c94": "356cf91c-f85d-4888-9f49-084bd8f40c94~Cook",
+						"c041f122-702b-4698-8fe6-c966796bc4a0": "c041f122-702b-4698-8fe6-c966796bc4a0~Front of House"
+					},
+					"email": "",
+					"id": "bd0226a9-0592-4a5b-afbb-7192fe194448",
+					"languages": [],
+					"name": "Beto",
+					"notes": [],
+					"phone": "",
+					"relationships": []
+				}
+			}
+		},
+		{
+			"method": "POST",
+			"path": "/api/workers",
+			"requestBody": {
+				"name": "Carla",
+				"email": "",
+				"phone": "",
+				"assessment": "Disengaged",
+				"attributes": {
+					"c041f122-702b-4698-8fe6-c966796bc4a0": "c041f122-702b-4698-8fe6-c966796bc4a0~Back of House",
+					"356cf91c-f85d-4888-9f49-084bd8f40c94": "356cf91c-f85d-4888-9f49-084bd8f40c94~Server"
+				},
+				"agitations": [],
+				"languages": [],
+				"relationships": [],
+				"notes": []
+			},
+			"status": 201,
+			"body": {
+				"worker": {
+					"agitations": [],
+					"assessment": "Disengaged",
+					"attributes": {
+						"356cf91c-f85d-4888-9f49-084bd8f40c94": "356cf91c-f85d-4888-9f49-084bd8f40c94~Server",
+						"c041f122-702b-4698-8fe6-c966796bc4a0": "c041f122-702b-4698-8fe6-c966796bc4a0~Back of House"
+					},
+					"email": "",
+					"id": "a9dff7bd-d212-4963-9210-969208b95511",
+					"languages": [],
+					"name": "Carla",
+					"notes": [],
+					"phone": "",
+					"relationships": []
+				}
+			}
+		},
+		{
+			"method": "POST",
+			"path": "/api/workers",
+			"requestBody": {
+				"name": "Diego",
+				"email": "",
+				"phone": "",
+				"assessment": "Unassessed",
+				"attributes": {
+					"c041f122-702b-4698-8fe6-c966796bc4a0": "c041f122-702b-4698-8fe6-c966796bc4a0~Back of House",
+					"356cf91c-f85d-4888-9f49-084bd8f40c94": "356cf91c-f85d-4888-9f49-084bd8f40c94~Cook"
+				},
+				"agitations": [],
+				"languages": [],
+				"relationships": [],
+				"notes": []
+			},
+			"status": 201,
+			"body": {
+				"worker": {
+					"agitations": [],
+					"assessment": "Unassessed",
+					"attributes": {
+						"356cf91c-f85d-4888-9f49-084bd8f40c94": "356cf91c-f85d-4888-9f49-084bd8f40c94~Cook",
+						"c041f122-702b-4698-8fe6-c966796bc4a0": "c041f122-702b-4698-8fe6-c966796bc4a0~Back of House"
+					},
+					"email": "",
+					"id": "b68869d0-b0a5-4e3c-9c16-5286593bc289",
+					"languages": [],
+					"name": "Diego",
+					"notes": [],
+					"phone": "",
+					"relationships": []
+				}
+			}
+		},
+		{
+			"method": "PUT",
+			"path": "/api/workers/95e2ad1b-f343-4ac3-8383-184b0e71df89",
+			"requestBody": {
+				"name": "Ana",
+				"email": "",
+				"phone": "",
+				"assessment": "Leader",
+				"attributes": {
+					"c041f122-702b-4698-8fe6-c966796bc4a0": "c041f122-702b-4698-8fe6-c966796bc4a0~Front of House",
+					"356cf91c-f85d-4888-9f49-084bd8f40c94": "356cf91c-f85d-4888-9f49-084bd8f40c94~Server"
+				},
+				"agitations": [],
+				"languages": [],
+				"relationships": [
+					"bd0226a9-0592-4a5b-afbb-7192fe194448"
+				],
+				"notes": []
+			},
+			"status": 200,
+			"body": {
+				"worker": {
+					"agitations": [],
+					"assessment": "Leader",
+					"attributes": {
+						"356cf91c-f85d-4888-9f49-084bd8f40c94": "356cf91c-f85d-4888-9f49-084bd8f40c94~Server",
+						"c041f122-702b-4698-8fe6-c966796bc4a0": "c041f122-702b-4698-8fe6-c966796bc4a0~Front of House"
+					},
+					"email": "",
+					"id": "95e2ad1b-f343-4ac3-8383-184b0e71df89",
+					"languages": [],
+					"name": "Ana",
+					"notes": [],
+					"phone": "",
+					"relationships": [
+						"bd0226a9-0592-4a5b-afbb-7192fe194448"
+					]
+				}
+			}
+		}
+	],
+	"worksite": {
+		"committeeTarget": 5,
+		"id": "f8bbe7cf-7942-4ed1-b906-77a3091653d1",
+		"name": "My Worksite 9"
+	}
+}

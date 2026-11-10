@@ -1,0 +1,9 @@
+{
+	"$schema": "https://inlang.com/schema/inlang-message-format",
+	"native_menu_edit": "Editar",
+	"native_menu_window": "Ventana",
+	"native_menu_quit": "Salir de Wobble",
+	"native_backup_save_title": "Exportar copia de seguridad de Wobble",
+	"native_restore_open_title": "Elige una copia de seguridad de Wobble",
+	"native_database_filter": "Base de datos SQLite"
+}

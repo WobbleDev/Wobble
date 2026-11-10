@@ -1,0 +1,24 @@
+{
+	"$schema": "https://inlang.com/schema/project-settings",
+	"baseLocale": "en",
+	"locales": ["en", "es-419", "en-XA"],
+	"modules": [
+		"./node_modules/@inlang/plugin-message-format/dist/index.js",
+		"./node_modules/@inlang/plugin-m-function-matcher/dist/index.js"
+	],
+	"plugin.inlang.messageFormat": {
+		"pathPattern": [
+			"./messages/{locale}.json",
+			"./messages/{locale}/workers.json",
+			"./messages/{locale}/overview.json",
+			"./messages/{locale}/mapping.json",
+			"./messages/{locale}/configuration.json",
+			"./messages/{locale}/settings.json",
+			"./messages/{locale}/onboarding.json",
+			"./messages/{locale}/native.json",
+			"./messages/{locale}/views.json",
+			"./messages/{locale}/stress.json"
+		],
+		"sort": "asc"
+	}
+}

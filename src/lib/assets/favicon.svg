@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+	<title>Wobble</title>
+	<!-- Field: --a-600, the one press vermilion. A favicon cannot read the
+	     stylesheet, so the value is mirrored here the way the Assessment hexes are. -->
+	<rect width="32" height="32" rx="7" fill="#C5341C" />
+	<!-- Three Workers, two Relationships: the Workers table and the Map in one mark. -->
+	<g stroke="#fff" stroke-width="2" stroke-linecap="round">
+		<path d="M10.2 21.6 16 11.4" />
+		<path d="M16 11.4 23 20.2" />
+	</g>
+	<g fill="#fff">
+		<circle cx="10.2" cy="21.6" r="3.3" />
+		<circle cx="23" cy="20.2" r="3.3" />
+		<circle cx="16" cy="11.4" r="3.9" />
+	</g>
+</svg>

@@ -1,0 +1,50 @@
+{
+	"mapping": ["**/mapping-*.spec.ts"],
+	"overview": ["**/overview-*.spec.ts", "**/design-polish.spec.ts"],
+	"configuration": [
+		"**/configuration-*.spec.ts",
+		"**/accessible-long-hierarchy-paths.spec.ts",
+		"**/navigation-rail-configuration-footer.spec.ts"
+	],
+	"workers": [
+		"**/workers-*.spec.ts",
+		"**/bulk-actions.spec.ts",
+		"**/language-select.spec.ts",
+		"**/one-line-chips.spec.ts",
+		"**/i18n-workers.spec.ts"
+	],
+	"persistence": [
+		"**/create-first-worksite.spec.ts",
+		"**/delete-worksite.spec.ts",
+		"**/worksite-switcher.spec.ts",
+		"**/worksite-continuation.spec.ts",
+		"**/operation-feedback.spec.ts"
+	],
+	"settings-ui": [
+		"**/settings.spec.ts",
+		"**/no-scroll-density.spec.ts",
+		"**/i18n-shell.spec.ts",
+		"**/i18n-stress.spec.ts"
+	],
+	"shared-shell": [
+		"**/startup-loading.spec.ts",
+		"**/keyboard-shortcuts.spec.ts",
+		"**/shell-continuous-ground.spec.ts",
+		"**/mobile-adaptation.spec.ts",
+		"**/no-scroll-surfaces.spec.ts",
+		"**/semantics-long-content.spec.ts",
+		"**/boot-lifecycle.spec.ts"
+	],
+	"cross-area": [
+		"**/i18n-overview-mapping.spec.ts",
+		"**/product-gap-03.spec.ts",
+		"**/product-gap-04.spec.ts",
+		"**/product-gap-05.spec.ts",
+		"**/product-gap-06.spec.ts",
+		"**/product-gap-07.spec.ts",
+		"**/product-gap-08.spec.ts",
+		"**/product-gap-09.spec.ts",
+		"**/product-gap-10.spec.ts",
+		"**/product-gap-11.spec.ts"
+	]
+}

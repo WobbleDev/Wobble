@@ -1,0 +1,1797 @@
+{
+	"metadata": {
+		"name": "Synthetic Mapping arrangement baseline",
+		"createdAt": "2026-10-15T22:19:52.738Z",
+		"fixtureDescription": "60 synthetic Workers in eight communities with 16 ring inter-community Relationships; this does not reproduce unavailable hand-arranged screenshot data.",
+		"conditions": {
+			"canvas": {
+				"width": 1280,
+				"height": 800
+			},
+			"gap": 80,
+			"radiusLaw": "nodeRadius(relationshipCount)",
+			"bodyPadding": 40
+		},
+		"identities": {
+			"workers": [
+				"synthetic-01",
+				"synthetic-02",
+				"synthetic-03",
+				"synthetic-04",
+				"synthetic-05",
+				"synthetic-06",
+				"synthetic-07",
+				"synthetic-08",
+				"synthetic-09",
+				"synthetic-10",
+				"synthetic-11",
+				"synthetic-12",
+				"synthetic-13",
+				"synthetic-14",
+				"synthetic-15",
+				"synthetic-16",
+				"synthetic-17",
+				"synthetic-18",
+				"synthetic-19",
+				"synthetic-20",
+				"synthetic-21",
+				"synthetic-22",
+				"synthetic-23",
+				"synthetic-24",
+				"synthetic-25",
+				"synthetic-26",
+				"synthetic-27",
+				"synthetic-28",
+				"synthetic-29",
+				"synthetic-30",
+				"synthetic-31",
+				"synthetic-32",
+				"synthetic-33",
+				"synthetic-34",
+				"synthetic-35",
+				"synthetic-36",
+				"synthetic-37",
+				"synthetic-38",
+				"synthetic-39",
+				"synthetic-40",
+				"synthetic-41",
+				"synthetic-42",
+				"synthetic-43",
+				"synthetic-44",
+				"synthetic-45",
+				"synthetic-46",
+				"synthetic-47",
+				"synthetic-48",
+				"synthetic-49",
+				"synthetic-50",
+				"synthetic-51",
+				"synthetic-52",
+				"synthetic-53",
+				"synthetic-54",
+				"synthetic-55",
+				"synthetic-56",
+				"synthetic-57",
+				"synthetic-58",
+				"synthetic-59",
+				"synthetic-60"
+			],
+			"relationships": [
+				{
+					"id": "relationship-001",
+					"source": "synthetic-01",
+					"target": "synthetic-02"
+				},
+				{
+					"id": "relationship-002",
+					"source": "synthetic-01",
+					"target": "synthetic-03"
+				},
+				{
+					"id": "relationship-003",
+					"source": "synthetic-02",
+					"target": "synthetic-03"
+				},
+				{
+					"id": "relationship-004",
+					"source": "synthetic-02",
+					"target": "synthetic-04"
+				},
+				{
+					"id": "relationship-005",
+					"source": "synthetic-03",
+					"target": "synthetic-04"
+				},
+				{
+					"id": "relationship-006",
+					"source": "synthetic-03",
+					"target": "synthetic-05"
+				},
+				{
+					"id": "relationship-007",
+					"source": "synthetic-04",
+					"target": "synthetic-05"
+				},
+				{
+					"id": "relationship-008",
+					"source": "synthetic-04",
+					"target": "synthetic-06"
+				},
+				{
+					"id": "relationship-009",
+					"source": "synthetic-05",
+					"target": "synthetic-06"
+				},
+				{
+					"id": "relationship-010",
+					"source": "synthetic-05",
+					"target": "synthetic-07"
+				},
+				{
+					"id": "relationship-011",
+					"source": "synthetic-06",
+					"target": "synthetic-07"
+				},
+				{
+					"id": "relationship-012",
+					"source": "synthetic-06",
+					"target": "synthetic-08"
+				},
+				{
+					"id": "relationship-013",
+					"source": "synthetic-07",
+					"target": "synthetic-08"
+				},
+				{
+					"id": "relationship-014",
+					"source": "synthetic-07",
+					"target": "synthetic-01"
+				},
+				{
+					"id": "relationship-015",
+					"source": "synthetic-08",
+					"target": "synthetic-01"
+				},
+				{
+					"id": "relationship-016",
+					"source": "synthetic-08",
+					"target": "synthetic-02"
+				},
+				{
+					"id": "relationship-017",
+					"source": "synthetic-09",
+					"target": "synthetic-10"
+				},
+				{
+					"id": "relationship-018",
+					"source": "synthetic-09",
+					"target": "synthetic-11"
+				},
+				{
+					"id": "relationship-019",
+					"source": "synthetic-10",
+					"target": "synthetic-11"
+				},
+				{
+					"id": "relationship-020",
+					"source": "synthetic-10",
+					"target": "synthetic-12"
+				},
+				{
+					"id": "relationship-021",
+					"source": "synthetic-11",
+					"target": "synthetic-12"
+				},
+				{
+					"id": "relationship-022",
+					"source": "synthetic-11",
+					"target": "synthetic-13"
+				},
+				{
+					"id": "relationship-023",
+					"source": "synthetic-12",
+					"target": "synthetic-13"
+				},
+				{
+					"id": "relationship-024",
+					"source": "synthetic-12",
+					"target": "synthetic-14"
+				},
+				{
+					"id": "relationship-025",
+					"source": "synthetic-13",
+					"target": "synthetic-14"
+				},
+				{
+					"id": "relationship-026",
+					"source": "synthetic-13",
+					"target": "synthetic-15"
+				},
+				{
+					"id": "relationship-027",
+					"source": "synthetic-14",
+					"target": "synthetic-15"
+				},
+				{
+					"id": "relationship-028",
+					"source": "synthetic-14",
+					"target": "synthetic-16"
+				},
+				{
+					"id": "relationship-029",
+					"source": "synthetic-15",
+					"target": "synthetic-16"
+				},
+				{
+					"id": "relationship-030",
+					"source": "synthetic-15",
+					"target": "synthetic-09"
+				},
+				{
+					"id": "relationship-031",
+					"source": "synthetic-16",
+					"target": "synthetic-09"
+				},
+				{
+					"id": "relationship-032",
+					"source": "synthetic-16",
+					"target": "synthetic-10"
+				},
+				{
+					"id": "relationship-033",
+					"source": "synthetic-17",
+					"target": "synthetic-18"
+				},
+				{
+					"id": "relationship-034",
+					"source": "synthetic-17",
+					"target": "synthetic-19"
+				},
+				{
+					"id": "relationship-035",
+					"source": "synthetic-18",
+					"target": "synthetic-19"
+				},
+				{
+					"id": "relationship-036",
+					"source": "synthetic-18",
+					"target": "synthetic-20"
+				},
+				{
+					"id": "relationship-037",
+					"source": "synthetic-19",
+					"target": "synthetic-20"
+				},
+				{
+					"id": "relationship-038",
+					"source": "synthetic-19",
+					"target": "synthetic-21"
+				},
+				{
+					"id": "relationship-039",
+					"source": "synthetic-20",
+					"target": "synthetic-21"
+				},
+				{
+					"id": "relationship-040",
+					"source": "synthetic-20",
+					"target": "synthetic-22"
+				},
+				{
+					"id": "relationship-041",
+					"source": "synthetic-21",
+					"target": "synthetic-22"
+				},
+				{
+					"id": "relationship-042",
+					"source": "synthetic-21",
+					"target": "synthetic-23"
+				},
+				{
+					"id": "relationship-043",
+					"source": "synthetic-22",
+					"target": "synthetic-23"
+				},
+				{
+					"id": "relationship-044",
+					"source": "synthetic-22",
+					"target": "synthetic-24"
+				},
+				{
+					"id": "relationship-045",
+					"source": "synthetic-23",
+					"target": "synthetic-24"
+				},
+				{
+					"id": "relationship-046",
+					"source": "synthetic-23",
+					"target": "synthetic-17"
+				},
+				{
+					"id": "relationship-047",
+					"source": "synthetic-24",
+					"target": "synthetic-17"
+				},
+				{
+					"id": "relationship-048",
+					"source": "synthetic-24",
+					"target": "synthetic-18"
+				},
+				{
+					"id": "relationship-049",
+					"source": "synthetic-25",
+					"target": "synthetic-26"
+				},
+				{
+					"id": "relationship-050",
+					"source": "synthetic-25",
+					"target": "synthetic-27"
+				},
+				{
+					"id": "relationship-051",
+					"source": "synthetic-26",
+					"target": "synthetic-27"
+				},
+				{
+					"id": "relationship-052",
+					"source": "synthetic-26",
+					"target": "synthetic-28"
+				},
+				{
+					"id": "relationship-053",
+					"source": "synthetic-27",
+					"target": "synthetic-28"
+				},
+				{
+					"id": "relationship-054",
+					"source": "synthetic-27",
+					"target": "synthetic-29"
+				},
+				{
+					"id": "relationship-055",
+					"source": "synthetic-28",
+					"target": "synthetic-29"
+				},
+				{
+					"id": "relationship-056",
+					"source": "synthetic-28",
+					"target": "synthetic-30"
+				},
+				{
+					"id": "relationship-057",
+					"source": "synthetic-29",
+					"target": "synthetic-30"
+				},
+				{
+					"id": "relationship-058",
+					"source": "synthetic-29",
+					"target": "synthetic-31"
+				},
+				{
+					"id": "relationship-059",
+					"source": "synthetic-30",
+					"target": "synthetic-31"
+				},
+				{
+					"id": "relationship-060",
+					"source": "synthetic-30",
+					"target": "synthetic-32"
+				},
+				{
+					"id": "relationship-061",
+					"source": "synthetic-31",
+					"target": "synthetic-32"
+				},
+				{
+					"id": "relationship-062",
+					"source": "synthetic-31",
+					"target": "synthetic-25"
+				},
+				{
+					"id": "relationship-063",
+					"source": "synthetic-32",
+					"target": "synthetic-25"
+				},
+				{
+					"id": "relationship-064",
+					"source": "synthetic-32",
+					"target": "synthetic-26"
+				},
+				{
+					"id": "relationship-065",
+					"source": "synthetic-33",
+					"target": "synthetic-34"
+				},
+				{
+					"id": "relationship-066",
+					"source": "synthetic-33",
+					"target": "synthetic-35"
+				},
+				{
+					"id": "relationship-067",
+					"source": "synthetic-34",
+					"target": "synthetic-35"
+				},
+				{
+					"id": "relationship-068",
+					"source": "synthetic-34",
+					"target": "synthetic-36"
+				},
+				{
+					"id": "relationship-069",
+					"source": "synthetic-35",
+					"target": "synthetic-36"
+				},
+				{
+					"id": "relationship-070",
+					"source": "synthetic-35",
+					"target": "synthetic-37"
+				},
+				{
+					"id": "relationship-071",
+					"source": "synthetic-36",
+					"target": "synthetic-37"
+				},
+				{
+					"id": "relationship-072",
+					"source": "synthetic-36",
+					"target": "synthetic-38"
+				},
+				{
+					"id": "relationship-073",
+					"source": "synthetic-37",
+					"target": "synthetic-38"
+				},
+				{
+					"id": "relationship-074",
+					"source": "synthetic-37",
+					"target": "synthetic-39"
+				},
+				{
+					"id": "relationship-075",
+					"source": "synthetic-38",
+					"target": "synthetic-39"
+				},
+				{
+					"id": "relationship-076",
+					"source": "synthetic-38",
+					"target": "synthetic-33"
+				},
+				{
+					"id": "relationship-077",
+					"source": "synthetic-39",
+					"target": "synthetic-33"
+				},
+				{
+					"id": "relationship-078",
+					"source": "synthetic-39",
+					"target": "synthetic-34"
+				},
+				{
+					"id": "relationship-079",
+					"source": "synthetic-40",
+					"target": "synthetic-41"
+				},
+				{
+					"id": "relationship-080",
+					"source": "synthetic-40",
+					"target": "synthetic-42"
+				},
+				{
+					"id": "relationship-081",
+					"source": "synthetic-41",
+					"target": "synthetic-42"
+				},
+				{
+					"id": "relationship-082",
+					"source": "synthetic-41",
+					"target": "synthetic-43"
+				},
+				{
+					"id": "relationship-083",
+					"source": "synthetic-42",
+					"target": "synthetic-43"
+				},
+				{
+					"id": "relationship-084",
+					"source": "synthetic-42",
+					"target": "synthetic-44"
+				},
+				{
+					"id": "relationship-085",
+					"source": "synthetic-43",
+					"target": "synthetic-44"
+				},
+				{
+					"id": "relationship-086",
+					"source": "synthetic-43",
+					"target": "synthetic-45"
+				},
+				{
+					"id": "relationship-087",
+					"source": "synthetic-44",
+					"target": "synthetic-45"
+				},
+				{
+					"id": "relationship-088",
+					"source": "synthetic-44",
+					"target": "synthetic-46"
+				},
+				{
+					"id": "relationship-089",
+					"source": "synthetic-45",
+					"target": "synthetic-46"
+				},
+				{
+					"id": "relationship-090",
+					"source": "synthetic-45",
+					"target": "synthetic-40"
+				},
+				{
+					"id": "relationship-091",
+					"source": "synthetic-46",
+					"target": "synthetic-40"
+				},
+				{
+					"id": "relationship-092",
+					"source": "synthetic-46",
+					"target": "synthetic-41"
+				},
+				{
+					"id": "relationship-093",
+					"source": "synthetic-47",
+					"target": "synthetic-48"
+				},
+				{
+					"id": "relationship-094",
+					"source": "synthetic-47",
+					"target": "synthetic-49"
+				},
+				{
+					"id": "relationship-095",
+					"source": "synthetic-48",
+					"target": "synthetic-49"
+				},
+				{
+					"id": "relationship-096",
+					"source": "synthetic-48",
+					"target": "synthetic-50"
+				},
+				{
+					"id": "relationship-097",
+					"source": "synthetic-49",
+					"target": "synthetic-50"
+				},
+				{
+					"id": "relationship-098",
+					"source": "synthetic-49",
+					"target": "synthetic-51"
+				},
+				{
+					"id": "relationship-099",
+					"source": "synthetic-50",
+					"target": "synthetic-51"
+				},
+				{
+					"id": "relationship-100",
+					"source": "synthetic-50",
+					"target": "synthetic-52"
+				},
+				{
+					"id": "relationship-101",
+					"source": "synthetic-51",
+					"target": "synthetic-52"
+				},
+				{
+					"id": "relationship-102",
+					"source": "synthetic-51",
+					"target": "synthetic-53"
+				},
+				{
+					"id": "relationship-103",
+					"source": "synthetic-52",
+					"target": "synthetic-53"
+				},
+				{
+					"id": "relationship-104",
+					"source": "synthetic-52",
+					"target": "synthetic-47"
+				},
+				{
+					"id": "relationship-105",
+					"source": "synthetic-53",
+					"target": "synthetic-47"
+				},
+				{
+					"id": "relationship-106",
+					"source": "synthetic-53",
+					"target": "synthetic-48"
+				},
+				{
+					"id": "relationship-107",
+					"source": "synthetic-54",
+					"target": "synthetic-55"
+				},
+				{
+					"id": "relationship-108",
+					"source": "synthetic-54",
+					"target": "synthetic-56"
+				},
+				{
+					"id": "relationship-109",
+					"source": "synthetic-55",
+					"target": "synthetic-56"
+				},
+				{
+					"id": "relationship-110",
+					"source": "synthetic-55",
+					"target": "synthetic-57"
+				},
+				{
+					"id": "relationship-111",
+					"source": "synthetic-56",
+					"target": "synthetic-57"
+				},
+				{
+					"id": "relationship-112",
+					"source": "synthetic-56",
+					"target": "synthetic-58"
+				},
+				{
+					"id": "relationship-113",
+					"source": "synthetic-57",
+					"target": "synthetic-58"
+				},
+				{
+					"id": "relationship-114",
+					"source": "synthetic-57",
+					"target": "synthetic-59"
+				},
+				{
+					"id": "relationship-115",
+					"source": "synthetic-58",
+					"target": "synthetic-59"
+				},
+				{
+					"id": "relationship-116",
+					"source": "synthetic-58",
+					"target": "synthetic-60"
+				},
+				{
+					"id": "relationship-117",
+					"source": "synthetic-59",
+					"target": "synthetic-60"
+				},
+				{
+					"id": "relationship-118",
+					"source": "synthetic-59",
+					"target": "synthetic-54"
+				},
+				{
+					"id": "relationship-119",
+					"source": "synthetic-60",
+					"target": "synthetic-54"
+				},
+				{
+					"id": "relationship-120",
+					"source": "synthetic-60",
+					"target": "synthetic-55"
+				},
+				{
+					"id": "relationship-121",
+					"source": "synthetic-01",
+					"target": "synthetic-09"
+				},
+				{
+					"id": "relationship-122",
+					"source": "synthetic-05",
+					"target": "synthetic-13"
+				},
+				{
+					"id": "relationship-123",
+					"source": "synthetic-09",
+					"target": "synthetic-17"
+				},
+				{
+					"id": "relationship-124",
+					"source": "synthetic-13",
+					"target": "synthetic-21"
+				},
+				{
+					"id": "relationship-125",
+					"source": "synthetic-17",
+					"target": "synthetic-25"
+				},
+				{
+					"id": "relationship-126",
+					"source": "synthetic-21",
+					"target": "synthetic-29"
+				},
+				{
+					"id": "relationship-127",
+					"source": "synthetic-25",
+					"target": "synthetic-33"
+				},
+				{
+					"id": "relationship-128",
+					"source": "synthetic-29",
+					"target": "synthetic-36"
+				},
+				{
+					"id": "relationship-129",
+					"source": "synthetic-33",
+					"target": "synthetic-40"
+				},
+				{
+					"id": "relationship-130",
+					"source": "synthetic-36",
+					"target": "synthetic-43"
+				},
+				{
+					"id": "relationship-131",
+					"source": "synthetic-40",
+					"target": "synthetic-47"
+				},
+				{
+					"id": "relationship-132",
+					"source": "synthetic-43",
+					"target": "synthetic-50"
+				},
+				{
+					"id": "relationship-133",
+					"source": "synthetic-47",
+					"target": "synthetic-54"
+				},
+				{
+					"id": "relationship-134",
+					"source": "synthetic-50",
+					"target": "synthetic-57"
+				},
+				{
+					"id": "relationship-135",
+					"source": "synthetic-54",
+					"target": "synthetic-01"
+				},
+				{
+					"id": "relationship-136",
+					"source": "synthetic-57",
+					"target": "synthetic-05"
+				}
+			],
+			"communities": {
+				"synthetic-01": "Community 1",
+				"synthetic-02": "Community 1",
+				"synthetic-03": "Community 1",
+				"synthetic-04": "Community 1",
+				"synthetic-05": "Community 1",
+				"synthetic-06": "Community 1",
+				"synthetic-07": "Community 1",
+				"synthetic-08": "Community 1",
+				"synthetic-09": "Community 2",
+				"synthetic-10": "Community 2",
+				"synthetic-11": "Community 2",
+				"synthetic-12": "Community 2",
+				"synthetic-13": "Community 2",
+				"synthetic-14": "Community 2",
+				"synthetic-15": "Community 2",
+				"synthetic-16": "Community 2",
+				"synthetic-17": "Community 3",
+				"synthetic-18": "Community 3",
+				"synthetic-19": "Community 3",
+				"synthetic-20": "Community 3",
+				"synthetic-21": "Community 3",
+				"synthetic-22": "Community 3",
+				"synthetic-23": "Community 3",
+				"synthetic-24": "Community 3",
+				"synthetic-25": "Community 4",
+				"synthetic-26": "Community 4",
+				"synthetic-27": "Community 4",
+				"synthetic-28": "Community 4",
+				"synthetic-29": "Community 4",
+				"synthetic-30": "Community 4",
+				"synthetic-31": "Community 4",
+				"synthetic-32": "Community 4",
+				"synthetic-33": "Community 5",
+				"synthetic-34": "Community 5",
+				"synthetic-35": "Community 5",
+				"synthetic-36": "Community 5",
+				"synthetic-37": "Community 5",
+				"synthetic-38": "Community 5",
+				"synthetic-39": "Community 5",
+				"synthetic-40": "Community 6",
+				"synthetic-41": "Community 6",
+				"synthetic-42": "Community 6",
+				"synthetic-43": "Community 6",
+				"synthetic-44": "Community 6",
+				"synthetic-45": "Community 6",
+				"synthetic-46": "Community 6",
+				"synthetic-47": "Community 7",
+				"synthetic-48": "Community 7",
+				"synthetic-49": "Community 7",
+				"synthetic-50": "Community 7",
+				"synthetic-51": "Community 7",
+				"synthetic-52": "Community 7",
+				"synthetic-53": "Community 7",
+				"synthetic-54": "Community 8",
+				"synthetic-55": "Community 8",
+				"synthetic-56": "Community 8",
+				"synthetic-57": "Community 8",
+				"synthetic-58": "Community 8",
+				"synthetic-59": "Community 8",
+				"synthetic-60": "Community 8"
+			},
+			"groups": {
+				"synthetic-01": "Department 1",
+				"synthetic-02": "Department 1",
+				"synthetic-03": "Department 1",
+				"synthetic-04": "Department 1",
+				"synthetic-05": "Department 1",
+				"synthetic-06": "Department 1",
+				"synthetic-07": "Department 1",
+				"synthetic-08": "Department 1",
+				"synthetic-09": "Department 1",
+				"synthetic-10": "Department 1",
+				"synthetic-11": "Department 1",
+				"synthetic-12": "Department 1",
+				"synthetic-13": "Department 2",
+				"synthetic-14": "Department 2",
+				"synthetic-15": "Department 2",
+				"synthetic-16": "Department 2",
+				"synthetic-17": "Department 2",
+				"synthetic-18": "Department 2",
+				"synthetic-19": "Department 2",
+				"synthetic-20": "Department 2",
+				"synthetic-21": "Department 2",
+				"synthetic-22": "Department 2",
+				"synthetic-23": "Department 2",
+				"synthetic-24": "Department 2",
+				"synthetic-25": "Department 3",
+				"synthetic-26": "Department 3",
+				"synthetic-27": "Department 3",
+				"synthetic-28": "Department 3",
+				"synthetic-29": "Department 3",
+				"synthetic-30": "Department 3",
+				"synthetic-31": "Department 3",
+				"synthetic-32": "Department 3",
+				"synthetic-33": "Department 3",
+				"synthetic-34": "Department 3",
+				"synthetic-35": "Department 3",
+				"synthetic-36": "Department 3",
+				"synthetic-37": "Department 4",
+				"synthetic-38": "Department 4",
+				"synthetic-39": "Department 4",
+				"synthetic-40": "Department 4",
+				"synthetic-41": "Department 4",
+				"synthetic-42": "Department 4",
+				"synthetic-43": "Department 4",
+				"synthetic-44": "Department 4",
+				"synthetic-45": "Department 4",
+				"synthetic-46": "Department 4",
+				"synthetic-47": "Department 4",
+				"synthetic-48": "Department 4",
+				"synthetic-49": "Department 5",
+				"synthetic-50": "Department 5",
+				"synthetic-51": "Department 5",
+				"synthetic-52": "Department 5",
+				"synthetic-53": "Department 5",
+				"synthetic-54": "Department 5",
+				"synthetic-55": "Department 5",
+				"synthetic-56": "Department 5",
+				"synthetic-57": "Department 5",
+				"synthetic-58": "Department 5",
+				"synthetic-59": "Department 5",
+				"synthetic-60": "Department 5"
+			},
+			"subGroups": {
+				"synthetic-01": "Department 1 / Role A",
+				"synthetic-02": "Department 1 / Role A",
+				"synthetic-03": "Department 1 / Role A",
+				"synthetic-04": "Department 1 / Role B",
+				"synthetic-05": "Department 1 / Role B",
+				"synthetic-06": "Department 1 / Role B",
+				"synthetic-07": "Department 1 / Role C",
+				"synthetic-08": "Department 1 / Role C",
+				"synthetic-09": "Department 1 / Role C",
+				"synthetic-10": "Department 1 / Role D",
+				"synthetic-11": "Department 1 / Role D",
+				"synthetic-12": "Department 1 / Role D",
+				"synthetic-13": "Department 2 / Role A",
+				"synthetic-14": "Department 2 / Role A",
+				"synthetic-15": "Department 2 / Role A",
+				"synthetic-16": "Department 2 / Role B",
+				"synthetic-17": "Department 2 / Role B",
+				"synthetic-18": "Department 2 / Role B",
+				"synthetic-19": "Department 2 / Role C",
+				"synthetic-20": "Department 2 / Role C",
+				"synthetic-21": "Department 2 / Role C",
+				"synthetic-22": "Department 2 / Role D",
+				"synthetic-23": "Department 2 / Role D",
+				"synthetic-24": "Department 2 / Role D",
+				"synthetic-25": "Department 3 / Role A",
+				"synthetic-26": "Department 3 / Role A",
+				"synthetic-27": "Department 3 / Role A",
+				"synthetic-28": "Department 3 / Role B",
+				"synthetic-29": "Department 3 / Role B",
+				"synthetic-30": "Department 3 / Role B",
+				"synthetic-31": "Department 3 / Role C",
+				"synthetic-32": "Department 3 / Role C",
+				"synthetic-33": "Department 3 / Role C",
+				"synthetic-34": "Department 3 / Role D",
+				"synthetic-35": "Department 3 / Role D",
+				"synthetic-36": "Department 3 / Role D",
+				"synthetic-37": "Department 4 / Role A",
+				"synthetic-38": "Department 4 / Role A",
+				"synthetic-39": "Department 4 / Role A",
+				"synthetic-40": "Department 4 / Role B",
+				"synthetic-41": "Department 4 / Role B",
+				"synthetic-42": "Department 4 / Role B",
+				"synthetic-43": "Department 4 / Role C",
+				"synthetic-44": "Department 4 / Role C",
+				"synthetic-45": "Department 4 / Role C",
+				"synthetic-46": "Department 4 / Role D",
+				"synthetic-47": "Department 4 / Role D",
+				"synthetic-48": "Department 4 / Role D",
+				"synthetic-49": "Department 5 / Role A",
+				"synthetic-50": "Department 5 / Role A",
+				"synthetic-51": "Department 5 / Role A",
+				"synthetic-52": "Department 5 / Role B",
+				"synthetic-53": "Department 5 / Role B",
+				"synthetic-54": "Department 5 / Role B",
+				"synthetic-55": "Department 5 / Role C",
+				"synthetic-56": "Department 5 / Role C",
+				"synthetic-57": "Department 5 / Role C",
+				"synthetic-58": "Department 5 / Role D",
+				"synthetic-59": "Department 5 / Role D",
+				"synthetic-60": "Department 5 / Role D"
+			}
+		}
+	},
+	"arrangements": {
+		"free": {
+			"positions": {
+				"synthetic-01": {
+					"x": 539.8777553292417,
+					"y": 366.1819305639901
+				},
+				"synthetic-02": {
+					"x": 602.4151981937997,
+					"y": 438.5879093433088
+				},
+				"synthetic-03": {
+					"x": 696.1974609176852,
+					"y": 371.61939135708263
+				},
+				"synthetic-04": {
+					"x": 638.7829305811558,
+					"y": 387.05691803691224
+				},
+				"synthetic-05": {
+					"x": 626.0059329433573,
+					"y": 356.61311796024006
+				},
+				"synthetic-06": {
+					"x": 651.7841036226567,
+					"y": 411.58164978478
+				},
+				"synthetic-07": {
+					"x": 610.5433817411791,
+					"y": 381.3670901090338
+				},
+				"synthetic-08": {
+					"x": 680.0514116339988,
+					"y": 432.1233624302888
+				},
+				"synthetic-09": {
+					"x": 363.7424304169284,
+					"y": 491.3322207028479
+				},
+				"synthetic-10": {
+					"x": 334.2427749443162,
+					"y": 579.4144154995743
+				},
+				"synthetic-11": {
+					"x": 314.33104763886803,
+					"y": 560.0749200699258
+				},
+				"synthetic-12": {
+					"x": 359.52776192174235,
+					"y": 592.6235777158964
+				},
+				"synthetic-13": {
+					"x": 447.30203371019115,
+					"y": 497.63189300483134
+				},
+				"synthetic-14": {
+					"x": 414.3410803489039,
+					"y": 520.015611068892
+				},
+				"synthetic-15": {
+					"x": 335.0008267219552,
+					"y": 607.1618176349515
+				},
+				"synthetic-16": {
+					"x": 387.74197497831346,
+					"y": 592.5171871449529
+				},
+				"synthetic-17": {
+					"x": 705.0804600742337,
+					"y": 253.1322174279524
+				},
+				"synthetic-18": {
+					"x": 626.0590380245975,
+					"y": 174.1956227044751
+				},
+				"synthetic-19": {
+					"x": 688.2497099807111,
+					"y": 211.38133891320436
+				},
+				"synthetic-20": {
+					"x": 667.907535663352,
+					"y": 140.3054237183054
+				},
+				"synthetic-21": {
+					"x": 608.8365981066884,
+					"y": 302.13373252924214
+				},
+				"synthetic-22": {
+					"x": 716.4381266202328,
+					"y": 216.68633930817128
+				},
+				"synthetic-23": {
+					"x": 710.6941999928243,
+					"y": 178.59266220391714
+				},
+				"synthetic-24": {
+					"x": 714.974892299487,
+					"y": 147.44557266639126
+				},
+				"synthetic-25": {
+					"x": 807.0688490581184,
+					"y": 521.2135561970841
+				},
+				"synthetic-26": {
+					"x": 890.046786328448,
+					"y": 560.8988137245324
+				},
+				"synthetic-27": {
+					"x": 865.288553816813,
+					"y": 530.6441694276474
+				},
+				"synthetic-28": {
+					"x": 777.0553477376498,
+					"y": 587.618545808534
+				},
+				"synthetic-29": {
+					"x": 763.3021758839539,
+					"y": 490.15831274235643
+				},
+				"synthetic-30": {
+					"x": 930.9530637904904,
+					"y": 598.7778721158847
+				},
+				"synthetic-31": {
+					"x": 866.5860160766729,
+					"y": 587.2581560433849
+				},
+				"synthetic-32": {
+					"x": 911.6830567370835,
+					"y": 618.7568559719662
+				},
+				"synthetic-33": {
+					"x": 479.78571334937635,
+					"y": 379.5980222464178
+				},
+				"synthetic-34": {
+					"x": 244.7742271774775,
+					"y": 395.48193883187196
+				},
+				"synthetic-35": {
+					"x": 256.5774831816144,
+					"y": 359.5576143173918
+				},
+				"synthetic-36": {
+					"x": 384.03743972283496,
+					"y": 401.6889824949809
+				},
+				"synthetic-37": {
+					"x": 207.69340761931727,
+					"y": 368.6249133782064
+				},
+				"synthetic-38": {
+					"x": 343.1717482758911,
+					"y": 353.21003779890907
+				},
+				"synthetic-39": {
+					"x": 170.58038458511908,
+					"y": 377.53601018574307
+				},
+				"synthetic-40": {
+					"x": 868.9691680443592,
+					"y": 343.6889368829529
+				},
+				"synthetic-41": {
+					"x": 1030.987335171942,
+					"y": 286.146943776979
+				},
+				"synthetic-42": {
+					"x": 956.6457748033741,
+					"y": 247.60166952222392
+				},
+				"synthetic-43": {
+					"x": 836.2080090367562,
+					"y": 359.91895881477404
+				},
+				"synthetic-44": {
+					"x": 1057.525590699463,
+					"y": 307.17695013085495
+				},
+				"synthetic-45": {
+					"x": 1003.3168901555507,
+					"y": 283.94707097275176
+				},
+				"synthetic-46": {
+					"x": 1041.363846770877,
+					"y": 252.80235511074517
+				},
+				"synthetic-47": {
+					"x": 532.367540731844,
+					"y": 595.0619209461122
+				},
+				"synthetic-48": {
+					"x": 522.641762222847,
+					"y": 806.0991157811426
+				},
+				"synthetic-49": {
+					"x": 477.43103922509385,
+					"y": 807.6282124995045
+				},
+				"synthetic-50": {
+					"x": 535.1794480609678,
+					"y": 635.9417610178605
+				},
+				"synthetic-51": {
+					"x": 498.85202479503215,
+					"y": 779.0487522192891
+				},
+				"synthetic-52": {
+					"x": 502.66248337193656,
+					"y": 751.5537822576105
+				},
+				"synthetic-53": {
+					"x": 449.8403627128612,
+					"y": 761.319034223091
+				},
+				"synthetic-54": {
+					"x": 384.84039489757373,
+					"y": 214.8789833427181
+				},
+				"synthetic-55": {
+					"x": 380.0395113953257,
+					"y": 50.6141704046582
+				},
+				"synthetic-56": {
+					"x": 353.72220464456535,
+					"y": 25.180910572528905
+				},
+				"synthetic-57": {
+					"x": 429.2441750086046,
+					"y": 209.14258266805228
+				},
+				"synthetic-58": {
+					"x": 282.63466456288893,
+					"y": 88.33862844708511
+				},
+				"synthetic-59": {
+					"x": 349.62994715198914,
+					"y": 97.09438482244839
+				},
+				"synthetic-60": {
+					"x": 326.04827368477714,
+					"y": 27.336487755743203
+				}
+			},
+			"score": {
+				"properCrossings": 225,
+				"collinearOverlaps": 0,
+				"longestToMedianRatio": 4.1016388559951595,
+				"bodyPassThroughs": 15,
+				"outwardLength": 5373.298803875286,
+				"normalizedOutwardLength": 4.543058645865078
+			},
+			"constraints": {
+				"dotClearance": {
+					"overlapPairs": 0,
+					"minimumSurfaceGap": 10.557755092224498
+				},
+				"regionContainment": {
+					"escapedMembers": 0
+				},
+				"canvasFit": {
+					"requiredUniformFitScale": 0.8792924434727105,
+					"fitsWithUniformCameraScale": true
+				}
+			},
+			"timingsMs": {
+				"coldArrange": 85.09249999999997,
+				"cachedArrange": 0.06383400000004258
+			}
+		},
+		"grouped": {
+			"positions": {
+				"synthetic-01": {
+					"x": 223.5021660595262,
+					"y": 579.3094076551469
+				},
+				"synthetic-02": {
+					"x": 219.15517400982367,
+					"y": 511.3785345195437
+				},
+				"synthetic-03": {
+					"x": 262.9430977255849,
+					"y": 485.5816312858905
+				},
+				"synthetic-04": {
+					"x": 226.14456533007305,
+					"y": 440.0510288822878
+				},
+				"synthetic-05": {
+					"x": 199.13805433376365,
+					"y": 458.44142008554667
+				},
+				"synthetic-06": {
+					"x": 137.426145583233,
+					"y": 469.3651776270991
+				},
+				"synthetic-07": {
+					"x": 165.70494593840442,
+					"y": 512.1707777715313
+				},
+				"synthetic-08": {
+					"x": 150.39000177478937,
+					"y": 552.0819171445515
+				},
+				"synthetic-09": {
+					"x": 304.2612907619257,
+					"y": 624.2298846005788
+				},
+				"synthetic-10": {
+					"x": 263.31062758125245,
+					"y": 676.2088199054956
+				},
+				"synthetic-11": {
+					"x": 319.05683593570495,
+					"y": 651.9214743057239
+				},
+				"synthetic-12": {
+					"x": 324.98366649068055,
+					"y": 709.7043360243342
+				},
+				"synthetic-13": {
+					"x": 1124.3303714089095,
+					"y": 109.37878273289442
+				},
+				"synthetic-14": {
+					"x": 1208.795130717277,
+					"y": 95.85912739705167
+				},
+				"synthetic-15": {
+					"x": 1162.029760238905,
+					"y": 56.8348921983351
+				},
+				"synthetic-16": {
+					"x": 1199.2792059214994,
+					"y": 37.56090698080786
+				},
+				"synthetic-17": {
+					"x": 1066.6264446540747,
+					"y": 294.4161922788985
+				},
+				"synthetic-18": {
+					"x": 1010.5740461128762,
+					"y": 223.50147216815006
+				},
+				"synthetic-19": {
+					"x": 1061.3824273967161,
+					"y": 199.21034866511442
+				},
+				"synthetic-20": {
+					"x": 1045.99481728441,
+					"y": 150.76831000278756
+				},
+				"synthetic-21": {
+					"x": 1122.7248430971276,
+					"y": 172.35551365747688
+				},
+				"synthetic-22": {
+					"x": 1101.8007002172144,
+					"y": 202.82574288033086
+				},
+				"synthetic-23": {
+					"x": 1137.7444848031205,
+					"y": 243.48030992329547
+				},
+				"synthetic-24": {
+					"x": 1055.4613480029093,
+					"y": 257.31848246739276
+				},
+				"synthetic-25": {
+					"x": 194.1577026914889,
+					"y": 100.38161778373265
+				},
+				"synthetic-26": {
+					"x": 162.00634373854948,
+					"y": 55.80128625677544
+				},
+				"synthetic-27": {
+					"x": 141.67891384005154,
+					"y": 118.67386472879953
+				},
+				"synthetic-28": {
+					"x": 82.23175369725853,
+					"y": 88.09283427990778
+				},
+				"synthetic-29": {
+					"x": 83.20386665209595,
+					"y": 165.40362170965443
+				},
+				"synthetic-30": {
+					"x": 46.18331416870993,
+					"y": 123.69010131718125
+				},
+				"synthetic-31": {
+					"x": 110.97785836753704,
+					"y": 136.6862386970173
+				},
+				"synthetic-32": {
+					"x": 113.34012636014474,
+					"y": 69.87654754899052
+				},
+				"synthetic-33": {
+					"x": 177.80723601504093,
+					"y": 175.06255370655578
+				},
+				"synthetic-34": {
+					"x": 161.61623932524355,
+					"y": 211.27247499781686
+				},
+				"synthetic-35": {
+					"x": 181.81142155769103,
+					"y": 245.7343619500732
+				},
+				"synthetic-36": {
+					"x": 81.32008311665383,
+					"y": 231.60760953568513
+				},
+				"synthetic-37": {
+					"x": 1008.8015421458801,
+					"y": 583.0273920384807
+				},
+				"synthetic-38": {
+					"x": 965.2880075599194,
+					"y": 555.5180716572644
+				},
+				"synthetic-39": {
+					"x": 963.2210045619214,
+					"y": 606.9565582077673
+				},
+				"synthetic-40": {
+					"x": 731.5314398168827,
+					"y": 601.6197509056597
+				},
+				"synthetic-41": {
+					"x": 717.6059508364507,
+					"y": 535.3421608984133
+				},
+				"synthetic-42": {
+					"x": 673.64909733886,
+					"y": 533.993801974749
+				},
+				"synthetic-43": {
+					"x": 667.1499740375266,
+					"y": 507.5601550243679
+				},
+				"synthetic-44": {
+					"x": 600.1197267753918,
+					"y": 553.2596743077088
+				},
+				"synthetic-45": {
+					"x": 643.5478944873726,
+					"y": 573.2354404790635
+				},
+				"synthetic-46": {
+					"x": 657.7326703360682,
+					"y": 614.5537865831625
+				},
+				"synthetic-47": {
+					"x": 818.0964410750048,
+					"y": 660.1637154783742
+				},
+				"synthetic-48": {
+					"x": 822.5078098119162,
+					"y": 681.7169014578762
+				},
+				"synthetic-49": {
+					"x": 582.2491792829139,
+					"y": 188.05119402256526
+				},
+				"synthetic-50": {
+					"x": 519.8047960673789,
+					"y": 187.58409388579224
+				},
+				"synthetic-51": {
+					"x": 581.8142392729053,
+					"y": 259.8331296626578
+				},
+				"synthetic-52": {
+					"x": 506.79413138603337,
+					"y": 259.82859527395425
+				},
+				"synthetic-53": {
+					"x": 531.7665280850292,
+					"y": 290.09729893131396
+				},
+				"synthetic-54": {
+					"x": 437.9386115690786,
+					"y": 16.79745510373644
+				},
+				"synthetic-55": {
+					"x": 483.32593455040114,
+					"y": 80.03566872002978
+				},
+				"synthetic-56": {
+					"x": 528.9343463922512,
+					"y": 76.89064229710606
+				},
+				"synthetic-57": {
+					"x": 507.78967052482784,
+					"y": 135.75851353365414
+				},
+				"synthetic-58": {
+					"x": 465.47025794710873,
+					"y": 118.5633576955583
+				},
+				"synthetic-59": {
+					"x": 421.7181389185761,
+					"y": 137.3460705124029
+				},
+				"synthetic-60": {
+					"x": 405.5426136468955,
+					"y": 80.3251094402282
+				}
+			},
+			"score": {
+				"properCrossings": 324,
+				"collinearOverlaps": 0,
+				"longestToMedianRatio": 15.285275510547384,
+				"bodyPassThroughs": 6,
+				"outwardLength": 22136.163208997546,
+				"normalizedOutwardLength": 16.35554268929229
+			},
+			"constraints": {
+				"dotClearance": {
+					"overlapPairs": 0,
+					"minimumSurfaceGap": 3.400000000000043
+				},
+				"regionContainment": {
+					"escapedMembers": 0
+				},
+				"canvasFit": {
+					"requiredUniformFitScale": 0.9929184121911467,
+					"fitsWithUniformCameraScale": true
+				}
+			},
+			"timingsMs": {
+				"coldArrange": 9.137624999999957,
+				"cachedArrange": 0.06974999999999909
+			}
+		},
+		"nested": {
+			"positions": {
+				"synthetic-01": {
+					"x": 86.95725082855955,
+					"y": 645.7274745621345
+				},
+				"synthetic-02": {
+					"x": 47.40418628043997,
+					"y": 608.1417600395109
+				},
+				"synthetic-03": {
+					"x": 53.82261144742125,
+					"y": 656.9463949513763
+				},
+				"synthetic-04": {
+					"x": -102.36511246259613,
+					"y": 748.5792507163508
+				},
+				"synthetic-05": {
+					"x": -148.41901975531007,
+					"y": 735.7959050295696
+				},
+				"synthetic-06": {
+					"x": -146.20125578457345,
+					"y": 801.4069835924336
+				},
+				"synthetic-07": {
+					"x": -103.48521627351832,
+					"y": 545.2060475313549
+				},
+				"synthetic-08": {
+					"x": -160.54428426813325,
+					"y": 542.107455209089
+				},
+				"synthetic-09": {
+					"x": -131.9070533088588,
+					"y": 505.91866767031377
+				},
+				"synthetic-10": {
+					"x": -294.27515289138347,
+					"y": 637.2747025464356
+				},
+				"synthetic-11": {
+					"x": -339.91000396072593,
+					"y": 613.4492798244999
+				},
+				"synthetic-12": {
+					"x": -344.18486409397224,
+					"y": 658.4240671746196
+				},
+				"synthetic-13": {
+					"x": 1183.3036555927542,
+					"y": 727.0654681740481
+				},
+				"synthetic-14": {
+					"x": 1143.0463117695506,
+					"y": 699.9135282069168
+				},
+				"synthetic-15": {
+					"x": 1144.4485626250944,
+					"y": 751.3744268828837
+				},
+				"synthetic-16": {
+					"x": 1368.4388156559528,
+					"y": 538.5376222030022
+				},
+				"synthetic-17": {
+					"x": 1364.830619304976,
+					"y": 609.3041376823248
+				},
+				"synthetic-18": {
+					"x": 1314.6258934423895,
+					"y": 610.0566563403722
+				},
+				"synthetic-19": {
+					"x": 1600.6923529738538,
+					"y": 727.0888419148966
+				},
+				"synthetic-20": {
+					"x": 1541.9707071035432,
+					"y": 703.5900851589793
+				},
+				"synthetic-21": {
+					"x": 1530.9429208432684,
+					"y": 747.1619976168881
+				},
+				"synthetic-22": {
+					"x": 1377.1493503009506,
+					"y": 830.8636541094249
+				},
+				"synthetic-23": {
+					"x": 1335.5518859957897,
+					"y": 798.1348757303304
+				},
+				"synthetic-24": {
+					"x": 1337.6132290383075,
+					"y": 843.1523496144689
+				},
+				"synthetic-25": {
+					"x": 770.1111108185892,
+					"y": -266.89449145177457
+				},
+				"synthetic-26": {
+					"x": 730.696264116069,
+					"y": -304.7253961232457
+				},
+				"synthetic-27": {
+					"x": 736.8399506265182,
+					"y": -255.92171014946595
+				},
+				"synthetic-28": {
+					"x": 583.6571100200053,
+					"y": -167.07412217925406
+				},
+				"synthetic-29": {
+					"x": 527.1224124258729,
+					"y": -177.28001155302968
+				},
+				"synthetic-30": {
+					"x": 541.3753568154863,
+					"y": -111.87127227693367
+				},
+				"synthetic-31": {
+					"x": 579.5782905338796,
+					"y": -367.3759980396479
+				},
+				"synthetic-32": {
+					"x": 522.6863942051278,
+					"y": -373.9082384939422
+				},
+				"synthetic-33": {
+					"x": 551.2400393314707,
+					"y": -407.55799945256
+				},
+				"synthetic-34": {
+					"x": 389.1448135529019,
+					"y": -274.17918227911895
+				},
+				"synthetic-35": {
+					"x": 345.0436359934588,
+					"y": -300.7362253726276
+				},
+				"synthetic-36": {
+					"x": 346.02291260110604,
+					"y": -254.48236887324416
+				},
+				"synthetic-37": {
+					"x": 170.71339145805288,
+					"y": 635.1999569369788
+				},
+				"synthetic-38": {
+					"x": 127.1998568720922,
+					"y": 607.6906365557624
+				},
+				"synthetic-39": {
+					"x": 125.1328538740942,
+					"y": 659.1291231062653
+				},
+				"synthetic-40": {
+					"x": 354.85395057586436,
+					"y": 525.432594190412
+				},
+				"synthetic-41": {
+					"x": 319.0874218730199,
+					"y": 497.76617147158004
+				},
+				"synthetic-42": {
+					"x": 319.582531652357,
+					"y": 555.6588472153027
+				},
+				"synthetic-43": {
+					"x": 572.6684039581112,
+					"y": 635.7802006909593
+				},
+				"synthetic-44": {
+					"x": 514.5889662771814,
+					"y": 608.5418520042408
+				},
+				"synthetic-45": {
+					"x": 512.8977523509343,
+					"y": 659.9940647404844
+				},
+				"synthetic-46": {
+					"x": 333.6156532272737,
+					"y": 715.970805561877
+				},
+				"synthetic-47": {
+					"x": 359.37579584471956,
+					"y": 769.336006073836
+				},
+				"synthetic-48": {
+					"x": 298.78341019185734,
+					"y": 767.1319087761415
+				},
+				"synthetic-49": {
+					"x": 829.1930340274884,
+					"y": 306.29409040038837
+				},
+				"synthetic-50": {
+					"x": 789.7736544495255,
+					"y": 295.8738190965958
+				},
+				"synthetic-51": {
+					"x": 798.0922585205262,
+					"y": 345.9056702356916
+				},
+				"synthetic-52": {
+					"x": 1013.2837455157903,
+					"y": 212.76070757345352
+				},
+				"synthetic-53": {
+					"x": 967.4189744569202,
+					"y": 220.10805421331617
+				},
+				"synthetic-54": {
+					"x": 1007.2142257728653,
+					"y": 176.55061667179032
+				},
+				"synthetic-55": {
+					"x": 1224.426444804753,
+					"y": 317.5761438774781
+				},
+				"synthetic-56": {
+					"x": 1178.8906755942262,
+					"y": 293.561895556832
+				},
+				"synthetic-57": {
+					"x": 1167.2678753318426,
+					"y": 337.1517823926397
+				},
+				"synthetic-58": {
+					"x": 1023.7744267816305,
+					"y": 426.3193912587082
+				},
+				"synthetic-59": {
+					"x": 979.7901081383636,
+					"y": 398.1104511472744
+				},
+				"synthetic-60": {
+					"x": 984.2838239057162,
+					"y": 449.39394672433355
+				}
+			},
+			"score": {
+				"properCrossings": 450,
+				"collinearOverlaps": 0,
+				"longestToMedianRatio": 8.00785445976037,
+				"bodyPassThroughs": 72,
+				"outwardLength": 43932.194844490725,
+				"normalizedOutwardLength": 18.999184761994567
+			},
+			"constraints": {
+				"dotClearance": {
+					"overlapPairs": 0,
+					"minimumSurfaceGap": 16.382402742210644
+				},
+				"regionContainment": {
+					"escapedMembers": 0
+				},
+				"canvasFit": {
+					"requiredUniformFitScale": 0.5500873967447505,
+					"fitsWithUniformCameraScale": true
+				}
+			},
+			"timingsMs": {
+				"coldArrange": 9.519375000000082,
+				"cachedArrange": 0.09095899999999801
+			}
+		}
+	},
+	"costBaselines": {
+		"description": "Synthetic 500-Worker cost fixtures; one process, cold then immediate cached call; timings are observations, not test thresholds.",
+		"largeTimings": {
+			"sparse": {
+				"workers": 500,
+				"relationships": 500,
+				"coldArrange": 4736.399875,
+				"cachedArrange": 0.3317079999997077,
+				"positions": 500
+			},
+			"hub": {
+				"workers": 500,
+				"relationships": 499,
+				"coldArrange": 2993.3347090000007,
+				"cachedArrange": 0.3186249999998836,
+				"positions": 500
+			},
+			"grouped": {
+				"workers": 500,
+				"relationships": 500,
+				"coldArrange": 49.69645799999853,
+				"cachedArrange": 0.30866600000081235,
+				"positions": 500
+			},
+			"nested": {
+				"workers": 500,
+				"relationships": 500,
+				"coldArrange": 8.857458000000406,
+				"cachedArrange": 0.3790000000008149,
+				"positions": 500
+			},
+			"single-community": {
+				"workers": 500,
+				"relationships": 1000,
+				"coldArrange": 3541.854374999999,
+				"cachedArrange": 0.34116699999867706,
+				"positions": 500
+			}
+		}
+	}
+}

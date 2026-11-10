@@ -1,0 +1,1207 @@
+{
+	"pages": [
+		{
+			"method": "GET",
+			"path": "/api/boot-status",
+			"status": 200,
+			"body": {
+				"encrypted": true,
+				"firstRun": false,
+				"legacyPlaintext": false,
+				"markerPending": false,
+				"state": "open"
+			}
+		},
+		{
+			"method": "GET",
+			"path": "/api/dataset",
+			"status": 200,
+			"body": {
+				"agitations": [],
+				"attributes": [
+					{
+						"id": "loc-be66300c-b834-40f8-8bd2-bf9fe9249d13",
+						"kind": "tag",
+						"name": "Location",
+						"options": [
+							{
+								"id": "loc-be66300c-b834-40f8-8bd2-bf9fe9249d13~Central",
+								"shortForm": "Central",
+								"shortFormOrigin": "generated",
+								"value": "Central"
+							},
+							{
+								"id": "loc-be66300c-b834-40f8-8bd2-bf9fe9249d13~Store A",
+								"parentId": "loc-be66300c-b834-40f8-8bd2-bf9fe9249d13~Central",
+								"shortForm": "Store A",
+								"shortFormOrigin": "generated",
+								"value": "Store A"
+							},
+							{
+								"id": "loc-be66300c-b834-40f8-8bd2-bf9fe9249d13~Store B",
+								"parentId": "loc-be66300c-b834-40f8-8bd2-bf9fe9249d13~Central",
+								"shortForm": "Store B",
+								"shortFormOrigin": "generated",
+								"value": "Store B"
+							}
+						]
+					},
+					{
+						"id": "job-588c9a87-3788-48ec-8c4a-f049ec9f0478",
+						"kind": "tag",
+						"name": "Job",
+						"options": [
+							{
+								"id": "job-588c9a87-3788-48ec-8c4a-f049ec9f0478~Cashier",
+								"shortForm": "Cashier",
+								"shortFormOrigin": "generated",
+								"value": "Cashier"
+							},
+							{
+								"id": "job-588c9a87-3788-48ec-8c4a-f049ec9f0478~Stocker",
+								"shortForm": "Stocker",
+								"shortFormOrigin": "generated",
+								"value": "Stocker"
+							},
+							{
+								"id": "job-588c9a87-3788-48ec-8c4a-f049ec9f0478~Unknown Job",
+								"shortForm": "Unknown J…",
+								"shortFormOrigin": "generated",
+								"value": "Unknown Job"
+							}
+						]
+					},
+					{
+						"id": "shift-8b1f004d-25e8-4676-83c7-4d56463463b9",
+						"kind": "tag",
+						"name": "Shift",
+						"options": [
+							{
+								"id": "shift-8b1f004d-25e8-4676-83c7-4d56463463b9~Days",
+								"shortForm": "Days",
+								"shortFormOrigin": "generated",
+								"value": "Days"
+							},
+							{
+								"id": "shift-8b1f004d-25e8-4676-83c7-4d56463463b9~Nights",
+								"shortForm": "Nights",
+								"shortFormOrigin": "generated",
+								"value": "Nights"
+							}
+						]
+					},
+					{
+						"id": "dept-11751cc3-1bca-4ca4-8b40-a32e1fd3a0c7",
+						"kind": "category",
+						"name": "Department",
+						"options": [
+							{
+								"id": "dept-11751cc3-1bca-4ca4-8b40-a32e1fd3a0c7~Front of House",
+								"shortForm": "Front of …",
+								"shortFormOrigin": "generated",
+								"value": "Front of House"
+							},
+							{
+								"id": "dept-11751cc3-1bca-4ca4-8b40-a32e1fd3a0c7~Back of House",
+								"shortForm": "Back of H…",
+								"shortFormOrigin": "generated",
+								"value": "Back of House"
+							}
+						]
+					}
+				],
+				"languages": [],
+				"settings": {
+					"colorBlindAssessments": false,
+					"dateFormat": "system",
+					"density": "standard",
+					"increaseContrast": false,
+					"language": "system",
+					"reduceMotion": "system",
+					"rememberWindow": true,
+					"textSize": "100",
+					"theme": "system",
+					"timeFormat": "system"
+				},
+				"workers": [
+					{
+						"agitations": [],
+						"assessment": "Unassessed",
+						"attributes": {
+							"dept-11751cc3-1bca-4ca4-8b40-a32e1fd3a0c7": "dept-11751cc3-1bca-4ca4-8b40-a32e1fd3a0c7~Front of House",
+							"job-588c9a87-3788-48ec-8c4a-f049ec9f0478": [
+								"job-588c9a87-3788-48ec-8c4a-f049ec9f0478~Cashier",
+								"job-588c9a87-3788-48ec-8c4a-f049ec9f0478~Stocker"
+							],
+							"loc-be66300c-b834-40f8-8bd2-bf9fe9249d13": [
+								"loc-be66300c-b834-40f8-8bd2-bf9fe9249d13~Store A",
+								"loc-be66300c-b834-40f8-8bd2-bf9fe9249d13~Store B"
+							],
+							"shift-8b1f004d-25e8-4676-83c7-4d56463463b9": [
+								"shift-8b1f004d-25e8-4676-83c7-4d56463463b9~Days",
+								"shift-8b1f004d-25e8-4676-83c7-4d56463463b9~Nights"
+							]
+						},
+						"email": "",
+						"id": "2e689849-ec0c-463f-b15c-58bd48159f9e",
+						"languages": [],
+						"name": "Alex",
+						"notes": [],
+						"phone": "",
+						"relationships": [
+							"d199ee34-1394-4aea-814f-fb8c51794e6e"
+						]
+					},
+					{
+						"agitations": [],
+						"assessment": "Unassessed",
+						"attributes": {
+							"dept-11751cc3-1bca-4ca4-8b40-a32e1fd3a0c7": "dept-11751cc3-1bca-4ca4-8b40-a32e1fd3a0c7~Front of House",
+							"job-588c9a87-3788-48ec-8c4a-f049ec9f0478": [
+								"job-588c9a87-3788-48ec-8c4a-f049ec9f0478~Cashier",
+								"job-588c9a87-3788-48ec-8c4a-f049ec9f0478~Stocker"
+							],
+							"loc-be66300c-b834-40f8-8bd2-bf9fe9249d13": [
+								"loc-be66300c-b834-40f8-8bd2-bf9fe9249d13~Store A",
+								"loc-be66300c-b834-40f8-8bd2-bf9fe9249d13~Store B"
+							],
+							"shift-8b1f004d-25e8-4676-83c7-4d56463463b9": []
+						},
+						"email": "",
+						"id": "d199ee34-1394-4aea-814f-fb8c51794e6e",
+						"languages": [],
+						"name": "Blair",
+						"notes": [],
+						"phone": "",
+						"relationships": [
+							"2e689849-ec0c-463f-b15c-58bd48159f9e"
+						]
+					},
+					{
+						"agitations": [],
+						"assessment": "Unassessed",
+						"attributes": {
+							"dept-11751cc3-1bca-4ca4-8b40-a32e1fd3a0c7": "dept-11751cc3-1bca-4ca4-8b40-a32e1fd3a0c7~Front of House",
+							"job-588c9a87-3788-48ec-8c4a-f049ec9f0478": [],
+							"loc-be66300c-b834-40f8-8bd2-bf9fe9249d13": [
+								"loc-be66300c-b834-40f8-8bd2-bf9fe9249d13~Central"
+							],
+							"shift-8b1f004d-25e8-4676-83c7-4d56463463b9": []
+						},
+						"email": "",
+						"id": "f3e3dcda-35fb-4413-80c3-6cd679ab8c7f",
+						"languages": [],
+						"name": "Casey",
+						"notes": [],
+						"phone": "",
+						"relationships": [
+							"0f31f108-5b65-47c7-a043-3e5b945f90a8"
+						]
+					},
+					{
+						"agitations": [],
+						"assessment": "Unassessed",
+						"attributes": {
+							"dept-11751cc3-1bca-4ca4-8b40-a32e1fd3a0c7": "dept-11751cc3-1bca-4ca4-8b40-a32e1fd3a0c7~Front of House",
+							"job-588c9a87-3788-48ec-8c4a-f049ec9f0478": [],
+							"loc-be66300c-b834-40f8-8bd2-bf9fe9249d13": [
+								"loc-be66300c-b834-40f8-8bd2-bf9fe9249d13~Store A"
+							],
+							"shift-8b1f004d-25e8-4676-83c7-4d56463463b9": []
+						},
+						"email": "",
+						"id": "0f31f108-5b65-47c7-a043-3e5b945f90a8",
+						"languages": [],
+						"name": "Drew",
+						"notes": [],
+						"phone": "",
+						"relationships": [
+							"f3e3dcda-35fb-4413-80c3-6cd679ab8c7f"
+						]
+					},
+					{
+						"agitations": [],
+						"assessment": "Unassessed",
+						"attributes": {
+							"dept-11751cc3-1bca-4ca4-8b40-a32e1fd3a0c7": "dept-11751cc3-1bca-4ca4-8b40-a32e1fd3a0c7~Back of House",
+							"job-588c9a87-3788-48ec-8c4a-f049ec9f0478": [],
+							"loc-be66300c-b834-40f8-8bd2-bf9fe9249d13": [
+								"loc-be66300c-b834-40f8-8bd2-bf9fe9249d13~Central",
+								"loc-be66300c-b834-40f8-8bd2-bf9fe9249d13~Store A"
+							],
+							"shift-8b1f004d-25e8-4676-83c7-4d56463463b9": []
+						},
+						"email": "",
+						"id": "cc653ba7-c135-4980-9864-a12184fc6804",
+						"languages": [],
+						"name": "Erin",
+						"notes": [],
+						"phone": "",
+						"relationships": []
+					},
+					{
+						"agitations": [],
+						"assessment": "Unassessed",
+						"attributes": {
+							"dept-11751cc3-1bca-4ca4-8b40-a32e1fd3a0c7": "dept-11751cc3-1bca-4ca4-8b40-a32e1fd3a0c7~Back of House",
+							"job-588c9a87-3788-48ec-8c4a-f049ec9f0478": [],
+							"loc-be66300c-b834-40f8-8bd2-bf9fe9249d13": [
+								"loc-be66300c-b834-40f8-8bd2-bf9fe9249d13~Store B"
+							],
+							"shift-8b1f004d-25e8-4676-83c7-4d56463463b9": []
+						},
+						"email": "",
+						"id": "2908179a-8570-4ca4-afcd-49d636a19d9d",
+						"languages": [],
+						"name": "Frankie",
+						"notes": [],
+						"phone": "",
+						"relationships": []
+					},
+					{
+						"agitations": [],
+						"assessment": "Unassessed",
+						"attributes": {
+							"dept-11751cc3-1bca-4ca4-8b40-a32e1fd3a0c7": "dept-11751cc3-1bca-4ca4-8b40-a32e1fd3a0c7~Back of House",
+							"job-588c9a87-3788-48ec-8c4a-f049ec9f0478": [],
+							"loc-be66300c-b834-40f8-8bd2-bf9fe9249d13": [],
+							"shift-8b1f004d-25e8-4676-83c7-4d56463463b9": []
+						},
+						"email": "",
+						"id": "d79db5c8-aeb3-4c35-b7a7-4dfd14d75b3c",
+						"languages": [],
+						"name": "Gray",
+						"notes": [],
+						"phone": "",
+						"relationships": []
+					},
+					{
+						"agitations": [],
+						"assessment": "Unassessed",
+						"attributes": {
+							"dept-11751cc3-1bca-4ca4-8b40-a32e1fd3a0c7": "dept-11751cc3-1bca-4ca4-8b40-a32e1fd3a0c7~Back of House",
+							"job-588c9a87-3788-48ec-8c4a-f049ec9f0478": [
+								"job-588c9a87-3788-48ec-8c4a-f049ec9f0478~Unknown Job"
+							],
+							"loc-be66300c-b834-40f8-8bd2-bf9fe9249d13": [
+								"loc-be66300c-b834-40f8-8bd2-bf9fe9249d13~Store A"
+							],
+							"shift-8b1f004d-25e8-4676-83c7-4d56463463b9": []
+						},
+						"email": "",
+						"id": "de569d51-cd72-4182-b09e-c64bf4111948",
+						"languages": [],
+						"name": "Hana",
+						"notes": [],
+						"phone": "",
+						"relationships": []
+					}
+				],
+				"worksite": {
+					"committeeTarget": 5,
+					"id": "5f697abb-5cf5-4e5d-92af-8d63add6263b",
+					"name": "My Worksite 47"
+				},
+				"worksites": [
+					{
+						"committeeTarget": 5,
+						"id": "945df0ac-d4f7-4298-a80a-63cde69d2984",
+						"name": "My Worksite"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "d7e8a889-ea11-4ddf-99c5-98fdfcd4473e",
+						"name": "My Worksite 2"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "33d8ac47-c9ac-49d8-9f78-0542615dd3a3",
+						"name": "My Worksite 3"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "89349663-7945-44bb-8890-4f3969ea502c",
+						"name": "My Worksite 4"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "7abc6415-5f71-4345-bfa7-879d923ac5f6",
+						"name": "My Worksite 5"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "5fca8385-2963-4dca-be59-5c1ed0f200bb",
+						"name": "My Worksite 6"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "92397821-71cc-474e-b064-bdf8b527c26a",
+						"name": "My Worksite 7"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "60947975-40a6-47e8-b533-2810d2c348a1",
+						"name": "My Worksite 8"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "f8bbe7cf-7942-4ed1-b906-77a3091653d1",
+						"name": "My Worksite 9"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "666f90a7-601a-4002-8924-a5ddaca6bdff",
+						"name": "My Worksite 10"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "954029dd-64f9-4c9b-86ba-84a5dc7d654d",
+						"name": "My Worksite 11"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "7727aaff-fe52-4175-8fc0-8b285310458d",
+						"name": "My Worksite 12"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "0a2696aa-aa0a-4774-bc40-2e7716a6a28a",
+						"name": "My Worksite 13"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "6039346f-4c1c-4aea-b32c-4f9b29dd6018",
+						"name": "My Worksite 14"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "ee7db246-e819-4be9-b46f-08e3e772a545",
+						"name": "My Worksite 15"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "7b5bd7c9-bb8b-437c-a540-cb2e699fa9c3",
+						"name": "My Worksite 16"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "51ef0b1d-86ff-4a43-ac16-2b296d6a5872",
+						"name": "My Worksite 17"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "ab839a53-4702-41a2-8a74-fd9f652504ac",
+						"name": "My Worksite 18"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "4eb420d6-74fb-4eeb-ae3a-84a6554198e8",
+						"name": "My Worksite 19"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "82b8bfa8-607e-4a95-a82e-33383d104eb3",
+						"name": "My Worksite 20"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "330699d9-2324-486f-b6bd-56131679e8ee",
+						"name": "My Worksite 21"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "46777b92-bcd0-49c2-bb52-0117f4b1fcda",
+						"name": "My Worksite 22"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "75cdfb23-ccc6-492b-8166-889ce4a22140",
+						"name": "My Worksite 23"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "92d4e370-9a4a-46e7-9d79-bfedb701f2cb",
+						"name": "My Worksite 24"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "5ee1a75e-138e-451f-b5fa-c317d323baff",
+						"name": "My Worksite 25"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "d0202313-834f-466e-a932-f9eaad48fb4f",
+						"name": "My Worksite 26"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "370f7795-ff7d-4f33-9769-51ecba767d51",
+						"name": "My Worksite 27"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "cf8eb6ee-1881-4312-b256-8f9291524ae8",
+						"name": "My Worksite 28"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "72d3fb5a-abfd-4ce4-b9ed-880b46ff677e",
+						"name": "My Worksite 29"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "c7d81386-d818-4271-833b-59cfe463d4c1",
+						"name": "My Worksite 30"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "67a2fb13-2ec9-48a4-b2bd-44f8dcdf2604",
+						"name": "My Worksite 31"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "b5f1bd5a-f614-4fb1-a1c8-de30e5acedb0",
+						"name": "My Worksite 32"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "41c8092b-e779-4a99-b82b-4108d1d2db56",
+						"name": "My Worksite 33"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "3fd34c1e-8762-46f2-8d99-9c07963efce3",
+						"name": "My Worksite 34"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "eadfe269-91a6-4994-be9a-fd3c5d3651e2",
+						"name": "My Worksite 35"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "d9eff5d7-5ba6-48f6-924c-52f9849a5714",
+						"name": "My Worksite 36"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "e0a505e5-20a3-4c99-8542-0d678e9cff59",
+						"name": "My Worksite 37"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "98c0f08b-e4a9-4d0d-b506-ae829f421fac",
+						"name": "My Worksite 38"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "af52b872-a699-4e44-9ced-e35fc60b55df",
+						"name": "My Worksite 39"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "4cefa207-a9b7-4797-b9e9-545a55291044",
+						"name": "My Worksite 40"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "67d1a1fe-4e46-4bf0-95c8-02429bdc3b96",
+						"name": "My Worksite 41"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "fe7cbfb6-3752-470a-9e23-1c44dffb6be2",
+						"name": "My Worksite 42"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "65dbb5dd-16ee-4811-a06b-f80fc4bb964d",
+						"name": "My Worksite 43"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "12e80ed0-bc28-44a2-b5ac-4ef47b627dc7",
+						"name": "My Worksite 44"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "24263b67-c1b5-4230-98fa-0d1624516ad6",
+						"name": "My Worksite 45"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "7c4a4101-76df-4d94-b735-79407c817304",
+						"name": "My Worksite 46"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "5f697abb-5cf5-4e5d-92af-8d63add6263b",
+						"name": "My Worksite 47"
+					}
+				]
+			}
+		},
+		{
+			"method": "GET",
+			"path": "/api/settings",
+			"status": 200,
+			"body": {
+				"settings": {
+					"colorBlindAssessments": false,
+					"dateFormat": "system",
+					"density": "standard",
+					"increaseContrast": false,
+					"language": "system",
+					"reduceMotion": "system",
+					"rememberWindow": true,
+					"textSize": "100",
+					"theme": "system",
+					"timeFormat": "system"
+				}
+			}
+		}
+	],
+	"seed": [
+		{
+			"method": "GET",
+			"path": "/api/worksite",
+			"status": 200,
+			"body": {
+				"worksite": {
+					"committeeTarget": 5,
+					"id": "5f697abb-5cf5-4e5d-92af-8d63add6263b",
+					"name": "My Worksite 47"
+				}
+			}
+		},
+		{
+			"method": "PUT",
+			"path": "/api/attributes",
+			"requestBody": [
+				{
+					"id": "loc-be66300c-b834-40f8-8bd2-bf9fe9249d13",
+					"name": "Location",
+					"kind": "tag",
+					"options": [
+						{
+							"id": "loc-be66300c-b834-40f8-8bd2-bf9fe9249d13~Central",
+							"value": "Central"
+						},
+						{
+							"id": "loc-be66300c-b834-40f8-8bd2-bf9fe9249d13~Store A",
+							"value": "Store A",
+							"parentId": "loc-be66300c-b834-40f8-8bd2-bf9fe9249d13~Central"
+						},
+						{
+							"id": "loc-be66300c-b834-40f8-8bd2-bf9fe9249d13~Store B",
+							"value": "Store B",
+							"parentId": "loc-be66300c-b834-40f8-8bd2-bf9fe9249d13~Central"
+						}
+					]
+				},
+				{
+					"id": "job-588c9a87-3788-48ec-8c4a-f049ec9f0478",
+					"name": "Job",
+					"kind": "tag",
+					"options": [
+						{
+							"id": "job-588c9a87-3788-48ec-8c4a-f049ec9f0478~Cashier",
+							"value": "Cashier"
+						},
+						{
+							"id": "job-588c9a87-3788-48ec-8c4a-f049ec9f0478~Stocker",
+							"value": "Stocker"
+						},
+						{
+							"id": "job-588c9a87-3788-48ec-8c4a-f049ec9f0478~Unknown Job",
+							"value": "Unknown Job"
+						}
+					]
+				},
+				{
+					"id": "shift-8b1f004d-25e8-4676-83c7-4d56463463b9",
+					"name": "Shift",
+					"kind": "tag",
+					"options": [
+						{
+							"id": "shift-8b1f004d-25e8-4676-83c7-4d56463463b9~Days",
+							"value": "Days"
+						},
+						{
+							"id": "shift-8b1f004d-25e8-4676-83c7-4d56463463b9~Nights",
+							"value": "Nights"
+						}
+					]
+				},
+				{
+					"id": "dept-11751cc3-1bca-4ca4-8b40-a32e1fd3a0c7",
+					"name": "Department",
+					"kind": "category",
+					"options": [
+						{
+							"id": "dept-11751cc3-1bca-4ca4-8b40-a32e1fd3a0c7~Front of House",
+							"value": "Front of House"
+						},
+						{
+							"id": "dept-11751cc3-1bca-4ca4-8b40-a32e1fd3a0c7~Back of House",
+							"value": "Back of House"
+						}
+					]
+				}
+			],
+			"status": 200,
+			"body": {
+				"attributes": [
+					{
+						"id": "loc-be66300c-b834-40f8-8bd2-bf9fe9249d13",
+						"kind": "tag",
+						"name": "Location",
+						"options": [
+							{
+								"id": "loc-be66300c-b834-40f8-8bd2-bf9fe9249d13~Central",
+								"shortForm": "Central",
+								"shortFormOrigin": "generated",
+								"value": "Central"
+							},
+							{
+								"id": "loc-be66300c-b834-40f8-8bd2-bf9fe9249d13~Store A",
+								"parentId": "loc-be66300c-b834-40f8-8bd2-bf9fe9249d13~Central",
+								"shortForm": "Store A",
+								"shortFormOrigin": "generated",
+								"value": "Store A"
+							},
+							{
+								"id": "loc-be66300c-b834-40f8-8bd2-bf9fe9249d13~Store B",
+								"parentId": "loc-be66300c-b834-40f8-8bd2-bf9fe9249d13~Central",
+								"shortForm": "Store B",
+								"shortFormOrigin": "generated",
+								"value": "Store B"
+							}
+						]
+					},
+					{
+						"id": "job-588c9a87-3788-48ec-8c4a-f049ec9f0478",
+						"kind": "tag",
+						"name": "Job",
+						"options": [
+							{
+								"id": "job-588c9a87-3788-48ec-8c4a-f049ec9f0478~Cashier",
+								"shortForm": "Cashier",
+								"shortFormOrigin": "generated",
+								"value": "Cashier"
+							},
+							{
+								"id": "job-588c9a87-3788-48ec-8c4a-f049ec9f0478~Stocker",
+								"shortForm": "Stocker",
+								"shortFormOrigin": "generated",
+								"value": "Stocker"
+							},
+							{
+								"id": "job-588c9a87-3788-48ec-8c4a-f049ec9f0478~Unknown Job",
+								"shortForm": "Unknown J…",
+								"shortFormOrigin": "generated",
+								"value": "Unknown Job"
+							}
+						]
+					},
+					{
+						"id": "shift-8b1f004d-25e8-4676-83c7-4d56463463b9",
+						"kind": "tag",
+						"name": "Shift",
+						"options": [
+							{
+								"id": "shift-8b1f004d-25e8-4676-83c7-4d56463463b9~Days",
+								"shortForm": "Days",
+								"shortFormOrigin": "generated",
+								"value": "Days"
+							},
+							{
+								"id": "shift-8b1f004d-25e8-4676-83c7-4d56463463b9~Nights",
+								"shortForm": "Nights",
+								"shortFormOrigin": "generated",
+								"value": "Nights"
+							}
+						]
+					},
+					{
+						"id": "dept-11751cc3-1bca-4ca4-8b40-a32e1fd3a0c7",
+						"kind": "category",
+						"name": "Department",
+						"options": [
+							{
+								"id": "dept-11751cc3-1bca-4ca4-8b40-a32e1fd3a0c7~Front of House",
+								"shortForm": "Front of …",
+								"shortFormOrigin": "generated",
+								"value": "Front of House"
+							},
+							{
+								"id": "dept-11751cc3-1bca-4ca4-8b40-a32e1fd3a0c7~Back of House",
+								"shortForm": "Back of H…",
+								"shortFormOrigin": "generated",
+								"value": "Back of House"
+							}
+						]
+					}
+				]
+			}
+		},
+		{
+			"method": "POST",
+			"path": "/api/workers",
+			"requestBody": {
+				"name": "Alex",
+				"email": "",
+				"phone": "",
+				"assessment": "Unassessed",
+				"attributes": {
+					"dept-11751cc3-1bca-4ca4-8b40-a32e1fd3a0c7": "dept-11751cc3-1bca-4ca4-8b40-a32e1fd3a0c7~Front of House",
+					"loc-be66300c-b834-40f8-8bd2-bf9fe9249d13": [
+						"loc-be66300c-b834-40f8-8bd2-bf9fe9249d13~Store A",
+						"loc-be66300c-b834-40f8-8bd2-bf9fe9249d13~Store B"
+					],
+					"job-588c9a87-3788-48ec-8c4a-f049ec9f0478": [
+						"job-588c9a87-3788-48ec-8c4a-f049ec9f0478~Cashier",
+						"job-588c9a87-3788-48ec-8c4a-f049ec9f0478~Stocker"
+					],
+					"shift-8b1f004d-25e8-4676-83c7-4d56463463b9": [
+						"shift-8b1f004d-25e8-4676-83c7-4d56463463b9~Days",
+						"shift-8b1f004d-25e8-4676-83c7-4d56463463b9~Nights"
+					]
+				},
+				"agitations": [],
+				"languages": [],
+				"relationships": [],
+				"notes": []
+			},
+			"status": 201,
+			"body": {
+				"worker": {
+					"agitations": [],
+					"assessment": "Unassessed",
+					"attributes": {
+						"dept-11751cc3-1bca-4ca4-8b40-a32e1fd3a0c7": "dept-11751cc3-1bca-4ca4-8b40-a32e1fd3a0c7~Front of House",
+						"job-588c9a87-3788-48ec-8c4a-f049ec9f0478": [
+							"job-588c9a87-3788-48ec-8c4a-f049ec9f0478~Cashier",
+							"job-588c9a87-3788-48ec-8c4a-f049ec9f0478~Stocker"
+						],
+						"loc-be66300c-b834-40f8-8bd2-bf9fe9249d13": [
+							"loc-be66300c-b834-40f8-8bd2-bf9fe9249d13~Store A",
+							"loc-be66300c-b834-40f8-8bd2-bf9fe9249d13~Store B"
+						],
+						"shift-8b1f004d-25e8-4676-83c7-4d56463463b9": [
+							"shift-8b1f004d-25e8-4676-83c7-4d56463463b9~Days",
+							"shift-8b1f004d-25e8-4676-83c7-4d56463463b9~Nights"
+						]
+					},
+					"email": "",
+					"id": "2e689849-ec0c-463f-b15c-58bd48159f9e",
+					"languages": [],
+					"name": "Alex",
+					"notes": [],
+					"phone": "",
+					"relationships": []
+				}
+			}
+		},
+		{
+			"method": "POST",
+			"path": "/api/workers",
+			"requestBody": {
+				"name": "Blair",
+				"email": "",
+				"phone": "",
+				"assessment": "Unassessed",
+				"attributes": {
+					"dept-11751cc3-1bca-4ca4-8b40-a32e1fd3a0c7": "dept-11751cc3-1bca-4ca4-8b40-a32e1fd3a0c7~Front of House",
+					"loc-be66300c-b834-40f8-8bd2-bf9fe9249d13": [
+						"loc-be66300c-b834-40f8-8bd2-bf9fe9249d13~Store A",
+						"loc-be66300c-b834-40f8-8bd2-bf9fe9249d13~Store B"
+					],
+					"job-588c9a87-3788-48ec-8c4a-f049ec9f0478": [
+						"job-588c9a87-3788-48ec-8c4a-f049ec9f0478~Cashier",
+						"job-588c9a87-3788-48ec-8c4a-f049ec9f0478~Stocker"
+					],
+					"shift-8b1f004d-25e8-4676-83c7-4d56463463b9": []
+				},
+				"agitations": [],
+				"languages": [],
+				"relationships": [],
+				"notes": []
+			},
+			"status": 201,
+			"body": {
+				"worker": {
+					"agitations": [],
+					"assessment": "Unassessed",
+					"attributes": {
+						"dept-11751cc3-1bca-4ca4-8b40-a32e1fd3a0c7": "dept-11751cc3-1bca-4ca4-8b40-a32e1fd3a0c7~Front of House",
+						"job-588c9a87-3788-48ec-8c4a-f049ec9f0478": [
+							"job-588c9a87-3788-48ec-8c4a-f049ec9f0478~Cashier",
+							"job-588c9a87-3788-48ec-8c4a-f049ec9f0478~Stocker"
+						],
+						"loc-be66300c-b834-40f8-8bd2-bf9fe9249d13": [
+							"loc-be66300c-b834-40f8-8bd2-bf9fe9249d13~Store A",
+							"loc-be66300c-b834-40f8-8bd2-bf9fe9249d13~Store B"
+						],
+						"shift-8b1f004d-25e8-4676-83c7-4d56463463b9": []
+					},
+					"email": "",
+					"id": "d199ee34-1394-4aea-814f-fb8c51794e6e",
+					"languages": [],
+					"name": "Blair",
+					"notes": [],
+					"phone": "",
+					"relationships": []
+				}
+			}
+		},
+		{
+			"method": "POST",
+			"path": "/api/workers",
+			"requestBody": {
+				"name": "Casey",
+				"email": "",
+				"phone": "",
+				"assessment": "Unassessed",
+				"attributes": {
+					"dept-11751cc3-1bca-4ca4-8b40-a32e1fd3a0c7": "dept-11751cc3-1bca-4ca4-8b40-a32e1fd3a0c7~Front of House",
+					"loc-be66300c-b834-40f8-8bd2-bf9fe9249d13": [
+						"loc-be66300c-b834-40f8-8bd2-bf9fe9249d13~Central"
+					],
+					"job-588c9a87-3788-48ec-8c4a-f049ec9f0478": [],
+					"shift-8b1f004d-25e8-4676-83c7-4d56463463b9": []
+				},
+				"agitations": [],
+				"languages": [],
+				"relationships": [],
+				"notes": []
+			},
+			"status": 201,
+			"body": {
+				"worker": {
+					"agitations": [],
+					"assessment": "Unassessed",
+					"attributes": {
+						"dept-11751cc3-1bca-4ca4-8b40-a32e1fd3a0c7": "dept-11751cc3-1bca-4ca4-8b40-a32e1fd3a0c7~Front of House",
+						"job-588c9a87-3788-48ec-8c4a-f049ec9f0478": [],
+						"loc-be66300c-b834-40f8-8bd2-bf9fe9249d13": [
+							"loc-be66300c-b834-40f8-8bd2-bf9fe9249d13~Central"
+						],
+						"shift-8b1f004d-25e8-4676-83c7-4d56463463b9": []
+					},
+					"email": "",
+					"id": "f3e3dcda-35fb-4413-80c3-6cd679ab8c7f",
+					"languages": [],
+					"name": "Casey",
+					"notes": [],
+					"phone": "",
+					"relationships": []
+				}
+			}
+		},
+		{
+			"method": "POST",
+			"path": "/api/workers",
+			"requestBody": {
+				"name": "Drew",
+				"email": "",
+				"phone": "",
+				"assessment": "Unassessed",
+				"attributes": {
+					"dept-11751cc3-1bca-4ca4-8b40-a32e1fd3a0c7": "dept-11751cc3-1bca-4ca4-8b40-a32e1fd3a0c7~Front of House",
+					"loc-be66300c-b834-40f8-8bd2-bf9fe9249d13": [
+						"loc-be66300c-b834-40f8-8bd2-bf9fe9249d13~Store A"
+					],
+					"job-588c9a87-3788-48ec-8c4a-f049ec9f0478": [],
+					"shift-8b1f004d-25e8-4676-83c7-4d56463463b9": []
+				},
+				"agitations": [],
+				"languages": [],
+				"relationships": [],
+				"notes": []
+			},
+			"status": 201,
+			"body": {
+				"worker": {
+					"agitations": [],
+					"assessment": "Unassessed",
+					"attributes": {
+						"dept-11751cc3-1bca-4ca4-8b40-a32e1fd3a0c7": "dept-11751cc3-1bca-4ca4-8b40-a32e1fd3a0c7~Front of House",
+						"job-588c9a87-3788-48ec-8c4a-f049ec9f0478": [],
+						"loc-be66300c-b834-40f8-8bd2-bf9fe9249d13": [
+							"loc-be66300c-b834-40f8-8bd2-bf9fe9249d13~Store A"
+						],
+						"shift-8b1f004d-25e8-4676-83c7-4d56463463b9": []
+					},
+					"email": "",
+					"id": "0f31f108-5b65-47c7-a043-3e5b945f90a8",
+					"languages": [],
+					"name": "Drew",
+					"notes": [],
+					"phone": "",
+					"relationships": []
+				}
+			}
+		},
+		{
+			"method": "POST",
+			"path": "/api/workers",
+			"requestBody": {
+				"name": "Erin",
+				"email": "",
+				"phone": "",
+				"assessment": "Unassessed",
+				"attributes": {
+					"dept-11751cc3-1bca-4ca4-8b40-a32e1fd3a0c7": "dept-11751cc3-1bca-4ca4-8b40-a32e1fd3a0c7~Back of House",
+					"loc-be66300c-b834-40f8-8bd2-bf9fe9249d13": [
+						"loc-be66300c-b834-40f8-8bd2-bf9fe9249d13~Central",
+						"loc-be66300c-b834-40f8-8bd2-bf9fe9249d13~Store A"
+					],
+					"job-588c9a87-3788-48ec-8c4a-f049ec9f0478": [],
+					"shift-8b1f004d-25e8-4676-83c7-4d56463463b9": []
+				},
+				"agitations": [],
+				"languages": [],
+				"relationships": [],
+				"notes": []
+			},
+			"status": 201,
+			"body": {
+				"worker": {
+					"agitations": [],
+					"assessment": "Unassessed",
+					"attributes": {
+						"dept-11751cc3-1bca-4ca4-8b40-a32e1fd3a0c7": "dept-11751cc3-1bca-4ca4-8b40-a32e1fd3a0c7~Back of House",
+						"job-588c9a87-3788-48ec-8c4a-f049ec9f0478": [],
+						"loc-be66300c-b834-40f8-8bd2-bf9fe9249d13": [
+							"loc-be66300c-b834-40f8-8bd2-bf9fe9249d13~Central",
+							"loc-be66300c-b834-40f8-8bd2-bf9fe9249d13~Store A"
+						],
+						"shift-8b1f004d-25e8-4676-83c7-4d56463463b9": []
+					},
+					"email": "",
+					"id": "cc653ba7-c135-4980-9864-a12184fc6804",
+					"languages": [],
+					"name": "Erin",
+					"notes": [],
+					"phone": "",
+					"relationships": []
+				}
+			}
+		},
+		{
+			"method": "POST",
+			"path": "/api/workers",
+			"requestBody": {
+				"name": "Frankie",
+				"email": "",
+				"phone": "",
+				"assessment": "Unassessed",
+				"attributes": {
+					"dept-11751cc3-1bca-4ca4-8b40-a32e1fd3a0c7": "dept-11751cc3-1bca-4ca4-8b40-a32e1fd3a0c7~Back of House",
+					"loc-be66300c-b834-40f8-8bd2-bf9fe9249d13": [
+						"loc-be66300c-b834-40f8-8bd2-bf9fe9249d13~Store B"
+					],
+					"job-588c9a87-3788-48ec-8c4a-f049ec9f0478": [],
+					"shift-8b1f004d-25e8-4676-83c7-4d56463463b9": []
+				},
+				"agitations": [],
+				"languages": [],
+				"relationships": [],
+				"notes": []
+			},
+			"status": 201,
+			"body": {
+				"worker": {
+					"agitations": [],
+					"assessment": "Unassessed",
+					"attributes": {
+						"dept-11751cc3-1bca-4ca4-8b40-a32e1fd3a0c7": "dept-11751cc3-1bca-4ca4-8b40-a32e1fd3a0c7~Back of House",
+						"job-588c9a87-3788-48ec-8c4a-f049ec9f0478": [],
+						"loc-be66300c-b834-40f8-8bd2-bf9fe9249d13": [
+							"loc-be66300c-b834-40f8-8bd2-bf9fe9249d13~Store B"
+						],
+						"shift-8b1f004d-25e8-4676-83c7-4d56463463b9": []
+					},
+					"email": "",
+					"id": "2908179a-8570-4ca4-afcd-49d636a19d9d",
+					"languages": [],
+					"name": "Frankie",
+					"notes": [],
+					"phone": "",
+					"relationships": []
+				}
+			}
+		},
+		{
+			"method": "POST",
+			"path": "/api/workers",
+			"requestBody": {
+				"name": "Gray",
+				"email": "",
+				"phone": "",
+				"assessment": "Unassessed",
+				"attributes": {
+					"dept-11751cc3-1bca-4ca4-8b40-a32e1fd3a0c7": "dept-11751cc3-1bca-4ca4-8b40-a32e1fd3a0c7~Back of House",
+					"loc-be66300c-b834-40f8-8bd2-bf9fe9249d13": [],
+					"job-588c9a87-3788-48ec-8c4a-f049ec9f0478": [],
+					"shift-8b1f004d-25e8-4676-83c7-4d56463463b9": []
+				},
+				"agitations": [],
+				"languages": [],
+				"relationships": [],
+				"notes": []
+			},
+			"status": 201,
+			"body": {
+				"worker": {
+					"agitations": [],
+					"assessment": "Unassessed",
+					"attributes": {
+						"dept-11751cc3-1bca-4ca4-8b40-a32e1fd3a0c7": "dept-11751cc3-1bca-4ca4-8b40-a32e1fd3a0c7~Back of House",
+						"job-588c9a87-3788-48ec-8c4a-f049ec9f0478": [],
+						"loc-be66300c-b834-40f8-8bd2-bf9fe9249d13": [],
+						"shift-8b1f004d-25e8-4676-83c7-4d56463463b9": []
+					},
+					"email": "",
+					"id": "d79db5c8-aeb3-4c35-b7a7-4dfd14d75b3c",
+					"languages": [],
+					"name": "Gray",
+					"notes": [],
+					"phone": "",
+					"relationships": []
+				}
+			}
+		},
+		{
+			"method": "POST",
+			"path": "/api/workers",
+			"requestBody": {
+				"name": "Hana",
+				"email": "",
+				"phone": "",
+				"assessment": "Unassessed",
+				"attributes": {
+					"dept-11751cc3-1bca-4ca4-8b40-a32e1fd3a0c7": "dept-11751cc3-1bca-4ca4-8b40-a32e1fd3a0c7~Back of House",
+					"loc-be66300c-b834-40f8-8bd2-bf9fe9249d13": [
+						"loc-be66300c-b834-40f8-8bd2-bf9fe9249d13~Store A"
+					],
+					"job-588c9a87-3788-48ec-8c4a-f049ec9f0478": [
+						"job-588c9a87-3788-48ec-8c4a-f049ec9f0478~Unknown Job"
+					],
+					"shift-8b1f004d-25e8-4676-83c7-4d56463463b9": []
+				},
+				"agitations": [],
+				"languages": [],
+				"relationships": [],
+				"notes": []
+			},
+			"status": 201,
+			"body": {
+				"worker": {
+					"agitations": [],
+					"assessment": "Unassessed",
+					"attributes": {
+						"dept-11751cc3-1bca-4ca4-8b40-a32e1fd3a0c7": "dept-11751cc3-1bca-4ca4-8b40-a32e1fd3a0c7~Back of House",
+						"job-588c9a87-3788-48ec-8c4a-f049ec9f0478": [
+							"job-588c9a87-3788-48ec-8c4a-f049ec9f0478~Unknown Job"
+						],
+						"loc-be66300c-b834-40f8-8bd2-bf9fe9249d13": [
+							"loc-be66300c-b834-40f8-8bd2-bf9fe9249d13~Store A"
+						],
+						"shift-8b1f004d-25e8-4676-83c7-4d56463463b9": []
+					},
+					"email": "",
+					"id": "de569d51-cd72-4182-b09e-c64bf4111948",
+					"languages": [],
+					"name": "Hana",
+					"notes": [],
+					"phone": "",
+					"relationships": []
+				}
+			}
+		},
+		{
+			"method": "PATCH",
+			"path": "/api/workers/2e689849-ec0c-463f-b15c-58bd48159f9e",
+			"requestBody": {
+				"field": "relationships",
+				"action": "add",
+				"value": {
+					"id": "d199ee34-1394-4aea-814f-fb8c51794e6e"
+				}
+			},
+			"status": 200,
+			"body": {
+				"worker": {
+					"agitations": [],
+					"assessment": "Unassessed",
+					"attributes": {
+						"dept-11751cc3-1bca-4ca4-8b40-a32e1fd3a0c7": "dept-11751cc3-1bca-4ca4-8b40-a32e1fd3a0c7~Front of House",
+						"job-588c9a87-3788-48ec-8c4a-f049ec9f0478": [
+							"job-588c9a87-3788-48ec-8c4a-f049ec9f0478~Cashier",
+							"job-588c9a87-3788-48ec-8c4a-f049ec9f0478~Stocker"
+						],
+						"loc-be66300c-b834-40f8-8bd2-bf9fe9249d13": [
+							"loc-be66300c-b834-40f8-8bd2-bf9fe9249d13~Store A",
+							"loc-be66300c-b834-40f8-8bd2-bf9fe9249d13~Store B"
+						],
+						"shift-8b1f004d-25e8-4676-83c7-4d56463463b9": [
+							"shift-8b1f004d-25e8-4676-83c7-4d56463463b9~Days",
+							"shift-8b1f004d-25e8-4676-83c7-4d56463463b9~Nights"
+						]
+					},
+					"email": "",
+					"id": "2e689849-ec0c-463f-b15c-58bd48159f9e",
+					"languages": [],
+					"name": "Alex",
+					"notes": [],
+					"phone": "",
+					"relationships": [
+						"d199ee34-1394-4aea-814f-fb8c51794e6e"
+					]
+				}
+			}
+		},
+		{
+			"method": "PATCH",
+			"path": "/api/workers/f3e3dcda-35fb-4413-80c3-6cd679ab8c7f",
+			"requestBody": {
+				"field": "relationships",
+				"action": "add",
+				"value": {
+					"id": "0f31f108-5b65-47c7-a043-3e5b945f90a8"
+				}
+			},
+			"status": 200,
+			"body": {
+				"worker": {
+					"agitations": [],
+					"assessment": "Unassessed",
+					"attributes": {
+						"dept-11751cc3-1bca-4ca4-8b40-a32e1fd3a0c7": "dept-11751cc3-1bca-4ca4-8b40-a32e1fd3a0c7~Front of House",
+						"job-588c9a87-3788-48ec-8c4a-f049ec9f0478": [],
+						"loc-be66300c-b834-40f8-8bd2-bf9fe9249d13": [
+							"loc-be66300c-b834-40f8-8bd2-bf9fe9249d13~Central"
+						],
+						"shift-8b1f004d-25e8-4676-83c7-4d56463463b9": []
+					},
+					"email": "",
+					"id": "f3e3dcda-35fb-4413-80c3-6cd679ab8c7f",
+					"languages": [],
+					"name": "Casey",
+					"notes": [],
+					"phone": "",
+					"relationships": [
+						"0f31f108-5b65-47c7-a043-3e5b945f90a8"
+					]
+				}
+			}
+		}
+	],
+	"worksite": {
+		"committeeTarget": 5,
+		"id": "5f697abb-5cf5-4e5d-92af-8d63add6263b",
+		"name": "My Worksite 47"
+	}
+}

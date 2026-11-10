@@ -1,0 +1,345 @@
+{
+	"pages": [
+		{
+			"method": "GET",
+			"path": "/api/boot-status",
+			"status": 200,
+			"body": {
+				"encrypted": true,
+				"firstRun": false,
+				"legacyPlaintext": false,
+				"markerPending": false,
+				"state": "open"
+			}
+		},
+		{
+			"method": "GET",
+			"path": "/api/boot-status",
+			"status": 200,
+			"body": {
+				"encrypted": true,
+				"firstRun": false,
+				"legacyPlaintext": false,
+				"markerPending": false,
+				"state": "open"
+			}
+		},
+		{
+			"method": "GET",
+			"path": "/api/boot-status",
+			"status": 200,
+			"body": {
+				"encrypted": true,
+				"firstRun": false,
+				"legacyPlaintext": false,
+				"markerPending": false,
+				"state": "open"
+			}
+		},
+		{
+			"method": "GET",
+			"path": "/api/dataset",
+			"status": 200,
+			"body": {
+				"agitations": [],
+				"attributes": [
+					{
+						"id": "c65100b8-ac28-4566-ac3b-2ff31f306d54",
+						"kind": "category",
+						"name": "Department",
+						"options": []
+					},
+					{
+						"id": "14025d7a-64fd-4cc2-9fbd-1dd5ef0db0cf",
+						"kind": "category",
+						"name": "Role",
+						"options": []
+					},
+					{
+						"id": "880e98ec-18be-4637-b1ab-191eaedc218a",
+						"kind": "tag",
+						"name": "Shifts",
+						"options": []
+					}
+				],
+				"languages": [],
+				"settings": {
+					"colorBlindAssessments": false,
+					"dateFormat": "system",
+					"density": "standard",
+					"increaseContrast": false,
+					"language": "system",
+					"reduceMotion": "system",
+					"rememberWindow": true,
+					"textSize": "100",
+					"theme": "system",
+					"timeFormat": "system"
+				},
+				"workers": [],
+				"worksite": {
+					"committeeTarget": 5,
+					"id": "60947975-40a6-47e8-b533-2810d2c348a1",
+					"name": "My Worksite 8"
+				},
+				"worksites": [
+					{
+						"committeeTarget": 5,
+						"id": "945df0ac-d4f7-4298-a80a-63cde69d2984",
+						"name": "My Worksite"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "d7e8a889-ea11-4ddf-99c5-98fdfcd4473e",
+						"name": "My Worksite 2"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "33d8ac47-c9ac-49d8-9f78-0542615dd3a3",
+						"name": "My Worksite 3"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "89349663-7945-44bb-8890-4f3969ea502c",
+						"name": "My Worksite 4"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "7abc6415-5f71-4345-bfa7-879d923ac5f6",
+						"name": "My Worksite 5"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "5fca8385-2963-4dca-be59-5c1ed0f200bb",
+						"name": "My Worksite 6"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "92397821-71cc-474e-b064-bdf8b527c26a",
+						"name": "My Worksite 7"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "60947975-40a6-47e8-b533-2810d2c348a1",
+						"name": "My Worksite 8"
+					}
+				]
+			}
+		},
+		{
+			"method": "GET",
+			"path": "/api/dataset",
+			"status": 200,
+			"body": {
+				"agitations": [],
+				"attributes": [
+					{
+						"id": "c65100b8-ac28-4566-ac3b-2ff31f306d54",
+						"kind": "category",
+						"name": "Department",
+						"options": []
+					},
+					{
+						"id": "14025d7a-64fd-4cc2-9fbd-1dd5ef0db0cf",
+						"kind": "category",
+						"name": "Role",
+						"options": []
+					},
+					{
+						"id": "880e98ec-18be-4637-b1ab-191eaedc218a",
+						"kind": "tag",
+						"name": "Shifts",
+						"options": []
+					}
+				],
+				"languages": [],
+				"settings": {
+					"colorBlindAssessments": false,
+					"dateFormat": "system",
+					"density": "standard",
+					"increaseContrast": false,
+					"language": "system",
+					"reduceMotion": "system",
+					"rememberWindow": true,
+					"textSize": "100",
+					"theme": "system",
+					"timeFormat": "system"
+				},
+				"workers": [],
+				"worksite": {
+					"committeeTarget": 5,
+					"id": "60947975-40a6-47e8-b533-2810d2c348a1",
+					"name": "My Worksite 8"
+				},
+				"worksites": [
+					{
+						"committeeTarget": 5,
+						"id": "945df0ac-d4f7-4298-a80a-63cde69d2984",
+						"name": "My Worksite"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "d7e8a889-ea11-4ddf-99c5-98fdfcd4473e",
+						"name": "My Worksite 2"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "33d8ac47-c9ac-49d8-9f78-0542615dd3a3",
+						"name": "My Worksite 3"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "89349663-7945-44bb-8890-4f3969ea502c",
+						"name": "My Worksite 4"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "7abc6415-5f71-4345-bfa7-879d923ac5f6",
+						"name": "My Worksite 5"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "5fca8385-2963-4dca-be59-5c1ed0f200bb",
+						"name": "My Worksite 6"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "92397821-71cc-474e-b064-bdf8b527c26a",
+						"name": "My Worksite 7"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "60947975-40a6-47e8-b533-2810d2c348a1",
+						"name": "My Worksite 8"
+					}
+				]
+			}
+		},
+		{
+			"method": "GET",
+			"path": "/api/dataset",
+			"status": 200,
+			"body": {
+				"agitations": [],
+				"attributes": [
+					{
+						"id": "c65100b8-ac28-4566-ac3b-2ff31f306d54",
+						"kind": "category",
+						"name": "Department",
+						"options": []
+					},
+					{
+						"id": "14025d7a-64fd-4cc2-9fbd-1dd5ef0db0cf",
+						"kind": "category",
+						"name": "Role",
+						"options": []
+					},
+					{
+						"id": "880e98ec-18be-4637-b1ab-191eaedc218a",
+						"kind": "tag",
+						"name": "Shifts",
+						"options": []
+					}
+				],
+				"languages": [],
+				"settings": {
+					"colorBlindAssessments": false,
+					"dateFormat": "system",
+					"density": "standard",
+					"increaseContrast": false,
+					"language": "system",
+					"reduceMotion": "system",
+					"rememberWindow": true,
+					"textSize": "100",
+					"theme": "system",
+					"timeFormat": "system"
+				},
+				"workers": [],
+				"worksite": {
+					"committeeTarget": 5,
+					"id": "60947975-40a6-47e8-b533-2810d2c348a1",
+					"name": "My Worksite 8"
+				},
+				"worksites": [
+					{
+						"committeeTarget": 5,
+						"id": "945df0ac-d4f7-4298-a80a-63cde69d2984",
+						"name": "My Worksite"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "d7e8a889-ea11-4ddf-99c5-98fdfcd4473e",
+						"name": "My Worksite 2"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "33d8ac47-c9ac-49d8-9f78-0542615dd3a3",
+						"name": "My Worksite 3"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "89349663-7945-44bb-8890-4f3969ea502c",
+						"name": "My Worksite 4"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "7abc6415-5f71-4345-bfa7-879d923ac5f6",
+						"name": "My Worksite 5"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "5fca8385-2963-4dca-be59-5c1ed0f200bb",
+						"name": "My Worksite 6"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "92397821-71cc-474e-b064-bdf8b527c26a",
+						"name": "My Worksite 7"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "60947975-40a6-47e8-b533-2810d2c348a1",
+						"name": "My Worksite 8"
+					}
+				]
+			}
+		},
+		{
+			"method": "GET",
+			"path": "/api/settings",
+			"status": 200,
+			"body": {
+				"settings": {
+					"colorBlindAssessments": false,
+					"dateFormat": "system",
+					"density": "standard",
+					"increaseContrast": false,
+					"language": "system",
+					"reduceMotion": "system",
+					"rememberWindow": true,
+					"textSize": "100",
+					"theme": "system",
+					"timeFormat": "system"
+				}
+			}
+		}
+	],
+	"seed": [
+		{
+			"method": "GET",
+			"path": "/api/worksite",
+			"status": 200,
+			"body": {
+				"worksite": {
+					"committeeTarget": 5,
+					"id": "60947975-40a6-47e8-b533-2810d2c348a1",
+					"name": "My Worksite 8"
+				}
+			}
+		}
+	],
+	"worksite": {
+		"committeeTarget": 5,
+		"id": "60947975-40a6-47e8-b533-2810d2c348a1",
+		"name": "My Worksite 8"
+	}
+}

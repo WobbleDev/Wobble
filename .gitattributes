@@ -1,0 +1,2 @@
+# Normalize line endings to LF; git's binary detection protects vendored binaries/PNGs.
+* text=auto eol=lf

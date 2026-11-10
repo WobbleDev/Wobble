@@ -1,0 +1,228 @@
+{
+	"pages": [
+		{
+			"method": "GET",
+			"path": "/api/boot-status",
+			"status": 200,
+			"body": {
+				"encrypted": true,
+				"firstRun": false,
+				"legacyPlaintext": false,
+				"markerPending": false,
+				"state": "open"
+			}
+		},
+		{
+			"method": "GET",
+			"path": "/api/dataset",
+			"status": 200,
+			"body": {
+				"agitations": [
+					{
+						"id": "42caeaf5-2915-40ea-bccc-a1aef76b226e",
+						"text": "Pay"
+					}
+				],
+				"attributes": [
+					{
+						"id": "9932d976-98e7-43ea-a863-31072faf334e",
+						"kind": "category",
+						"name": "Department",
+						"options": [
+							{
+								"id": "9932d976-98e7-43ea-a863-31072faf334e~Front of House",
+								"shortForm": "Front of …",
+								"shortFormOrigin": "generated",
+								"value": "Front of House"
+							}
+						]
+					}
+				],
+				"languages": [],
+				"settings": {
+					"colorBlindAssessments": false,
+					"dateFormat": "system",
+					"density": "standard",
+					"increaseContrast": false,
+					"language": "system",
+					"reduceMotion": "system",
+					"rememberWindow": true,
+					"textSize": "100",
+					"theme": "system",
+					"timeFormat": "system"
+				},
+				"workers": [
+					{
+						"agitations": [
+							"42caeaf5-2915-40ea-bccc-a1aef76b226e"
+						],
+						"assessment": "Supporter",
+						"attributes": {
+							"9932d976-98e7-43ea-a863-31072faf334e": "9932d976-98e7-43ea-a863-31072faf334e~Front of House"
+						},
+						"email": "",
+						"id": "3f2ba11b-6143-4918-9499-7c76c1b1ad75",
+						"languages": [],
+						"name": "Ana",
+						"notes": [],
+						"phone": "",
+						"relationships": []
+					}
+				],
+				"worksite": {
+					"committeeTarget": 5,
+					"id": "89349663-7945-44bb-8890-4f3969ea502c",
+					"name": "My Worksite 4"
+				},
+				"worksites": [
+					{
+						"committeeTarget": 5,
+						"id": "945df0ac-d4f7-4298-a80a-63cde69d2984",
+						"name": "My Worksite"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "d7e8a889-ea11-4ddf-99c5-98fdfcd4473e",
+						"name": "My Worksite 2"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "33d8ac47-c9ac-49d8-9f78-0542615dd3a3",
+						"name": "My Worksite 3"
+					},
+					{
+						"committeeTarget": 5,
+						"id": "89349663-7945-44bb-8890-4f3969ea502c",
+						"name": "My Worksite 4"
+					}
+				]
+			}
+		},
+		{
+			"method": "GET",
+			"path": "/api/settings",
+			"status": 200,
+			"body": {
+				"settings": {
+					"colorBlindAssessments": false,
+					"dateFormat": "system",
+					"density": "standard",
+					"increaseContrast": false,
+					"language": "system",
+					"reduceMotion": "system",
+					"rememberWindow": true,
+					"textSize": "100",
+					"theme": "system",
+					"timeFormat": "system"
+				}
+			}
+		}
+	],
+	"seed": [
+		{
+			"method": "GET",
+			"path": "/api/worksite",
+			"status": 200,
+			"body": {
+				"worksite": {
+					"committeeTarget": 5,
+					"id": "89349663-7945-44bb-8890-4f3969ea502c",
+					"name": "My Worksite 4"
+				}
+			}
+		},
+		{
+			"method": "PUT",
+			"path": "/api/attributes",
+			"requestBody": [
+				{
+					"id": "9932d976-98e7-43ea-a863-31072faf334e",
+					"name": "Department",
+					"kind": "category",
+					"options": [
+						{
+							"id": "9932d976-98e7-43ea-a863-31072faf334e~Front of House",
+							"value": "Front of House"
+						}
+					]
+				}
+			],
+			"status": 200,
+			"body": {
+				"attributes": [
+					{
+						"id": "9932d976-98e7-43ea-a863-31072faf334e",
+						"kind": "category",
+						"name": "Department",
+						"options": [
+							{
+								"id": "9932d976-98e7-43ea-a863-31072faf334e~Front of House",
+								"shortForm": "Front of …",
+								"shortFormOrigin": "generated",
+								"value": "Front of House"
+							}
+						]
+					}
+				]
+			}
+		},
+		{
+			"method": "POST",
+			"path": "/api/agitations",
+			"requestBody": {
+				"text": "Pay"
+			},
+			"status": 200,
+			"body": {
+				"agitation": {
+					"id": "42caeaf5-2915-40ea-bccc-a1aef76b226e",
+					"text": "Pay"
+				},
+				"created": true
+			}
+		},
+		{
+			"method": "POST",
+			"path": "/api/workers",
+			"requestBody": {
+				"name": "Ana",
+				"email": "",
+				"phone": "",
+				"assessment": "Supporter",
+				"attributes": {
+					"9932d976-98e7-43ea-a863-31072faf334e": "9932d976-98e7-43ea-a863-31072faf334e~Front of House"
+				},
+				"agitations": [
+					"42caeaf5-2915-40ea-bccc-a1aef76b226e"
+				],
+				"languages": [],
+				"relationships": [],
+				"notes": []
+			},
+			"status": 201,
+			"body": {
+				"worker": {
+					"agitations": [
+						"42caeaf5-2915-40ea-bccc-a1aef76b226e"
+					],
+					"assessment": "Supporter",
+					"attributes": {
+						"9932d976-98e7-43ea-a863-31072faf334e": "9932d976-98e7-43ea-a863-31072faf334e~Front of House"
+					},
+					"email": "",
+					"id": "3f2ba11b-6143-4918-9499-7c76c1b1ad75",
+					"languages": [],
+					"name": "Ana",
+					"notes": [],
+					"phone": "",
+					"relationships": []
+				}
+			}
+		}
+	],
+	"worksite": {
+		"committeeTarget": 5,
+		"id": "89349663-7945-44bb-8890-4f3969ea502c",
+		"name": "My Worksite 4"
+	}
+}

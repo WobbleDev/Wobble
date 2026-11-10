@@ -1,0 +1,34 @@
+# Miscellaneous
+/static/
+
+.scratch/
+.worktrees/
+.playwright-mcp/
+.dsh/
+.claude/
+.impeccable/
+.agents/skills/
+/agent/
+/.archify/
+.mockups-hybrid/
+skills-lock.json
+
+# Build output and generated types
+.svelte-kit/
+build/
+test-results/
+/src/lib/paraglide/
+/project.inlang/.lix/
+/project.inlang/cache/
+/project.inlang/README.md
+/project.inlang/.meta.json
+
+# Contract fixtures are generated and replayed byte-for-byte; never reformat them.
+/contract/fixtures/
+
+# Rust / Tauri build output, generated artefacts and the lockfile
+/target/
+/src-tauri/gen/
+/src-tauri/icons/
+Cargo.lock
+e2e/recordings

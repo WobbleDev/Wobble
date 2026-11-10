@@ -1,0 +1,107 @@
+{
+	"name": "wobble",
+	"private": true,
+	"version": "0.0.1",
+	"type": "module",
+	"engines": {
+		"node": "^20.19.0 || >=22.12.0"
+	},
+	"scripts": {
+		"dev": "vite dev",
+		"i18n:pseudo": "node scripts/generate-pseudo-locale.mjs",
+		"i18n:compile": "node scripts/generate-pseudo-locale.mjs && paraglide-js compile --project ./project.inlang --outdir ./src/lib/paraglide",
+		"i18n:check": "inlang check --project ./project.inlang --missing-translations --empty-translations --empty-variants --missing-variables --unknown-variables --missing-variants --missing-selectors",
+		"prebuild": "npm run i18n:compile",
+		"build": "vite build",
+		"preview": "vite preview",
+		"tauri": "tauri",
+		"prepare": "svelte-kit sync || echo ''; git config core.hooksPath .githooks",
+		"check": "npm run i18n:compile && svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+		"check:watch": "npm run i18n:compile && svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+		"lint": "node scripts/check-e2e-settings-writes.mjs && prettier --check --cache . && eslint --cache . && KNIP_DISABLE_RAW_TRANSFER=1 knip",
+		"format": "prettier --write .",
+		"test:unit": "vitest",
+		"test": "npm run i18n:compile && npm run test:unit -- --run",
+		"gen:types": "CARGO_BUILD_JOBS=1 RUST_TEST_THREADS=1 TS_RS_EXPORT_DIR=../../src/lib/client/generated cargo test -p wobble-core --features ts --lib export_bindings && prettier --write src/lib/client/generated",
+		"test:rust": "CARGO_BUILD_JOBS=1 RUST_TEST_THREADS=1 cargo fmt --check && CARGO_BUILD_JOBS=1 RUST_TEST_THREADS=1 cargo clippy --all-targets -- -D warnings && CARGO_BUILD_JOBS=1 RUST_TEST_THREADS=1 cargo test",
+		"test:e2e": "scripts/e2e-all.sh",
+		"test:e2e:merge": "scripts/e2e-all.sh regular mapping ui",
+		"test:e2e:smoke": "WOBBLE_E2E_GREP=@smoke scripts/e2e-all.sh regular",
+		"test:e2e:flaky": "WOBBLE_E2E_FLAKY=1 scripts/e2e-all.sh regular",
+		"test:e2e:webkit": "WOBBLE_E2E_WEBKIT=1 WOBBLE_E2E_SUITE=regular playwright test --project=webkit",
+		"test:e2e:each": "npm run test:e2e:boot-lifecycle && npm run test:e2e:onboarding && npm run test:e2e:settings && npm run test:e2e:delete-worksite && npm run test:e2e:regular && npm run test:e2e:no-scroll-density",
+		"test:e2e:onboarding": "WOBBLE_E2E_SUITE=onboarding playwright test",
+		"test:e2e:settings": "WOBBLE_E2E_SUITE=settings playwright test e2e/settings.spec.ts",
+		"test:e2e:delete-worksite": "WOBBLE_E2E_SUITE=delete-worksite playwright test",
+		"test:e2e:ui": "WOBBLE_E2E_SUITE=ui playwright test",
+		"test:e2e:record": "WOBBLE_E2E_RECORD=1 WOBBLE_E2E_SUITE=regular playwright test",
+		"test:e2e:regular": "WOBBLE_E2E_SUITE=regular playwright test",
+		"test:e2e:no-scroll-density": "WOBBLE_E2E_SUITE=no-scroll-density playwright test",
+		"verify": "node scripts/verify.mjs",
+		"test:mapping": "npm run test:mapping:unit && scripts/e2e-all.sh mapping",
+		"test:mapping:unit": "npm run i18n:compile && vitest run --tags-filter mapping --maxWorkers=1 --no-file-parallelism",
+		"test:e2e:boot-lifecycle": "scripts/e2e-all.sh boot-lifecycle"
+	},
+	"devDependencies": {
+		"@eslint/js": "^10.0.1",
+		"@fontsource-variable/inter": "^5.3.0",
+		"@fontsource-variable/public-sans": "^5.3.0",
+		"@fontsource-variable/roboto-mono": "^5.3.0",
+		"@inlang/cli": "^3.4.0",
+		"@inlang/paraglide-js": "^2.29.1",
+		"@inlang/plugin-m-function-matcher": "^2.3.0",
+		"@inlang/plugin-message-format": "^4.5.0",
+		"@lucide/svelte": "^1.49.0",
+		"@playwright/test": "1.63.0",
+		"@sveltejs/adapter-static": "^4.0.0",
+		"@sveltejs/kit": "^3.1.0",
+		"@sveltejs/vite-plugin-svelte": "^7.1.2",
+		"@tailwindcss/vite": "^4.3.0",
+		"@tauri-apps/cli": "^2.12.1",
+		"@types/d3-force": "^3.0.10",
+		"@types/node": "^22",
+		"@types/papaparse": "^5.5.2",
+		"bits-ui": "2.19.3",
+		"d3-force": "^3.0.0",
+		"eslint": "^10.4.1",
+		"eslint-config-prettier": "^10.1.8",
+		"eslint-plugin-svelte": "^3.19.0",
+		"globals": "^17.6.0",
+		"knip": "^6.39.0",
+		"prettier": "^3.8.3",
+		"prettier-plugin-svelte": "^4.1.0",
+		"prettier-plugin-tailwindcss": "^0.8.0",
+		"shadcn-svelte": "^1.7.0",
+		"svelte": "^5.56.1",
+		"svelte-check": "^4.6.0",
+		"tailwind-variants": "^3.3.1",
+		"tailwindcss": "^4.3.0",
+		"tw-animate-css": "^1.4.0",
+		"typescript": "^6.0.3",
+		"typescript-eslint": "^8.60.1",
+		"vite": "^8.0.16",
+		"vitest": "^4.1.8"
+	},
+	"allowScripts": {
+		"fsevents@2.3.3": true
+	},
+	"dependencies": {
+		"@tanstack/svelte-table": "^9.2.4",
+		"@tanstack/svelte-virtual": "^3.13.39",
+		"@tauri-apps/api": "^2.12.1",
+		"@tauri-apps/plugin-dialog": "^2.8.1",
+		"layerchart": "^2.5.0",
+		"papaparse": "^5.7.0"
+	},
+	"intent": {
+		"skills": [
+			"*"
+		]
+	},
+	"overrides": {
+		"runed": "0.38.0"
+	},
+	"imports": {
+		"#lib/*": "./src/lib/*"
+	}
+}

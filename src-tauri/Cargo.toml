@@ -1,0 +1,16 @@
+[package]
+name = "wobble-tauri"
+version.workspace = true
+edition.workspace = true
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = [] }
+tauri-plugin-dialog = "2"
+dirs = "7"
+serde = { workspace = true }
+serde_json = { workspace = true }
+wobble-core = { path = "../crates/wobble-core" }
+tauri-plugin-window-state = "2"
