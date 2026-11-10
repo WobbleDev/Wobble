@@ -59,7 +59,7 @@
 		"@tailwindcss/vite": "^4.3.0",
 		"@tauri-apps/cli": "^2.12.1",
 		"@types/d3-force": "^3.0.10",
-		"@types/node": "^22",
+		"@types/node": "^26",
 		"@types/papaparse": "^5.5.2",
 		"bits-ui": "2.19.3",
 		"d3-force": "^3.0.0",
