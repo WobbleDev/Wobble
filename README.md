@@ -18,6 +18,13 @@ The toolbar offers **Grouped**, which arranges workers by the chosen grouping, a
 
 Everything the options panel controls lives in the URL, so a shared link reopens the same map.
 
+## Prerequisites
+
+Wobble supports macOS for now. Install Node.js 22 (the version in `.nvmrc`), a Rust
+toolchain, and the Xcode Command Line Tools (`xcode-select --install`). See the
+[Tauri macOS prerequisites](https://v2.tauri.app/start/prerequisites/) for the
+desktop build requirements.
+
 ## Commands
 
 ```sh
@@ -34,14 +41,17 @@ npm run build     # build the static SPA into build/
 npx tauri build   # build the desktop app
 ```
 
+Run `npm ci` after cloning. It invokes `prepare`, which runs the Paraglide i18n
+compile and SvelteKit sync steps, then configures `core.hooksPath` for the local Git
+hooks. The generated `src/lib/paraglide` files are local build output and are not
+committed.
+
 The backend is the Rust core in `crates/wobble-core`, behind one request boundary
 ([ADR-0021](./docs/adr/0021-the-rust-core-sits-behind-one-request-boundary.md)). `npm run dev`
 alone has no backend, so use `npx tauri dev` for day-to-day work. To use the UI in a browser
 against the real core, build the SPA and start the dev shim:
 `npm run build && WOBBLE_STATIC_DIR=build cargo run -p wobble-dev-shim`, then open
 http://127.0.0.1:4173.
-
-Node and a Rust toolchain are required.
 
 For unattended macOS packaging on this machine, use:
 
