@@ -292,7 +292,7 @@ export function wideWorkersMinFloorRem(): number {
 /** The Workers table's own measurements, taken from the rendered grid. */
 export async function gridReport(page: Page) {
 	return page.evaluate(() => {
-		const viewport = document.querySelector('[data-testid="workers-scroll-viewport"]');
+		const viewport = document.querySelector<HTMLElement>('[data-testid="workers-scroll-viewport"]');
 		if (!viewport) throw new Error('The Workers table viewport is missing.');
 
 		const headers = [...viewport.querySelectorAll('thead th')];
@@ -314,6 +314,12 @@ export async function gridReport(page: Page) {
 			rootFont: parseFloat(getComputedStyle(document.documentElement).fontSize),
 			overflowX: viewport.scrollWidth > viewport.clientWidth + 1,
 			viewportWidth: viewport.clientWidth,
+			viewportOffsetWidth: viewport.offsetWidth,
+			viewportScrollWidth: viewport.scrollWidth,
+			viewportScrollLeft: viewport.scrollLeft,
+			maxScrollLeft: viewport.scrollWidth - viewport.clientWidth,
+			endGap: viewport.scrollWidth - viewport.clientWidth - viewport.scrollLeft,
+			computedOverflowX: getComputedStyle(viewport).overflowX,
 			tableScrollWidth: table ? table.scrollWidth : 0,
 			documentOverflowX: document.documentElement.scrollWidth > window.innerWidth + 1
 		};
