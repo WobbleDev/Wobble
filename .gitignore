@@ -8,6 +8,7 @@ node_modules
 /.svelte-kit
 /build
 /.data
+*.csv
 
 # OS
 .DS_Store
@@ -43,8 +44,7 @@ vite.config.ts.timestamp-*
 __pycache__/
 *.py[cod]
 
-# Scratch probes and verification artifacts under .scratch/
-# (.scratch/ itself is the local issue tracker: specs and tickets are tracked.)
+# Scratch probes and verification artifacts are local; /.scratch/ below ignores them.
 .scratch/verify/
 .scratch/architecture-pipeline/
 .scratch/layout-assessment/
