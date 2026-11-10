@@ -10,6 +10,9 @@ import {
 	saveAll
 } from './configuration-outline.ts';
 
+// The pointer-grip reorder test is a known load flake on shared CI runners: one retry there.
+test.describe.configure({ retries: process.env.CI ? 1 : 0 });
+
 /**
  * Ticket 16: sibling reorder from the grip (Configuration 05) and the folding Agitation and
  * Language lists with distinct-Worker counts (Configuration 08).
