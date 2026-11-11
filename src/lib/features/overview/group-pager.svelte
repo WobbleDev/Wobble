@@ -32,6 +32,11 @@
 	} = $props();
 </script>
 
+<!--
+	The buttons use transition-colors, not Button's transition-all. A transitioned `visibility`
+	stays hidden for the first frame after the footer is revealed, and focus() is a no-op on a
+	hidden element, so a page turn made in that frame would lose keyboard focus.
+-->
 <div
 	bind:this={element}
 	data-group-pager
@@ -56,7 +61,7 @@
 		<Button
 			variant="ghost"
 			size="sm"
-			class="min-h-tap px-2 md:min-h-8"
+			class="min-h-tap px-2 transition-colors md:min-h-8"
 			disabled={page === 0}
 			aria-label={previousLabel}
 			onclick={(event) => onprevious(event.currentTarget)}
@@ -67,7 +72,7 @@
 		<Button
 			variant="ghost"
 			size="sm"
-			class="min-h-tap px-2 md:min-h-8"
+			class="min-h-tap px-2 transition-colors md:min-h-8"
 			disabled={page >= pageCount - 1}
 			aria-label={nextLabel}
 			onclick={(event) => onnext(event.currentTarget)}
