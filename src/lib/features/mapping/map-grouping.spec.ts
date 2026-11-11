@@ -17,7 +17,7 @@ import {
 	type GroupingReading
 } from './map-grouping.ts';
 import type { WorkerGraphNode } from './worker-relationship-map-model.ts';
-import { answerIdOf, answerIdsFixture } from './answer-fixtures.ts';
+import { answerIdOf, answerIdsFixture } from '#lib/testing/mapping/answer-fixtures.ts';
 
 type Option = { value: string; parent?: string };
 

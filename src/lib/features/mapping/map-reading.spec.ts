@@ -2,7 +2,11 @@
 import { describe, expect, it } from 'vitest';
 import { assessmentCounts, regionCounts, supportReading } from './map-reading.ts';
 import type { WorkerGraphNode } from './worker-relationship-map-model.ts';
-import { answerIdOf, answerIdsFixture, attributeFixture } from './answer-fixtures.ts';
+import {
+	answerIdOf,
+	answerIdsFixture,
+	attributeFixture
+} from '#lib/testing/mapping/answer-fixtures.ts';
 
 const workers = [
 	{ assessment: 'Leader' as const },

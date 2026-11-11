@@ -9,11 +9,15 @@ import {
 	createLayoutQualityFixture,
 	partitionMaps,
 	qualityArrangeInput
-} from './graph-layout-quality-fixture.ts';
+} from '#lib/testing/mapping/graph-layout-quality-fixture.ts';
 import { scoreLayoutQuality } from './graph-layout-quality.ts';
 import { nodeRadius } from './map-style.ts';
 import type { Point } from './graph-layout.ts';
-import { answerIdsFixture, answerText, attributeFixture } from './answer-fixtures.ts';
+import {
+	answerIdsFixture,
+	answerText,
+	attributeFixture
+} from '#lib/testing/mapping/answer-fixtures.ts';
 
 const variants = ['free', 'grouped', 'nested'] as const;
 const canvas = { width: 1280, height: 800 };

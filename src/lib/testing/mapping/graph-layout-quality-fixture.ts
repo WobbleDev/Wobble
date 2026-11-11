@@ -1,7 +1,13 @@
 import { answerIdsFixture, attributeFixture } from './answer-fixtures.ts';
-import type { ArrangeInput } from './graph-arrangement.ts';
-import type { QualityBody, QualityRelationship } from './graph-layout-quality.ts';
-import type { WorkerGraphLink, WorkerGraphNode } from './worker-relationship-map-model.ts';
+import type { ArrangeInput } from '#lib/features/mapping/graph-arrangement.ts';
+import type {
+	QualityBody,
+	QualityRelationship
+} from '#lib/features/mapping/graph-layout-quality.ts';
+import type {
+	WorkerGraphLink,
+	WorkerGraphNode
+} from '#lib/features/mapping/worker-relationship-map-model.ts';
 
 const qualityDepartment = attributeFixture({
 	id: 'quality-department',

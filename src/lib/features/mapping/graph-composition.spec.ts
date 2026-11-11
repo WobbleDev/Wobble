@@ -5,14 +5,22 @@ import type { ManualGeometry } from './graph-manual.ts';
 import { spacingPolicy, type CompositionInput } from './graph-composition.ts';
 import { layoutGroupRegions, regionKey, subRegionKey, type Point } from './graph-layout.ts';
 import { buildBucketTree } from './graph-analysis.ts';
-import { createLayoutQualityFixture, qualityArrangeInput } from './graph-layout-quality-fixture.ts';
+import {
+	createLayoutQualityFixture,
+	qualityArrangeInput
+} from '#lib/testing/mapping/graph-layout-quality-fixture.ts';
 import { evaluateDrawing } from './graph-layout-quality.ts';
 import { flattenPath, pointInPolygon, polygonRelation } from './graph-shapes.ts';
 import { labelledWorkerIds } from './map-view-model.ts';
 import { nodeRadius } from './map-style.ts';
 import { compositionWorkLimits } from './graph-work-budget.ts';
 import type { WorkerGraphLink, WorkerGraphNode } from './worker-relationship-map-model.ts';
-import { answerIdOf, answerIdsFixture, answerText, attributeFixture } from './answer-fixtures.ts';
+import {
+	answerIdOf,
+	answerIdsFixture,
+	answerText,
+	attributeFixture
+} from '#lib/testing/mapping/answer-fixtures.ts';
 import { groupValue } from './graph-analysis.ts';
 
 const names = ['Assembly', 'Billing', 'Cleaning', 'Dispatch', 'Engineering', 'Facilities'];

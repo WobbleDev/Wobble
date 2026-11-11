@@ -5,7 +5,7 @@ import type {
 	SavedViewSnapshot,
 	SavedViewWorkers
 } from '#lib/domain-vocabulary.ts';
-import { answerIdOf, attributeFixture } from '#lib/features/mapping/answer-fixtures.ts';
+import { answerIdOf, attributeFixture } from '#lib/testing/mapping/answer-fixtures.ts';
 import type { ViewVocabulary } from './saved-view-references.ts';
 
 export const role = attributeFixture({

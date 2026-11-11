@@ -6,7 +6,7 @@
  */
 import { describe, expect, it } from 'vitest';
 import { sixGroupWorksite } from '../../../../e2e/mapping-composition-dataset.ts';
-import { worksiteGraph } from './composition-worksite-fixture.ts';
+import { worksiteGraph } from '#lib/testing/mapping/composition-worksite-fixture.ts';
 import { arrange } from './graph-arrangement.ts';
 import { buildBucketTree, groupValue } from './graph-analysis.ts';
 import { layoutGroupRegions } from './graph-layout.ts';

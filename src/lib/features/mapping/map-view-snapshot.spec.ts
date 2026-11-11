@@ -14,7 +14,7 @@ import {
 	writeExpansionEntries,
 	type MapViewSnapshot
 } from './map-view-snapshot.ts';
-import { answerIdOf, attributeFixture } from './answer-fixtures.ts';
+import { answerIdOf, attributeFixture } from '#lib/testing/mapping/answer-fixtures.ts';
 
 const team = attributeFixture({
 	id: 'team',
