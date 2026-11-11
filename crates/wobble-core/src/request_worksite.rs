@@ -53,9 +53,9 @@ pub fn resolve_request_worksite(conn: &Connection, request: &Request) -> Result<
     let is_read =
         request.method.eq_ignore_ascii_case("GET") || request.method.eq_ignore_ascii_case("HEAD");
     if names_a_worksite && !is_read {
-        return Ok(preferred
+        return preferred
             .and_then(|id| find_worksite(conn, id).transpose())
-            .transpose()?);
+            .transpose();
     }
 
     resolve_active_worksite(conn, preferred)
