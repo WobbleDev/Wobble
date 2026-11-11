@@ -10,31 +10,31 @@
 	import { MediaQuery, SvelteMap } from 'svelte/reactivity';
 	import { getContext, onDestroy, untrack, type Snippet } from 'svelte';
 	import { appSettingsContextKey, type AppSettingsContext } from '#lib/shared/app-settings.ts';
-	import { createLayoutGate, expectedRootFontPx } from './map-layout-gate.ts';
+	import { createLayoutGate, expectedRootFontPx } from '../map-layout-gate.ts';
 	import { reducedMotion as motionIsReduced } from '#lib/shell/motion.svelte.ts';
 	import { NARROW_BREAKPOINT } from '#lib/hooks/is-mobile.svelte.ts';
 	import { fade } from 'svelte/transition';
 	import type { WorkerAttributeDefinition } from '#lib/domain-vocabulary.ts';
 	import { assessmentLabel } from '#lib/i18n/assessment.ts';
 	import { m } from '#lib/paraglide/messages.js';
-	import type { Point, GroupRegion } from './layout/graph-layout.ts';
+	import type { Point, GroupRegion } from '../layout/graph-layout.ts';
 	import {
 		freeCanvasBox,
 		freeCanvasInMap,
 		freeCanvasInsets as readFreeCanvasInsets
-	} from './layout/graph-free-canvas.ts';
-	import { cameraForSize, isolateFitPositions, referenceFromCamera } from './map-view-model.ts';
-	import { createArranger, type ArrangeInput } from './layout/graph-arrangement.ts';
+	} from '../layout/graph-free-canvas.ts';
+	import { cameraForSize, isolateFitPositions, referenceFromCamera } from '../map-view-model.ts';
+	import { createArranger, type ArrangeInput } from '../layout/graph-arrangement.ts';
 	import {
 		applyManual,
 		noManual,
 		shifted,
 		translateGroupRegions,
 		type ManualGeometry
-	} from './layout/graph-manual.ts';
-	import { attachName, freezeName, thawName, type FrozenName } from './map-frozen-names.ts';
-	import { mapLabelText, type Box as LabelBox } from './labels/graph-label-placement.ts';
-	import type { CompositionInput } from './composition/graph-composition.ts';
+	} from '../layout/graph-manual.ts';
+	import { attachName, freezeName, thawName, type FrozenName } from '../map-frozen-names.ts';
+	import { mapLabelText, type Box as LabelBox } from '../labels/graph-label-placement.ts';
+	import type { CompositionInput } from '../composition/graph-composition.ts';
 	import {
 		estimateTextSnapshot,
 		fontsLoadedFor,
@@ -42,15 +42,15 @@
 		measureTextSnapshot,
 		textFontRequests,
 		type TextSnapshot
-	} from './labels/graph-text-metrics.ts';
-	import { boundsOf, frameWithNames, type Rect } from './labels/map-name-framing.ts';
-	import { regionCounts } from './map-reading.ts';
-	import { nodeEase, easeStopThreshold } from './layout/graph-group-physics.ts';
+	} from '../labels/graph-text-metrics.ts';
+	import { boundsOf, frameWithNames, type Rect } from '../labels/map-name-framing.ts';
+	import { regionCounts } from '../map-reading.ts';
+	import { nodeEase, easeStopThreshold } from '../layout/graph-group-physics.ts';
 	import type { WorkerGraphNode } from './worker-relationship-map-model.ts';
-	import type { MapViewModel } from './map-view-model.ts';
+	import type { MapViewModel } from '../map-view-model.ts';
 	import type { PanZoom } from './map-pan-zoom.svelte.ts';
-	import { afterMeasuredMapSurface } from './map-readiness.ts';
-	import { interpretMapKey } from './map-keyboard.ts';
+	import { afterMeasuredMapSurface } from '../map-readiness.ts';
+	import { interpretMapKey } from '../map-keyboard.ts';
 	import {
 		hitRadius,
 		isEgoLink,
@@ -61,7 +61,7 @@
 		nodeStroke,
 		screenFixed,
 		showsLabel
-	} from './map-style.ts';
+	} from '../map-style.ts';
 	import {
 		floatingKeyBoxes,
 		keptNames,
@@ -71,7 +71,7 @@
 		type Camera,
 		type NameScene,
 		type PlacedName
-	} from './labels/map-name-placement.ts';
+	} from '../labels/map-name-placement.ts';
 	import {
 		flattenedRoutes,
 		haloClipPathOf,
@@ -87,7 +87,7 @@
 	import MapRegionsLayer from './map-regions-layer.svelte';
 	import MapNodeTooltip from './map-node-tooltip.svelte';
 	import MapEmptyState from './map-empty-state.svelte';
-	import type { MapEmptyKind } from './map-scope.ts';
+	import type { MapEmptyKind } from '../map-scope.ts';
 
 	const arrange = createArranger();
 

@@ -7,7 +7,7 @@ import type {
 import type {
 	WorkerGraphLink,
 	WorkerGraphNode
-} from '#lib/features/mapping/worker-relationship-map-model.ts';
+} from '#lib/features/mapping/canvas/worker-relationship-map-model.ts';
 
 const qualityDepartment = attributeFixture({
 	id: 'quality-department',

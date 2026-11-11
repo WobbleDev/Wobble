@@ -4,7 +4,7 @@
  * it agree. Mapping code never reads these texts back; only test assertions do.
  */
 import type { WorkerAttributeDefinition, WorkerAttributeValues } from '#lib/domain-vocabulary.ts';
-import type { WorkerGraphNode } from '#lib/features/mapping/worker-relationship-map-model.ts';
+import type { WorkerGraphNode } from '#lib/features/mapping/canvas/worker-relationship-map-model.ts';
 
 /** The id a fixture gives the answer `text` within the Attribute `attributeId`. */
 export function answerIdOf(attributeId: string, text: string): string {

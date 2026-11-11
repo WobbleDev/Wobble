@@ -1,5 +1,5 @@
 <script lang="ts">
-	import WorkerRelationshipMap from '#lib/features/mapping/worker-relationship-map.svelte';
+	import WorkerRelationshipMap from '#lib/features/mapping/canvas/worker-relationship-map.svelte';
 	import { personState } from '#lib/shared/person-state.svelte.ts';
 	import type { PageProps } from './$types';
 

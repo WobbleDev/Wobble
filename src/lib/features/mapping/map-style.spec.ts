@@ -10,7 +10,7 @@ import {
 	showsLabel
 } from './map-style.ts';
 import type { MapViewModel } from './map-view-model.ts';
-import type { WorkerGraphLink, WorkerGraphNode } from './worker-relationship-map-model.ts';
+import type { WorkerGraphLink, WorkerGraphNode } from './canvas/worker-relationship-map-model.ts';
 
 describe('nodeRadius', () => {
 	it('spans 4 user units alone to the 24-unit cap', () => {

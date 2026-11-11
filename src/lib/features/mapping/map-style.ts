@@ -7,7 +7,7 @@
  */
 import { linkEndId } from './layout/graph-analysis.ts';
 import type { MapViewModel } from './map-view-model.ts';
-import type { WorkerGraphLink, WorkerGraphNode } from './worker-relationship-map-model.ts';
+import type { WorkerGraphLink, WorkerGraphNode } from './canvas/worker-relationship-map-model.ts';
 
 /**
  * How solid a Worker's dot is drawn.

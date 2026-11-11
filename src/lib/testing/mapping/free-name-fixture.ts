@@ -14,7 +14,7 @@ import { groupGapDefault } from '#lib/features/mapping/layout/graph-group-physic
 import type { Point } from '#lib/features/mapping/layout/graph-layout.ts';
 import type { Box } from '#lib/features/mapping/labels/graph-label-placement.ts';
 import { freezeName, type FrozenName } from '#lib/features/mapping/map-frozen-names.ts';
-import { settledFrameOf } from '#lib/features/mapping/map-drawing.ts';
+import { settledFrameOf } from '#lib/features/mapping/canvas/map-drawing.ts';
 import { frameWithNames } from '#lib/features/mapping/labels/map-name-framing.ts';
 import {
 	keptNames,
@@ -25,7 +25,7 @@ import {
 	type NameScene,
 	type PlacedName
 } from '#lib/features/mapping/labels/map-name-placement.ts';
-import { fitCamera } from '#lib/features/mapping/map-pan-zoom.svelte.ts';
+import { fitCamera } from '#lib/features/mapping/canvas/map-pan-zoom.svelte.ts';
 import { nodeRadius } from '#lib/features/mapping/map-style.ts';
 import {
 	isolateDrawnLinkIds,
@@ -37,7 +37,7 @@ import {
 import type {
 	WorkerGraphLink,
 	WorkerGraphNode
-} from '#lib/features/mapping/worker-relationship-map-model.ts';
+} from '#lib/features/mapping/canvas/worker-relationship-map-model.ts';
 
 /** What the pointer or the card is on; the rest of the view model follows from it as it does in the map. */
 export type FreeFocus = { hoveredId?: string; selectedId?: string; isolated?: boolean };

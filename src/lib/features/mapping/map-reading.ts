@@ -6,7 +6,7 @@ import { isSupportAssessment } from '#lib/shared/assessment.ts';
 import type { Worker, WorkerAttributeDefinition } from '#lib/domain-vocabulary.ts';
 import { buildBucketTree } from './layout/graph-analysis.ts';
 import { regionKey, subRegionKey } from './layout/graph-layout.ts';
-import type { WorkerGraphNode } from './worker-relationship-map-model.ts';
+import type { WorkerGraphNode } from './canvas/worker-relationship-map-model.ts';
 
 /**
  * The Mapping's organizing reading, counted in one place.
