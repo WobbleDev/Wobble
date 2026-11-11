@@ -1,7 +1,7 @@
 name: Nightly e2e
 on:
   schedule:
-    - cron: "0 7 * * *"
+    - cron: '0 7 * * *'
   workflow_dispatch:
 concurrency:
   group: nightly-e2e
