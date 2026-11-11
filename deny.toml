@@ -1,6 +1,13 @@
 # cargo-deny policy. Licenses are left to the dependency-review action for now.
 [advisories]
 version = 2
+ignore = [
+    # Needs a crafted database plus -wal file written by an untrusted party; the app only opens
+    # its own local database. Fix is rusqlite 0.41 (needs Rust 1.89). Tracked in a follow-up issue.
+    { id = "RUSTSEC-2026-0459", reason = "local-only, needs attacker-written db and wal files; upgrade tracked" },
+    # Unmaintained, pulled in only by Tauri's Linux GTK3 stack. Not ours to replace.
+    { id = "RUSTSEC-2024-0370", reason = "transitive via Tauri GTK3 (Linux only), no safe upgrade" },
+]
 
 [bans]
 multiple-versions = "allow"
