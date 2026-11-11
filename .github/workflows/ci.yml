@@ -9,7 +9,34 @@ concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
 jobs:
+  # Docs-only PRs skip the heavy jobs (gitleaks runs in its own workflow).
+  # Dependabot and lockfile PRs always count as code changes.
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      code: ${{ steps.f.outputs.code }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - id: f
+        run: |
+          if [ "${{ github.event_name }}" != "pull_request" ] || [ "${{ github.actor }}" = "dependabot[bot]" ]; then
+            echo "code=true" >> "$GITHUB_OUTPUT"; exit 0
+          fi
+          files=$(git diff --name-only "origin/${{ github.base_ref }}...HEAD")
+          if echo "$files" | grep -qE '(^|/)(package-lock\.json|Cargo\.lock)$'; then
+            echo "code=true" >> "$GITHUB_OUTPUT"; exit 0
+          fi
+          if echo "$files" | grep -vE '^(docs/|\.github/ISSUE_TEMPLATE/)|\.md$|^(LICENSE|NOTICE)$' | grep -q .; then
+            echo "code=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "code=false" >> "$GITHUB_OUTPUT"
+          fi
+  # Blocking: lint, types, unit, Rust.
   verify:
+    needs: changes
+    if: needs.changes.outputs.code == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -29,8 +56,11 @@ jobs:
       - run: npm run check
       - run: npm test
       - run: npm run test:rust
+  # Non-blocking on PRs; the full run is nightly (nightly-e2e.yml).
   e2e:
-    needs: verify
+    needs: changes
+    if: needs.changes.outputs.code == 'true'
+    continue-on-error: true
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4

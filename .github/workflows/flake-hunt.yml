@@ -1,0 +1,62 @@
+name: Flake hunt
+# Manual only. Reproduces a flaky e2e spec by running it many times on the same macOS runner
+# type that CI uses, so the root cause can be found instead of retrying until green.
+# Example: suite=regular, spec=e2e/workers-grip-reorder.spec.ts, repeat=20, workers=2.
+on:
+  workflow_dispatch:
+    inputs:
+      suite:
+        description: WOBBLE_E2E_SUITE (regular, mapping, ui, ...)
+        default: regular
+      spec:
+        description: Spec path or title filter passed to playwright (empty runs the whole suite)
+        default: ''
+      repeat:
+        description: Times to run each test (--repeat-each)
+        default: '20'
+      workers:
+        description: Playwright workers (CI uses 2)
+        default: '2'
+permissions:
+  contents: read
+concurrency:
+  group: flake-hunt
+  cancel-in-progress: false
+jobs:
+  hunt:
+    runs-on: macos-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      - run: npm ci
+      - run: npx playwright install chromium
+      - name: Run repeated
+        env:
+          WOBBLE_E2E_SUITE: ${{ inputs.suite }}
+          WOBBLE_E2E_WORKERS: ${{ inputs.workers }}
+          SPEC: ${{ inputs.spec }}
+          REPEAT: ${{ inputs.repeat }}
+        run: |
+          # Inputs go through env vars, never interpolated into the script.
+          npx playwright test ${SPEC:+"$SPEC"} --repeat-each "$REPEAT" --trace on-first-retry --reporter=list
+        # keep going so the summary step still reports the failure count
+        continue-on-error: true
+        id: run
+      - name: Summarize failures
+        run: |
+          echo "outcome: ${{ steps.run.outcome }}" >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: flake-hunt-results
+          path: test-results
+          retention-days: 3
+          if-no-files-found: ignore
+      - if: steps.run.outcome == 'failure'
+        run: exit 1
