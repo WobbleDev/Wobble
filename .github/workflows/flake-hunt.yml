@@ -73,12 +73,13 @@ jobs:
         run: |
           echo "outcome: ${{ steps.run.outcome }}" >> "$GITHUB_STEP_SUMMARY"
           if [[ -f hunt-report.json ]]; then
-            node -e '
-              const s = JSON.parse(require("fs").readFileSync("hunt-report.json", "utf8")).stats;
-              const line = `passed ${s.expected}, failed ${s.unexpected}, flaky ${s.flaky}, skipped ${s.skipped}`;
-              console.log(line);
-              require("fs").appendFileSync(process.env.GITHUB_STEP_SUMMARY, line + "\n");
-            '
+            node - <<'JS'
+            const fs = require("fs");
+            const s = JSON.parse(fs.readFileSync("hunt-report.json", "utf8")).stats;
+            const line = `passed ${s.expected}, failed ${s.unexpected}, flaky ${s.flaky}, skipped ${s.skipped}`;
+            console.log(line);
+            fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, line + "\n");
+            JS
           fi
       - name: Scan artifacts for non-synthetic emails
         if: always()
