@@ -1,6 +1,6 @@
 import { randomUUID } from 'node:crypto';
 import { expect, test } from './fixtures.ts';
-import { waitForMapInteraction } from './map.ts';
+import { settled, waitForMapInteraction, waitForSceneReady } from './map.ts';
 import { wireDefinitions, wireWorkerAttributes } from './answer-wire.ts';
 
 test.use({ reducedMotion: 'reduce' });
@@ -41,13 +41,14 @@ test('dragging a dot moves only that dot, not its neighbours', async ({ page, re
 	await page.goto('/mapping');
 	await expect(page.locator('svg g[role="button"][data-node-id]')).toHaveCount(6);
 	await waitForMapInteraction(page);
+	await waitForSceneReady(page);
 
 	const centre = async (id: string) => {
 		const box = (await page.locator(`circle[data-hit-for="${id}"]`).boundingBox())!;
 		return { x: box.x + box.width / 2, y: box.y + box.height / 2 };
 	};
 
-	const before = await Promise.all(ids.map(centre));
+	const before = await settled(() => Promise.all(ids.map(centre)));
 	await page.mouse.move(before[0].x, before[0].y);
 	await page.mouse.down();
 	await page.mouse.move(before[0].x + 60, before[0].y + 40, { steps: 8 });
@@ -56,7 +57,7 @@ test('dragging a dot moves only that dot, not its neighbours', async ({ page, re
 		'data-manual-revision',
 		'1'
 	);
-	const after = await Promise.all(ids.map(centre));
+	const after = await settled(() => Promise.all(ids.map(centre)));
 
 	expect(after[0].x - before[0].x).toBeGreaterThan(40);
 	// The dragged dot's related Workers (1, 2) and the others stay exactly where they were.

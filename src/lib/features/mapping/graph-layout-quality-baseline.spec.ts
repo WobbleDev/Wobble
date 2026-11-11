@@ -308,7 +308,7 @@ describe('synthetic arrangement baseline', () => {
 	it('meets every original representative quality gate without changing the baseline', () => {
 		const baseline = JSON.parse(
 			readFileSync(
-				resolve(process.cwd(), 'src/lib/features/mapping/graph-layout-current-arrangement.json'),
+				resolve(process.cwd(), 'e2e/fixtures/mapping-layout-quality-baseline.json'),
 				'utf8'
 			)
 		);
@@ -352,14 +352,14 @@ describe('synthetic arrangement baseline', () => {
 				process.cwd(),
 				process.env.CAPTURE_MAPPING_BASELINE === '1'
 					? '.scratch/mapping-live-directions/baseline/arrangement-quality.json'
-					: 'src/lib/features/mapping/graph-layout-current-arrangement.json'
+					: 'e2e/fixtures/mapping-layout-quality-baseline.json'
 			);
 			mkdirSync(resolve(path, '..'), { recursive: true });
 			writeFileSync(path, `${JSON.stringify(captureBaseline(), null, 2)}\n`);
 			expect(path).toContain(
 				process.env.CAPTURE_MAPPING_BASELINE === '1'
 					? 'arrangement-quality.json'
-					: 'current-arrangement.json'
+					: 'mapping-layout-quality-baseline.json'
 			);
 		},
 		30_000

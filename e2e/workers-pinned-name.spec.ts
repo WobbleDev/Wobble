@@ -1,5 +1,5 @@
 import { expect, test } from './fixtures.ts';
-import { workersNameRem } from './workers-table-grid.ts';
+import { gridReport, workersNameRem } from './workers-table-grid.ts';
 import { openWorkersTable } from './workers-table-page.ts';
 
 const viewport = (page: import('@playwright/test').Page) =>
@@ -48,7 +48,20 @@ test('scrolled fully right, the fade is hidden', async ({ page, request }) => {
 
 	await expect(fade(page)).toBeVisible();
 	await viewport(page).evaluate((element) => (element.scrollLeft = element.scrollWidth));
-	await expect(fade(page)).toHaveCount(0);
+	const scroll = await gridReport(page);
+	await expect(
+		fade(page),
+		`fade at scroll end: ${JSON.stringify({
+			clientWidth: scroll.viewportWidth,
+			offsetWidth: scroll.viewportOffsetWidth,
+			scrollWidth: scroll.viewportScrollWidth,
+			scrollLeft: scroll.viewportScrollLeft,
+			scrollbarWidth: scroll.viewportScrollbarWidth,
+			maxScrollLeft: scroll.maxScrollLeft,
+			endGap: scroll.endGap,
+			overflowX: scroll.computedOverflowX
+		})}`
+	).toHaveCount(0);
 	await expect(viewport(page)).toHaveAttribute('data-overflow', 'true');
 });
 
