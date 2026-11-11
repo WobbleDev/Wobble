@@ -11,10 +11,10 @@
 import type { WorkerAttributeDefinition } from '#lib/domain-vocabulary.ts';
 import { groupValue } from './graph-analysis.ts';
 import { outlineProxy } from './composition/graph-composition-layout.ts';
-import type { Box as LabelBox } from './graph-label-placement.ts';
+import type { Box as LabelBox } from './labels/graph-label-placement.ts';
 import { regionKey, subRegionKey, type GroupRegion, type Point } from './graph-layout.ts';
 import type { DrawingInput } from './graph-layout-quality.ts';
-import type { TextSnapshot } from './graph-text-metrics.ts';
+import type { TextSnapshot } from './labels/graph-text-metrics.ts';
 import type { WorkerGraphLink, WorkerGraphNode } from './worker-relationship-map-model.ts';
 
 /** Everything the renderer holds at rest, passed in so this module stays pure. */

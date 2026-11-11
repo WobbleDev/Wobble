@@ -12,10 +12,10 @@ import { arrange } from '#lib/features/mapping/graph-arrangement.ts';
 import { freeCanvasInMap } from '#lib/features/mapping/graph-free-canvas.ts';
 import { groupGapDefault } from '#lib/features/mapping/graph-group-physics.ts';
 import type { Point } from '#lib/features/mapping/graph-layout.ts';
-import type { Box } from '#lib/features/mapping/graph-label-placement.ts';
+import type { Box } from '#lib/features/mapping/labels/graph-label-placement.ts';
 import { freezeName, type FrozenName } from '#lib/features/mapping/map-frozen-names.ts';
 import { settledFrameOf } from '#lib/features/mapping/map-drawing.ts';
-import { frameWithNames } from '#lib/features/mapping/map-name-framing.ts';
+import { frameWithNames } from '#lib/features/mapping/labels/map-name-framing.ts';
 import {
 	keptNames,
 	placeAllNames,
@@ -24,7 +24,7 @@ import {
 	type Camera,
 	type NameScene,
 	type PlacedName
-} from '#lib/features/mapping/map-name-placement.ts';
+} from '#lib/features/mapping/labels/map-name-placement.ts';
 import { fitCamera } from '#lib/features/mapping/map-pan-zoom.svelte.ts';
 import { nodeRadius } from '#lib/features/mapping/map-style.ts';
 import {

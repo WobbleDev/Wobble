@@ -9,7 +9,7 @@ import {
 	placeRegionLabels,
 	segmentCrossesBox,
 	type LabelRequest
-} from '../graph-label-placement.ts';
+} from '../labels/graph-label-placement.ts';
 import {
 	evaluateDrawing,
 	type DrawingEvaluation,

@@ -9,8 +9,8 @@ import {
 	groupValue
 } from '../graph-analysis.ts';
 import { regionKey, subRegionKey, type Point } from '../graph-layout.ts';
-import { mapLabelText } from '../graph-label-placement.ts';
-import { estimateTextSnapshot, type TextSnapshot } from '../graph-text-metrics.ts';
+import { mapLabelText } from '../labels/graph-label-placement.ts';
+import { estimateTextSnapshot, type TextSnapshot } from '../labels/graph-text-metrics.ts';
 import type { Box } from '../graph-shapes.ts';
 import type { WorkBudget } from '../graph-work-budget.ts';
 import type { WorkerAttributeDefinition } from '#lib/domain-vocabulary.ts';

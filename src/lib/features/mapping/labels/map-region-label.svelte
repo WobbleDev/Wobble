@@ -1,8 +1,8 @@
 <script lang="ts">
 	import * as Tooltip from '#lib/components/ui/tooltip/index.ts';
-	import { screenFixed } from './map-style.ts';
+	import { screenFixed } from '../map-style.ts';
 	import { headingFontPx } from './graph-text-metrics.ts';
-	import type { Region } from './graph-layout.ts';
+	import type { Region } from '../graph-layout.ts';
 	let {
 		region,
 		count,
