@@ -24,8 +24,13 @@ test(
 test('startup failure removes the splash, copies safe details and retries without changing data', async ({
 	page,
 	context,
-	request
+	request,
+	browserName
 }) => {
+	test.skip(
+		browserName === 'webkit',
+		'WebKit has no clipboard permission to grant (Unknown permission: clipboard-write), so copy-to-clipboard is checked on Chromium only.'
+	);
 	await seedWorkers(request);
 	const before = await worksiteDataset(request);
 	await page.route(
