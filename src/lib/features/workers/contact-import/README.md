@@ -3,7 +3,7 @@
 Reading a CSV of Contacts and creating the Worksite's Workers from it: the dialog, the
 column mapping, the preview, and the parsing rules.
 
-A Contact is not a Worker until the import creates one (see GLOSSARY.md). The shell
+A Contact is not a Worker until the import creates one. The shell
 header's import action and Overview's setup dialog both use this. It lives in the Workers
 feature because it creates Workers through the workers client; `shared/` may not import
 features, and the shell and Overview may import it from here.

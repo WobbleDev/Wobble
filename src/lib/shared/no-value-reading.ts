@@ -1,5 +1,5 @@
 /**
- * The no-value reading (GLOSSARY.md): how a reading names a Worker who
+ * The no-value reading: how a reading names a Worker who
  * holds no answer to an Attribute. It is "No" plus the Attribute's current
  * configured name, so renaming Department to Team changes the reading to No Team.
  *
