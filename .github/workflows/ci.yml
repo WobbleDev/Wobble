@@ -61,6 +61,13 @@ jobs:
     needs: changes
     if: needs.changes.outputs.code == 'true'
     continue-on-error: true
+    # Dependabot opens several PRs at once; share one group so only one of their macOS e2e
+    # runs at a time and the rest wait instead of flooding the runner queue. Other PRs keep
+    # the workflow's per-ref group (the job group is per ref and never cancels, so it
+    # cannot cut a run short).
+    concurrency:
+      group: e2e-${{ github.actor == 'dependabot[bot]' && 'dependabot' || github.ref }}
+      cancel-in-progress: false
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
