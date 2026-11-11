@@ -10,9 +10,6 @@ import {
 	saveAll
 } from './configuration-outline.ts';
 
-// The pointer-grip reorder test is a known load flake on shared CI runners: one retry there.
-test.describe.configure({ retries: process.env.CI ? 1 : 0 });
-
 /**
  * Ticket 16: sibling reorder from the grip (Configuration 05) and the folding Agitation and
  * Language lists with distinct-Worker counts (Configuration 08).
@@ -92,6 +89,12 @@ test('a value reorders among its siblings by dragging the grip to a row edge; Es
 		fraction: number,
 		finish: () => Promise<void>
 	) => {
+		// Dragging within 44px of the column's top or bottom edge starts the app's auto-scroll,
+		// which moves the rows under the held pointer. Where the new Attribute lands depends on
+		// how many Attributes the shared Worksite holds, so centre the rows before measuring.
+		for (const id of [value, to]) {
+			await row(id).evaluate((el) => el.scrollIntoView({ block: 'center', behavior: 'instant' }));
+		}
 		const from = (await grip(page, value).boundingBox())!;
 		const box = (await row(to).locator('[data-reorder-row]').first().boundingBox())!;
 		await page.mouse.move(from.x + from.width / 2, from.y + from.height / 2);
