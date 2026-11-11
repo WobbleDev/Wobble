@@ -6,7 +6,9 @@
 // Needs a Node that strips TypeScript types (22.18+ or 24).
 // The base is `git merge-base HEAD main` (HEAD if that fails), so committed work counts;
 // `--base <ref>` overrides it.
-// Usage: npm run verify [-- --base <ref>] [--dry-run] [--out <file>]
+// `--e2e-only` drops lint, check, test and test:rust from the plan (CI runs those in their own
+// jobs) and keeps only the selected Playwright runs.
+// Usage: npm run verify [-- --base <ref>] [--dry-run] [--e2e-only] [--out <file>]
 import { spawnSync } from 'node:child_process';
 import { mkdirSync, readFileSync, writeFileSync, existsSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -49,7 +51,10 @@ const freePort = () =>
 	});
 
 const revision = git('rev-parse', 'HEAD')[0];
-const plan = planChecks(selection, await freePort());
+const fullPlan = planChecks(selection, await freePort());
+const plan = args.includes('--e2e-only')
+	? fullPlan.filter((check) => check.name.startsWith('e2e:'))
+	: fullPlan;
 const stamp = new Date().toISOString().replace(/[:.]/g, '-');
 const evidenceDir = resolve('test-results', 'verify');
 const runDir = join(evidenceDir, `run-${stamp}`);
