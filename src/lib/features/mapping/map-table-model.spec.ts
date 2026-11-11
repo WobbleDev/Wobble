@@ -7,7 +7,7 @@ import {
 	answerIdsFixture,
 	attributeFixture
 } from '#lib/testing/mapping/answer-fixtures.ts';
-import type { GroupingReading } from './map-grouping.ts';
+import type { GroupingReading } from './grouping/map-grouping.ts';
 
 const languages = [
 	{ id: 'la1', name: 'English' },

@@ -46,7 +46,7 @@
 		readGrouping,
 		type ExpansionBranch,
 		type ExpansionRefusal
-	} from './map-grouping.ts';
+	} from './grouping/map-grouping.ts';
 	import { contextFilterLabels } from './map-contextual-filters.ts';
 	import { createPanZoom } from './map-pan-zoom.svelte.ts';
 	import { floatingGutter } from './graph-free-canvas.ts';

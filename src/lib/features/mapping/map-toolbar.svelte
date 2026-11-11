@@ -24,7 +24,7 @@
 		type ExpansionRefusal,
 		type GroupingReading,
 		type SubGroupingReading
-	} from './map-grouping.ts';
+	} from './grouping/map-grouping.ts';
 	import {
 		contextFilterChips,
 		contextFilterGroupCount,

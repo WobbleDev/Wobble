@@ -31,7 +31,7 @@ import {
 	selectWorkerPopulation,
 	type PopulationFilters
 } from '#lib/shared/worker-population.ts';
-import type { WorkerGraphNode } from './worker-relationship-map-model.ts';
+import type { WorkerGraphNode } from '../worker-relationship-map-model.ts';
 
 export type DisplayedRegion = {
 	/** The region's typed key: an answer id or a system identity. */
