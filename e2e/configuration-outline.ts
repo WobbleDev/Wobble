@@ -140,7 +140,22 @@ export async function addValueUnder(
 	const input = editor.getByRole('textbox', { name: `Add an option to ${attributeName}` });
 	await input.fill(value);
 	await editor.getByRole('button', { name: `Place new value ${value}`, exact: true }).click();
-	await editor.getByRole('button', { name: `Place under ${parentPath}`, exact: true }).click();
+	const target = editor.getByRole('button', { name: `Place under ${parentPath}`, exact: true });
+	for (const wait of [0, 300]) {
+		await page.waitForTimeout(wait);
+		const box = await target.boundingBox();
+		console.log(
+			'[DIAG] place-under box',
+			parentPath,
+			JSON.stringify(box),
+			await page.evaluate((b) => {
+				if (!b) return 'no box';
+				const e = document.elementFromPoint(b.x + b.width / 2, b.y + b.height / 2);
+				return e ? `${e.tagName} ${e.getAttribute('aria-label') ?? ''}` : 'none';
+			}, box)
+		);
+	}
+	await target.click();
 	await expect(input).toHaveValue('');
 }
 

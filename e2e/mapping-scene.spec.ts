@@ -243,7 +243,12 @@ test('Free: a dot drag moves that Worker, its name and its tie ends, and Reset o
 
 	await zoomIn(page).click();
 	await page.setViewportSize({ width: 900, height: 1200 });
+	// Reset animates the camera home. Read only once that camera has finished, or a slower
+	// engine (WebKit) reads the names mid-flight at an in-between scale.
+	const cameraBefore = await surface(page).getAttribute('data-camera-revision');
 	await reset(page).click({ timeout: 1500 });
+	await expect(surface(page)).not.toHaveAttribute('data-camera-revision', cameraBefore ?? '');
+	await expect(surface(page)).toHaveAttribute('data-camera-idle', 'true');
 	await page.evaluate(() => new Promise((done) => requestAnimationFrame(() => done(null))));
 	const resting = await read(page);
 	expect(resting.dots).toEqual(after.dots);
@@ -399,10 +404,19 @@ test('hierarchy detail invalidates manual moves while worker and Attribute IDs s
 	await open(page, fixture, fixture.url.split('&sub=')[0]);
 	const before = await read(page);
 	const heading = Object.keys(before.headings)[0];
-	await dragFrom(page, await screenCentre(page, `[data-region-label="${heading}"]`), {
+	// The label can still be moving into place while the camera settles; press only once it
+	// has stopped, or the press lands where the label used to be.
+	await expect(surface(page)).toHaveAttribute('data-camera-idle', 'true');
+	await page.evaluate(
+		() =>
+			new Promise((done) => requestAnimationFrame(() => requestAnimationFrame(() => done(null))))
+	);
+	const labelStart = await screenCentre(page, `[data-region-label="${heading}"]`);
+	await dragFrom(page, labelStart, {
 		x: 40,
 		y: 30
 	});
+	console.log('[DIAG] manual after drag', await surface(page).getAttribute('data-manual-revision'));
 	await waitForSceneReady(page, { manual: 1 });
 	await page.getByRole('button', { name: /^Group(:|$)/ }).click();
 	await page
