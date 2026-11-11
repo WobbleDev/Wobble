@@ -72,15 +72,14 @@ jobs:
         if: always()
         run: |
           echo "outcome: ${{ steps.run.outcome }}" >> "$GITHUB_STEP_SUMMARY"
-          if [[ -f hunt-report.json ]]; then
-            node - <<'JS'
-            const fs = require("fs");
-            const s = JSON.parse(fs.readFileSync("hunt-report.json", "utf8")).stats;
-            const line = `passed ${s.expected}, failed ${s.unexpected}, flaky ${s.flaky}, skipped ${s.skipped}`;
-            console.log(line);
-            fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, line + "\n");
-            JS
-          fi
+          [[ -f hunt-report.json ]] || exit 0
+          node - <<'JS'
+          const fs = require("fs");
+          const s = JSON.parse(fs.readFileSync("hunt-report.json", "utf8")).stats;
+          const line = `passed ${s.expected}, failed ${s.unexpected}, flaky ${s.flaky}, skipped ${s.skipped}`;
+          console.log(line);
+          fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, line + "\n");
+          JS
       - name: Scan artifacts for non-synthetic emails
         if: always()
         run: scripts/data-safety.sh emails playwright-report test-results || { rm -rf playwright-report test-results; exit 1; }
