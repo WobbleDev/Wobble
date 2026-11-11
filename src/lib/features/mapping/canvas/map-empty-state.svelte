@@ -7,7 +7,7 @@
 	import { resolve } from '$app/paths';
 	import { Button } from '#lib/components/ui/button/index.ts';
 	import { m } from '#lib/paraglide/messages.js';
-	import type { MapEmptyKind } from './map-scope.ts';
+	import type { MapEmptyKind } from '../map-scope.ts';
 
 	let {
 		kind,

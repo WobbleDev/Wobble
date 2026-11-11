@@ -24,23 +24,23 @@
 		type ExpansionRefusal,
 		type GroupingReading,
 		type SubGroupingReading
-	} from './grouping/map-grouping.ts';
+	} from '../grouping/map-grouping.ts';
 	import {
 		contextFilterChips,
 		contextFilterGroupCount,
 		type ContextFilterChip
-	} from './map-contextual-filters.ts';
-	import MapFilterPanel from './map-filter-panel.svelte';
-	import MapHighlightGroup from './map-highlight-group.svelte';
-	import { starterQuery, withStarterRule } from './map-highlight-query-edit.ts';
-	import { describeHighlightQuery } from './map-highlight-fields.ts';
+	} from '../map-contextual-filters.ts';
+	import MapFilterPanel from '../map-filter-panel.svelte';
+	import MapHighlightGroup from '../map-highlight-group.svelte';
+	import { starterQuery, withStarterRule } from '../map-highlight-query-edit.ts';
+	import { describeHighlightQuery } from '../map-highlight-fields.ts';
 	import * as Popover from '#lib/components/ui/popover/index.ts';
 	import { Button } from '#lib/components/ui/button/index.ts';
 	import { Input } from '#lib/components/ui/input/index.ts';
 	import { Separator } from '#lib/components/ui/separator/index.ts';
 	import type { PanZoom } from './map-pan-zoom.svelte.ts';
-	import type { MapViewState } from './map-view-state.svelte.ts';
-	import type { SearchResult } from './map-search-results.ts';
+	import type { MapViewState } from '../map-view-state.svelte.ts';
+	import type { SearchResult } from '../map-search-results.ts';
 	import { assessmentLabel } from '#lib/i18n/assessment.ts';
 	import SavedViewsMenu from '#lib/features/saved-views/saved-views-menu.svelte';
 	import type { SavedViews } from '#lib/features/saved-views/saved-views.svelte.ts';

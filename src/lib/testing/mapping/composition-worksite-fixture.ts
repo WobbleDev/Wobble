@@ -9,7 +9,7 @@ import { answerIdsFixture, attributeFixture } from './answer-fixtures.ts';
 import type {
 	WorkerGraphLink,
 	WorkerGraphNode
-} from '#lib/features/mapping/worker-relationship-map-model.ts';
+} from '#lib/features/mapping/canvas/worker-relationship-map-model.ts';
 
 export type WorksiteGraph = {
 	/** The Worker ids, in the Worksite's own order. */

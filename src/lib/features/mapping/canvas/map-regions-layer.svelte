@@ -8,8 +8,8 @@
 	 * counter-scaled through `screenFixed`, and the outlines carry a non-scaling
 	 * stroke, so a region label and its boundary read the same size at every zoom.
 	 */
-	import MapRegionLabel from './labels/map-region-label.svelte';
-	import type { GroupRegion } from './layout/graph-layout.ts';
+	import MapRegionLabel from '../labels/map-region-label.svelte';
+	import type { GroupRegion } from '../layout/graph-layout.ts';
 
 	let {
 		regions,

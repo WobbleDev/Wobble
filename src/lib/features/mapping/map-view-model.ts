@@ -6,7 +6,7 @@ import type { WorkerAttributeDefinition } from '#lib/domain-vocabulary.ts';
 import { groupValue, isolatedDegrees, linkEndId } from './layout/graph-analysis.ts';
 import type { Point } from './layout/graph-layout.ts';
 import { separateOverlappingDots } from './layout/isolate-separation.ts';
-import type { WorkerGraphLink, WorkerGraphNode } from './worker-relationship-map-model.ts';
+import type { WorkerGraphLink, WorkerGraphNode } from './canvas/worker-relationship-map-model.ts';
 
 /** A box in one coordinate space: the free canvas, or a set of drawn positions. */
 type Box = { x: number; y: number; width: number; height: number };

@@ -29,7 +29,7 @@ import { nameFontPx, type TextSnapshot } from './graph-text-metrics.ts';
 import type { Rect } from './map-name-framing.ts';
 import { screenFixed, showsLabel } from '../map-style.ts';
 import type { MapViewModel } from '../map-view-model.ts';
-import type { WorkerGraphNode } from '../worker-relationship-map-model.ts';
+import type { WorkerGraphNode } from '../canvas/worker-relationship-map-model.ts';
 
 export type Camera = { zoom: number; panX: number; panY: number };
 

@@ -11,7 +11,7 @@
 		type MapTableSort
 	} from './map-table-model.ts';
 	import type { GroupingReading } from './grouping/map-grouping.ts';
-	import type { WorkerGraphLink, WorkerGraphNode } from './worker-relationship-map-model.ts';
+	import type { WorkerGraphLink, WorkerGraphNode } from './canvas/worker-relationship-map-model.ts';
 
 	type Props = {
 		nodes: readonly WorkerGraphNode[];

@@ -1,7 +1,7 @@
 // @module-tag mapping
 import { describe, expect, it } from 'vitest';
 import { assessmentCounts, regionCounts, supportReading } from './map-reading.ts';
-import type { WorkerGraphNode } from './worker-relationship-map-model.ts';
+import type { WorkerGraphNode } from './canvas/worker-relationship-map-model.ts';
 import {
 	answerIdOf,
 	answerIdsFixture,

@@ -14,7 +14,7 @@ import { flattenPath, pointInPolygon, polygonRelation } from '../layout/graph-sh
 import { labelledWorkerIds } from '../map-view-model.ts';
 import { nodeRadius } from '../map-style.ts';
 import { compositionWorkLimits } from '../layout/graph-work-budget.ts';
-import type { WorkerGraphLink, WorkerGraphNode } from '../worker-relationship-map-model.ts';
+import type { WorkerGraphLink, WorkerGraphNode } from '../canvas/worker-relationship-map-model.ts';
 import {
 	answerIdOf,
 	answerIdsFixture,

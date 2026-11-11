@@ -35,6 +35,7 @@ over either, not a layout: the arrangement takes the filter-visible set (the lay
 selection, while the dots, links and regions draw only the drawn set (the layout set narrowed to the
 selected worker's two degrees). `map-view-model.ts` is the single source for what is visible, and
 `map-canvas.svelte` draws it.
+The canvas, its toolbar, the camera and gestures (`map-drag`, `map-hover-intent`, `map-pan-zoom`), the drawing readings (`map-drawing`) and the Relationship map component live in `canvas/`.
 
 `map-canvas.svelte` keeps the camera, the text measurement and the landing glide, which depend on its bound sizes, and hands the rest to modules it wires together:
 

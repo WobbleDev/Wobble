@@ -7,7 +7,7 @@ import { keptNames, legacyPlacements, type NameScene } from './map-name-placemen
 import { regionCounts } from '../map-reading.ts';
 import { nodeRadius } from '../map-style.ts';
 import type { MapViewModel } from '../map-view-model.ts';
-import { buildWorkerGraph, type WorkerGraphNode } from '../worker-relationship-map-model.ts';
+import { buildWorkerGraph, type WorkerGraphNode } from '../canvas/worker-relationship-map-model.ts';
 import collisionDotGrouped from '../../../../../e2e/fixtures/mapping-label-collision-dot-grouped.json' with { type: 'json' };
 import collisionDotUngrouped from '../../../../../e2e/fixtures/mapping-label-collision-dot-ungrouped.json' with { type: 'json' };
 import collisionSeed11 from '../../../../../e2e/fixtures/mapping-label-collision-seed-11.json' with { type: 'json' };

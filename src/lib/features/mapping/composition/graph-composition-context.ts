@@ -14,7 +14,7 @@ import { estimateTextSnapshot, type TextSnapshot } from '../labels/graph-text-me
 import type { Box } from '../layout/graph-shapes.ts';
 import type { WorkBudget } from '../layout/graph-work-budget.ts';
 import type { WorkerAttributeDefinition } from '#lib/domain-vocabulary.ts';
-import type { WorkerGraphLink, WorkerGraphNode } from '../worker-relationship-map-model.ts';
+import type { WorkerGraphLink, WorkerGraphNode } from '../canvas/worker-relationship-map-model.ts';
 import { frameOf, fitScale, keyOf, regionsOf } from './graph-composition-layout.ts';
 
 /** The reading rules, in reference CSS pixels. Revise the revision with any change. */

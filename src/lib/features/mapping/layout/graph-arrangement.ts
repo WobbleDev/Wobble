@@ -40,7 +40,7 @@ import { createWorkBudget } from './graph-work-budget.ts';
 import type { Route } from '../routing/graph-relationship-routing.ts';
 
 import { nodeRadius } from '../map-style.ts';
-import type { WorkerGraphLink, WorkerGraphNode } from '../worker-relationship-map-model.ts';
+import type { WorkerGraphLink, WorkerGraphNode } from '../canvas/worker-relationship-map-model.ts';
 import type { WorkerAttributeDefinition } from '#lib/domain-vocabulary.ts';
 import type { MapLayoutMode } from '../map-view-model.ts';
 import { applyManual, type ManualGeometry } from './graph-manual.ts';

@@ -15,7 +15,7 @@ import {
 	type Placed
 } from '#lib/testing/mapping/free-name-fixture.ts';
 import { thawName } from '../map-frozen-names.ts';
-import { buildWorkerGraph } from '../worker-relationship-map-model.ts';
+import { buildWorkerGraph } from '../canvas/worker-relationship-map-model.ts';
 import {
 	floatingKeyBoxes,
 	keptNames,
@@ -27,7 +27,7 @@ import {
 	type NameScene
 } from './map-name-placement.ts';
 import type { MapViewModel } from '../map-view-model.ts';
-import type { WorkerGraphNode } from '../worker-relationship-map-model.ts';
+import type { WorkerGraphNode } from '../canvas/worker-relationship-map-model.ts';
 
 const node = (id: string, name: string, relationshipCount = 0) =>
 	({ id, name, relationshipCount, attributes: {}, assessment: 'Unassessed' }) as WorkerGraphNode;

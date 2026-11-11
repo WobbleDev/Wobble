@@ -5,7 +5,7 @@
 	 */
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
-	import { searchResults } from './map-search-results.ts';
+	import { searchResults } from '../map-search-results.ts';
 	import type { PersonPartition } from '#lib/shared/person-state.svelte.ts';
 	import { onDestroy, onMount, tick, untrack } from 'svelte';
 	import { MediaQuery, SvelteSet } from 'svelte/reactivity';
@@ -18,19 +18,19 @@
 	import { toPopulationFilters } from '#lib/shared/contextual-filters.ts';
 	import { heldIds, storesList } from '#lib/shared/select-mode.ts';
 	import { selectWorkerPopulation } from '#lib/shared/worker-population.ts';
-	import { assessmentColorKey, assessmentColorFor } from '../../shared/assessment.ts';
+	import { assessmentColorKey, assessmentColorFor } from '../../../shared/assessment.ts';
 	import { assessmentLabel } from '#lib/i18n/assessment.ts';
 	import { m } from '#lib/paraglide/messages.js';
-	import { buildAdjacency } from './layout/graph-analysis.ts';
-	import { assessmentCounts } from './map-reading.ts';
-	import { nodeRadius } from './map-style.ts';
-	import { dotSizeKeyGeometry } from './dot-size-key.ts';
-	import { evaluateHighlightQuery } from './map-highlight-query.ts';
+	import { buildAdjacency } from '../layout/graph-analysis.ts';
+	import { assessmentCounts } from '../map-reading.ts';
+	import { nodeRadius } from '../map-style.ts';
+	import { dotSizeKeyGeometry } from '../dot-size-key.ts';
+	import { evaluateHighlightQuery } from '../map-highlight-query.ts';
 	import {
 		MapViewState,
 		readMapViewSnapshot,
 		type MapViewCapture
-	} from './map-view-state.svelte.ts';
+	} from '../map-view-state.svelte.ts';
 	import {
 		deriveVisibleGraph,
 		dossierNeighbours,
@@ -39,23 +39,23 @@
 		labelledWorkerIds,
 		linkRegions as readLinkRegions,
 		resolveEffectiveLayout
-	} from './map-view-model.ts';
+	} from '../map-view-model.ts';
 	import {
 		attemptExpansion,
 		projectLayoutInput,
 		readGrouping,
 		type ExpansionBranch,
 		type ExpansionRefusal
-	} from './grouping/map-grouping.ts';
-	import { contextFilterLabels } from './map-contextual-filters.ts';
+	} from '../grouping/map-grouping.ts';
+	import { contextFilterLabels } from '../map-contextual-filters.ts';
 	import { createPanZoom } from './map-pan-zoom.svelte.ts';
-	import { floatingGutter } from './layout/graph-free-canvas.ts';
+	import { floatingGutter } from '../layout/graph-free-canvas.ts';
 	import { buildWorkerGraph, type WorkerGraphNode } from './worker-relationship-map-model.ts';
 	import MapCanvas from './map-canvas.svelte';
 	import MapToolbar from './map-toolbar.svelte';
-	import WorkerDossier from './worker-dossier.svelte';
-	import MapTable from './map-table.svelte';
-	import { mapEmptyKind, mapScope } from './map-scope.ts';
+	import WorkerDossier from '../worker-dossier.svelte';
+	import MapTable from '../map-table.svelte';
+	import { mapEmptyKind, mapScope } from '../map-scope.ts';
 	import { createView, deleteView, listViews, updateView } from '#lib/client/views-api.ts';
 	import { createSavedViews } from '#lib/features/saved-views/saved-views.svelte.ts';
 	import SavedViewReviewDialog from '#lib/features/saved-views/saved-view-review-dialog.svelte';
