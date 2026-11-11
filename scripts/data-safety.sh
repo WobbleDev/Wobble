@@ -2,13 +2,14 @@
 # Data-safety checks. Prints counts and file paths only, never matched text.
 #   data-safety.sh files [base-ref]   fail if the repo (or the diff vs base-ref) holds database,
 #                                     recording or evidence files outside the allowlist
-#   data-safety.sh emails <dir>...    fail if text files under the dirs contain an email address
+#   data-safety.sh emails <dir>...    fail if text files (and zip traces) under the dirs contain an email address
 #                                     outside the synthetic domains
 set -euo pipefail
 
 # Synthetic fixtures that are known safe.
 ALLOW_FILES='^contract/fixtures/[a-z0-9.-]+\.sqlite$|^e2e/evidence\.ts$'
 FILE_RE='\.(db|sqlite3?|db-wal|db-shm|wav|mp3|m4a|aac|ogg|webm|mov|mp4|har)$|(^|/)evidence[^/]*\.json$'
+EMAIL_RE='[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}'
 SAFE_DOMAIN='@([a-z0-9.-]*example\.(com|org|net|test)|[a-z]\.(com|test)|localhost|users\.noreply\.github\.com)$'
 
 mode="${1:-}"; shift || true
@@ -35,8 +36,11 @@ case "$mode" in
     for d in "$@"; do
       [ -e "$d" ] || continue
       while IFS= read -r f; do
-        n=$({ grep -IEoh '[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}' "$f" 2>/dev/null || true; } \
-            | { grep -Eiv "$SAFE_DOMAIN" || true; } | wc -l | tr -d ' ')
+        case "$f" in
+          *.zip) src() { unzip -p "$f" 2>/dev/null | grep -aEoh "$EMAIL_RE" || true; } ;;
+          *)     src() { grep -IEoh "$EMAIL_RE" "$f" 2>/dev/null || true; } ;;
+        esac
+        n=$(src | { grep -Eiv "$SAFE_DOMAIN" || true; } | wc -l | tr -d ' ')
         if [ "$n" -gt 0 ]; then echo "$f: $n non-synthetic address(es)"; hits=$((hits+n)); fi
       done < <(find "$d" -type f)
     done
