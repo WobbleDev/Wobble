@@ -50,11 +50,11 @@ With one Grouping, `arrange` is asked to compose: where the groups sit, where th
 Relationship's own path are chosen together, from numeric screen facts the canvas freezes at the layout
 trigger (`ArrangeInput.composition`: the free canvas without the open card, the floating keys, the names
 that stand at rest and a measured text snapshot). The shipped arrangement is always candidate one and
-the complete fallback; `graph-composition.ts` builds the small fixed set of alternatives (routes only,
+the complete fallback; `composition/graph-composition.ts` builds the small fixed set of alternatives (routes only,
 all groups moving together, the same with an aspect correction), repairs each against the drawn
 outlines, places headings and names, routes every pair and evaluates the finished drawing, then selects
 a whole packet or keeps the original. `graph-composition.ts` holds the entry point; its
-`graph-composition-*.ts` parts hold the shared context, text, layout, collision, child-first, drawing,
+`graph-composition-*.ts` parts (all in `composition/`) hold the shared context, text, layout, collision, child-first, drawing,
 hull, selection and candidate stages. Exhausting the per-solve work allowance (`graph-work-budget.ts`)
 discards a candidate, never returns half of one.
 
