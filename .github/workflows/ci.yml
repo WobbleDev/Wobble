@@ -43,8 +43,10 @@ jobs:
           else
             echo "e2e_full=false" >> "$GITHUB_OUTPUT"
           fi
-  # Blocking: lint, types, unit, Rust.
-  verify:
+  # Blocking: lint, types, unit, Rust. The checks run as parallel jobs so the slowest one sets
+  # the wall time; the `verify` job at the end is the single required check (branch protection
+  # points at it) and passes when every job it needs passed or was skipped (docs-only PRs).
+  lint:
     needs: changes
     if: needs.changes.outputs.code == 'true'
     runs-on: ubuntu-latest
@@ -54,6 +56,42 @@ jobs:
         with:
           node-version-file: .nvmrc
           cache: npm
+      # ESLint and Prettier skip files whose content they already checked (a fresh checkout has
+      # new file times, so the lint script compares content).
+      - uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: |
+            .eslintcache
+            node_modules/.cache/prettier
+          key: lint-${{ runner.os }}-${{ hashFiles('package-lock.json', 'eslint.config.js', 'prettier.config.js') }}-${{ github.sha }}
+          restore-keys: |
+            lint-${{ runner.os }}-${{ hashFiles('package-lock.json', 'eslint.config.js', 'prettier.config.js') }}-
+      - run: npm ci
+      - run: npm run lint
+  types-and-unit:
+    needs: changes
+    if: needs.changes.outputs.code == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run check
+      - run: npm test
+  rust:
+    needs: changes
+    if: needs.changes.outputs.code == 'true'
+    runs-on: ubuntu-latest
+    # The GitHub runner has 4 cores and 16 GB; `test:rust` defaults to one job at a time for
+    # small laptops, so lift that here.
+    env:
+      CARGO_BUILD_JOBS: 4
+      RUST_TEST_THREADS: 4
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
       - uses: dtolnay/rust-toolchain@b725eda525362e7cf34af9a7243cac1e3f01a7ec # stable
         with:
           components: rustfmt, clippy
@@ -61,11 +99,17 @@ jobs:
         with:
           workspaces: . -> target
       - run: sudo apt-get update && sudo apt-get install -y libwebkit2gtk-4.1-dev libxdo-dev libssl-dev libayatana-appindicator3-dev librsvg2-dev build-essential
-      - run: npm ci
-      - run: npm run lint
-      - run: npm run check
-      - run: npm test
       - run: npm run test:rust
+  verify:
+    needs: [changes, lint, types-and-unit, rust]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "changes=${{ needs.changes.result }} lint=${{ needs.lint.result }} types-and-unit=${{ needs.types-and-unit.result }} rust=${{ needs.rust.result }}"
+          case "${{ needs.changes.result }}${{ needs.lint.result }}${{ needs.types-and-unit.result }}${{ needs.rust.result }}" in
+            *failure*|*cancelled*) exit 1 ;;
+          esac
   # Non-blocking on PRs; the full run is nightly (nightly-e2e.yml).
   e2e:
     needs: changes
