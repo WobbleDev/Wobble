@@ -1,9 +1,17 @@
 #!/bin/sh
-# Pre-push guardrail: never push straight to main; then the whole-repo lint.
+# Pre-push guardrail: never push straight to main; leak checks on the pushed
+# commits (gitleaks + local denylist); then the whole-repo lint.
+zero=0000000000000000000000000000000000000000
 while read -r local_ref local_sha remote_ref remote_sha; do
 	if [ "$remote_ref" = "refs/heads/main" ]; then
 		echo "pre-push: direct pushes to main are blocked; open a pull request." >&2
 		exit 1
+	fi
+	[ "$local_sha" = "$zero" ] && continue
+	if [ "$remote_sha" = "$zero" ]; then
+		scripts/check-pushed-leaks.sh "$local_sha" --not --remotes || exit 1
+	else
+		scripts/check-pushed-leaks.sh "$remote_sha..$local_sha" || exit 1
 	fi
 done
 npm run lint || exit 1
