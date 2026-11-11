@@ -10,8 +10,16 @@ import {
 import type { ManualGeometry } from './graph-manual.ts';
 import { separationPairChecks, stressPairVisits } from './graph-stress.ts';
 import { nodeRadius } from './map-style.ts';
-import { createLayoutQualityFixture, qualityArrangeInput } from './graph-layout-quality-fixture.ts';
-import { answerIdOf, answerIdsFixture, answerText, attributeFixture } from './answer-fixtures.ts';
+import {
+	createLayoutQualityFixture,
+	qualityArrangeInput
+} from '#lib/testing/mapping/graph-layout-quality-fixture.ts';
+import {
+	answerIdOf,
+	answerIdsFixture,
+	answerText,
+	attributeFixture
+} from '#lib/testing/mapping/answer-fixtures.ts';
 import type { WorkerGraphLink, WorkerGraphNode } from './worker-relationship-map-model.ts';
 
 const department = attributeFixture({

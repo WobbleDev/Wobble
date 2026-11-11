@@ -5,7 +5,7 @@ import { arrange } from './graph-arrangement.ts';
 import { buildWorkerGraph } from './worker-relationship-map-model.ts';
 import collisionDotGrouped from '../../../../e2e/fixtures/mapping-label-collision-dot-grouped.json' with { type: 'json' };
 import collisionSeed11 from '../../../../e2e/fixtures/mapping-label-collision-seed-11.json' with { type: 'json' };
-import { attributeFixture, answerIdsFixture } from './answer-fixtures.ts';
+import { attributeFixture, answerIdsFixture } from '#lib/testing/mapping/answer-fixtures.ts';
 import type { WorkerGraphLink, WorkerGraphNode } from './worker-relationship-map-model.ts';
 
 /**

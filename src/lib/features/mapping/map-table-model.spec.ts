@@ -2,7 +2,11 @@
 import { describe, expect, it } from 'vitest';
 import type { WorkerGraphLink, WorkerGraphNode } from './worker-relationship-map-model.ts';
 import { mapTableRows, sortMapTableRows } from './map-table-model.ts';
-import { answerIdOf, answerIdsFixture, attributeFixture } from './answer-fixtures.ts';
+import {
+	answerIdOf,
+	answerIdsFixture,
+	attributeFixture
+} from '#lib/testing/mapping/answer-fixtures.ts';
 import type { GroupingReading } from './map-grouping.ts';
 
 const languages = [

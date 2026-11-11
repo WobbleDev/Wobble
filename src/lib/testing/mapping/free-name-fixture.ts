@@ -8,14 +8,14 @@
  * canvas), and the canvas's final name-fit pass over the rendered box.
  */
 import { NARROW_BREAKPOINT } from '#lib/hooks/is-mobile.svelte.ts';
-import { arrange } from './graph-arrangement.ts';
-import { freeCanvasInMap } from './graph-free-canvas.ts';
-import { groupGapDefault } from './graph-group-physics.ts';
-import type { Point } from './graph-layout.ts';
-import type { Box } from './graph-label-placement.ts';
-import { freezeName, type FrozenName } from './map-frozen-names.ts';
-import { settledFrameOf } from './map-drawing.ts';
-import { frameWithNames } from './map-name-framing.ts';
+import { arrange } from '#lib/features/mapping/graph-arrangement.ts';
+import { freeCanvasInMap } from '#lib/features/mapping/graph-free-canvas.ts';
+import { groupGapDefault } from '#lib/features/mapping/graph-group-physics.ts';
+import type { Point } from '#lib/features/mapping/graph-layout.ts';
+import type { Box } from '#lib/features/mapping/graph-label-placement.ts';
+import { freezeName, type FrozenName } from '#lib/features/mapping/map-frozen-names.ts';
+import { settledFrameOf } from '#lib/features/mapping/map-drawing.ts';
+import { frameWithNames } from '#lib/features/mapping/map-name-framing.ts';
 import {
 	keptNames,
 	placeAllNames,
@@ -24,17 +24,20 @@ import {
 	type Camera,
 	type NameScene,
 	type PlacedName
-} from './map-name-placement.ts';
-import { fitCamera } from './map-pan-zoom.svelte.ts';
-import { nodeRadius } from './map-style.ts';
+} from '#lib/features/mapping/map-name-placement.ts';
+import { fitCamera } from '#lib/features/mapping/map-pan-zoom.svelte.ts';
+import { nodeRadius } from '#lib/features/mapping/map-style.ts';
 import {
 	isolateDrawnLinkIds,
 	isolateFitPositions,
 	isolateNeighbourhood,
 	labelledWorkerIds,
 	type MapViewModel
-} from './map-view-model.ts';
-import type { WorkerGraphLink, WorkerGraphNode } from './worker-relationship-map-model.ts';
+} from '#lib/features/mapping/map-view-model.ts';
+import type {
+	WorkerGraphLink,
+	WorkerGraphNode
+} from '#lib/features/mapping/worker-relationship-map-model.ts';
 
 /** What the pointer or the card is on; the rest of the view model follows from it as it does in the map. */
 export type FreeFocus = { hoveredId?: string; selectedId?: string; isolated?: boolean };

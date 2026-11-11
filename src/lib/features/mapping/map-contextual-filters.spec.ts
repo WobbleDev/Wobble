@@ -7,7 +7,7 @@ import {
 	contextFilterLabels,
 	includeFilterChoices
 } from './map-contextual-filters.ts';
-import { answerIdOf, attributeFixture } from './answer-fixtures.ts';
+import { answerIdOf, attributeFixture } from '#lib/testing/mapping/answer-fixtures.ts';
 
 const position = attributeFixture({
 	id: 'position',

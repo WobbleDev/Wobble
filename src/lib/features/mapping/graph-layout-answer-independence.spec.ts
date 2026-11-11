@@ -2,7 +2,10 @@
 import { describe, expect, it } from 'vitest';
 import type { WorkerAttributeDefinition } from '#lib/domain-vocabulary.ts';
 import { arrange, type ArrangeInput } from './graph-arrangement.ts';
-import { createLayoutQualityFixture, qualityArrangeInput } from './graph-layout-quality-fixture.ts';
+import {
+	createLayoutQualityFixture,
+	qualityArrangeInput
+} from '#lib/testing/mapping/graph-layout-quality-fixture.ts';
 
 const variants = ['grouped', 'nested'] as const;
 
