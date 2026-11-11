@@ -20,3 +20,5 @@ jobs:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
       - name: Scan tracked text for non-synthetic emails
         run: scripts/data-safety.sh emails src e2e crates contract messages docs static
+      - name: Scan fixtures and tests for non-synthetic emails, phone numbers and addresses
+        run: node scripts/check-fixture-pii.mjs
