@@ -214,6 +214,8 @@ test('desktop widths keep every control reachable without document overflow', as
 	page,
 	request
 }) => {
+	// Two cold loads of a 500-Worker hub exceed the 30s default on slower runners.
+	test.slow();
 	await seedHub(request);
 
 	for (const width of [1024, 1440]) {
