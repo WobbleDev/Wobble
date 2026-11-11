@@ -71,8 +71,11 @@ export default defineConfig({
 	fullyParallel: true,
 	// `regular` gives each test its own Worksite on the one shim and `ui` has no database, so
 	// both run side by side; the state-owning suites stay one at a time. Three regular workers
-	// load an 8 GB, 8-core machine past what the map timing tests tolerate; `ui` has no shim.
-	workers: Number(process.env.WOBBLE_E2E_WORKERS ?? (isUi ? 3 : isRegular ? 2 : 1)),
+	// load an 8 GB, 8-core machine past what the map timing tests tolerate; `ui` has no shim
+	// but its map replays still time out on the 3-vCPU macOS runner, so CI uses two.
+	workers: Number(
+		process.env.WOBBLE_E2E_WORKERS ?? (isUi ? (process.env.CI ? 2 : 3) : isRegular ? 2 : 1)
+	),
 	retries: 0,
 	forbidOnly: true,
 	...(suiteDir ? { outputDir: join(suiteDir, 'test-results') } : {}),

@@ -292,7 +292,7 @@ export function wideWorkersMinFloorRem(): number {
 /** The Workers table's own measurements, taken from the rendered grid. */
 export async function gridReport(page: Page) {
 	return page.evaluate(() => {
-		const viewport = document.querySelector('[data-testid="workers-scroll-viewport"]');
+		const viewport = document.querySelector<HTMLElement>('[data-testid="workers-scroll-viewport"]');
 		if (!viewport) throw new Error('The Workers table viewport is missing.');
 
 		const headers = [...viewport.querySelectorAll('thead th')];
@@ -306,6 +306,11 @@ export async function gridReport(page: Page) {
 		const firstRow = workerRows[0];
 
 		const table = viewport.querySelector('table[data-slot="table"]');
+		const viewportStyle = getComputedStyle(viewport);
+		const borders =
+			(parseFloat(viewportStyle.borderLeftWidth) || 0) +
+			(parseFloat(viewportStyle.borderRightWidth) || 0);
+		const scrollbar = Math.max(0, viewport.offsetWidth - viewport.clientWidth - borders);
 
 		return {
 			widths: headers.map((th) => ({ label: label(th), ...box(th) })),
@@ -314,6 +319,13 @@ export async function gridReport(page: Page) {
 			rootFont: parseFloat(getComputedStyle(document.documentElement).fontSize),
 			overflowX: viewport.scrollWidth > viewport.clientWidth + 1,
 			viewportWidth: viewport.clientWidth,
+			viewportOffsetWidth: viewport.offsetWidth,
+			viewportScrollWidth: viewport.scrollWidth,
+			viewportScrollLeft: viewport.scrollLeft,
+			viewportScrollbarWidth: scrollbar,
+			maxScrollLeft: viewport.scrollWidth - viewport.clientWidth - scrollbar,
+			endGap: viewport.scrollWidth - viewport.clientWidth - scrollbar - viewport.scrollLeft,
+			computedOverflowX: viewportStyle.overflowX,
 			tableScrollWidth: table ? table.scrollWidth : 0,
 			documentOverflowX: document.documentElement.scrollWidth > window.innerWidth + 1
 		};

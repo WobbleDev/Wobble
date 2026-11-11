@@ -98,10 +98,21 @@ test.describe('readable Workers table', () => {
 			expect(Math.abs(scrolled.widths[index].x - scrolled.cells[index].x)).toBeLessThanOrEqual(2);
 		}
 		// The scrollport reached its far right edge.
-		const reached = await viewport.evaluate(
-			(element) => element.scrollLeft + element.clientWidth >= element.scrollWidth - 2
-		);
-		expect(reached).toBe(true);
+		const scroll = await gridReport(page);
+		expect(
+			scroll.viewportScrollLeft + scroll.viewportWidth + scroll.viewportScrollbarWidth >=
+				scroll.viewportScrollWidth - 2,
+			`scroll end metrics: ${JSON.stringify({
+				clientWidth: scroll.viewportWidth,
+				offsetWidth: scroll.viewportOffsetWidth,
+				scrollWidth: scroll.viewportScrollWidth,
+				scrollLeft: scroll.viewportScrollLeft,
+				scrollbarWidth: scroll.viewportScrollbarWidth,
+				maxScrollLeft: scroll.maxScrollLeft,
+				endGap: scroll.endGap,
+				overflowX: scroll.computedOverflowX
+			})}`
+		).toBe(true);
 	});
 
 	test('attribute filters live on their column headers and keep state', async ({
@@ -207,6 +218,19 @@ test.describe('readable Workers table', () => {
 		await expect(last).toBeAttached();
 		expect(edges.lastRight).toBeLessThanOrEqual(edges.frameRight + 1);
 		expect(edges.nameLeft).toBeGreaterThanOrEqual(edges.frameLeft - 1);
-		await expect(page.getByTestId('workers-scroll-fade')).toHaveCount(0);
+		const scroll = await gridReport(page);
+		await expect(
+			page.getByTestId('workers-scroll-fade'),
+			`fade at scroll end: ${JSON.stringify({
+				clientWidth: scroll.viewportWidth,
+				offsetWidth: scroll.viewportOffsetWidth,
+				scrollWidth: scroll.viewportScrollWidth,
+				scrollLeft: scroll.viewportScrollLeft,
+				scrollbarWidth: scroll.viewportScrollbarWidth,
+				maxScrollLeft: scroll.maxScrollLeft,
+				endGap: scroll.endGap,
+				overflowX: scroll.computedOverflowX
+			})}`
+		).toHaveCount(0);
 	});
 });

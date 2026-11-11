@@ -113,10 +113,15 @@ test('the card reaches the foot of the navigation rail at any window height', as
 test('with nothing selected the table is as wide as its frame', async ({ page, request }) => {
 	await openWorkersTable(page, request, { seed: seedInspectorWorkers });
 	await expect(panel(page)).toHaveCount(0);
-	const viewport = await page.getByTestId('workers-scroll-viewport').boundingBox();
+	const viewportWidth = await page
+		.getByTestId('workers-scroll-viewport')
+		.evaluate((element) => element.clientWidth);
 	const table = await page.getByRole('grid').first().boundingBox();
-	expect(viewport && table).toBeTruthy();
-	expect(Math.abs(table!.width - viewport!.width)).toBeLessThanOrEqual(1);
+	expect(table).toBeTruthy();
+	expect(
+		Math.abs(table!.width - viewportWidth),
+		`table width ${table!.width}, viewport client width ${viewportWidth}`
+	).toBeLessThanOrEqual(1);
 });
 
 test('opening the card does not move the header cells or the bulk bar', async ({
