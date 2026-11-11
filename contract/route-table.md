@@ -5,7 +5,7 @@ Source: spec §3. Every row was checked against the handler in the **Source** co
 
 Error convention: body `{message}`; the Worker edit flow's routes and the ticket-05 data
 controls (`GET /api/data-file`, `POST /api/restore`, `POST /api/erase`) add a stable
-`code` beside it (ADR-0024, `docs/adr/0024-core-errors-carry-a-code.md`); 400 invalid
+`code` beside it (as recorded in the local decision records); 400 invalid
 input · 404 not found · 409 no Active Worksite.
 A malformed request body is always 400 `"Request body must contain valid JSON."` (read-json-request.ts).
 The Active Worksite comes from the `x-wobble-worksite` header; absent/unknown falls back to the

@@ -3,7 +3,7 @@
 A guide for changing Wobble without being a programmer. It says what each part of the project is
 for, and which files to open for the changes people ask for most.
 
-If a word here is unfamiliar, [GLOSSARY.md](../GLOSSARY.md) defines the project's vocabulary
+If a word here is unfamiliar, the project glossary kept locally defines its vocabulary
 exactly. It is short, and it will save you guessing.
 
 ## What Wobble is
@@ -42,9 +42,8 @@ Two things not to touch:
 
 - `src/lib/components/ui/` is a vendored copy of a component library, kept exactly as its authors
   ship it. It is not ours.
-- `contract/fixtures/scenarios.json` is the recorded contract the Rust core replays
-  (`docs/adr/0021-the-rust-core-sits-behind-one-request-boundary.md`). The Node recorder is
-  gone (last present at the `pre-tauri-node` tag), so edit it only deliberately and together with
+- `contract/fixtures/scenarios.json` is the recorded contract the Rust core replays. The Node
+  recorder is gone (last present at the `pre-tauri-node` tag), so edit it only deliberately and together with
   the Rust code that the change describes.
 
 The backend is the Rust crate `crates/wobble-core`; `crates/wobble-dev-shim` serves it over HTTP
@@ -118,7 +117,7 @@ source; do not copy it here, because two copies drift.
 
 `src/lib/features/configuration/worksite-danger-zone.svelte` is the control, and
 `src/lib/client/workers-api.ts` sends the deletion. Deleting is a hard cascade — read
-`docs/adr/0006-deleting-a-worksite-is-a-hard-cascade.md` before touching it.
+the local decision record on Worksite deletion before touching it.
 
 ### 8. Switch the Active Worksite
 
@@ -128,8 +127,8 @@ Three files: `src/lib/shell/navigation-rail.svelte` (the control),
 
 ## Where to look when you are stuck
 
-- `GLOSSARY.md` — what the project's words mean.
-- `docs/adr/` — why things are the way they are. **Never edit these**; they are a record of
+- The local project glossary — what the project's words mean.
+- The local decision records — why things are the way they are. **Never edit these**; they are a record of
   decisions already made.
 - `README.md` — running it, the database, and backups.
 - `AGENTS.md` — the rules this codebase is built to.

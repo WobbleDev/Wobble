@@ -1,5 +1,5 @@
 /**
- * The path of an Attribute answer (GLOSSARY.md): the root-to-answer chain that makes
+ * The path of an Attribute answer: the root-to-answer chain that makes
  * same-named answers in different branches distinguishable. Answer identity is still the
  * id (ADR 0030); a path is only how the interface names one answer next to another.
  */

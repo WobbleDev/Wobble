@@ -42,7 +42,7 @@ selected worker's two degrees). `map-view-model.ts` is the single source for wha
 - `map-name-placement.ts` chooses initial names from the prepared scene facts, using packet names whenever a packet exists. Initial framing can call its bounded placement helpers. After preparation, `map-frozen-names.ts` replays stored attachments using arithmetic; ordinary camera and manual movement never calls the placement search. `floatingKeyBoxes` and `wholeMapViewport` describe reserved keys and usable canvas for initial preparation.
 - `map-drawing.ts` is pure readings of the drawing: the settled frame the camera travels to, the regions with their headings (`labelViewRegions`), which regions a spotlight or Highlight keeps lit, the halo clip path, the flattened final paths, the reserved key rectangles and the strings a composition reserves room for.
 
-Check GLOSSARY.md before naming anything here — Mapping's vocabulary is deliberately narrow.
+Check the local project glossary before naming anything here — Mapping's vocabulary is deliberately narrow.
 
 ## One composed drawing (Grouped, one level)
 
