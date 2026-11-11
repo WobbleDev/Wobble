@@ -9,7 +9,7 @@ on:
         description: WOBBLE_E2E_SUITE (regular, mapping, ui, ...)
         default: regular
       spec:
-        description: Spec path or title filter passed to playwright (empty runs the whole suite)
+        description: Spec path(s) or title filter passed to playwright, space separated (empty runs the whole suite)
         default: ''
       repeat:
         description: Times to run each test (--repeat-each)
@@ -62,7 +62,8 @@ jobs:
           if [[ "$PROJECT" == webkit ]]; then
             export WOBBLE_E2E_WEBKIT=1 WOBBLE_E2E_SUITE=regular
           fi
-          npx playwright test ${SPEC:+"$SPEC"} ${PROJECT:+--project="$PROJECT"} ${GREP:+--grep "$GREP"} \
+          read -ra specs <<< "$SPEC" # several spec paths may be given, separated by spaces
+          npx playwright test ${specs[@]+"${specs[@]}"} ${PROJECT:+--project="$PROJECT"} ${GREP:+--grep "$GREP"} \
             --repeat-each "$REPEAT" --trace on-first-retry --reporter=list,json
         # keep going so the summary step still reports the failure count
         continue-on-error: true
