@@ -64,7 +64,11 @@ test('Languages toggle and save from the record, with the status line reporting'
 	await expect(page.getByText('Languages saved for Ada Lovelace')).toBeVisible();
 });
 
-test('contact values copy', async ({ page, request, context }) => {
+test('contact values copy', async ({ page, request, context, browserName }) => {
+	test.skip(
+		browserName === 'webkit',
+		'WebKit has no clipboard permission to grant (Unknown permission: clipboard-write), so copy-to-clipboard is checked on Chromium only.'
+	);
 	await context.grantPermissions(['clipboard-read', 'clipboard-write']);
 	await openWorkersTable(page, request, { seed });
 	const record = await open(page, 'Ada Lovelace');
