@@ -356,3 +356,20 @@ test('leaving the Workers page within the autosave window still stores the draft
 
 	await expect.poll(() => storedDraft(request, draftKeeper), { timeout: 800 }).not.toBeNull();
 });
+
+test('a draft the core refuses is not reported as stored', async ({ page, request }) => {
+	const { draftKeeper } = await seed(request);
+	await page.route('**/api/worker-drafts/*', (route) =>
+		route.request().method() === 'PUT'
+			? route.fulfill({ status: 500, json: { message: 'locked' } })
+			: route.continue()
+	);
+	await openWorkers(page);
+
+	await typeEmail(page, 'refused@example.test');
+
+	await expect(page.getByTestId('draft-status')).toHaveText(
+		'Draft not saved. Your changes are still open here.'
+	);
+	expect(await storedDraft(request, draftKeeper)).toBeNull();
+});

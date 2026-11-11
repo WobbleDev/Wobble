@@ -279,6 +279,7 @@
 	"workers_copy_failed": "No se pudo copiar",
 	"workers_draft_state_unsaved": "Cambios sin guardar",
 	"workers_draft_state_stored": "Borrador guardado en esta computadora",
+	"workers_draft_state_failed": "Borrador no guardado. Tus cambios siguen abiertos aquí.",
 	"workers_draft_compare": "{field}: guardado {saved}, borrador {draft}",
 	"workers_draft_compare_empty": "vacío",
 	"workers_notes_search": "Buscar notas",
