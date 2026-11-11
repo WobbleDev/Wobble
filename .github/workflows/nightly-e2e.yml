@@ -30,3 +30,29 @@ jobs:
             test-results
           if-no-files-found: ignore
           retention-days: 7
+  # The Mac app renders in WebKit (WKWebView), so a Chromium-only run does not prove it looks
+  # right. Own job so a WebKit failure shows up on its own and never hides the Chromium result.
+  # Only the regular suite runs on WebKit; the state-owning suites stay Chromium-only.
+  webkit:
+    runs-on: macos-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      - run: npm ci
+      - run: npx playwright install webkit
+      - run: npm run test:e2e:webkit
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report-webkit
+          path: |
+            playwright-report
+            test-results
+          if-no-files-found: ignore
+          retention-days: 7
