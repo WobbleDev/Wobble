@@ -206,8 +206,13 @@ test("an All cell opens the Agitation's full holder count", async ({ page, reque
 
 test('every dashboard Workers link is reachable by Tab and opens with Enter', async ({
 	page,
-	request
+	request,
+	browserName
 }) => {
+	// WebKit's Tab key skips links unless Option is held (the WKWebView tabFocusesLinks default),
+	// so the harness cannot press its way to them there. Chromium covers the order; whether the
+	// Mac app should turn link tabbing on is a product question, not a WebKit test gap.
+	test.skip(browserName === 'webkit', 'WebKit Tab does not reach links without Option');
 	await seedDashboard(request);
 	await openOverview(page);
 

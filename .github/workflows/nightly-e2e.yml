@@ -49,6 +49,9 @@ jobs:
       - uses: Swatinem/rust-cache@d1527c8f67ef9af357290475d4af4b0fab8f12e0 # v2
       - run: npm ci
       - run: npx playwright install webkit
+      # Tab reaching buttons follows macOS Keyboard navigation, which is off on a fresh runner.
+      # Turn it on so the Tab specs test the app, not the runner's default.
+      - run: defaults write -g AppleKeyboardUIMode -int 3
       - run: npm run test:e2e:webkit
       - name: Scan artifacts for non-synthetic emails
         if: always()
