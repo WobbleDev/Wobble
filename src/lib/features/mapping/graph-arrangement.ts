@@ -10,7 +10,7 @@
  */
 import { layoutGroupRegions, regionKey, subRegionKey, type GroupRegion } from './graph-layout.ts';
 import { buildBucketTree } from './graph-analysis.ts';
-import { placeRegionLabels } from './graph-label-placement.ts';
+import { placeRegionLabels } from './labels/graph-label-placement.ts';
 import type { Box } from './graph-free-canvas.ts';
 import { regionPadding, type Point } from './graph-layout.ts';
 import { answerPositionLabel, groupValue, type LabelOf } from './graph-analysis.ts';

@@ -33,7 +33,7 @@
 		type ManualGeometry
 	} from './graph-manual.ts';
 	import { attachName, freezeName, thawName, type FrozenName } from './map-frozen-names.ts';
-	import { mapLabelText, type Box as LabelBox } from './graph-label-placement.ts';
+	import { mapLabelText, type Box as LabelBox } from './labels/graph-label-placement.ts';
 	import type { CompositionInput } from './composition/graph-composition.ts';
 	import {
 		estimateTextSnapshot,
@@ -42,8 +42,8 @@
 		measureTextSnapshot,
 		textFontRequests,
 		type TextSnapshot
-	} from './graph-text-metrics.ts';
-	import { boundsOf, frameWithNames, type Rect } from './map-name-framing.ts';
+	} from './labels/graph-text-metrics.ts';
+	import { boundsOf, frameWithNames, type Rect } from './labels/map-name-framing.ts';
 	import { regionCounts } from './map-reading.ts';
 	import { nodeEase, easeStopThreshold } from './graph-group-physics.ts';
 	import type { WorkerGraphNode } from './worker-relationship-map-model.ts';
@@ -71,7 +71,7 @@
 		type Camera,
 		type NameScene,
 		type PlacedName
-	} from './map-name-placement.ts';
+	} from './labels/map-name-placement.ts';
 	import {
 		flattenedRoutes,
 		haloClipPathOf,

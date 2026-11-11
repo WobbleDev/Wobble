@@ -14,7 +14,7 @@ import {
 	type Region
 } from '../graph-layout.ts';
 import { boundsOf, boxPolygon, flattenPath, simplifyConvex, type Box } from '../graph-shapes.ts';
-import type { TextSize } from '../graph-text-metrics.ts';
+import type { TextSize } from '../labels/graph-text-metrics.ts';
 import type { ComposerContext, Layout } from './graph-composition-context.ts';
 import { sizeOfHeading } from './graph-composition-text.ts';
 

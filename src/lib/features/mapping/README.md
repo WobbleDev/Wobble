@@ -39,7 +39,7 @@ selected worker's two degrees). `map-view-model.ts` is the single source for wha
 
 - `map-drag.svelte.ts` (`createMapDrag(host)`) is the drag gesture: a Worker's dot in Free and a group's body in Grouped. A press is armed and becomes a drag only past 4 screen pixels; the release of a drag that moved suppresses the click that follows it, and a surface press that travelled more than 4 pixels is a pan, not a dismissal. The host supplies `isolated`, `grouped`, `spaceHeld`, the `settled` arrangement, `panZoom` (a getter, for `toMapPoint`) and `commitWorker`/`commitGroup`; a drag is a delta from the press, which the canvas lays over its manual geometry while it travels and keeps on release.
 - `map-hover-intent.svelte.ts` (`createHoverIntent(host)`) holds a node's tooltip back until the pointer has rested 120 ms, lets a shown card follow the pointer, and shows it 30 ms after a touch tap. The canvas calls `cancel` on destroy.
-- `map-name-placement.ts` chooses initial names from the prepared scene facts, using packet names whenever a packet exists. Initial framing can call its bounded placement helpers. After preparation, `map-frozen-names.ts` replays stored attachments using arithmetic; ordinary camera and manual movement never calls the placement search. `floatingKeyBoxes` and `wholeMapViewport` describe reserved keys and usable canvas for initial preparation.
+- `labels/map-name-placement.ts` chooses initial names from the prepared scene facts, using packet names whenever a packet exists. Initial framing can call its bounded placement helpers. After preparation, `map-frozen-names.ts` replays stored attachments using arithmetic; ordinary camera and manual movement never calls the placement search. `floatingKeyBoxes` and `wholeMapViewport` describe reserved keys and usable canvas for initial preparation.
 - `map-drawing.ts` is pure readings of the drawing: the settled frame the camera travels to, the regions with their headings (`labelViewRegions`), which regions a spotlight or Highlight keeps lit, the halo clip path, the flattened final paths, the reserved key rectangles and the strings a composition reserves room for.
 
 Check the local project glossary before naming anything here — Mapping's vocabulary is deliberately narrow.
@@ -58,7 +58,7 @@ a whole packet or keeps the original. `graph-composition.ts` holds the entry poi
 hull, selection and candidate stages. Exhausting the per-solve work allowance (`graph-work-budget.ts`)
 discards a candidate, never returns half of one.
 
-- `graph-text-metrics.ts` is the browser seam: one SVG measurer, a revisioned numeric snapshot.
+- `labels/graph-text-metrics.ts` is the browser seam: one SVG measurer, a revisioned numeric snapshot.
 - `routing/graph-relationship-routing.ts` routes each pair over fixed positions; `graph-shapes.ts` holds the
   signed geometry both it and the independent evaluator in `graph-layout-quality.ts` use. The evaluator
   reads final SVG path data, so a tie entering a dot between its waypoints is still found.

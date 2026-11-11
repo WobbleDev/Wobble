@@ -1,8 +1,11 @@
 // @module-tag mapping
 import { describe, expect, it } from 'vitest';
 import { decodeWorksiteDataset } from '#lib/client/dataset-api.ts';
-import { cliquesWorksite, hubBundleWorksite } from '../../../../e2e/mapping-composition-dataset.ts';
-import leaderHubBundle from '../../../../e2e/fixtures/mapping-leader-hub-bundle.json' with { type: 'json' };
+import {
+	cliquesWorksite,
+	hubBundleWorksite
+} from '../../../../../e2e/mapping-composition-dataset.ts';
+import leaderHubBundle from '../../../../../e2e/fixtures/mapping-leader-hub-bundle.json' with { type: 'json' };
 import { worksiteGraph } from '#lib/testing/mapping/composition-worksite-fixture.ts';
 import {
 	freeNamedMap,
@@ -11,8 +14,8 @@ import {
 	type FreeNamedMap,
 	type Placed
 } from '#lib/testing/mapping/free-name-fixture.ts';
-import { thawName } from './map-frozen-names.ts';
-import { buildWorkerGraph } from './worker-relationship-map-model.ts';
+import { thawName } from '../map-frozen-names.ts';
+import { buildWorkerGraph } from '../worker-relationship-map-model.ts';
 import {
 	floatingKeyBoxes,
 	keptNames,
@@ -23,8 +26,8 @@ import {
 	wholeMapViewport,
 	type NameScene
 } from './map-name-placement.ts';
-import type { MapViewModel } from './map-view-model.ts';
-import type { WorkerGraphNode } from './worker-relationship-map-model.ts';
+import type { MapViewModel } from '../map-view-model.ts';
+import type { WorkerGraphNode } from '../worker-relationship-map-model.ts';
 
 const node = (id: string, name: string, relationshipCount = 0) =>
 	({ id, name, relationshipCount, attributes: {}, assessment: 'Unassessed' }) as WorkerGraphNode;

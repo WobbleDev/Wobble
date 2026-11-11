@@ -4,9 +4,9 @@
  * names; nothing here owns state. The scene is read through getters, so a placement
  * reads live drawing state at the moment it runs, exactly as if it lived in the canvas.
  */
-import type { GroupRegion, Point, Region } from './graph-layout.ts';
-import type { CompositionPacket } from './composition/graph-composition.ts';
-import { floatingGutter, freeCanvasInMap, type Box as FreeBox } from './graph-free-canvas.ts';
+import type { GroupRegion, Point, Region } from '../graph-layout.ts';
+import type { CompositionPacket } from '../composition/graph-composition.ts';
+import { floatingGutter, freeCanvasInMap, type Box as FreeBox } from '../graph-free-canvas.ts';
 import {
 	boxFor,
 	estimateLabelWidth,
@@ -23,9 +23,9 @@ import {
 } from './graph-label-placement.ts';
 import { nameFontPx, type TextSnapshot } from './graph-text-metrics.ts';
 import type { Rect } from './map-name-framing.ts';
-import { screenFixed, showsLabel } from './map-style.ts';
-import type { MapViewModel } from './map-view-model.ts';
-import type { WorkerGraphNode } from './worker-relationship-map-model.ts';
+import { screenFixed, showsLabel } from '../map-style.ts';
+import type { MapViewModel } from '../map-view-model.ts';
+import type { WorkerGraphNode } from '../worker-relationship-map-model.ts';
 
 export type Camera = { zoom: number; panX: number; panY: number };
 

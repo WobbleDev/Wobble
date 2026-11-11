@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import type { WorkerAttributeDefinition } from '#lib/domain-vocabulary.ts';
 import { boundsOf } from './graph-shapes.ts';
 import type { GroupRegion, Point } from './graph-layout.ts';
-import type { TextSnapshot } from './graph-text-metrics.ts';
+import type { TextSnapshot } from './labels/graph-text-metrics.ts';
 import type { WorkerGraphLink, WorkerGraphNode } from './worker-relationship-map-model.ts';
 import { reportDrawingInput } from './map-canvas-report.ts';
 

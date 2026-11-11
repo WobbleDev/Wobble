@@ -2,7 +2,7 @@
  * The measured text the composer draws: a Worker's name and a region's
  * heading, with the conservative fallback for anything unmeasured.
  */
-import type { TextSize } from '../graph-text-metrics.ts';
+import type { TextSize } from '../labels/graph-text-metrics.ts';
 import type { ComposerContext } from './graph-composition-context.ts';
 
 export function sizeOfName(ctx: ComposerContext, id: string): TextSize {

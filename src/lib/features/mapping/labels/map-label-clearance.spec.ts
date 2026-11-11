@@ -1,17 +1,17 @@
 // @module-tag mapping
 import { describe, expect, it } from 'vitest';
 import { decodeWorksiteDataset } from '#lib/client/dataset-api.ts';
-import { arrange, type ArrangeInput } from './graph-arrangement.ts';
+import { arrange, type ArrangeInput } from '../graph-arrangement.ts';
 import type { Box } from './graph-label-placement.ts';
 import { keptNames, legacyPlacements, type NameScene } from './map-name-placement.ts';
-import { regionCounts } from './map-reading.ts';
-import { nodeRadius } from './map-style.ts';
-import type { MapViewModel } from './map-view-model.ts';
-import { buildWorkerGraph, type WorkerGraphNode } from './worker-relationship-map-model.ts';
-import collisionDotGrouped from '../../../../e2e/fixtures/mapping-label-collision-dot-grouped.json' with { type: 'json' };
-import collisionDotUngrouped from '../../../../e2e/fixtures/mapping-label-collision-dot-ungrouped.json' with { type: 'json' };
-import collisionSeed11 from '../../../../e2e/fixtures/mapping-label-collision-seed-11.json' with { type: 'json' };
-import collisionSeed13 from '../../../../e2e/fixtures/mapping-label-collision-seed-13.json' with { type: 'json' };
+import { regionCounts } from '../map-reading.ts';
+import { nodeRadius } from '../map-style.ts';
+import type { MapViewModel } from '../map-view-model.ts';
+import { buildWorkerGraph, type WorkerGraphNode } from '../worker-relationship-map-model.ts';
+import collisionDotGrouped from '../../../../../e2e/fixtures/mapping-label-collision-dot-grouped.json' with { type: 'json' };
+import collisionDotUngrouped from '../../../../../e2e/fixtures/mapping-label-collision-dot-ungrouped.json' with { type: 'json' };
+import collisionSeed11 from '../../../../../e2e/fixtures/mapping-label-collision-seed-11.json' with { type: 'json' };
+import collisionSeed13 from '../../../../../e2e/fixtures/mapping-label-collision-seed-13.json' with { type: 'json' };
 
 /**
  * Name clearance on the captured collision fixtures, replayed through the same

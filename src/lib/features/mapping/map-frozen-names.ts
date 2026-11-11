@@ -8,8 +8,8 @@
  * its distance in pixels stay what they were, and only arithmetic places it.
  */
 import type { Point } from './graph-layout.ts';
-import { nameLeader, type Box, type LabelSide } from './graph-label-placement.ts';
-import type { PlacedName } from './map-name-placement.ts';
+import { nameLeader, type Box, type LabelSide } from './labels/graph-label-placement.ts';
+import type { PlacedName } from './labels/map-name-placement.ts';
 
 export type FrozenName = {
 	side: LabelSide;
