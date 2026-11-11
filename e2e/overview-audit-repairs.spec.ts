@@ -167,7 +167,15 @@ test('keeps focus in the matrix card when Right pages from a count link', async 
 	await expect(card.getByRole('button', { name: 'Previous agitations page' })).toBeFocused();
 });
 
-test('removes panel backdrop blur for reduced transparency', async ({ page, request }) => {
+test('removes panel backdrop blur for reduced transparency', async ({
+	page,
+	request,
+	browserName
+}) => {
+	test.skip(
+		browserName === 'webkit',
+		'WebKit has no Chrome DevTools session, which this test uses to drive touch or emulate media; it stays Chromium-only.'
+	);
 	await seedEmpty(request);
 	const cdp = await page.context().newCDPSession(page);
 	await cdp.send('Emulation.setEmulatedMedia', {

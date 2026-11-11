@@ -685,8 +685,13 @@ test.describe('touch placement in long Attribute outlines', () => {
 
 	test('touch drag auto-scrolls to a collapsed deep destination and saves the held branch', async ({
 		page,
-		request
+		request,
+		browserName
 	}) => {
+		test.skip(
+			browserName === 'webkit',
+			'WebKit has no Chrome DevTools session, which this test uses to drive touch or emulate media; it stays Chromium-only.'
+		);
 		const id = ids();
 		const destinationId = 't11-touch-destination-' + randomUUID().slice(0, 8);
 		const destinationLeafId = 't11-touch-leaf-' + randomUUID().slice(0, 8);
@@ -1083,8 +1088,13 @@ test.describe('phone Attribute placement feedback', () => {
 
 	test('shows held-touch feedback and clears it when released outside the outline', async ({
 		page,
-		request
+		request,
+		browserName
 	}) => {
+		test.skip(
+			browserName === 'webkit',
+			'WebKit has no Chrome DevTools session, which this test uses to drive touch or emulate media; it stays Chromium-only.'
+		);
 		const id = ids();
 		await configure(request, id);
 		await page.setViewportSize({ width: 390, height: 844 });
