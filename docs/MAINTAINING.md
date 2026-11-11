@@ -108,6 +108,22 @@ its code. Add it to the sidebar's list in `src/lib/shell/navigation-rail.svelte`
 
 Always run `lint`, `check` and `test` before calling a change done.
 
+The fast loop while you work (timings from a 4-core machine; a warm laptop is similar):
+
+- `npm run test:changed` (a few seconds) — only the unit specs affected by uncommitted changes.
+  Add `-- --changed origin/main` style arguments to include committed work, or run one file with
+  `npx vitest run path/to/file.spec.ts`.
+- `npm run verify` — lint, check and the full unit run, plus Rust and only the Playwright areas
+  the changed paths belong to (`npm run verify -- --dry-run` prints the plan first).
+- `npm run test:e2e:smoke` — the `@smoke` subset of the browser tests.
+- Git hooks: `pre-commit` formats and lints the staged files and runs the unit specs that import
+  them (seconds); `pre-push` runs the leak checks, the whole-repo lint, `check` and the full unit
+  run. Run `npm run test:e2e` (or leave it to the nightly run) for the full browser set.
+- CI: lint, types plus unit, and Rust run as parallel jobs behind one required `verify` check;
+  the PR e2e job runs only the affected areas unless the change touches dependencies, build or
+  test config, the Rust core or shared test helpers. The nightly run covers everything, including
+  WebKit.
+
 ### 6. Back up or restore the database
 
 See **Data storage** and **Backups and rollback** in [README.md](../README.md). That file is the

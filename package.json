@@ -21,6 +21,7 @@
 		"lint": "node scripts/check-e2e-settings-writes.mjs && prettier --check --cache . && eslint --cache . && KNIP_DISABLE_RAW_TRANSFER=1 knip",
 		"format": "prettier --write .",
 		"test:unit": "vitest",
+		"test:changed": "vitest run --changed --passWithNoTests",
 		"test": "npm run i18n:compile && npm run test:unit -- --run",
 		"gen:types": "CARGO_BUILD_JOBS=1 RUST_TEST_THREADS=1 TS_RS_EXPORT_DIR=../../src/lib/client/generated cargo test -p wobble-core --features ts --lib export_bindings && prettier --write src/lib/client/generated",
 		"test:rust": "CARGO_BUILD_JOBS=1 RUST_TEST_THREADS=1 cargo fmt --check && CARGO_BUILD_JOBS=1 RUST_TEST_THREADS=1 cargo clippy --all-targets -- -D warnings && CARGO_BUILD_JOBS=1 RUST_TEST_THREADS=1 cargo test",
