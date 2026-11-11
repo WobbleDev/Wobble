@@ -2,8 +2,8 @@
  * The composer's result types: a candidate's report, the selected packet, the
  * positions result and the composer handle.
  */
-import type { Point } from './graph-layout.ts';
-import type { Route } from './graph-relationship-routing.ts';
+import type { Point } from '../graph-layout.ts';
+import type { Route } from '../graph-relationship-routing.ts';
 import type { HeadingPlacement, NamePlacement } from './graph-composition-drawing.ts';
 
 export type CandidateReport = {

@@ -34,7 +34,7 @@
 	} from './graph-manual.ts';
 	import { attachName, freezeName, thawName, type FrozenName } from './map-frozen-names.ts';
 	import { mapLabelText, type Box as LabelBox } from './graph-label-placement.ts';
-	import type { CompositionInput } from './graph-composition.ts';
+	import type { CompositionInput } from './composition/graph-composition.ts';
 	import {
 		estimateTextSnapshot,
 		fontsLoadedFor,

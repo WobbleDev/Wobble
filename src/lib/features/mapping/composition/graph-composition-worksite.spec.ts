@@ -5,16 +5,16 @@
  * drawn dots and exact pairs, and the independent evaluation of the final paths.
  */
 import { describe, expect, it } from 'vitest';
-import { sixGroupWorksite } from '../../../../e2e/mapping-composition-dataset.ts';
+import { sixGroupWorksite } from '../../../../../e2e/mapping-composition-dataset.ts';
 import { worksiteGraph } from '#lib/testing/mapping/composition-worksite-fixture.ts';
-import { arrange } from './graph-arrangement.ts';
-import { buildBucketTree, groupValue } from './graph-analysis.ts';
-import { layoutGroupRegions } from './graph-layout.ts';
-import { evaluateDrawing } from './graph-layout-quality.ts';
-import { groupGapDefault } from './graph-group-physics.ts';
-import { flattenPath } from './graph-shapes.ts';
-import { nodeRadius } from './map-style.ts';
-import { labelledWorkerIds } from './map-view-model.ts';
+import { arrange } from '../graph-arrangement.ts';
+import { buildBucketTree, groupValue } from '../graph-analysis.ts';
+import { layoutGroupRegions } from '../graph-layout.ts';
+import { evaluateDrawing } from '../graph-layout-quality.ts';
+import { groupGapDefault } from '../graph-group-physics.ts';
+import { flattenPath } from '../graph-shapes.ts';
+import { nodeRadius } from '../map-style.ts';
+import { labelledWorkerIds } from '../map-view-model.ts';
 
 /** The browser specs' three canvases; the free canvas is what the control strip leaves. */
 const canvases = {

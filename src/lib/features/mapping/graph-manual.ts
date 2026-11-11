@@ -18,7 +18,7 @@ import {
 import { groupValue } from './graph-analysis.ts';
 import type { Arrangement } from './graph-arrangement.ts';
 import type { Route } from './graph-relationship-routing.ts';
-import type { NamePlacement, HeadingPlacement } from './graph-composition-drawing.ts';
+import type { NamePlacement, HeadingPlacement } from './composition/graph-composition-drawing.ts';
 import type { WorkerGraphNode } from './worker-relationship-map-model.ts';
 import type { WorkerAttributeDefinition } from '#lib/domain-vocabulary.ts';
 

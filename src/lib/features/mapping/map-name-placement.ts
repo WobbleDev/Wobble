@@ -5,7 +5,7 @@
  * reads live drawing state at the moment it runs, exactly as if it lived in the canvas.
  */
 import type { GroupRegion, Point, Region } from './graph-layout.ts';
-import type { CompositionPacket } from './graph-composition.ts';
+import type { CompositionPacket } from './composition/graph-composition.ts';
 import { floatingGutter, freeCanvasInMap, type Box as FreeBox } from './graph-free-canvas.ts';
 import {
 	boxFor,

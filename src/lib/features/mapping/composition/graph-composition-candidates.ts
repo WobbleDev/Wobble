@@ -2,9 +2,9 @@
  * The candidate drawings: the child-first interior stage and the coordinated
  * alternatives built from it.
  */
-import { compareText } from './graph-analysis.ts';
-import { regionKey, type Point } from './graph-layout.ts';
-import { WorkExhausted } from './graph-work-budget.ts';
+import { compareText } from '../graph-analysis.ts';
+import { regionKey, type Point } from '../graph-layout.ts';
+import { WorkExhausted } from '../graph-work-budget.ts';
 import type { ComposerContext, Layout } from './graph-composition-context.ts';
 import { distance, movedLayout } from './graph-composition-layout.ts';
 import { buildDrawing, type Drawing } from './graph-composition-drawing.ts';

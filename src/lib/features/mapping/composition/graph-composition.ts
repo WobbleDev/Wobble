@@ -19,7 +19,7 @@
  *
  * Positions come from the caller and go back to it: this module owns no state.
  */
-import { WorkExhausted } from './graph-work-budget.ts';
+import { WorkExhausted } from '../graph-work-budget.ts';
 import { createComposerContext, type ComposeParams } from './graph-composition-context.ts';
 import { buildDrawing, fitReferenceToHeadings, type Drawing } from './graph-composition-drawing.ts';
 import type { ComposeResult } from './graph-composition-types.ts';

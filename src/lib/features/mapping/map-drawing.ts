@@ -6,7 +6,7 @@
  */
 import { arrange, type ArrangeInput } from './graph-arrangement.ts';
 import { buildBucketTree, groupValue } from './graph-analysis.ts';
-import type { CompositionPacket } from './graph-composition.ts';
+import type { CompositionPacket } from './composition/graph-composition.ts';
 import { floatingGutter } from './graph-free-canvas.ts';
 import { regionKey, regionsExtent, subRegionKey, type Point, type Region } from './graph-layout.ts';
 import { mapLabelText, type TieSegment } from './graph-label-placement.ts';

@@ -2,14 +2,19 @@
  * The composer's shared context: the values that used to sit around one
  * thousand-line closure, now built once and passed to every composer module.
  */
-import { answerPositionLabel, buildBucketTree, compareText, groupValue } from './graph-analysis.ts';
-import { regionKey, subRegionKey, type Point } from './graph-layout.ts';
-import { mapLabelText } from './graph-label-placement.ts';
-import { estimateTextSnapshot, type TextSnapshot } from './graph-text-metrics.ts';
-import type { Box } from './graph-shapes.ts';
-import type { WorkBudget } from './graph-work-budget.ts';
+import {
+	answerPositionLabel,
+	buildBucketTree,
+	compareText,
+	groupValue
+} from '../graph-analysis.ts';
+import { regionKey, subRegionKey, type Point } from '../graph-layout.ts';
+import { mapLabelText } from '../graph-label-placement.ts';
+import { estimateTextSnapshot, type TextSnapshot } from '../graph-text-metrics.ts';
+import type { Box } from '../graph-shapes.ts';
+import type { WorkBudget } from '../graph-work-budget.ts';
 import type { WorkerAttributeDefinition } from '#lib/domain-vocabulary.ts';
-import type { WorkerGraphLink, WorkerGraphNode } from './worker-relationship-map-model.ts';
+import type { WorkerGraphLink, WorkerGraphNode } from '../worker-relationship-map-model.ts';
 import { frameOf, fitScale, keyOf, regionsOf } from './graph-composition-layout.ts';
 
 /** The reading rules, in reference CSS pixels. Revise the revision with any change. */
