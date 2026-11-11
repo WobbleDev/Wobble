@@ -1,0 +1,23 @@
+name: actionlint
+on:
+  pull_request:
+    paths: ['.github/workflows/**']
+  push:
+    branches: [main]
+    paths: ['.github/workflows/**']
+permissions:
+  contents: read
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Run actionlint
+        run: |
+          bash <(curl -sSfL https://raw.githubusercontent.com/rhysd/actionlint/03d0035246f3e81f36aed592ffb4bebf33a03106/scripts/download-actionlint.bash) 1.7.7
+          ./actionlint -color
+      - name: Fail on unpinned third-party actions
+        run: |
+          if grep -rEn '^[[:space:]]*-?[[:space:]]*uses: *[^./][^@ ]*@' .github/workflows | grep -Ev '@[0-9a-f]{40}( |$)'; then
+            echo "Pin every action to a full commit SHA."; exit 1
+          fi
