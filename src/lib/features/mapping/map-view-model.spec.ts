@@ -1,6 +1,6 @@
 // @module-tag mapping
 import { describe, expect, it } from 'vitest';
-import { layoutGroupRegions, type PlacedWorker, type Point } from './graph-layout.ts';
+import { layoutGroupRegions, type PlacedWorker, type Point } from './layout/graph-layout.ts';
 import type { WorkerGraphLink, WorkerGraphNode } from './worker-relationship-map-model.ts';
 import {
 	deriveVisibleGraph,
@@ -17,7 +17,7 @@ import {
 	resolveEffectiveLayout
 } from './map-view-model.ts';
 import { answerIdsFixture, attributeFixture } from '#lib/testing/mapping/answer-fixtures.ts';
-import { isolateDotGap } from './isolate-separation.ts';
+import { isolateDotGap } from './layout/isolate-separation.ts';
 
 const department = attributeFixture({
 	id: 'dept',

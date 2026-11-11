@@ -4,14 +4,20 @@
  * Highlight keeps lit, the halo clip, the flattened final paths and the floating-key
  * rectangles a layout reserves. Every input is passed in; nothing here holds state.
  */
-import { arrange, type ArrangeInput } from './graph-arrangement.ts';
-import { buildBucketTree, groupValue } from './graph-analysis.ts';
-import type { CompositionPacket } from './graph-composition.ts';
-import { floatingGutter } from './graph-free-canvas.ts';
-import { regionKey, regionsExtent, subRegionKey, type Point, type Region } from './graph-layout.ts';
-import { mapLabelText, type TieSegment } from './graph-label-placement.ts';
-import { flattenPath } from './graph-shapes.ts';
-import type { TextSnapshot } from './graph-text-metrics.ts';
+import { arrange, type ArrangeInput } from './layout/graph-arrangement.ts';
+import { buildBucketTree, groupValue } from './layout/graph-analysis.ts';
+import type { CompositionPacket } from './composition/graph-composition.ts';
+import { floatingGutter } from './layout/graph-free-canvas.ts';
+import {
+	regionKey,
+	regionsExtent,
+	subRegionKey,
+	type Point,
+	type Region
+} from './layout/graph-layout.ts';
+import { mapLabelText, type TieSegment } from './labels/graph-label-placement.ts';
+import { flattenPath } from './layout/graph-shapes.ts';
+import type { TextSnapshot } from './labels/graph-text-metrics.ts';
 import { screenFixed } from './map-style.ts';
 import type { WorkerAttributeDefinition } from '#lib/domain-vocabulary.ts';
 import type { WorkerGraphNode } from './worker-relationship-map-model.ts';

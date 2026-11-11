@@ -9,7 +9,7 @@ import {
 	type FreeNamedMap
 } from '#lib/testing/mapping/free-name-fixture.ts';
 import { attachName, freezeName, thawName } from './map-frozen-names.ts';
-import type { PlacedName } from './map-name-placement.ts';
+import type { PlacedName } from './labels/map-name-placement.ts';
 
 const placed: PlacedName = {
 	x: 130,

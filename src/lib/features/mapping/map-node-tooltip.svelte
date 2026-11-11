@@ -9,7 +9,7 @@
 	import { assessmentLabel } from '#lib/i18n/assessment.ts';
 	import { m } from '#lib/paraglide/messages.js';
 	import type { WorkerAttributeDefinition } from '#lib/domain-vocabulary.ts';
-	import { answerDisplay } from './graph-analysis.ts';
+	import { answerDisplay } from './layout/graph-analysis.ts';
 
 	let {
 		attributes,

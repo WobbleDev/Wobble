@@ -9,12 +9,12 @@
  * packet's own fit can add a contact the packet never saw.
  */
 import type { WorkerAttributeDefinition } from '#lib/domain-vocabulary.ts';
-import { groupValue } from './graph-analysis.ts';
-import { outlineProxy } from './graph-composition-layout.ts';
-import type { Box as LabelBox } from './graph-label-placement.ts';
-import { regionKey, subRegionKey, type GroupRegion, type Point } from './graph-layout.ts';
-import type { DrawingInput } from './graph-layout-quality.ts';
-import type { TextSnapshot } from './graph-text-metrics.ts';
+import { groupValue } from './layout/graph-analysis.ts';
+import { outlineProxy } from './composition/graph-composition-layout.ts';
+import type { Box as LabelBox } from './labels/graph-label-placement.ts';
+import { regionKey, subRegionKey, type GroupRegion, type Point } from './layout/graph-layout.ts';
+import type { DrawingInput } from './layout/graph-layout-quality.ts';
+import type { TextSnapshot } from './labels/graph-text-metrics.ts';
 import type { WorkerGraphLink, WorkerGraphNode } from './worker-relationship-map-model.ts';
 
 /** Everything the renderer holds at rest, passed in so this module stays pure. */

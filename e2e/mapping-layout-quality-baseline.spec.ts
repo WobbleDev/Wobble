@@ -2,7 +2,7 @@ import { mkdirSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { expect, test } from './fixtures.ts';
 import { settled, waitForMapReady } from './map.ts';
-import { scoreLayoutQuality } from '../src/lib/features/mapping/graph-layout-quality.ts';
+import { scoreLayoutQuality } from '../src/lib/features/mapping/layout/graph-layout-quality.ts';
 import { wireDefinitions, wireWorkerAttributes } from './answer-wire.ts';
 
 test.skip(process.env.CAPTURE_LAYOUT_BASELINE !== '1', 'one-time layout quality capture');

@@ -15,23 +15,33 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       code: ${{ steps.f.outputs.code }}
+      e2e_full: ${{ steps.f.outputs.e2e_full }}
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           fetch-depth: 0
       - id: f
         run: |
+          # e2e_full: run the whole merge set. Anything that is not a plain feature or spec change
+          # (dependencies, build and test config, the Rust core, shared test helpers) does, as do
+          # pushes to main. Other PRs run only the areas scripts/verify-routing.ts picks.
           if [ "${{ github.event_name }}" != "pull_request" ] || [ "${{ github.actor }}" = "dependabot[bot]" ]; then
-            echo "code=true" >> "$GITHUB_OUTPUT"; exit 0
+            echo "code=true" >> "$GITHUB_OUTPUT"; echo "e2e_full=true" >> "$GITHUB_OUTPUT"; exit 0
           fi
           files=$(git diff --name-only "origin/${{ github.base_ref }}...HEAD")
           if echo "$files" | grep -qE '(^|/)(package-lock\.json|Cargo\.lock)$'; then
-            echo "code=true" >> "$GITHUB_OUTPUT"; exit 0
+            echo "code=true" >> "$GITHUB_OUTPUT"; echo "e2e_full=true" >> "$GITHUB_OUTPUT"; exit 0
           fi
           if echo "$files" | grep -vE '^(docs/|\.github/ISSUE_TEMPLATE/)|\.md$|^(LICENSE|NOTICE)$' | grep -q .; then
             echo "code=true" >> "$GITHUB_OUTPUT"
           else
             echo "code=false" >> "$GITHUB_OUTPUT"
+          fi
+          if echo "$files" | grep -qE '(^|/)(package\.json|Cargo\.toml)$|^(playwright\.config\.ts|vite\.config\.ts|svelte\.config\.js|tsconfig\.json)$|^(crates|src-tauri|contract|messages)/|^scripts/(e2e|verify|heavy)|^\.github/workflows/ci\.yml$' \
+            || echo "$files" | grep -E '^e2e/' | grep -vqE '^e2e/[^/]+\.spec\.ts$'; then
+            echo "e2e_full=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "e2e_full=false" >> "$GITHUB_OUTPUT"
           fi
   # Blocking: lint, types, unit, Rust. The checks run as parallel jobs so the slowest one sets
   # the wall time; the `verify` job at the end is the single required check (branch protection
@@ -115,6 +125,9 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          # Two commits so HEAD^1 (the PR's base) is there for the affected-area diff.
+          fetch-depth: 2
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version-file: .nvmrc
@@ -125,4 +138,11 @@ jobs:
           workspaces: . -> target
       - run: npm ci
       - run: npx playwright install chromium
-      - run: npm run test:e2e:merge
+      - name: Run e2e
+        run: |
+          if [ "${{ needs.changes.outputs.e2e_full }}" = "true" ]; then
+            npm run test:e2e:merge
+          else
+            # The areas the changed paths belong to (and nothing else); the nightly run is the full set.
+            node scripts/verify.mjs --e2e-only --base HEAD^1
+          fi

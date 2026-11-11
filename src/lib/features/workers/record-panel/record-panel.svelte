@@ -239,6 +239,8 @@
 	// About a second after the last keystroke, store what the open editors hold.
 	// With nothing left unsaved, a draft stored earlier is deleted at once.
 	$effect(() => {
+		// A re-run replaces the pending save; only leaving the page keeps it (see below).
+		pendingSave = null;
 		if (!worker || !panelDraft.ready || panelDraft.workerId !== worker.id) return;
 		const id = worker.id;
 		const open = $state.snapshot(panelDraft.open);
@@ -262,11 +264,12 @@
 		};
 		const timer = setTimeout(save, 1000);
 		pendingSave = save;
-		return () => {
-			clearTimeout(timer);
-			pendingSave = null;
-		};
+		return () => clearTimeout(timer);
 	});
+
+	// Leaving the Workers page (nav rail, Worksite switch) unmounts the panel inside the
+	// autosave window; the pending draft is written then, not dropped with the timer.
+	$effect(() => () => pendingSave?.());
 
 	// Hiding or unloading the page stores a pending draft immediately (best effort).
 	$effect(() => {

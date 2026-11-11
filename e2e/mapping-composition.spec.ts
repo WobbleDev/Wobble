@@ -15,7 +15,7 @@ import {
 	sixGroupWorksite,
 	type CompositionWorksite
 } from './mapping-composition-worksite.ts';
-import { evaluateDrawing } from '../src/lib/features/mapping/graph-layout-quality.ts';
+import { evaluateDrawing } from '../src/lib/features/mapping/layout/graph-layout-quality.ts';
 import { answerId } from './answer-wire.ts';
 import { captureRoutineImage } from './evidence.ts';
 
@@ -23,7 +23,7 @@ import { captureRoutineImage } from './evidence.ts';
 function answerKey(attributeId: string | undefined, text: string | undefined): string {
 	return text && attributeId ? answerId(attributeId, text) : '';
 }
-import { flattenPath } from '../src/lib/features/mapping/graph-shapes.ts';
+import { flattenPath } from '../src/lib/features/mapping/layout/graph-shapes.ts';
 
 test.use({ reducedMotion: 'reduce' });
 

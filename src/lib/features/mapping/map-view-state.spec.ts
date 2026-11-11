@@ -13,7 +13,7 @@ import type { Agitation, Language } from '#lib/domain-vocabulary.ts';
 import { attributeDefinition } from '#lib/testing/builders.ts';
 import { emptyContextualFilters } from '#lib/shared/contextual-filters.ts';
 import { answerIdOf, attributeFixture } from '#lib/testing/mapping/answer-fixtures.ts';
-import { groupGapDefault } from './graph-group-physics.ts';
+import { groupGapDefault } from './layout/graph-group-physics.ts';
 import { PersonPartition } from '#lib/shared/person-state.svelte.ts';
 import { emptyHighlightQuery, encodeHighlightQuery } from './map-highlight-query-codec.ts';
 import { MapViewState, type MapViewCapture } from './map-view-state.svelte.ts';

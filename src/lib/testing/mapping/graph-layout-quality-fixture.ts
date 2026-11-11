@@ -1,9 +1,9 @@
 import { answerIdsFixture, attributeFixture } from './answer-fixtures.ts';
-import type { ArrangeInput } from '#lib/features/mapping/graph-arrangement.ts';
+import type { ArrangeInput } from '#lib/features/mapping/layout/graph-arrangement.ts';
 import type {
 	QualityBody,
 	QualityRelationship
-} from '#lib/features/mapping/graph-layout-quality.ts';
+} from '#lib/features/mapping/layout/graph-layout-quality.ts';
 import type {
 	WorkerGraphLink,
 	WorkerGraphNode

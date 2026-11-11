@@ -6,7 +6,7 @@ use serde_json::json;
 use crate::error::Result;
 use crate::handle::{Request, Response};
 use crate::schema::Worksite;
-use crate::worksite_persistence::resolve_active_worksite;
+use crate::worksite_persistence::{find_worksite, resolve_active_worksite};
 
 /// `activeWorksiteHeaderName`: the request header that names the Active Worksite.
 pub const ACTIVE_WORKSITE_HEADER_NAME: &str = "x-wobble-worksite";
@@ -45,6 +45,18 @@ pub fn resolve_request_worksite(conn: &Connection, request: &Request) -> Result<
         .iter()
         .find(|(name, _)| name.eq_ignore_ascii_case(ACTIVE_WORKSITE_HEADER_NAME))
         .map(|(_, value)| value.as_str());
+
+    // A write that names a Worksite which is gone must not land in the fallback one:
+    // the caller sees "no Active Worksite" (409) and the client refreshes. Reads and
+    // an absent or empty header keep the fallback.
+    let names_a_worksite = preferred.is_some_and(|id| !id.is_empty());
+    let is_read =
+        request.method.eq_ignore_ascii_case("GET") || request.method.eq_ignore_ascii_case("HEAD");
+    if names_a_worksite && !is_read {
+        return preferred
+            .and_then(|id| find_worksite(conn, id).transpose())
+            .transpose();
+    }
 
     resolve_active_worksite(conn, preferred)
 }
@@ -130,6 +142,22 @@ mod tests {
             .unwrap(),
             Some(second)
         );
+    }
+
+    #[test]
+    fn a_write_naming_a_deleted_worksite_is_refused_not_retargeted() {
+        let (db, ids) = seeded();
+        let second = create_worksite(db.conn(), &ids).unwrap();
+        crate::worksite_persistence::delete_worksite(db.conn(), &second.id).unwrap();
+        let survivors = list_worksites(db.conn()).unwrap();
+
+        let mut request = request_with(&[(ACTIVE_WORKSITE_HEADER_NAME, &second.id)]);
+        request.method = "DELETE".to_owned();
+        assert_eq!(resolve_request_worksite(db.conn(), &request).unwrap(), None);
+
+        let response = crate::handlers::worksite::delete_worksite_route(&db, &request).unwrap();
+        assert_eq!(response.status, 409);
+        assert_eq!(list_worksites(db.conn()).unwrap(), survivors);
     }
 
     #[test]

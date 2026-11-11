@@ -184,7 +184,8 @@ async function frameCentre(page: Page) {
 }
 test('toggles the bullseye focus from the edge control, and Escape returns', async ({
 	page,
-	request
+	request,
+	browserName
 }) => {
 	await seedDashboard(request);
 	await page.setViewportSize({ width: 1440, height: 874 });
@@ -201,8 +202,9 @@ test('toggles the bullseye focus from the edge control, and Escape returns', asy
 	await expect(edge(page)).toHaveAccessibleName('Show dashboard');
 	await expect(page.locator('[data-dashboard-root]')).toHaveAttribute('data-focused', 'true');
 	await expect(dashboard(page)).toHaveCSS('opacity', '0.3');
-	// Toggling keeps keyboard focus on the control itself.
-	await expect(edge(page)).toBeFocused();
+	// Toggling keeps keyboard focus on the control itself. WebKit never focuses a button on a
+	// mouse click (macOS convention), so there is no focus to keep after a click there.
+	if (browserName !== 'webkit') await expect(edge(page)).toBeFocused();
 
 	// Escape returns to the dashboard.
 	await page.keyboard.press('Escape');

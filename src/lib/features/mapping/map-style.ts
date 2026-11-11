@@ -5,7 +5,7 @@
  * Pure functions of the view model — no DOM and no runes, so they can be
  * unit-tested directly.
  */
-import { linkEndId } from './graph-analysis.ts';
+import { linkEndId } from './layout/graph-analysis.ts';
 import type { MapViewModel } from './map-view-model.ts';
 import type { WorkerGraphLink, WorkerGraphNode } from './worker-relationship-map-model.ts';
 

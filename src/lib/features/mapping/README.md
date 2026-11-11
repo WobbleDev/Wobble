@@ -10,7 +10,7 @@ ids. The panel's other dropdowns only hide drawn answers, and the address's own 
 conditions open the same reading. A person is always one graph node, one Map table row and one
 Relationship set, however many answers a Multi-Select holds.
 
-The Grouping reads each displayed Worker's own answers (`map-grouping.ts`): one cell per displayed
+The Grouping reads each displayed Worker's own answers (`grouping/map-grouping.ts`): one cell per displayed
 Worker, at the detail those answers can agree on. Either Attribute kind may group; several held
 answers inside one displayed region stay one cell, and a Worker holding answers in two regions is
 ambiguous rather than assigned a first value. An ordinary answer, an exact direct-parent remainder
@@ -26,10 +26,11 @@ identities are unchanged.
 Branch detail is the same shared hierarchy frontier Overview reads (`#lib/shared/answer-hierarchy.ts`: `normalizeExpansion`, the exact `#self:<attribute>:<answer>` remainder identity and the remainder wording). The Group popover opens one displayed branch at a time: the branch is replaced by its direct child regions and its occupied remainder, and an attempted expansion is refused before any state or address write when it would put a displayed Worker in two regions. The chosen detail is persisted by identity as repeated `x` (primary) and `xs` (secondary) entries; it is normalized against the Attribute it names when restored, and an active detail that no longer partitions keeps its ids, falls back to Free with the explanation, and can still be collapsed from the control. Primary and secondary detail are independent, one graph node and one Map table row remain per Worker, and a rename moves no identity, count, configured order or Relationship.
 
 The view's files are named `map-*`; the `graph-*` files are the algorithms over the graph of Workers and Relationships and keep their names.
+The arrangement, physics, stress, manual-geometry and layout-quality files (and `isolate-separation`) live in `layout/`.
 `graph-arrangement.ts` decides the automatic positions before manual geometry is applied: ungrouped (Free) runs
 `graph-free-physics.ts` force-directed physics over the relationships alone, grouped lays each
 group out with `graph-group-layout.ts` (which uses the `graph-stress.ts` stress layout inside each group) and runs the rigid bodies against each other with
-`graph-group-physics.ts`, and `graph-relationship-routing.ts` routes each relationship around measured drawing obstacles, and Isolate is a focus
+`graph-group-physics.ts`, and `routing/graph-relationship-routing.ts` routes each relationship around measured drawing obstacles, and Isolate is a focus
 over either, not a layout: the arrangement takes the filter-visible set (the layout set) and never the
 selection, while the dots, links and regions draw only the drawn set (the layout set narrowed to the
 selected worker's two degrees). `map-view-model.ts` is the single source for what is visible, and
@@ -39,7 +40,7 @@ selected worker's two degrees). `map-view-model.ts` is the single source for wha
 
 - `map-drag.svelte.ts` (`createMapDrag(host)`) is the drag gesture: a Worker's dot in Free and a group's body in Grouped. A press is armed and becomes a drag only past 4 screen pixels; the release of a drag that moved suppresses the click that follows it, and a surface press that travelled more than 4 pixels is a pan, not a dismissal. The host supplies `isolated`, `grouped`, `spaceHeld`, the `settled` arrangement, `panZoom` (a getter, for `toMapPoint`) and `commitWorker`/`commitGroup`; a drag is a delta from the press, which the canvas lays over its manual geometry while it travels and keeps on release.
 - `map-hover-intent.svelte.ts` (`createHoverIntent(host)`) holds a node's tooltip back until the pointer has rested 120 ms, lets a shown card follow the pointer, and shows it 30 ms after a touch tap. The canvas calls `cancel` on destroy.
-- `map-name-placement.ts` chooses initial names from the prepared scene facts, using packet names whenever a packet exists. Initial framing can call its bounded placement helpers. After preparation, `map-frozen-names.ts` replays stored attachments using arithmetic; ordinary camera and manual movement never calls the placement search. `floatingKeyBoxes` and `wholeMapViewport` describe reserved keys and usable canvas for initial preparation.
+- `labels/map-name-placement.ts` chooses initial names from the prepared scene facts, using packet names whenever a packet exists. Initial framing can call its bounded placement helpers. After preparation, `map-frozen-names.ts` replays stored attachments using arithmetic; ordinary camera and manual movement never calls the placement search. `floatingKeyBoxes` and `wholeMapViewport` describe reserved keys and usable canvas for initial preparation.
 - `map-drawing.ts` is pure readings of the drawing: the settled frame the camera travels to, the regions with their headings (`labelViewRegions`), which regions a spotlight or Highlight keeps lit, the halo clip path, the flattened final paths, the reserved key rectangles and the strings a composition reserves room for.
 
 Check the local project glossary before naming anything here — Mapping's vocabulary is deliberately narrow.
@@ -50,16 +51,16 @@ With one Grouping, `arrange` is asked to compose: where the groups sit, where th
 Relationship's own path are chosen together, from numeric screen facts the canvas freezes at the layout
 trigger (`ArrangeInput.composition`: the free canvas without the open card, the floating keys, the names
 that stand at rest and a measured text snapshot). The shipped arrangement is always candidate one and
-the complete fallback; `graph-composition.ts` builds the small fixed set of alternatives (routes only,
+the complete fallback; `composition/graph-composition.ts` builds the small fixed set of alternatives (routes only,
 all groups moving together, the same with an aspect correction), repairs each against the drawn
 outlines, places headings and names, routes every pair and evaluates the finished drawing, then selects
 a whole packet or keeps the original. `graph-composition.ts` holds the entry point; its
-`graph-composition-*.ts` parts hold the shared context, text, layout, collision, child-first, drawing,
+`graph-composition-*.ts` parts (all in `composition/`) hold the shared context, text, layout, collision, child-first, drawing,
 hull, selection and candidate stages. Exhausting the per-solve work allowance (`graph-work-budget.ts`)
 discards a candidate, never returns half of one.
 
-- `graph-text-metrics.ts` is the browser seam: one SVG measurer, a revisioned numeric snapshot.
-- `graph-relationship-routing.ts` routes each pair over fixed positions; `graph-shapes.ts` holds the
+- `labels/graph-text-metrics.ts` is the browser seam: one SVG measurer, a revisioned numeric snapshot.
+- `routing/graph-relationship-routing.ts` routes each pair over fixed positions; `graph-shapes.ts` holds the
   signed geometry both it and the independent evaluator in `graph-layout-quality.ts` use. The evaluator
   reads final SVG path data, so a tie entering a dot between its waypoints is still found.
 - The packet owns positions, centres, offsets, paths and reference text for one automatic arrangement (`Arrangement.revision`). That arrangement is made only when data, filters, Grouping, hierarchy or the frozen canvas facts change. Selection, hover, search, the card, the camera, a resize, a Reset and late fonts are outside its identity.

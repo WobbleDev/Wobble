@@ -343,3 +343,16 @@ test('hiding the page stores a pending draft before the autosave timer fires', a
 
 	await expect.poll(() => storedDraft(request, draftKeeper), { timeout: 800 }).not.toBeNull();
 });
+
+test('leaving the Workers page within the autosave window still stores the draft', async ({
+	page,
+	request
+}) => {
+	const { draftKeeper } = await seed(request);
+	await openWorkers(page);
+
+	await typeEmail(page, 'leaving@example.test');
+	await page.getByRole('link', { name: 'Overview' }).first().click();
+
+	await expect.poll(() => storedDraft(request, draftKeeper), { timeout: 800 }).not.toBeNull();
+});

@@ -8,7 +8,7 @@
 	import { m } from '#lib/paraglide/messages.js';
 	import { resolve } from '$app/paths';
 	import type { Language, Worker, WorkerAttributeDefinition } from '#lib/domain-vocabulary.ts';
-	import { answerDisplay } from './graph-analysis.ts';
+	import { answerDisplay } from './layout/graph-analysis.ts';
 	import { answerValueReading } from '#lib/shared/no-value-reading.ts';
 
 	type Neighbour = {

@@ -5,7 +5,7 @@
  * suppresses the click that follows its release. The canvas owns where dragged dots are
  * remembered and what the arrangement does with the drag; this module owns the gesture.
  */
-import { regionKey, type Point } from './graph-layout.ts';
+import { regionKey, type Point } from './layout/graph-layout.ts';
 
 /** Distance in screen pixels a press must travel before it counts as a drag. */
 const workerDragThreshold = 4;
