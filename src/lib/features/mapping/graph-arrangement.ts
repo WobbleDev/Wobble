@@ -35,7 +35,7 @@ import {
 	spacingPolicy,
 	type CompositionInput,
 	type CompositionPacket
-} from './graph-composition.ts';
+} from './composition/graph-composition.ts';
 import { createWorkBudget } from './graph-work-budget.ts';
 import type { Route } from './graph-relationship-routing.ts';
 

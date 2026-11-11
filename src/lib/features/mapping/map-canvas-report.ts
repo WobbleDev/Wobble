@@ -10,7 +10,7 @@
  */
 import type { WorkerAttributeDefinition } from '#lib/domain-vocabulary.ts';
 import { groupValue } from './graph-analysis.ts';
-import { outlineProxy } from './graph-composition-layout.ts';
+import { outlineProxy } from './composition/graph-composition-layout.ts';
 import type { Box as LabelBox } from './graph-label-placement.ts';
 import { regionKey, subRegionKey, type GroupRegion, type Point } from './graph-layout.ts';
 import type { DrawingInput } from './graph-layout-quality.ts';

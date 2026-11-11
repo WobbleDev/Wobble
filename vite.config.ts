@@ -9,7 +9,7 @@ import { sveltekit } from '@sveltejs/kit/vite';
 // race the fast specs for CPU and trip a wall-clock timeout.
 const heavySpecs = [
 	'src/lib/features/mapping/graph-arrangement.spec.ts',
-	'src/lib/features/mapping/graph-composition.spec.ts',
+	'src/lib/features/mapping/composition/graph-composition.spec.ts',
 	'src/lib/features/mapping/graph-layout-answer-independence.spec.ts',
 	'src/lib/features/mapping/graph-layout-quality-baseline.spec.ts',
 	'src/lib/features/mapping/graph-free-physics.spec.ts',

@@ -1,27 +1,27 @@
 // @module-tag mapping
 import { describe, expect, it } from 'vitest';
-import { arrange, localLayoutSolves, type ArrangeInput } from './graph-arrangement.ts';
-import type { ManualGeometry } from './graph-manual.ts';
+import { arrange, localLayoutSolves, type ArrangeInput } from '../graph-arrangement.ts';
+import type { ManualGeometry } from '../graph-manual.ts';
 import { spacingPolicy, type CompositionInput } from './graph-composition.ts';
-import { layoutGroupRegions, regionKey, subRegionKey, type Point } from './graph-layout.ts';
-import { buildBucketTree } from './graph-analysis.ts';
+import { layoutGroupRegions, regionKey, subRegionKey, type Point } from '../graph-layout.ts';
+import { buildBucketTree } from '../graph-analysis.ts';
 import {
 	createLayoutQualityFixture,
 	qualityArrangeInput
 } from '#lib/testing/mapping/graph-layout-quality-fixture.ts';
-import { evaluateDrawing } from './graph-layout-quality.ts';
-import { flattenPath, pointInPolygon, polygonRelation } from './graph-shapes.ts';
-import { labelledWorkerIds } from './map-view-model.ts';
-import { nodeRadius } from './map-style.ts';
-import { compositionWorkLimits } from './graph-work-budget.ts';
-import type { WorkerGraphLink, WorkerGraphNode } from './worker-relationship-map-model.ts';
+import { evaluateDrawing } from '../graph-layout-quality.ts';
+import { flattenPath, pointInPolygon, polygonRelation } from '../graph-shapes.ts';
+import { labelledWorkerIds } from '../map-view-model.ts';
+import { nodeRadius } from '../map-style.ts';
+import { compositionWorkLimits } from '../graph-work-budget.ts';
+import type { WorkerGraphLink, WorkerGraphNode } from '../worker-relationship-map-model.ts';
 import {
 	answerIdOf,
 	answerIdsFixture,
 	answerText,
 	attributeFixture
 } from '#lib/testing/mapping/answer-fixtures.ts';
-import { groupValue } from './graph-analysis.ts';
+import { groupValue } from '../graph-analysis.ts';
 
 const names = ['Assembly', 'Billing', 'Cleaning', 'Dispatch', 'Engineering', 'Facilities'];
 const department = attributeFixture({

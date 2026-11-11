@@ -4,7 +4,7 @@
  */
 import { untrack } from 'svelte';
 import { cubicOut } from 'svelte/easing';
-import { fitFloor } from './graph-composition-layout.ts';
+import { fitFloor } from './composition/graph-composition-layout.ts';
 import { easeStopThreshold, nodeEase } from './graph-group-physics.ts';
 
 const minZoom = 0.4;

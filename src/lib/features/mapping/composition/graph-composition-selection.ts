@@ -2,8 +2,8 @@
  * Candidate selection: the shared selection state, the acceptance rule, the
  * ranking, the attempt wrapper and the winner's packet.
  */
-import type { DrawingEvaluation } from './graph-layout-quality.ts';
-import { WorkExhausted } from './graph-work-budget.ts';
+import type { DrawingEvaluation } from '../graph-layout-quality.ts';
+import { WorkExhausted } from '../graph-work-budget.ts';
 import { spacingPolicy, type ComposerContext } from './graph-composition-context.ts';
 import { routeShipped, type Drawing } from './graph-composition-drawing.ts';
 import type { CandidateReport, ComposeResult } from './graph-composition-types.ts';
