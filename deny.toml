@@ -1,0 +1,12 @@
+# cargo-deny policy. Licenses are left to the dependency-review action for now.
+[advisories]
+version = 2
+
+[bans]
+multiple-versions = "allow"
+wildcards = "allow"
+
+[sources]
+unknown-registry = "deny"
+unknown-git = "deny"
+allow-registry = ["https://github.com/rust-lang/crates.io-index"]
