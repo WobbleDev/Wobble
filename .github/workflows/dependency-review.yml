@@ -4,12 +4,12 @@ on:
     paths:
       - package.json
       - package-lock.json
-      - "**/Cargo.toml"
+      - '**/Cargo.toml'
       - Cargo.lock
       - deny.toml
       - .github/workflows/dependency-review.yml
   schedule:
-    - cron: "0 8 * * 1"
+    - cron: '0 8 * * 1'
 permissions:
   contents: read
 jobs:
