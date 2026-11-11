@@ -10,7 +10,7 @@ ids. The panel's other dropdowns only hide drawn answers, and the address's own 
 conditions open the same reading. A person is always one graph node, one Map table row and one
 Relationship set, however many answers a Multi-Select holds.
 
-The Grouping reads each displayed Worker's own answers (`map-grouping.ts`): one cell per displayed
+The Grouping reads each displayed Worker's own answers (`grouping/map-grouping.ts`): one cell per displayed
 Worker, at the detail those answers can agree on. Either Attribute kind may group; several held
 answers inside one displayed region stay one cell, and a Worker holding answers in two regions is
 ambiguous rather than assigned a first value. An ordinary answer, an exact direct-parent remainder
