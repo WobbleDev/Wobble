@@ -1,8 +1,14 @@
 import type { Page } from '@playwright/test';
 import { expect } from './fixtures.ts';
 
+/** Shared CI runners can take well over the 5s expect default to measure and fit a large map. */
+const MAP_READY_TIMEOUT_MS = 30_000;
+
 /** Wait for the first measured arrangement and camera fit, not a fixed timer. */
-export async function waitForMapReady(page: Page, timeout?: number): Promise<void> {
+export async function waitForMapReady(
+	page: Page,
+	timeout: number = MAP_READY_TIMEOUT_MS
+): Promise<void> {
 	await expect(page.getByTestId('relationship-map-canvas')).toHaveAttribute(
 		'data-map-ready',
 		'true',
