@@ -120,7 +120,11 @@ async function seedNarrow(request: APIRequestContext): Promise<void> {
 	});
 }
 
-test('pages whole group columns with All pinned on every page', async ({ page, request }) => {
+test('pages whole group columns with All pinned on every page', async ({
+	page,
+	request,
+	browserName
+}) => {
 	await seedWide(request);
 	await openOverview(page);
 	await awaitAgitationsReady(page);
@@ -156,8 +160,10 @@ test('pages whole group columns with All pinned on every page', async ({ page, r
 		expect(new Set([...firstShades[count]!, ...secondShades[count]!]).size).toBe(1);
 	}
 
-	// The invoked control keeps focus after the turn.
-	await expect(nextButton(page)).toBeFocused();
+	// The invoked control keeps focus after the turn. WebKit never focuses a button on a mouse
+	// click (macOS convention), so a click-made turn has nothing to keep there; the turns that
+	// disable a button still move focus, which is asserted below on every browser.
+	if (browserName !== 'webkit') await expect(nextButton(page)).toBeFocused();
 
 	// To the last page: Next disables there, Prev enables.
 	for (let i = 0; i < 10; i += 1) {
@@ -170,7 +176,7 @@ test('pages whole group columns with All pinned on every page', async ({ page, r
 	await expect(prevButton(page)).toBeFocused();
 
 	await prevButton(page).click();
-	await expect(prevButton(page)).toBeFocused();
+	if (browserName !== 'webkit') await expect(prevButton(page)).toBeFocused();
 
 	// Back to the first page: Previous disables itself and focus moves to Next.
 	for (let i = 0; i < 10; i += 1) {

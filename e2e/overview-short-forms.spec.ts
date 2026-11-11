@@ -97,10 +97,17 @@ async function pageCount(page: Page) {
 
 test('narrow headers show Short forms and wide headers show full names', async ({
 	page,
-	request
+	request,
+	browserName
 }) => {
 	const errors: string[] = [];
-	page.on('pageerror', (error) => errors.push(error.message));
+	page.on('pageerror', (error) => {
+		// WebKit reports a ResizeObserver that settles over two frames as a page error; it is the
+		// browser's own notice that a notification waited a frame, not a fault in the page.
+		if (browserName === 'webkit' && error.message.startsWith('ResizeObserver loop completed'))
+			return;
+		errors.push(error.message);
+	});
 	const [departments, zones] = await seedAttributes(request, [
 		{ name: 'Department', values: Object.keys(longNames) },
 		// Two long names on one wide page share the whole card between them.
