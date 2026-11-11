@@ -20,7 +20,7 @@ import {
 	routeRelationships,
 	type Route,
 	type RouteObstacleSpec
-} from '../graph-relationship-routing.ts';
+} from '../routing/graph-relationship-routing.ts';
 import type { GroupRegion, Point, Region } from '../graph-layout.ts';
 import type { Box } from '../graph-shapes.ts';
 import type { ComposerContext, Layout } from './graph-composition-context.ts';

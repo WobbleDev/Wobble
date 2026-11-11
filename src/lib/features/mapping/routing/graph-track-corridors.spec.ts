@@ -1,6 +1,6 @@
 // @module-tag mapping
 import { describe, expect, it } from 'vitest';
-import { createWorkBudget, WorkExhausted } from './graph-work-budget.ts';
+import { createWorkBudget, WorkExhausted } from '../graph-work-budget.ts';
 import { findBundles, longestLeg, type TrackRoute } from './graph-track-corridors.ts';
 
 function straight(id: string, points: [number, number][]): TrackRoute {

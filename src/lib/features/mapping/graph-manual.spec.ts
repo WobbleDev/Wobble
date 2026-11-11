@@ -2,7 +2,7 @@
 import { describe, expect, it } from 'vitest';
 import { mapPath, shiftRoute, shifted, translateGroupRegions } from './graph-manual.ts';
 import type { GroupRegion } from './graph-layout.ts';
-import type { Route } from './graph-relationship-routing.ts';
+import type { Route } from './routing/graph-relationship-routing.ts';
 
 const route = (d: string, waypoints: { x: number; y: number }[]): Route => ({
 	id: 'r',
