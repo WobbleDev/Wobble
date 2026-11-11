@@ -3,14 +3,14 @@ import { describe, expect, it } from 'vitest';
 import { decodeWorksiteDataset } from '#lib/client/dataset-api.ts';
 import { cliquesWorksite, hubBundleWorksite } from '../../../../e2e/mapping-composition-dataset.ts';
 import leaderHubBundle from '../../../../e2e/fixtures/mapping-leader-hub-bundle.json' with { type: 'json' };
-import { worksiteGraph } from './composition-worksite-fixture.ts';
+import { worksiteGraph } from '#lib/testing/mapping/composition-worksite-fixture.ts';
 import {
 	freeNamedMap,
 	isolatedNames,
 	standoff,
 	type FreeNamedMap,
 	type Placed
-} from './free-name-fixture.ts';
+} from '#lib/testing/mapping/free-name-fixture.ts';
 import { thawName } from './map-frozen-names.ts';
 import { buildWorkerGraph } from './worker-relationship-map-model.ts';
 import {

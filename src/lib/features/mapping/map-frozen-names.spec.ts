@@ -1,8 +1,13 @@
 // @module-tag mapping
 import { describe, expect, it } from 'vitest';
 import { cliquesWorksite, hubBundleWorksite } from '../../../../e2e/mapping-composition-dataset.ts';
-import { worksiteGraph } from './composition-worksite-fixture.ts';
-import { freeNamedMap, nameSide, standoff, type FreeNamedMap } from './free-name-fixture.ts';
+import { worksiteGraph } from '#lib/testing/mapping/composition-worksite-fixture.ts';
+import {
+	freeNamedMap,
+	nameSide,
+	standoff,
+	type FreeNamedMap
+} from '#lib/testing/mapping/free-name-fixture.ts';
 import { attachName, freezeName, thawName } from './map-frozen-names.ts';
 import type { PlacedName } from './map-name-placement.ts';
 

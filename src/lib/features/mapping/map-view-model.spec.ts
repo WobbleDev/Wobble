@@ -16,7 +16,7 @@ import {
 	linkRegions,
 	resolveEffectiveLayout
 } from './map-view-model.ts';
-import { answerIdsFixture, attributeFixture } from './answer-fixtures.ts';
+import { answerIdsFixture, attributeFixture } from '#lib/testing/mapping/answer-fixtures.ts';
 import { isolateDotGap } from './isolate-separation.ts';
 
 const department = attributeFixture({

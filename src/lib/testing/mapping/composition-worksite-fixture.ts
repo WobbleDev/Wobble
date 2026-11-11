@@ -6,7 +6,10 @@
 import type { WorkerAttributeDefinition } from '#lib/domain-vocabulary.ts';
 import type { CompositionWorksite } from '../../../../e2e/mapping-composition-dataset.ts';
 import { answerIdsFixture, attributeFixture } from './answer-fixtures.ts';
-import type { WorkerGraphLink, WorkerGraphNode } from './worker-relationship-map-model.ts';
+import type {
+	WorkerGraphLink,
+	WorkerGraphNode
+} from '#lib/features/mapping/worker-relationship-map-model.ts';
 
 export type WorksiteGraph = {
 	/** The Worker ids, in the Worksite's own order. */

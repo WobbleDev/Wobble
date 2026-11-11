@@ -17,7 +17,7 @@ import {
 	type StressLink,
 	type StressNode
 } from './graph-stress.ts';
-import { answerIdsFixture, attributeFixture } from './answer-fixtures.ts';
+import { answerIdsFixture, attributeFixture } from '#lib/testing/mapping/answer-fixtures.ts';
 
 const N = (id: string): StressNode => ({ id });
 const L = (source: string, target: string): StressLink => ({ source, target });

@@ -10,7 +10,11 @@ import {
 	groupValue,
 	isolatedDegrees
 } from './graph-analysis.ts';
-import { answerIdOf, answerIdsFixture, attributeFixture } from './answer-fixtures.ts';
+import {
+	answerIdOf,
+	answerIdsFixture,
+	attributeFixture
+} from '#lib/testing/mapping/answer-fixtures.ts';
 
 const department = attributeFixture({
 	id: 'dept',
