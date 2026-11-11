@@ -1,6 +1,6 @@
 # Wobble
 
-A **worksite** is the top-level container, in the way a workspace works in Notion or Airtable. Every worker, attribute definition, and relationship belongs to one worksite. Vocabulary lives in [GLOSSARY.md](./GLOSSARY.md); recorded decisions live in [docs/adr/](./docs/adr/).
+A **worksite** is the top-level container, in the way a workspace works in Notion or Airtable. Every worker, attribute definition, and relationship belongs to one worksite. The project's vocabulary and recorded decisions are kept in local documentation.
 
 ## Views
 
@@ -34,8 +34,7 @@ npm run build     # build the static SPA into build/
 npx tauri build   # build the desktop app
 ```
 
-The backend is the Rust core in `crates/wobble-core`, behind one request boundary
-([ADR-0021](./docs/adr/0021-the-rust-core-sits-behind-one-request-boundary.md)). `npm run dev`
+The backend is the Rust core in `crates/wobble-core`, behind one request boundary. `npm run dev`
 alone has no backend, so use `npx tauri dev` for day-to-day work. To use the UI in a browser
 against the real core, build the SPA and start the dev shim:
 `npm run build && WOBBLE_STATIC_DIR=build cargo run -p wobble-dev-shim`, then open
@@ -113,7 +112,7 @@ Ordinary Worker drafts keep their edits, notes and timestamps and receive the mi
 their update and their base. The version then drops the assignment tables, triggers and the retired
 Attribute scope metadata, so an upgraded database and a fresh one have the same schema.
 Version 23 gives every Attribute value a Short form of at most 10 graphemes and records whether it
-was generated or edited ([ADR 0046](docs/adr/0046-short-forms-are-stored-generated-or-edited.md)).
+was generated or edited.
 It is data only: each stored value receives a generated Short form (its full name when that fits,
 otherwise its first 9 graphemes and an ellipsis) after the verified backup, and no table changes.
 The upgrade from 23 to 24 adds the `saved_views` table: a Worksite's named, versioned Workers and
@@ -185,7 +184,7 @@ retain a separate pre-conversion legacy backup if you need to rehearse with an o
 
 ## Data volume
 
-The bullseye is designed around a roughly fifty-worker worksite ([ADR-0012](./docs/adr/0012-the-bullseye-draws-the-committees-reach.md)). The Workers table is virtualized, so it scrolls past that envelope rather than failing at it. The single-machine, single-file design ([ADR-0003](./docs/adr/0003-one-sqlite-file.md)) bounds practical growth. No measured ceiling is claimed. The scale is meant to grow: a worksite should eventually hold thousands of workers, and this prototype is built for the small roster first. What strains first at that scale is the data path — the whole roster is loaded on every page — and the two visualizations, which draw every worker.
+The bullseye is designed around a roughly fifty-worker worksite. The Workers table is virtualized, so it scrolls past that envelope rather than failing at it. The single-machine, single-file design bounds practical growth. No measured ceiling is claimed. The scale is meant to grow: a worksite should eventually hold thousands of workers, and this prototype is built for the small roster first. What strains first at that scale is the data path — the whole roster is loaded on every page — and the two visualizations, which draw every worker.
 
 ## Bundled Short form list sources
 
@@ -197,6 +196,5 @@ not legal advice; get a legal check before any commercial distribution.
 
 ## Status
 
-This is a prototype being grown into the real app. Architecture and deployment:
-[docs/product-context.md](./docs/product-context.md). The Node server was removed; the last
+This is a prototype being grown into the real app. The Node server was removed; the last
 commit that has it is tagged `pre-tauri-node`.
