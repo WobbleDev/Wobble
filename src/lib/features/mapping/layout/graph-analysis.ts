@@ -6,7 +6,7 @@ import type { WorkerAttributeDefinition, WorkerAttributeValues } from '#lib/doma
 import { answerDisplayLabel } from '#lib/shared/answer-path.ts';
 import { heldIds, heldIdsOf, storesList } from '#lib/shared/select-mode.ts';
 import { m } from '#lib/paraglide/messages.js';
-import type { WorkerGraphLink, WorkerGraphNode } from './worker-relationship-map-model.ts';
+import type { WorkerGraphLink, WorkerGraphNode } from '../worker-relationship-map-model.ts';
 
 export type WorkerGraph = {
 	nodes: readonly WorkerGraphNode[];

@@ -1,9 +1,14 @@
 /**
  * Child-first composition: the interior of a Sub-grouped parent.
  */
-import { compareText, groupValue } from '../graph-analysis.ts';
-import { regionKey, subRegionKey, type Point } from '../graph-layout.ts';
-import { boundsOf, convexSeparation, pointInPolygon, translatePolygon } from '../graph-shapes.ts';
+import { compareText, groupValue } from '../layout/graph-analysis.ts';
+import { regionKey, subRegionKey, type Point } from '../layout/graph-layout.ts';
+import {
+	boundsOf,
+	convexSeparation,
+	pointInPolygon,
+	translatePolygon
+} from '../layout/graph-shapes.ts';
 import { spacingPolicy, type ComposerContext, type Layout } from './graph-composition-context.ts';
 import {
 	bodyFromRegion,

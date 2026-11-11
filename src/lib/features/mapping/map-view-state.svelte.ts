@@ -16,7 +16,7 @@ import {
 } from '#lib/shared/contextual-filters.ts';
 import { normalizeExpansion } from '#lib/shared/answer-hierarchy.ts';
 import { isIsolateInEffect, type MapLayoutMode } from './map-view-model.ts';
-import { groupGapDefault } from './graph-group-physics.ts';
+import { groupGapDefault } from './layout/graph-group-physics.ts';
 import {
 	decodeHighlightQuery,
 	emptyHighlightQuery,

@@ -11,7 +11,7 @@ import {
 	qualityArrangeInput
 } from '#lib/testing/mapping/graph-layout-quality-fixture.ts';
 import { scoreLayoutQuality } from './graph-layout-quality.ts';
-import { nodeRadius } from './map-style.ts';
+import { nodeRadius } from '../map-style.ts';
 import type { Point } from './graph-layout.ts';
 import {
 	answerIdsFixture,

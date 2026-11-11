@@ -5,9 +5,9 @@ import {
 	routeRelationships,
 	type RouteObstacleSpec
 } from './graph-relationship-routing.ts';
-import { flattenPath, pointSegmentDistance, polygonRelation } from '../graph-shapes.ts';
-import { createWorkBudget, WorkExhausted } from '../graph-work-budget.ts';
-import type { Point } from '../graph-layout.ts';
+import { flattenPath, pointSegmentDistance, polygonRelation } from '../layout/graph-shapes.ts';
+import { createWorkBudget, WorkExhausted } from '../layout/graph-work-budget.ts';
+import type { Point } from '../layout/graph-layout.ts';
 
 const unit = 1;
 const positions = new Map<string, Point>([

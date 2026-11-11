@@ -7,12 +7,12 @@ import {
 	buildBucketTree,
 	compareText,
 	groupValue
-} from '../graph-analysis.ts';
-import { regionKey, subRegionKey, type Point } from '../graph-layout.ts';
+} from '../layout/graph-analysis.ts';
+import { regionKey, subRegionKey, type Point } from '../layout/graph-layout.ts';
 import { mapLabelText } from '../labels/graph-label-placement.ts';
 import { estimateTextSnapshot, type TextSnapshot } from '../labels/graph-text-metrics.ts';
-import type { Box } from '../graph-shapes.ts';
-import type { WorkBudget } from '../graph-work-budget.ts';
+import type { Box } from '../layout/graph-shapes.ts';
+import type { WorkBudget } from '../layout/graph-work-budget.ts';
 import type { WorkerAttributeDefinition } from '#lib/domain-vocabulary.ts';
 import type { WorkerGraphLink, WorkerGraphNode } from '../worker-relationship-map-model.ts';
 import { frameOf, fitScale, keyOf, regionsOf } from './graph-composition-layout.ts';

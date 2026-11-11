@@ -8,12 +8,12 @@ import { sveltekit } from '@sveltejs/kit/vite';
 // their own `heavy` project, one file at a time with a generous timeout, so they never
 // race the fast specs for CPU and trip a wall-clock timeout.
 const heavySpecs = [
-	'src/lib/features/mapping/graph-arrangement.spec.ts',
+	'src/lib/features/mapping/layout/graph-arrangement.spec.ts',
 	'src/lib/features/mapping/composition/graph-composition.spec.ts',
-	'src/lib/features/mapping/graph-layout-answer-independence.spec.ts',
-	'src/lib/features/mapping/graph-layout-quality-baseline.spec.ts',
-	'src/lib/features/mapping/graph-free-physics.spec.ts',
-	'src/lib/features/mapping/graph-stress.spec.ts',
+	'src/lib/features/mapping/layout/graph-layout-answer-independence.spec.ts',
+	'src/lib/features/mapping/layout/graph-layout-quality-baseline.spec.ts',
+	'src/lib/features/mapping/layout/graph-free-physics.spec.ts',
+	'src/lib/features/mapping/layout/graph-stress.spec.ts',
 	'src/lib/features/overview/bullseye/bullseye-lanes.spec.ts'
 ];
 

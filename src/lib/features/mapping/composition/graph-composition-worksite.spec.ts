@@ -7,12 +7,12 @@
 import { describe, expect, it } from 'vitest';
 import { sixGroupWorksite } from '../../../../../e2e/mapping-composition-dataset.ts';
 import { worksiteGraph } from '#lib/testing/mapping/composition-worksite-fixture.ts';
-import { arrange } from '../graph-arrangement.ts';
-import { buildBucketTree, groupValue } from '../graph-analysis.ts';
-import { layoutGroupRegions } from '../graph-layout.ts';
-import { evaluateDrawing } from '../graph-layout-quality.ts';
-import { groupGapDefault } from '../graph-group-physics.ts';
-import { flattenPath } from '../graph-shapes.ts';
+import { arrange } from '../layout/graph-arrangement.ts';
+import { buildBucketTree, groupValue } from '../layout/graph-analysis.ts';
+import { layoutGroupRegions } from '../layout/graph-layout.ts';
+import { evaluateDrawing } from '../layout/graph-layout-quality.ts';
+import { groupGapDefault } from '../layout/graph-group-physics.ts';
+import { flattenPath } from '../layout/graph-shapes.ts';
 import { nodeRadius } from '../map-style.ts';
 import { labelledWorkerIds } from '../map-view-model.ts';
 

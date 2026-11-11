@@ -14,15 +14,15 @@ import {
 	evaluateDrawing,
 	type DrawingEvaluation,
 	type DrawingInput
-} from '../graph-layout-quality.ts';
+} from '../layout/graph-layout-quality.ts';
 import {
 	buildObstacleIndex,
 	routeRelationships,
 	type Route,
 	type RouteObstacleSpec
 } from '../routing/graph-relationship-routing.ts';
-import type { GroupRegion, Point, Region } from '../graph-layout.ts';
-import type { Box } from '../graph-shapes.ts';
+import type { GroupRegion, Point, Region } from '../layout/graph-layout.ts';
+import type { Box } from '../layout/graph-shapes.ts';
 import type { ComposerContext, Layout } from './graph-composition-context.ts';
 import { spacingPolicy } from './graph-composition-context.ts';
 import {
@@ -36,7 +36,11 @@ import {
 } from './graph-composition-layout.ts';
 import { sizeOfHeading, sizeOfName } from './graph-composition-text.ts';
 import type { ChildMetrics } from './graph-composition-children.ts';
-import { compositionWorkLimits, createWorkBudget, WorkExhausted } from '../graph-work-budget.ts';
+import {
+	compositionWorkLimits,
+	createWorkBudget,
+	WorkExhausted
+} from '../layout/graph-work-budget.ts';
 
 export type NamePlacement = {
 	x: number;

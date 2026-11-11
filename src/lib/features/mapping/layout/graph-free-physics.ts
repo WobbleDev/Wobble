@@ -11,7 +11,7 @@ import {
 	type StressNode,
 	type StressPoint
 } from './graph-stress.ts';
-import { nodeRadius } from './map-style.ts';
+import { nodeRadius } from '../map-style.ts';
 
 /** Alpha cools by this per tick. */
 const alphaDecay = 0.97;

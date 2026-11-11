@@ -5,14 +5,14 @@
 import { spacingPolicy, type ComposerContext, type Layout } from './graph-composition-context.ts';
 import { bodyOf, keyOf, outlineProxy, regionsOf, type Body } from './graph-composition-layout.ts';
 import type { ChildCell } from './graph-composition-children.ts';
-import type { Point } from '../graph-layout.ts';
+import type { Point } from '../layout/graph-layout.ts';
 import {
 	boundsOf,
 	convexSeparation,
 	pointInPolygon,
 	rotatePolygon,
 	translatePolygon
-} from '../graph-shapes.ts';
+} from '../layout/graph-shapes.ts';
 
 function separationPairs(ctx: ComposerContext, a: Body, b: Body) {
 	const min = spacingPolicy.minOutlinePx * ctx.unit0;

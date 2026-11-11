@@ -1,7 +1,7 @@
 // @module-tag mapping
 import { describe, expect, it } from 'vitest';
 import { layoutSubGroups, groupOuterPadding } from './graph-sub-group-layout.ts';
-import { nodeRadius } from './map-style.ts';
+import { nodeRadius } from '../map-style.ts';
 
 function members(count: number, prefix: string) {
 	return Array.from({ length: count }, (_, i) => ({ id: `${prefix}${i}`, radius: nodeRadius(1) }));

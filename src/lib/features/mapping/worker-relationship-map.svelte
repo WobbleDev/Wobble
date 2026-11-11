@@ -21,7 +21,7 @@
 	import { assessmentColorKey, assessmentColorFor } from '../../shared/assessment.ts';
 	import { assessmentLabel } from '#lib/i18n/assessment.ts';
 	import { m } from '#lib/paraglide/messages.js';
-	import { buildAdjacency } from './graph-analysis.ts';
+	import { buildAdjacency } from './layout/graph-analysis.ts';
 	import { assessmentCounts } from './map-reading.ts';
 	import { nodeRadius } from './map-style.ts';
 	import { dotSizeKeyGeometry } from './dot-size-key.ts';
@@ -49,7 +49,7 @@
 	} from './grouping/map-grouping.ts';
 	import { contextFilterLabels } from './map-contextual-filters.ts';
 	import { createPanZoom } from './map-pan-zoom.svelte.ts';
-	import { floatingGutter } from './graph-free-canvas.ts';
+	import { floatingGutter } from './layout/graph-free-canvas.ts';
 	import { buildWorkerGraph, type WorkerGraphNode } from './worker-relationship-map-model.ts';
 	import MapCanvas from './map-canvas.svelte';
 	import MapToolbar from './map-toolbar.svelte';

@@ -1,7 +1,7 @@
 // @module-tag mapping
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { createMapDrag } from './map-drag.svelte.ts';
-import { regionKey } from './graph-layout.ts';
+import { regionKey } from './layout/graph-layout.ts';
 
 beforeEach(() => vi.useFakeTimers());
 afterEach(() => vi.useRealTimers());

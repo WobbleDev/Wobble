@@ -1,8 +1,8 @@
-import type { Point } from '../graph-layout.ts';
+import type { Point } from '../layout/graph-layout.ts';
 import type { Route } from './graph-relationship-routing.ts';
 import { findBundles, type TrackRoute } from './graph-track-corridors.ts';
 import { buildBundlePaths, type MemberPath } from './graph-track-paths.ts';
-import { WorkExhausted, type WorkBudget } from '../graph-work-budget.ts';
+import { WorkExhausted, type WorkBudget } from '../layout/graph-work-budget.ts';
 
 /** A tracked tie may grow at most this much over its untracked length; more reads as a detour, not a lane. */
 const maxLengthGrowth = 1.05;

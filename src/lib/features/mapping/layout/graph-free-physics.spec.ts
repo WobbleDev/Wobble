@@ -1,7 +1,7 @@
 // @module-tag mapping
 import { describe, expect, it } from 'vitest';
 import { freePhysicsLayout, freePhysicsMaxTicks } from './graph-free-physics.ts';
-import { nodeRadius } from './map-style.ts';
+import { nodeRadius } from '../map-style.ts';
 import type { StressLink, StressNode } from './graph-stress.ts';
 
 const canvas = { width: 900, height: 600 };

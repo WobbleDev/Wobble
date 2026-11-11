@@ -1,7 +1,7 @@
 // @module-tag mapping
 import { describe, expect, it } from 'vitest';
 import { decodeWorksiteDataset } from '#lib/client/dataset-api.ts';
-import { arrange, type ArrangeInput } from '../graph-arrangement.ts';
+import { arrange, type ArrangeInput } from '../layout/graph-arrangement.ts';
 import type { Box } from './graph-label-placement.ts';
 import { keptNames, legacyPlacements, type NameScene } from './map-name-placement.ts';
 import { regionCounts } from '../map-reading.ts';

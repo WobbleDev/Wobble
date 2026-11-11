@@ -1,8 +1,8 @@
 // @module-tag mapping
 import { describe, expect, it } from 'vitest';
 import type { Drawing } from './graph-composition-drawing.ts';
-import { evaluateDrawing, publishedConflicts } from '../graph-layout-quality.ts';
-import type { DrawingEvaluation } from '../graph-layout-quality.ts';
+import { evaluateDrawing, publishedConflicts } from '../layout/graph-layout-quality.ts';
+import type { DrawingEvaluation } from '../layout/graph-layout-quality.ts';
 import type { Route } from '../routing/graph-relationship-routing.ts';
 import { packetOf } from './graph-composition-selection.ts';
 
