@@ -9,7 +9,7 @@ import {
 } from './graph-arrangement.ts';
 import type { ManualGeometry } from './graph-manual.ts';
 import { separationPairChecks, stressPairVisits } from './graph-stress.ts';
-import { nodeRadius } from './map-style.ts';
+import { nodeRadius } from '../map-style.ts';
 import {
 	createLayoutQualityFixture,
 	qualityArrangeInput
@@ -20,7 +20,7 @@ import {
 	answerText,
 	attributeFixture
 } from '#lib/testing/mapping/answer-fixtures.ts';
-import type { WorkerGraphLink, WorkerGraphNode } from './worker-relationship-map-model.ts';
+import type { WorkerGraphLink, WorkerGraphNode } from '../worker-relationship-map-model.ts';
 
 const department = attributeFixture({
 	id: 'dept',

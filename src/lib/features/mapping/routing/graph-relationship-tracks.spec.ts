@@ -7,10 +7,14 @@ import {
 	type Route,
 	type RouteRequest
 } from './graph-relationship-routing.ts';
-import { compositionWorkLimits, createWorkBudget, WorkExhausted } from '../graph-work-budget.ts';
-import { evaluateDrawing } from '../graph-layout-quality.ts';
-import { flattenPath, type Box } from '../graph-shapes.ts';
-import type { Point } from '../graph-layout.ts';
+import {
+	compositionWorkLimits,
+	createWorkBudget,
+	WorkExhausted
+} from '../layout/graph-work-budget.ts';
+import { evaluateDrawing } from '../layout/graph-layout-quality.ts';
+import { flattenPath, type Box } from '../layout/graph-shapes.ts';
+import type { Point } from '../layout/graph-layout.ts';
 
 function straight(id: string, from: [number, number], to: [number, number]): Route {
 	const waypoints = [

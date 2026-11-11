@@ -7,7 +7,7 @@
  * a moved dot or a changed pointer never searches again: the name's side, its size and
  * its distance in pixels stay what they were, and only arithmetic places it.
  */
-import type { Point } from './graph-layout.ts';
+import type { Point } from './layout/graph-layout.ts';
 import { nameLeader, type Box, type LabelSide } from './labels/graph-label-placement.ts';
 import type { PlacedName } from './labels/map-name-placement.ts';
 

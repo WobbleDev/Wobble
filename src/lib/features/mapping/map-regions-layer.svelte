@@ -9,7 +9,7 @@
 	 * stroke, so a region label and its boundary read the same size at every zoom.
 	 */
 	import MapRegionLabel from './labels/map-region-label.svelte';
-	import type { GroupRegion } from './graph-layout.ts';
+	import type { GroupRegion } from './layout/graph-layout.ts';
 
 	let {
 		regions,

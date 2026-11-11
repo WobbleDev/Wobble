@@ -19,7 +19,7 @@ import {
 	WorkExhausted,
 	type WorkBudget
 } from './graph-work-budget.ts';
-import type { CompositionPacket } from './composition/graph-composition-types.ts';
+import type { CompositionPacket } from '../composition/graph-composition-types.ts';
 
 export type QualityRelationship = { id: string; source: string; target: string };
 export type QualityBody = { id: string; members: readonly string[] };

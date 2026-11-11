@@ -8,10 +8,10 @@
  * canvas), and the canvas's final name-fit pass over the rendered box.
  */
 import { NARROW_BREAKPOINT } from '#lib/hooks/is-mobile.svelte.ts';
-import { arrange } from '#lib/features/mapping/graph-arrangement.ts';
-import { freeCanvasInMap } from '#lib/features/mapping/graph-free-canvas.ts';
-import { groupGapDefault } from '#lib/features/mapping/graph-group-physics.ts';
-import type { Point } from '#lib/features/mapping/graph-layout.ts';
+import { arrange } from '#lib/features/mapping/layout/graph-arrangement.ts';
+import { freeCanvasInMap } from '#lib/features/mapping/layout/graph-free-canvas.ts';
+import { groupGapDefault } from '#lib/features/mapping/layout/graph-group-physics.ts';
+import type { Point } from '#lib/features/mapping/layout/graph-layout.ts';
 import type { Box } from '#lib/features/mapping/labels/graph-label-placement.ts';
 import { freezeName, type FrozenName } from '#lib/features/mapping/map-frozen-names.ts';
 import { settledFrameOf } from '#lib/features/mapping/map-drawing.ts';

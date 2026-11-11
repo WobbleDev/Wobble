@@ -1,7 +1,7 @@
-import type { Point } from '../graph-layout.ts';
-import { roundedPath } from '../graph-shapes.ts';
+import type { Point } from '../layout/graph-layout.ts';
+import { roundedPath } from '../layout/graph-shapes.ts';
 import { longestLeg, trackSettings, type Leg, type TrackRoute } from './graph-track-corridors.ts';
-import type { WorkBudget } from '../graph-work-budget.ts';
+import type { WorkBudget } from '../layout/graph-work-budget.ts';
 
 export type MemberPath = { id: string; lane: number; waypoints: Point[]; d: string };
 

@@ -15,7 +15,7 @@
  * (see graph-relationship-tracks.ts). Each tie stays its own line: pairs are
  * never merged or aggregated.
  */
-import type { Point } from '../graph-layout.ts';
+import type { Point } from '../layout/graph-layout.ts';
 import {
 	boundsOf,
 	discPolygon,
@@ -29,10 +29,10 @@ import {
 	roundedPath,
 	segmentConvexInterval,
 	type Box
-} from '../graph-shapes.ts';
-import { convexHull } from '../graph-layout.ts';
-import { createWorkBudget, type WorkBudget } from '../graph-work-budget.ts';
-import { evaluateDrawing } from '../graph-layout-quality.ts';
+} from '../layout/graph-shapes.ts';
+import { convexHull } from '../layout/graph-layout.ts';
+import { createWorkBudget, type WorkBudget } from '../layout/graph-work-budget.ts';
+import { evaluateDrawing } from '../layout/graph-layout-quality.ts';
 import { applyTracks, type TrackMetrics } from './graph-relationship-tracks.ts';
 import { trackSettings } from './graph-track-corridors.ts';
 

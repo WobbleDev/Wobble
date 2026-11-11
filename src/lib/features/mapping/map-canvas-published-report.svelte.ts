@@ -4,7 +4,7 @@
  * re-read from the boxes the renderer drew (see `publishedConflicts`), so a re-placed
  * name or a heading laid out at another camera cannot hide a contact.
  */
-import { publishedConflicts, type ReportConflicts } from './graph-layout-quality.ts';
+import { publishedConflicts, type ReportConflicts } from './layout/graph-layout-quality.ts';
 import { reportDrawingInput, type ReportDrawingSource } from './map-canvas-report.ts';
 
 export type PublishedReportHost = {

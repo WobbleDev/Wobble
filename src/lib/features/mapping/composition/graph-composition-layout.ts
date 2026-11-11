@@ -2,7 +2,7 @@
  * Where the groups sit and how much room they take: region geometry, frames and
  * the fit that converts reference pixels into map units.
  */
-import { groupValue } from '../graph-analysis.ts';
+import { groupValue } from '../layout/graph-analysis.ts';
 import {
 	convexHull,
 	layoutGroupRegions,
@@ -12,8 +12,14 @@ import {
 	type GroupRegion,
 	type Point,
 	type Region
-} from '../graph-layout.ts';
-import { boundsOf, boxPolygon, flattenPath, simplifyConvex, type Box } from '../graph-shapes.ts';
+} from '../layout/graph-layout.ts';
+import {
+	boundsOf,
+	boxPolygon,
+	flattenPath,
+	simplifyConvex,
+	type Box
+} from '../layout/graph-shapes.ts';
 import type { TextSize } from '../labels/graph-text-metrics.ts';
 import type { ComposerContext, Layout } from './graph-composition-context.ts';
 import { sizeOfHeading } from './graph-composition-text.ts';

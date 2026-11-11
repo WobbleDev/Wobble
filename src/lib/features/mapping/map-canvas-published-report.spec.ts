@@ -1,6 +1,6 @@
 // @module-tag mapping
 import { describe, expect, it } from 'vitest';
-import type { ReportConflicts } from './graph-layout-quality.ts';
+import type { ReportConflicts } from './layout/graph-layout-quality.ts';
 import type { ReportDrawingSource } from './map-canvas-report.ts';
 import { createPublishedReport } from './map-canvas-published-report.svelte.ts';
 import type { WorkerGraphLink, WorkerGraphNode } from './worker-relationship-map-model.ts';

@@ -1,6 +1,6 @@
 // @module-tag mapping
 import { describe, expect, it } from 'vitest';
-import type { WorkerGraphLink, WorkerGraphNode } from './worker-relationship-map-model.ts';
+import type { WorkerGraphLink, WorkerGraphNode } from '../worker-relationship-map-model.ts';
 import type { WorkerAttributeDefinition } from '#lib/domain-vocabulary.ts';
 import {
 	answerDisplay,

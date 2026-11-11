@@ -17,21 +17,21 @@
 	import type { WorkerAttributeDefinition } from '#lib/domain-vocabulary.ts';
 	import { assessmentLabel } from '#lib/i18n/assessment.ts';
 	import { m } from '#lib/paraglide/messages.js';
-	import type { Point, GroupRegion } from './graph-layout.ts';
+	import type { Point, GroupRegion } from './layout/graph-layout.ts';
 	import {
 		freeCanvasBox,
 		freeCanvasInMap,
 		freeCanvasInsets as readFreeCanvasInsets
-	} from './graph-free-canvas.ts';
+	} from './layout/graph-free-canvas.ts';
 	import { cameraForSize, isolateFitPositions, referenceFromCamera } from './map-view-model.ts';
-	import { createArranger, type ArrangeInput } from './graph-arrangement.ts';
+	import { createArranger, type ArrangeInput } from './layout/graph-arrangement.ts';
 	import {
 		applyManual,
 		noManual,
 		shifted,
 		translateGroupRegions,
 		type ManualGeometry
-	} from './graph-manual.ts';
+	} from './layout/graph-manual.ts';
 	import { attachName, freezeName, thawName, type FrozenName } from './map-frozen-names.ts';
 	import { mapLabelText, type Box as LabelBox } from './labels/graph-label-placement.ts';
 	import type { CompositionInput } from './composition/graph-composition.ts';
@@ -45,7 +45,7 @@
 	} from './labels/graph-text-metrics.ts';
 	import { boundsOf, frameWithNames, type Rect } from './labels/map-name-framing.ts';
 	import { regionCounts } from './map-reading.ts';
-	import { nodeEase, easeStopThreshold } from './graph-group-physics.ts';
+	import { nodeEase, easeStopThreshold } from './layout/graph-group-physics.ts';
 	import type { WorkerGraphNode } from './worker-relationship-map-model.ts';
 	import type { MapViewModel } from './map-view-model.ts';
 	import type { PanZoom } from './map-pan-zoom.svelte.ts';

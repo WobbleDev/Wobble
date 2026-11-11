@@ -1,5 +1,5 @@
-import type { Box as CanvasBox } from '../graph-free-canvas.ts';
-import type { GroupRegion, Region } from '../graph-layout.ts';
+import type { Box as CanvasBox } from '../layout/graph-free-canvas.ts';
+import type { GroupRegion, Region } from '../layout/graph-layout.ts';
 
 export type LabelSide =
 	| 'below'
