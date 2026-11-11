@@ -1,6 +1,7 @@
 #!/bin/sh
-# Pre-commit guardrail: format/lint the staged files, then the type-check and unit tests.
-# The full `npm run lint` (whole repo, plus knip) stays the check before calling a change done.
+# Pre-commit guardrail, kept to seconds: format/lint the staged files, then the unit specs that
+# import any staged source file (`vitest related`). The slower checks, the whole-repo type-check
+# and the full unit run, happen in the pre-push hook and in CI, so a commit never waits on them.
 # E2e is deliberately excluded (slow, and it carries a long-tail propagation contract).
 staged=$(git diff --cached --name-only --diff-filter=ACMR)
 
@@ -17,8 +18,11 @@ if [ -n "$eslint_files" ]; then
 	# shellcheck disable=SC2086
 	npx eslint --no-warn-ignored $eslint_files || exit 1
 fi
-npm run check || exit 1
-npm test || exit 1
+related_files=$(printf '%s\n' "$staged" | grep -E '^(src|scripts)/.*\.(ts|js|svelte)$')
+if [ -n "$related_files" ]; then
+	# shellcheck disable=SC2086
+	npx vitest related --run --passWithNoTests $related_files || exit 1
+fi
 
 # Rust (fmt, clippy, tests) is not gated here: `npm run verify` runs `test:rust` when Rust or Cargo
-# files change, and that is the check before calling a change done.
+# files change, and CI runs it on every code change.

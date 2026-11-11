@@ -1,6 +1,7 @@
 #!/bin/sh
 # Pre-push guardrail: never push straight to main; leak checks on the pushed
-# commits (gitleaks + local denylist); then the whole-repo lint.
+# commits (gitleaks + local denylist); then the whole-repo lint, the type-check and the full
+# unit run (these used to run on every commit; once per push is enough).
 zero=0000000000000000000000000000000000000000
 while read -r local_ref local_sha remote_ref remote_sha; do
 	if [ "$remote_ref" = "refs/heads/main" ]; then
@@ -15,3 +16,5 @@ while read -r local_ref local_sha remote_ref remote_sha; do
 	fi
 done
 npm run lint || exit 1
+npm run check || exit 1
+npm test || exit 1
