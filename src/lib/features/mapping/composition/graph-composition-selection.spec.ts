@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import type { Drawing } from './graph-composition-drawing.ts';
 import { evaluateDrawing, publishedConflicts } from '../graph-layout-quality.ts';
 import type { DrawingEvaluation } from '../graph-layout-quality.ts';
-import type { Route } from '../graph-relationship-routing.ts';
+import type { Route } from '../routing/graph-relationship-routing.ts';
 import { packetOf } from './graph-composition-selection.ts';
 
 type PacketArgs = Parameters<typeof packetOf>;

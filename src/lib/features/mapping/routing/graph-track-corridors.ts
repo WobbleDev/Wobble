@@ -1,5 +1,5 @@
-import type { Point } from './graph-layout.ts';
-import type { WorkBudget } from './graph-work-budget.ts';
+import type { Point } from '../graph-layout.ts';
+import type { WorkBudget } from '../graph-work-budget.ts';
 
 /** Tunable; reference CSS pixels (angle in degrees, count plain). */
 export const trackSettings = {

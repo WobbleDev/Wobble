@@ -37,7 +37,7 @@ import {
 	type CompositionPacket
 } from './composition/graph-composition.ts';
 import { createWorkBudget } from './graph-work-budget.ts';
-import type { Route } from './graph-relationship-routing.ts';
+import type { Route } from './routing/graph-relationship-routing.ts';
 
 import { nodeRadius } from './map-style.ts';
 import type { WorkerGraphLink, WorkerGraphNode } from './worker-relationship-map-model.ts';

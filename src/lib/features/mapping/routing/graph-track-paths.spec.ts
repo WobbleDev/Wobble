@@ -2,9 +2,9 @@
 import { describe, expect, it } from 'vitest';
 import { buildBundlePaths } from './graph-track-paths.ts';
 import type { TrackRoute } from './graph-track-corridors.ts';
-import type { Point } from './graph-layout.ts';
-import { flattenPath } from './graph-shapes.ts';
-import { createWorkBudget, WorkExhausted } from './graph-work-budget.ts';
+import type { Point } from '../graph-layout.ts';
+import { flattenPath } from '../graph-shapes.ts';
+import { createWorkBudget, WorkExhausted } from '../graph-work-budget.ts';
 
 function route(id: string, waypoints: [number, number][]): TrackRoute {
 	return {

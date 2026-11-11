@@ -29,7 +29,7 @@ The view's files are named `map-*`; the `graph-*` files are the algorithms over 
 `graph-arrangement.ts` decides the automatic positions before manual geometry is applied: ungrouped (Free) runs
 `graph-free-physics.ts` force-directed physics over the relationships alone, grouped lays each
 group out with `graph-group-layout.ts` (which uses the `graph-stress.ts` stress layout inside each group) and runs the rigid bodies against each other with
-`graph-group-physics.ts`, and `graph-relationship-routing.ts` routes each relationship around measured drawing obstacles, and Isolate is a focus
+`graph-group-physics.ts`, and `routing/graph-relationship-routing.ts` routes each relationship around measured drawing obstacles, and Isolate is a focus
 over either, not a layout: the arrangement takes the filter-visible set (the layout set) and never the
 selection, while the dots, links and regions draw only the drawn set (the layout set narrowed to the
 selected worker's two degrees). `map-view-model.ts` is the single source for what is visible, and
@@ -59,7 +59,7 @@ hull, selection and candidate stages. Exhausting the per-solve work allowance (`
 discards a candidate, never returns half of one.
 
 - `graph-text-metrics.ts` is the browser seam: one SVG measurer, a revisioned numeric snapshot.
-- `graph-relationship-routing.ts` routes each pair over fixed positions; `graph-shapes.ts` holds the
+- `routing/graph-relationship-routing.ts` routes each pair over fixed positions; `graph-shapes.ts` holds the
   signed geometry both it and the independent evaluator in `graph-layout-quality.ts` use. The evaluator
   reads final SVG path data, so a tie entering a dot between its waypoints is still found.
 - The packet owns positions, centres, offsets, paths and reference text for one automatic arrangement (`Arrangement.revision`). That arrangement is made only when data, filters, Grouping, hierarchy or the frozen canvas facts change. Selection, hover, search, the card, the camera, a resize, a Reset and late fonts are outside its identity.

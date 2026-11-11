@@ -1,12 +1,12 @@
 // @module-tag mapping
 import { describe, expect, it } from 'vitest';
 import { decodeWorksiteDataset } from '#lib/client/dataset-api.ts';
-import { arrange } from './graph-arrangement.ts';
-import { buildWorkerGraph } from './worker-relationship-map-model.ts';
-import collisionDotGrouped from '../../../../e2e/fixtures/mapping-label-collision-dot-grouped.json' with { type: 'json' };
-import collisionSeed11 from '../../../../e2e/fixtures/mapping-label-collision-seed-11.json' with { type: 'json' };
+import { arrange } from '../graph-arrangement.ts';
+import { buildWorkerGraph } from '../worker-relationship-map-model.ts';
+import collisionDotGrouped from '../../../../../e2e/fixtures/mapping-label-collision-dot-grouped.json' with { type: 'json' };
+import collisionSeed11 from '../../../../../e2e/fixtures/mapping-label-collision-seed-11.json' with { type: 'json' };
 import { attributeFixture, answerIdsFixture } from '#lib/testing/mapping/answer-fixtures.ts';
-import type { WorkerGraphLink, WorkerGraphNode } from './worker-relationship-map-model.ts';
+import type { WorkerGraphLink, WorkerGraphNode } from '../worker-relationship-map-model.ts';
 
 /**
  * A tie is drawn heavier when it joins two different groups (map-canvas draws
