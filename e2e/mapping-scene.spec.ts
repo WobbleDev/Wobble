@@ -120,6 +120,15 @@ async function dragFrom(page: Page, from: Xy, by: Xy) {
 	await page.mouse.up();
 }
 
+async function diag(page: Page, id: string, tag: string) {
+	const r = await read(page);
+	console.log(
+		'[DIAG]',
+		tag,
+		JSON.stringify({ dot: r.dots[id], name: r.names[id], scale: r.scale, solves: r.solves })
+	);
+}
+
 /** Moves the pointer off the map, so a hover (and its spotlight on the neighbourhood) ends. */
 async function pointerAway(page: Page) {
 	await page.mouse.move(1, 1);
@@ -216,6 +225,7 @@ test('Free: a dot drag moves that Worker, its name and its tie ends, and Reset o
 	)!;
 	const start = await screenCentre(page, `circle[data-hit-for="${id}"]`);
 	await dragFrom(page, start, { x: 90, y: 60 });
+	await diag(page, id, 'after drag');
 	await expect(surface(page)).toHaveAttribute('data-manual-revision', '1');
 
 	await pointerAway(page);
@@ -242,7 +252,9 @@ test('Free: a dot drag moves that Worker, its name and its tie ends, and Reset o
 	expect(attached).toBeGreaterThan(0);
 
 	await zoomIn(page).click();
+	await diag(page, id, 'after zoom');
 	await page.setViewportSize({ width: 900, height: 1200 });
+	await diag(page, id, 'after resize');
 	await reset(page).click({ timeout: 1500 });
 	await page.evaluate(() => new Promise((done) => requestAnimationFrame(() => done(null))));
 	const resting = await read(page);
@@ -399,10 +411,28 @@ test('hierarchy detail invalidates manual moves while worker and Attribute IDs s
 	await open(page, fixture, fixture.url.split('&sub=')[0]);
 	const before = await read(page);
 	const heading = Object.keys(before.headings)[0];
-	await dragFrom(page, await screenCentre(page, `[data-region-label="${heading}"]`), {
-		x: 40,
-		y: 30
-	});
+	const diagStart = await screenCentre(page, `[data-region-label="${heading}"]`);
+	console.log(
+		'[DIAG] label start',
+		JSON.stringify(diagStart),
+		await page.evaluate(({ x, y }) => {
+			const e = document.elementFromPoint(x, y);
+			return e
+				? `${e.tagName} ${e.getAttribute('data-region-label') ?? e.getAttribute('class') ?? ''} | ${e.closest('[data-region-label]') ? 'inside-label' : 'outside-label'}`
+				: 'none';
+		}, diagStart)
+	);
+	await dragFrom(page, diagStart, { x: 40, y: 30 });
+	console.log('[DIAG] manual after drag', await surface(page).getAttribute('data-manual-revision'));
+	if ((await surface(page).getAttribute('data-manual-revision')) !== '1') {
+		const b = await page.locator(`[data-region-label="${heading}"]`).boundingBox();
+		console.log('[DIAG] label box', JSON.stringify(b));
+		await dragFrom(page, { x: b!.x + 4, y: b!.y + b!.height * 0.7 }, { x: 40, y: 30 });
+		console.log(
+			'[DIAG] manual after retry',
+			await surface(page).getAttribute('data-manual-revision')
+		);
+	}
 	await waitForSceneReady(page, { manual: 1 });
 	await page.getByRole('button', { name: /^Group(:|$)/ }).click();
 	await page

@@ -144,6 +144,9 @@ test('one ordered list creates both types, nests values, reorders and keeps ever
 	page,
 	request
 }) => {
+	page.on('console', (m) => {
+		if (m.text().startsWith('[DIAG]')) console.log(m.text());
+	});
 	await openConfiguration(page);
 	await page.evaluate(() => document.fonts.ready);
 	const column = workerColumn(page);

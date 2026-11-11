@@ -182,6 +182,7 @@ export function createAttributePlacement(host: Host) {
 		reorderDrop = null;
 	}
 	function cancel(restore = true) {
+		console.log('[DIAG] cancel', new Error().stack?.split('\n').slice(2, 5).join(' <- '));
 		const current = source;
 		if (source) announcement = m.configuration_placement_cancelled({ name: label() });
 		source = null;
@@ -190,6 +191,7 @@ export function createAttributePlacement(host: Host) {
 		if (restore) focusSource(current);
 	}
 	function begin(current: Source) {
+		console.log('[DIAG] begin', current.kind, 'disabled', host.disabled);
 		if (host.disabled) return;
 		cancel(false);
 		source = current;
@@ -313,6 +315,7 @@ export function createAttributePlacement(host: Host) {
 		focusSource(current);
 	}
 	function confirm(target: PlacementTarget | null) {
+		console.log('[DIAG] confirm', JSON.stringify(target), 'source', Boolean(source));
 		const current = source;
 		if (!target || !current || !eligible(target)) {
 			const reason = target && current ? refusalFor(target) : '';
@@ -399,6 +402,7 @@ export function createAttributePlacement(host: Host) {
 		return siblingPosition(answers, current.answerId);
 	}
 	function pointerDown(event: PointerEvent, current: Source) {
+		console.log('[DIAG] pointerDown', event.pointerType, event.button);
 		if (event.button !== 0 || host.disabled) return;
 		clearClickSuppression();
 		cleanup();
@@ -425,6 +429,7 @@ export function createAttributePlacement(host: Host) {
 			);
 		};
 		const up = (next: PointerEvent) => {
+			console.log('[DIAG] up', next.pointerType, 'dragging', dragging);
 			if (next.pointerId !== event.pointerId) return;
 			if (dragging) {
 				suppressNextClick();
@@ -440,6 +445,7 @@ export function createAttributePlacement(host: Host) {
 			}
 		};
 		const stop = () => {
+			console.log('[DIAG] stop', new Error().stack?.split('\n').slice(2, 4).join(' <- '));
 			suppressNextClick();
 			cancel();
 		};
@@ -455,6 +461,7 @@ export function createAttributePlacement(host: Host) {
 		};
 	}
 	function clickHandle(current: Source) {
+		console.log('[DIAG] clickHandle suppress', suppressClick);
 		if (suppressClick) {
 			suppressClick = false;
 			return;
@@ -462,6 +469,17 @@ export function createAttributePlacement(host: Host) {
 		begin(current);
 	}
 	function click(event: MouseEvent) {
+		console.log(
+			'[DIAG] rootClick',
+			'source',
+			Boolean(source),
+			'dragging',
+			dragging,
+			'suppress',
+			suppressClick,
+			(event.target as Element).tagName,
+			(event.target as Element).getAttribute('aria-label')
+		);
 		if (suppressClick) {
 			suppressClick = false;
 			event.preventDefault();

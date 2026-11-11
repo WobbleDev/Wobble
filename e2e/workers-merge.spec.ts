@@ -47,7 +47,31 @@ test('Merge is offered for exactly two selected workers and works from the keybo
 	await expect(page.getByText(/^Merged .+ into .+$/)).toBeVisible();
 	await expect(rows(page)).toHaveCount(7);
 
+	console.log(
+		'[DIAG] before undo rows',
+		await rows(page).count(),
+		'undo buttons',
+		await page.getByRole('button', { name: 'Undo' }).count(),
+		'active',
+		await page.evaluate(
+			() =>
+				`${document.activeElement?.tagName}:${document.activeElement?.getAttribute('aria-label') ?? ''}`
+		)
+	);
 	await page.getByRole('button', { name: 'Undo' }).click();
+	for (let i = 0; i < 6; i += 1) {
+		await page.waitForTimeout(500);
+		console.log(
+			'[DIAG] after undo',
+			i,
+			'rows',
+			await rows(page).count(),
+			'undo buttons',
+			await page.getByRole('button', { name: 'Undo' }).count(),
+			'status',
+			(await page.getByRole('status').allInnerTexts()).join('|').slice(0, 120)
+		);
+	}
 	await expect(rows(page)).toHaveCount(8);
 	await expect(page.getByRole('checkbox', { name: 'Select Ada Lovelace' })).toBeVisible();
 	await expect(page.getByRole('checkbox', { name: 'Select Grace Hopper' })).toBeVisible();
