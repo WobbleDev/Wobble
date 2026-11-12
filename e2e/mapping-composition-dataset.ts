@@ -9,7 +9,7 @@ export type CompositionWorksite = {
 	relationships: [number, number][];
 };
 
-/** The 60-Worker, 136-Relationship ring the frozen baseline captured: eight communities in a ring. */
+/** The 60-Worker, 136-Relationship ring the frozen baseline captured: eight clusters in a ring. */
 export function ringWorksite(): CompositionWorksite {
 	const sizes = [8, 8, 8, 8, 7, 7, 7, 7];
 	const workers = Array.from({ length: 60 }, (_, index) => ({
@@ -19,10 +19,10 @@ export function ringWorksite(): CompositionWorksite {
 			Role: `R${(Math.floor(index / 3) % 4) + 1}`
 		}
 	}));
-	const communities: number[][] = [];
+	const clusters: number[][] = [];
 	let offset = 0;
 	for (const size of sizes) {
-		communities.push(Array.from({ length: size }, (_, i) => offset + i));
+		clusters.push(Array.from({ length: size }, (_, i) => offset + i));
 		offset += size;
 	}
 	const seen = new Set<string>();
@@ -33,15 +33,15 @@ export function ringWorksite(): CompositionWorksite {
 		seen.add(key);
 		relationships.push([a, b]);
 	};
-	for (const community of communities) {
-		for (let member = 0; member < community.length; member += 1) {
-			add(community[member], community[(member + 1) % community.length]);
-			add(community[member], community[(member + 2) % community.length]);
+	for (const cluster of clusters) {
+		for (let member = 0; member < cluster.length; member += 1) {
+			add(cluster[member], cluster[(member + 1) % cluster.length]);
+			add(cluster[member], cluster[(member + 2) % cluster.length]);
 		}
 	}
-	for (let c = 0; c < communities.length; c += 1) {
-		const here = communities[c];
-		const next = communities[(c + 1) % communities.length];
+	for (let c = 0; c < clusters.length; c += 1) {
+		const here = clusters[c];
+		const next = clusters[(c + 1) % clusters.length];
 		add(here[0], next[0]);
 		add(here[Math.floor(here.length / 2)], next[Math.floor(next.length / 2)]);
 	}
@@ -159,8 +159,8 @@ export function hubBundleWorksite(): CompositionWorksite {
 }
 
 /**
- * Four communities of 7, 6, 8 and 5 Workers, each a ring with some chords, bridged by a few
- * pairs, from a fixed seed: the multi-community Free case that is not a ring of rings.
+ * Four clusters of 7, 6, 8 and 5 Workers, each a ring with some chords, bridged by a few
+ * pairs, from a fixed seed: the multi-cluster Free case that is not a ring of rings.
  */
 export function modularWorksite(seedStart = 43): CompositionWorksite {
 	let seed = seedStart;

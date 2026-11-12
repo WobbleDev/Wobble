@@ -30,7 +30,7 @@ type QualityFootprint =
 type LayoutQualityInput = {
 	positions: ReadonlyMap<string, Point>;
 	links: readonly QualityRelationship[];
-	/** Bodies are evaluated independently at each level (community, group, sub-group). */
+	/** Bodies are evaluated independently at each level (cluster, group, sub-group). */
 	bodies: readonly QualityBody[];
 	/** One worker-to-body partition per level. Only ties crossing a level count as outward. */
 	outwardPartitions: readonly ReadonlyMap<string, string>[];

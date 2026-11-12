@@ -128,7 +128,7 @@ function captureBaseline() {
 		})
 	);
 	const largeTimings = Object.fromEntries(
-		['sparse', 'hub', 'grouped', 'nested', 'single-community'].map((shape) => {
+		['sparse', 'hub', 'grouped', 'nested', 'single-cluster'].map((shape) => {
 			const n = 500;
 			const workers = Array.from({ length: n }, (_, index) => ({
 				id: `cost-${shape}-${index}`,
@@ -152,10 +152,10 @@ function captureBaseline() {
 			} else {
 				for (let index = 0; index < n; index += 1) {
 					if (shape === 'sparse' || shape === 'grouped' || shape === 'nested') {
-						const perCommunity = 10;
-						const start = Math.floor(index / perCommunity) * perCommunity;
-						add(index, start + ((index + 3) % perCommunity));
-						add(index, start + ((index + 7) % perCommunity));
+						const perCluster = 10;
+						const start = Math.floor(index / perCluster) * perCluster;
+						add(index, start + ((index + 3) % perCluster));
+						add(index, start + ((index + 7) % perCluster));
 					} else {
 						add(index, (index + 1) % n);
 						add(index, (index + 7) % n);
@@ -228,12 +228,12 @@ function captureBaseline() {
 			geometrySource:
 				'The public arrange API with the fixed 60-Worker quality fixture at a 1280×800 canvas.',
 			fixtureDescription:
-				'60 synthetic Workers in eight communities with 16 ring inter-community Relationships; this does not reproduce unavailable hand-arranged screenshot data.',
+				'60 synthetic Workers in eight clusters with 16 ring inter-cluster Relationships; this does not reproduce unavailable hand-arranged screenshot data.',
 			conditions: { canvas, gap: 80, radiusLaw: 'nodeRadius(relationshipCount)', bodyPadding: 40 },
 			identities: {
 				workers: fixture.nodes.map(({ id }) => id),
 				relationships: fixture.links.map(({ id, source, target }) => ({ id, source, target })),
-				communities: Object.fromEntries(fixture.communityByWorker),
+				clusters: Object.fromEntries(fixture.clusterByWorker),
 				groups: Object.fromEntries(fixture.groupByWorker),
 				subGroups: Object.fromEntries(fixture.subGroupByWorker)
 			}
@@ -259,8 +259,8 @@ describe('synthetic arrangement baseline', () => {
 	it('keeps the same 60 Workers and Relationships in Free, Grouped and nested arrangements', () => {
 		const fixture = createLayoutQualityFixture();
 		expect(fixture.nodes).toHaveLength(60);
-		expect(fixture.communityByWorker.size).toBe(60);
-		expect(new Set(fixture.communityByWorker.values()).size).toBe(8);
+		expect(fixture.clusterByWorker.size).toBe(60);
+		expect(new Set(fixture.clusterByWorker.values()).size).toBe(8);
 		for (const variant of variants) {
 			const first = arrange(qualityArrangeInput(fixture, variant));
 			expect(first.positions.size).toBe(60);

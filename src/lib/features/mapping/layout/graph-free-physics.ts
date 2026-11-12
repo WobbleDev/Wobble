@@ -28,7 +28,7 @@ const repulsionSoftening = 20;
 /** Weak pull toward the canvas centre. */
 const centrePull = 0.004;
 /**
- * The gap collision keeps between dot edges. The gathered community start
+ * The gap collision keeps between dot edges. The gathered cluster start
  * reserves the same clearance, so this pass only corrects residuals.
  */
 export const freeDotClearance = 3;

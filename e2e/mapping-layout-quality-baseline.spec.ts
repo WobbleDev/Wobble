@@ -52,10 +52,10 @@ test('saves rendered Free, Grouped and nested synthetic baseline views', async (
 		expect(createdWorker.id).toBeTruthy();
 		memberships.push(createdWorker.id);
 	}
-	const byCommunity: string[][] = [];
+	const byCluster: string[][] = [];
 	let offset = 0;
 	for (const size of [8, 8, 8, 8, 7, 7, 7, 7]) {
-		byCommunity.push(memberships.slice(offset, offset + size));
+		byCluster.push(memberships.slice(offset, offset + size));
 		offset += size;
 	}
 	const relationships = Array.from({ length: memberships.length }, () => new Set<string>());
@@ -63,16 +63,16 @@ test('saves rendered Free, Grouped and nested synthetic baseline views', async (
 		relationships[first].add(memberships[second]);
 		relationships[second].add(memberships[first]);
 	};
-	for (const community of byCommunity) {
-		for (let index = 0; index < community.length; index += 1) {
-			const first = memberships.indexOf(community[index]);
-			add(first, memberships.indexOf(community[(index + 1) % community.length]));
-			add(first, memberships.indexOf(community[(index + 2) % community.length]));
+	for (const cluster of byCluster) {
+		for (let index = 0; index < cluster.length; index += 1) {
+			const first = memberships.indexOf(cluster[index]);
+			add(first, memberships.indexOf(cluster[(index + 1) % cluster.length]));
+			add(first, memberships.indexOf(cluster[(index + 2) % cluster.length]));
 		}
 	}
-	for (let index = 0; index < byCommunity.length; index += 1) {
-		const here = byCommunity[index];
-		const next = byCommunity[(index + 1) % byCommunity.length];
+	for (let index = 0; index < byCluster.length; index += 1) {
+		const here = byCluster[index];
+		const next = byCluster[(index + 1) % byCluster.length];
 		add(memberships.indexOf(here[0]), memberships.indexOf(next[0]));
 		add(
 			memberships.indexOf(here[Math.floor(here.length / 2)]),

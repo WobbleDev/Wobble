@@ -3,16 +3,16 @@ import { placeQuotientBodies } from './graph-quotient-layout.ts';
 import { stressLayout } from './graph-stress.ts';
 
 /**
- * Deterministic Louvain community detection over the visible Relationship
+ * Deterministic Louvain clustering over the visible Relationship
  * graph, plus the gather-start the Free layout settles from. Pure; the
- * communities never leave the arrangement (nothing draws or names them).
+ * clusters never leave the arrangement (nothing draws or names them).
  */
 
 /**
- * Community index per id from links alone. Visiting order is sorted by id.
- * Workers without links each form a community of one.
+ * Cluster index per id from links alone. Visiting order is sorted by id.
+ * Workers without links each form a cluster of one.
  */
-export function detectCommunities(
+export function detectClusters(
 	ids: readonly string[],
 	links: readonly { source: string; target: string }[]
 ): Map<string, number> {
@@ -40,7 +40,7 @@ export function detectCommunities(
 			for (const [j, w] of row) d += j === i ? 2 * w : w;
 			return d;
 		});
-		const community = Array.from({ length: n }, (_, i) => i);
+		const cluster = Array.from({ length: n }, (_, i) => i);
 		const tot = [...degree];
 		let moved = false;
 		for (let pass = 0; pass < 50; pass += 1) {
@@ -49,9 +49,9 @@ export function detectCommunities(
 				const weights = new Map<number, number>();
 				for (const [j, w] of adj[i]) {
 					if (j === i) continue;
-					weights.set(community[j], (weights.get(community[j]) ?? 0) + w);
+					weights.set(cluster[j], (weights.get(cluster[j]) ?? 0) + w);
 				}
-				const from = community[i];
+				const from = cluster[i];
 				tot[from] -= degree[i];
 				let best = from;
 				let bestGain = (weights.get(from) ?? 0) - (tot[from] * degree[i]) / m2;
@@ -64,7 +64,7 @@ export function detectCommunities(
 				}
 				tot[best] += degree[i];
 				if (best !== from) {
-					community[i] = best;
+					cluster[i] = best;
 					improved = true;
 					moved = true;
 				}
@@ -74,17 +74,17 @@ export function detectCommunities(
 		if (!moved) break;
 		// Aggregate: renumber by first appearance, then merge links.
 		const renumber = new Map<number, number>();
-		for (const c of community) if (!renumber.has(c)) renumber.set(c, renumber.size);
+		for (const c of cluster) if (!renumber.has(c)) renumber.set(c, renumber.size);
 		const next: Map<number, number>[] = Array.from({ length: renumber.size }, () => new Map());
 		for (let i = 0; i < n; i += 1) {
-			const ci = renumber.get(community[i]) as number;
+			const ci = renumber.get(cluster[i]) as number;
 			for (const [j, w] of adj[i]) {
-				const cj = renumber.get(community[j]) as number;
+				const cj = renumber.get(cluster[j]) as number;
 				// Each undirected link is seen from both ends; keep self-loops once per end.
 				next[ci].set(cj, (next[ci].get(cj) ?? 0) + (ci === cj && i !== j ? w / 2 : w));
 			}
 		}
-		membership = membership.map((node) => renumber.get(community[node]) as number);
+		membership = membership.map((node) => renumber.get(cluster[node]) as number);
 		adj = next;
 		n = renumber.size;
 		if (n === 1) break;
@@ -114,24 +114,24 @@ type Point = { x: number; y: number };
  */
 export function gatherStart(
 	ids: readonly string[],
-	communities: ReadonlyMap<string, number>,
+	clusters: ReadonlyMap<string, number>,
 	canvas: { width: number; height: number },
 	links: readonly { source: string; target: string }[] = [],
 	radiusFor: (id: string) => number = () => 10
 ): Map<string, Point> {
 	const members = new Map<number, string[]>();
 	for (const id of [...ids].sort()) {
-		const community = communities.get(id);
-		if (community === undefined) continue;
-		const list = members.get(community) ?? [];
+		const cluster = clusters.get(id);
+		if (cluster === undefined) continue;
+		const list = members.get(cluster) ?? [];
 		list.push(id);
-		members.set(community, list);
+		members.set(cluster, list);
 	}
 	const internal = new Map<number, { source: string; target: string }[]>();
 	const ties: { source: string; target: string; strength: number }[] = [];
 	for (const link of links) {
-		const a = communities.get(link.source);
-		const b = communities.get(link.target);
+		const a = clusters.get(link.source);
+		const b = clusters.get(link.target);
 		if (a === undefined || b === undefined) continue;
 		if (a !== b) ties.push({ source: String(a), target: String(b), strength: 1 });
 		else {
@@ -140,8 +140,8 @@ export function gatherStart(
 			internal.set(a, list);
 		}
 	}
-	const layouts = [...members].map(([community, list]) => {
-		const localLinks = internal.get(community) ?? [];
+	const layouts = [...members].map(([cluster, list]) => {
+		const localLinks = internal.get(cluster) ?? [];
 		const offsets =
 			list.length <= 64 && list.length < ids.length
 				? stressLayout(
@@ -153,11 +153,11 @@ export function gatherStart(
 		let radius = 0;
 		for (const [id, point] of offsets)
 			radius = Math.max(radius, Math.hypot(point.x, point.y) + radiusFor(id));
-		return { key: String(community), radius, offsets };
+		return { key: String(cluster), radius, offsets };
 	});
-	// Inferred communities stay invisible: no outline and no label, so a linked
+	// Inferred clusters stay invisible: no outline and no label, so a linked
 	// pair needs no gutter beyond the quotient's own step allowance. Unrelated
-	// communities still pack clear of each other's dots.
+	// clusters still pack clear of each other's dots.
 	const anchors = placeQuotientBodies(layouts, ties, 0, freeDotClearance);
 	const start = new Map<string, Point>();
 	for (const { key, offsets } of layouts) {

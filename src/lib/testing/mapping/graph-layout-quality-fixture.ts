@@ -23,25 +23,25 @@ const qualityRole = attributeFixture({
 	options: ['Role A', 'Role B', 'Role C', 'Role D']
 });
 
-const communitySizes = [8, 8, 8, 8, 7, 7, 7, 7];
+const clusterSizes = [8, 8, 8, 8, 7, 7, 7, 7];
 
 export type QualityFixture = {
 	nodes: WorkerGraphNode[];
 	links: WorkerGraphLink[];
-	communityByWorker: Map<string, string>;
+	clusterByWorker: Map<string, string>;
 	groupByWorker: Map<string, string>;
 	subGroupByWorker: Map<string, string>;
 };
 
-/** A synthetic 60-Worker graph: eight dense-ish communities linked in a ring. */
+/** A synthetic 60-Worker graph: eight dense-ish clusters linked in a ring. */
 export function createLayoutQualityFixture(): QualityFixture {
 	const nodes: WorkerGraphNode[] = [];
-	const communityByWorker = new Map<string, string>();
+	const clusterByWorker = new Map<string, string>();
 	const groupByWorker = new Map<string, string>();
 	const subGroupByWorker = new Map<string, string>();
 	let index = 0;
-	for (let community = 0; community < communitySizes.length; community += 1) {
-		for (let member = 0; member < communitySizes[community]; member += 1) {
+	for (let cluster = 0; cluster < clusterSizes.length; cluster += 1) {
+		for (let member = 0; member < clusterSizes[cluster]; member += 1) {
 			const id = `synthetic-${String(index + 1).padStart(2, '0')}`;
 			const department = `Department ${(Math.floor(index / 12) % 5) + 1}`;
 			const role = `Role ${String.fromCharCode(65 + (Math.floor(index / 3) % 4))}`;
@@ -55,7 +55,7 @@ export function createLayoutQualityFixture(): QualityFixture {
 				}),
 				relationshipCount: 0
 			});
-			communityByWorker.set(id, `Community ${community + 1}`);
+			clusterByWorker.set(id, `Cluster ${cluster + 1}`);
 			groupByWorker.set(id, department);
 			subGroupByWorker.set(id, `${department} / ${role}`);
 			index += 1;
@@ -74,21 +74,21 @@ export function createLayoutQualityFixture(): QualityFixture {
 			value: 1
 		});
 	};
-	const communities: string[][] = [];
+	const clusters: string[][] = [];
 	let cursor = 0;
-	for (const size of communitySizes) {
-		communities.push(nodes.slice(cursor, cursor + size).map(({ id }) => id));
+	for (const size of clusterSizes) {
+		clusters.push(nodes.slice(cursor, cursor + size).map(({ id }) => id));
 		cursor += size;
 	}
-	for (const community of communities) {
-		for (let member = 0; member < community.length; member += 1) {
-			add(community[member], community[(member + 1) % community.length]);
-			add(community[member], community[(member + 2) % community.length]);
+	for (const cluster of clusters) {
+		for (let member = 0; member < cluster.length; member += 1) {
+			add(cluster[member], cluster[(member + 1) % cluster.length]);
+			add(cluster[member], cluster[(member + 2) % cluster.length]);
 		}
 	}
-	for (let community = 0; community < communities.length; community += 1) {
-		const here = communities[community];
-		const next = communities[(community + 1) % communities.length];
+	for (let cluster = 0; cluster < clusters.length; cluster += 1) {
+		const here = clusters[cluster];
+		const next = clusters[(cluster + 1) % clusters.length];
 		add(here[0], next[0]);
 		add(here[Math.floor(here.length / 2)], next[Math.floor(next.length / 2)]);
 	}
@@ -98,7 +98,7 @@ export function createLayoutQualityFixture(): QualityFixture {
 		degree.set(link.target, (degree.get(link.target) ?? 0) + 1);
 	}
 	for (const node of nodes) node.relationshipCount = degree.get(node.id) ?? 0;
-	return { nodes, links, communityByWorker, groupByWorker, subGroupByWorker };
+	return { nodes, links, clusterByWorker, groupByWorker, subGroupByWorker };
 }
 
 export function qualityArrangeInput(
@@ -128,7 +128,7 @@ function bodiesForPartition(partition: ReadonlyMap<string, string>): QualityBody
 
 export function partitionMaps(fixture: QualityFixture, variant: 'free' | 'grouped' | 'nested') {
 	return variant === 'free'
-		? [fixture.communityByWorker]
+		? [fixture.clusterByWorker]
 		: variant === 'grouped'
 			? [fixture.groupByWorker]
 			: [fixture.groupByWorker, fixture.subGroupByWorker];

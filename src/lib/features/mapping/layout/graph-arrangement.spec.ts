@@ -519,7 +519,7 @@ describe('arrange', () => {
 		const nodes = Array.from({ length: 12 }, (_, i) => node(`w${i}`, '', i % 4));
 		const links = Array.from({ length: 11 }, (_, i) => link(`l${i}`, `w${i}`, `w${i + 1}`));
 
-		it('keeps a giant inferred community complete without whole-worksite stress', () => {
+		it('keeps a giant inferred cluster complete without whole-worksite stress', () => {
 			const workers = Array.from({ length: 500 }, (_, i) =>
 				node(`giant-${i}`, '', i === 0 ? 499 : 1)
 			);
