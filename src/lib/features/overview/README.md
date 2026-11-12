@@ -30,9 +30,9 @@ The shell owns the bullseye ground behind the page: at rest it is large, faded,
 blurred and inert on the floor at the lower right; an edge tab brings it into focus
 (`overview-focus.svelte.ts`), where it grows slightly in place and becomes
 interactive (drag, zoom, Reset zoom). Esc or the tab returns. Focus resets on each
-arrival, as zoom does. Where the ground cannot be dragged (below the floor, reduced
+entrance animation, as zoom does. Where the ground cannot be dragged (below the floor, reduced
 motion, coarse pointer), the fitted chart is drawn in the page flow instead.
-`overview-arrival.svelte.ts` and `overview-arrival-lifecycle.ts` own the arrival;
+`overview-entrance-animation.svelte.ts` and `overview-entrance-animation-lifecycle.ts` own the entrance animation;
 `overview-scroll-hint.ts` owns the fade at clipped card edges.
 
 The page is a no-scroll surface shared with Mapping: the frame stays fixed and the

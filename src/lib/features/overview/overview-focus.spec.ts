@@ -4,7 +4,7 @@ import { createOverviewFocus } from './overview-focus.svelte.ts';
 /**
  * The Overview's focus state, specced through the factory the shell mounts:
  * the toggle the edge control drives, the Escape exit the ground yields to a
- * dot's own Escape, and the return to rest on every Overview arrival, as the
+ * dot's own Escape, and the return to rest on every Overview entrance animation, as the
  * zoom does. The host stands in for the route, as the Mapping drag factory's
  * literal host stands in for the map.
  */
@@ -77,14 +77,14 @@ describe('createOverviewFocus', () => {
 		expect(focus.focused).toBe(true);
 	});
 
-	it('resets to rest on arrival at the Overview', () => {
+	it('resets to rest on entrance animation at the Overview', () => {
 		const { focus, leave, arrive } = setup();
 		focus.toggle();
 		leave();
-		focus.resetOnArrival();
+		focus.resetOnEntranceAnimation();
 		expect(focus.focused).toBe(true);
 		arrive();
-		focus.resetOnArrival();
+		focus.resetOnEntranceAnimation();
 		expect(focus.focused).toBe(false);
 	});
 });

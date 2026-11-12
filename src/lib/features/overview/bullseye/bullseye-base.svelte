@@ -25,15 +25,15 @@
 		attributes,
 		class: className,
 		zoom = 1,
-		arrivalState = 'idle',
-		arrivalElapsed = 720
+		entranceAnimationState = 'idle',
+		entranceAnimationElapsed = 720
 	}: {
 		workers: Worker[];
 		attributes: readonly WorkerAttributeDefinition[];
 		class?: string;
 		zoom?: number;
-		arrivalState?: 'idle' | 'running' | 'complete';
-		arrivalElapsed?: number;
+		entranceAnimationState?: 'idle' | 'running' | 'complete';
+		entranceAnimationElapsed?: number;
 	} = $props();
 
 	const id = $props.id();
@@ -273,8 +273,8 @@
 				{id}
 				class="chart-drawing size-full {focus.focused ? 'opacity-100' : 'opacity-30 blur-[2px]'}"
 				{zoom}
-				{arrivalState}
-				{arrivalElapsed}
+				{entranceAnimationState}
+				{entranceAnimationElapsed}
 				onzoomkey={(next) => {
 					if (focus.focused) view.setZoom(next);
 				}}

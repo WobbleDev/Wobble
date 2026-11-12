@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ARRIVAL_DURATION_MS } from '../overview-arrival-lifecycle.ts';
+	import { ENTRANCE_ANIMATION_DURATION_MS } from '../overview-entrance-animation-lifecycle.ts';
 	import { SvelteMap, SvelteSet } from 'svelte/reactivity';
 	import { assessmentColorFor } from '#lib/shared/assessment.ts';
 	import type { Worker } from '#lib/domain-vocabulary.ts';
@@ -34,8 +34,8 @@
 		style,
 		zoom = 1,
 		pinnedDotId = null,
-		arrivalState = 'idle',
-		arrivalElapsed = 720,
+		entranceAnimationState = 'idle',
+		entranceAnimationElapsed = 720,
 		activeDotId = null,
 		selectedDotId = null,
 		onhighlight,
@@ -56,8 +56,8 @@
 		zoom?: number;
 		/** The Worker whose name is pinned, so the mark carries its pressed state. */
 		pinnedDotId?: string | null;
-		arrivalState?: 'idle' | 'running' | 'complete';
-		arrivalElapsed?: number;
+		entranceAnimationState?: 'idle' | 'running' | 'complete';
+		entranceAnimationElapsed?: number;
 		/** The worker whose ties are highlighted, if any. */
 		activeDotId?: string | null;
 		/** The worker the reader clicked: every dot and tie outside their reach is dimmed. */
@@ -293,17 +293,19 @@
 		return hash >>> 0;
 	};
 	/** A rough left-to-right sweep like current finding its way along the tube, with per-dot jitter. */
-	const arrivalFlickerFor = (id: string) => ['a', 'b', 'c'][(hashOf(id) >>> 9) % 3];
-	const arrivalDelayFor = (id: string) =>
+	const entranceAnimationFlickerFor = (id: string) => ['a', 'b', 'c'][(hashOf(id) >>> 9) % 3];
+	const entranceAnimationDelayFor = (id: string) =>
 		250 + (dotRevealBuckets.get(id) ?? 0) * 40 + (hashOf(id) % 420);
-	const arrivalStyleFor = (id: string) => `--arrival-delay:${arrivalDelayFor(id)}ms`;
+	const entranceAnimationStyleFor = (id: string) =>
+		`--entrance-animation-delay:${entranceAnimationDelayFor(id)}ms`;
 	/** A tie leaves its inner dot once that dot has stopped flickering. */
-	const tieStyleFor = (from: string) => `--arrival-delay:${arrivalDelayFor(from) + 250}ms`;
+	const tieStyleFor = (from: string) =>
+		`--entrance-animation-delay:${entranceAnimationDelayFor(from) + 250}ms`;
 
 	/* The ties draw themselves by dash offset. Their stroke is non-scaling, so the
 	   dash lengths are screen pixels: measure each path's length on screen. */
 	$effect(() => {
-		if (arrivalState !== 'running' || !svgElement) return;
+		if (entranceAnimationState !== 'running' || !svgElement) return;
 		for (const path of svgElement.querySelectorAll<SVGPathElement>('path.tie')) {
 			const scale = path.getScreenCTM()?.a ?? 1;
 			path.style.setProperty('--tie-length', `${path.getTotalLength() * scale + 2}px`);
@@ -433,7 +435,8 @@
 	class={cn('block size-full', className)}
 	{style}
 	viewBox="0 0 256 256"
-	class:arrival-running={arrivalState === 'running' && arrivalElapsed < ARRIVAL_DURATION_MS}
+	class:entrance-animation-running={entranceAnimationState === 'running' &&
+		entranceAnimationElapsed < ENTRANCE_ANIMATION_DURATION_MS}
 	role="group"
 	aria-labelledby={`${id}-chart-title`}
 	aria-describedby={`${id}-chart-description`}
@@ -566,9 +569,9 @@
 			data-worker-id={dot.worker.id}
 			data-selected={dot.worker.id === selectedDotId ? '' : undefined}
 			class:dimmed={selectedReach !== null && !selectedReach.has(dot.worker.id)}
-			data-arrival-bucket={dotRevealBuckets.get(dot.worker.id) ?? 0}
-			data-arrival-flicker={arrivalFlickerFor(dot.worker.id)}
-			style={arrivalStyleFor(dot.worker.id)}
+			data-entrance-animation-bucket={dotRevealBuckets.get(dot.worker.id) ?? 0}
+			data-entrance-animation-flicker={entranceAnimationFlickerFor(dot.worker.id)}
+			style={entranceAnimationStyleFor(dot.worker.id)}
 			tabindex={index === activeDotIndex ? 0 : -1}
 			bind:this={dotElements[index]}
 			onmouseenter={(event) => onshow?.(dot.worker, event.currentTarget)}
@@ -642,19 +645,19 @@
 		transition: opacity 200ms ease;
 	}
 
-	.arrival-running circle[data-worker-id] {
+	.entrance-animation-running circle[data-worker-id] {
 		opacity: 0;
 		animation-duration: 640ms;
 		animation-timing-function: step-end;
 		animation-fill-mode: both;
-		animation-delay: var(--arrival-delay);
+		animation-delay: var(--entrance-animation-delay);
 	}
 
 	/* Ties draw out from their inner dot. Until measured, the fallback length hides them. */
-	.arrival-running path.tie {
+	.entrance-animation-running path.tie {
 		stroke-dasharray: var(--tie-length, 9999px);
 		stroke-dashoffset: var(--tie-length, 9999px);
-		animation: bullseye-tie-draw 700ms ease-in-out var(--arrival-delay) both;
+		animation: bullseye-tie-draw 700ms ease-in-out var(--entrance-animation-delay) both;
 	}
 
 	@keyframes bullseye-tie-draw {
@@ -664,27 +667,27 @@
 	}
 
 	/* Literal keyframe names: Svelte scopes them, and a var() would dodge the rewrite. */
-	.arrival-running circle[data-arrival-flicker='a'] {
-		animation-name: arrival-flicker-a;
+	.entrance-animation-running circle[data-entrance-animation-flicker='a'] {
+		animation-name: entrance-animation-flicker-a;
 	}
 
-	.arrival-running circle[data-arrival-flicker='b'] {
-		animation-name: arrival-flicker-b;
+	.entrance-animation-running circle[data-entrance-animation-flicker='b'] {
+		animation-name: entrance-animation-flicker-b;
 	}
 
-	.arrival-running circle[data-arrival-flicker='c'] {
-		animation-name: arrival-flicker-c;
+	.entrance-animation-running circle[data-entrance-animation-flicker='c'] {
+		animation-name: entrance-animation-flicker-c;
 	}
 
-	.arrival-running circle[data-worker-id]:focus-visible,
-	.arrival-running circle[data-worker-id]:hover {
+	.entrance-animation-running circle[data-worker-id]:focus-visible,
+	.entrance-animation-running circle[data-worker-id]:hover {
 		opacity: 1;
 		animation: none;
 	}
 
 	@media (prefers-reduced-motion: reduce) {
-		:global(html:not([data-motion='full'])) .arrival-running circle[data-worker-id],
-		:global(html:not([data-motion='full'])) .arrival-running path.tie {
+		:global(html:not([data-motion='full'])) .entrance-animation-running circle[data-worker-id],
+		:global(html:not([data-motion='full'])) .entrance-animation-running path.tie {
 			animation: none;
 			opacity: 1;
 			stroke-dasharray: none;
@@ -692,8 +695,8 @@
 		}
 	}
 
-	:global(html[data-motion='reduce']) .arrival-running circle[data-worker-id],
-	:global(html[data-motion='reduce']) .arrival-running path.tie {
+	:global(html[data-motion='reduce']) .entrance-animation-running circle[data-worker-id],
+	:global(html[data-motion='reduce']) .entrance-animation-running path.tie {
 		animation: none;
 		opacity: 1;
 		stroke-dasharray: none;

@@ -30,19 +30,20 @@ export function cellShade(ratio: number): string {
 export const SHADE_KEY_STEPS = [0, 0.25, 0.5, 0.75, 1];
 
 /** The count-up waits 60ms before starting, so the first dots flicker on first. */
-const ARRIVAL_COUNTUP_DELAY_MS = 60;
+const ENTRANCE_ANIMATION_COUNTUP_DELAY_MS = 60;
 
 /** The count-up reaches the final value 370ms after it starts, at 430ms. */
-const ARRIVAL_COUNTUP_SPAN_MS = 370;
+const ENTRANCE_ANIMATION_COUNTUP_SPAN_MS = 370;
 
 /**
- * The Overall support figure mid-arrival: the final percentage scaled by the
+ * The Overall support figure mid-entrance-animation: the final percentage scaled by the
  * run's elapsed time along the support band's timing curve, clamped to the
  * final value once the run passes it. Moved here from the removed summary
  * column's support band, so the dashboard reads it instead of recomputing it.
  */
-export function arrivalCountUp(percentage: number, elapsedMs: number): number {
-	const progress = (elapsedMs - ARRIVAL_COUNTUP_DELAY_MS) / ARRIVAL_COUNTUP_SPAN_MS;
+export function entranceAnimationCountUp(percentage: number, elapsedMs: number): number {
+	const progress =
+		(elapsedMs - ENTRANCE_ANIMATION_COUNTUP_DELAY_MS) / ENTRANCE_ANIMATION_COUNTUP_SPAN_MS;
 	return Math.round(percentage * Math.min(1, Math.max(0, progress)));
 }
 

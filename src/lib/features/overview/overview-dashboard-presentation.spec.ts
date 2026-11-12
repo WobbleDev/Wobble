@@ -6,7 +6,7 @@ import {
 	pct,
 	segmentFill,
 	segments,
-	arrivalCountUp,
+	entranceAnimationCountUp,
 	cellShade,
 	cellTone,
 	floorPlacement,
@@ -101,24 +101,24 @@ describe('floorPlacement', () => {
 	});
 });
 
-describe('arrivalCountUp', () => {
+describe('entranceAnimationCountUp', () => {
 	it('holds zero before the 60ms delay has passed', () => {
-		expect(arrivalCountUp(63, 0)).toBe(0);
-		expect(arrivalCountUp(63, 59)).toBe(0);
-		expect(arrivalCountUp(63, 60)).toBe(0);
+		expect(entranceAnimationCountUp(63, 0)).toBe(0);
+		expect(entranceAnimationCountUp(63, 59)).toBe(0);
+		expect(entranceAnimationCountUp(63, 60)).toBe(0);
 	});
 
 	it('is halfway at the 245ms midpoint', () => {
-		expect(arrivalCountUp(63, 245)).toBe(32);
+		expect(entranceAnimationCountUp(63, 245)).toBe(32);
 	});
 
 	it('reaches the final value at 430ms', () => {
-		expect(arrivalCountUp(63, 430)).toBe(63);
+		expect(entranceAnimationCountUp(63, 430)).toBe(63);
 	});
 
 	it('stays at the final value past the end of the run', () => {
-		expect(arrivalCountUp(63, 431)).toBe(63);
-		expect(arrivalCountUp(63, 2400)).toBe(63);
+		expect(entranceAnimationCountUp(63, 431)).toBe(63);
+		expect(entranceAnimationCountUp(63, 2400)).toBe(63);
 	});
 });
 

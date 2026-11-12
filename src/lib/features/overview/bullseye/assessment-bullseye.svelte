@@ -10,15 +10,15 @@
 		workers,
 		class: className,
 		zoom = 1,
-		arrivalState = 'idle',
-		arrivalElapsed = 720,
+		entranceAnimationState = 'idle',
+		entranceAnimationElapsed = 720,
 		onzoomkey
 	}: {
 		workers: Worker[];
 		class?: string;
 		zoom?: number;
-		arrivalState?: 'idle' | 'running' | 'complete';
-		arrivalElapsed?: number;
+		entranceAnimationState?: 'idle' | 'running' | 'complete';
+		entranceAnimationElapsed?: number;
 		onzoomkey?: (next: number) => void;
 	} = $props();
 
@@ -86,8 +86,8 @@
 				class="shrink-0"
 				style={`width: calc(100% * ${zoom}); height: calc(100% * ${zoom}); max-width: calc(28rem * ${zoom}); max-height: calc(28rem * ${zoom})`}
 				{zoom}
-				{arrivalState}
-				{arrivalElapsed}
+				{entranceAnimationState}
+				{entranceAnimationElapsed}
 				{onzoomkey}
 				activeDotId={tooltip.active?.worker.id ?? null}
 				pinnedDotId={pinnedId}

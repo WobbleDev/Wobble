@@ -1,17 +1,19 @@
-/** How long the first-paint arrival runs: long enough for the last bulb to finish flickering on. */
-export const ARRIVAL_DURATION_MS = 2400;
+/** How long the first-paint entrance animation runs: long enough for the last bulb to finish flickering on. */
+export const ENTRANCE_ANIMATION_DURATION_MS = 2400;
 
-export type OverviewArrival = { generation: number };
+export type OverviewEntranceAnimation = { generation: number };
 
-export type ArrivalLifecycle = {
+export type EntranceAnimationLifecycle = {
 	readonly generation: number;
 	readonly pending: boolean;
 	observe(worksiteId: string | null): boolean;
-	claim(worksiteId: string): OverviewArrival | null;
+	claim(worksiteId: string): OverviewEntranceAnimation | null;
 };
 
 /** Counts each Worksite activation rather than each unique Worksite ID. */
-export function createArrivalLifecycle(initialWorksiteId: string | null): ArrivalLifecycle {
+export function createEntranceAnimationLifecycle(
+	initialWorksiteId: string | null
+): EntranceAnimationLifecycle {
 	let observedWorksiteId = initialWorksiteId;
 	let pending = initialWorksiteId !== null;
 	let generation = initialWorksiteId === null ? 0 : 1;

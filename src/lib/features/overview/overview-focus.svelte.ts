@@ -18,11 +18,11 @@ export interface OverviewFocus {
 	/** The return to rest: Escape, or the ground going away. */
 	blur(): void;
 	/**
-	 * The return to rest on every Overview arrival, as the zoom does. The shell
+	 * The return to rest on every Overview entrance animation, as the zoom does. The shell
 	 * calls this from an effect that reads the route, so the literal host in
 	 * the spec stands in for the route.
 	 */
-	resetOnArrival(): void;
+	resetOnEntranceAnimation(): void;
 	/**
 	 * Escape blurs, but only while focused and only when no dot consumed it:
 	 * a pin-clearing Escape calls preventDefault on its way up, so by the time
@@ -44,7 +44,7 @@ export function createOverviewFocus(host: OverviewFocusHost): OverviewFocus {
 		blur() {
 			focused = false;
 		},
-		resetOnArrival() {
+		resetOnEntranceAnimation() {
 			if (host.isOverview()) focused = false;
 		},
 		handleKeydown(event: KeyboardEvent) {

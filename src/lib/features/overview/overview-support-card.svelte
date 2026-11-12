@@ -6,7 +6,10 @@
 	import { assessmentGroupLabel, assessmentLabel } from '#lib/i18n/assessment.ts';
 	import { m } from '#lib/paraglide/messages.js';
 	import { leaderTarget } from './support-summary.ts';
-	import { arrivalCountUp, type DashboardTheme } from './overview-dashboard-presentation.ts';
+	import {
+		entranceAnimationCountUp,
+		type DashboardTheme
+	} from './overview-dashboard-presentation.ts';
 	import OverviewLevelCounts from './overview-level-counts.svelte';
 	import OverviewSegmentBar from './overview-segment-bar.svelte';
 
@@ -15,8 +18,8 @@
 		counts,
 		coverage,
 		target,
-		arrivalState,
-		arrivalElapsed,
+		entranceAnimationState,
+		entranceAnimationElapsed,
 		theme,
 		palette
 	}: {
@@ -24,17 +27,19 @@
 		counts: Record<AssessmentOption, number>;
 		coverage: { leaders: number; needed: number; gap: number };
 		target: number;
-		arrivalState: string;
-		arrivalElapsed: number;
+		entranceAnimationState: string;
+		entranceAnimationElapsed: number;
 		theme: DashboardTheme;
 		palette: 'default' | 'colorblind';
 	} = $props();
 
 	/* The Overall support figure counts up along the support band's timing curve
-	   while the arrival runs, then reads the exact value. */
+	   while the entrance animation runs, then reads the exact value. */
 	const supportFinal = $derived(Math.round(overall.rate * 100));
 	const supportPercent = $derived(
-		arrivalState === 'running' ? arrivalCountUp(supportFinal, arrivalElapsed) : supportFinal
+		entranceAnimationState === 'running'
+			? entranceAnimationCountUp(supportFinal, entranceAnimationElapsed)
+			: supportFinal
 	);
 </script>
 
