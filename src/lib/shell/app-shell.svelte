@@ -28,9 +28,9 @@
 	import OverviewEdgeControl from '#lib/features/overview/overview-edge-control.svelte';
 	import { createFirstWorksiteSetup } from '#lib/features/overview/first-worksite.svelte.ts';
 	import {
-		createOverviewArrivalController,
-		setOverviewArrivalController
-	} from '#lib/features/overview/overview-arrival.svelte.ts';
+		createOverviewEntranceAnimationController,
+		setOverviewEntranceAnimationController
+	} from '#lib/features/overview/overview-entrance-animation.svelte.ts';
 	import { IsMobile } from '#lib/hooks/is-mobile.svelte.ts';
 	import { PanCapability } from '#lib/hooks/pan-capability.svelte.ts';
 	import { beforeNavigate, goto } from '$app/navigation';
@@ -64,8 +64,10 @@
 		}
 		event.preventDefault();
 	}
-	const overviewArrival = createOverviewArrivalController(untrack(() => data.worksite?.id ?? null));
-	setOverviewArrivalController(overviewArrival);
+	const overviewEntranceAnimation = createOverviewEntranceAnimationController(
+		untrack(() => data.worksite?.id ?? null)
+	);
+	setOverviewEntranceAnimationController(overviewEntranceAnimation);
 	/* The one gate out of a dirty Configuration draft. It reads the flag from the
 	   context below rather than holding a copy, so there is a single answer to
 	   "is anything unsaved?" and the guard cannot drift from it. */
@@ -202,34 +204,39 @@
 
 	$effect(() => {
 		const activeWorksiteId = data.worksite?.id ?? null;
-		const generationBefore = overviewArrival.generation;
-		overviewArrival.observe(activeWorksiteId);
-		if (overviewArrival.generation !== generationBefore && activeWorksiteId === null) {
-			overviewArrival.settle();
+		const generationBefore = overviewEntranceAnimation.generation;
+		overviewEntranceAnimation.observe(activeWorksiteId);
+		if (overviewEntranceAnimation.generation !== generationBefore && activeWorksiteId === null) {
+			overviewEntranceAnimation.settle();
 		}
 	});
 
 	$effect(() => {
-		if (!isOverview && overviewArrival.state === 'running') overviewArrival.settle();
-		if (isOverview && panCapability.reducedMotion && overviewArrival.state === 'running') {
-			overviewArrival.settle();
+		if (!isOverview && overviewEntranceAnimation.state === 'running')
+			overviewEntranceAnimation.settle();
+		if (
+			isOverview &&
+			panCapability.reducedMotion &&
+			overviewEntranceAnimation.state === 'running'
+		) {
+			overviewEntranceAnimation.settle();
 		}
 	});
 
-	/* Focus returns to rest on every Overview arrival, as the zoom does; and when
+	/* Focus returns to rest on every Overview entrance animation, as the zoom does; and when
 	   the ground goes away mid-focus, so the dashboard never sits slid and inert
 	   where the fitted chart is drawn instead. The generation read subscribes the
-	   reset to arrivals claimed on this route too: switching Worksites claims a
+	   reset to entrance animations claimed on this route too: switching Worksites claims a
 	   new generation without a navigation. */
 	$effect(() => {
-		void overviewArrival.generation;
-		focus.resetOnArrival();
+		void overviewEntranceAnimation.generation;
+		focus.resetOnEntranceAnimation();
 	});
 	$effect(() => {
 		if (!ground.shown) focus.blur();
 	});
 
-	/* Created after the Overview's arrival effects, as the settings effects were on
+	/* Created after the Overview's entrance animation effects, as the settings effects were on
 	   main, so effects still run in their original order. */
 	const settingsSync = createSettingsSync(untrack(() => data.settings));
 	const settingsContext = settingsSync.context;
@@ -417,8 +424,8 @@
 					workers={data.workers}
 					attributes={data.attributes}
 					zoom={ground.zoom}
-					arrivalState={isOverview ? overviewArrival.state : 'idle'}
-					arrivalElapsed={overviewArrival.elapsed}
+					entranceAnimationState={isOverview ? overviewEntranceAnimation.state : 'idle'}
+					entranceAnimationElapsed={overviewEntranceAnimation.elapsed}
 				/>
 				<p
 					class="pointer-events-none absolute right-32 bottom-7 z-[4] text-xs text-ink-2"

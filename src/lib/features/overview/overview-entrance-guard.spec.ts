@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { ARRIVAL_DURATION_MS } from './overview-arrival-lifecycle.ts';
-import { arrivalFor, reconcileClaim, shouldSettle } from './overview-arrival-claim.ts';
+import { ENTRANCE_ANIMATION_DURATION_MS } from './overview-entrance-animation-lifecycle.ts';
+import { entranceAnimationFor, reconcileClaim, shouldSettle } from './overview-entrance-guard.ts';
 
 describe('reconcileClaim', () => {
 	it('keeps a claim the controller still holds', () => {
@@ -17,14 +17,14 @@ describe('reconcileClaim', () => {
 		});
 	});
 
-	it('resets a pending, started arrival that no longer has a claim', () => {
+	it('resets a pending, started entrance animation that no longer has a claim', () => {
 		expect(reconcileClaim(null, { generation: 4, pending: true, state: 'running' })).toEqual({
 			claimed: null,
 			reset: true
 		});
 	});
 
-	it('does not reset an idle or unclaimed arrival', () => {
+	it('does not reset an idle or unclaimed entrance animation', () => {
 		expect(reconcileClaim(null, { generation: 4, pending: true, state: 'idle' }).reset).toBe(false);
 		expect(reconcileClaim(null, { generation: 4, pending: false, state: 'running' }).reset).toBe(
 			false
@@ -33,26 +33,36 @@ describe('reconcileClaim', () => {
 });
 
 describe('shouldSettle', () => {
-	it('settles a running arrival under reduced motion only', () => {
+	it('settles a running entrance animation under reduced motion only', () => {
 		expect(shouldSettle(true, 'running')).toBe(true);
 		expect(shouldSettle(false, 'running')).toBe(false);
 		expect(shouldSettle(true, 'complete')).toBe(false);
 	});
 });
 
-describe('arrivalFor', () => {
-	const arrival = { generation: 2, pending: false, state: 'running' as const, elapsed: 900 };
+describe('entranceAnimationFor', () => {
+	const entranceAnimation = {
+		generation: 2,
+		pending: false,
+		state: 'running' as const,
+		elapsed: 900
+	};
 
 	it('reads the controller only for the generation the route claimed', () => {
-		expect(arrivalFor(2, arrival, ARRIVAL_DURATION_MS)).toEqual({ state: 'running', elapsed: 900 });
+		expect(entranceAnimationFor(2, entranceAnimation, ENTRANCE_ANIMATION_DURATION_MS)).toEqual({
+			state: 'running',
+			elapsed: 900
+		});
 	});
 
 	it('reads idle and the full duration when the route holds no claim on this generation', () => {
-		expect(arrivalFor(null, arrival, ARRIVAL_DURATION_MS)).toEqual({
+		expect(entranceAnimationFor(null, entranceAnimation, ENTRANCE_ANIMATION_DURATION_MS)).toEqual({
 			state: 'idle',
-			elapsed: ARRIVAL_DURATION_MS
+			elapsed: ENTRANCE_ANIMATION_DURATION_MS
 		});
-		expect(arrivalFor(1, arrival, ARRIVAL_DURATION_MS).state).toBe('idle');
+		expect(entranceAnimationFor(1, entranceAnimation, ENTRANCE_ANIMATION_DURATION_MS).state).toBe(
+			'idle'
+		);
 	});
 });
 
@@ -60,15 +70,15 @@ describe('arrivalFor', () => {
  * The claim factory through a literal host: mounting and effects are recorded and run
  * by the spec, and the controller is a plain object the spec moves by hand.
  */
-import { createOverviewArrivalClaim } from './overview-arrival-claim.svelte.ts';
-import type { OverviewArrivalController } from './overview-arrival.svelte.ts';
+import { createOverviewEntranceGuard } from './overview-entrance-guard.svelte.ts';
+import type { OverviewEntranceAnimationController } from './overview-entrance-animation.svelte.ts';
 import { vi } from 'vitest';
 
 function literalRoute(
 	options: {
 		worksiteId?: string;
 		reduced?: boolean;
-		arrival?: Partial<Record<string, unknown>>;
+		entranceAnimation?: Partial<Record<string, unknown>>;
 	} = {}
 ) {
 	const controller = {
@@ -82,18 +92,18 @@ function literalRoute(
 		start: vi.fn(),
 		settle: vi.fn(),
 		reset: vi.fn(),
-		...options.arrival
+		...options.entranceAnimation
 	};
 	const mounts: (() => void)[] = [];
 	const setups: (() => void)[] = [];
 	const host = {
-		arrival: controller as unknown as OverviewArrivalController,
+		entranceAnimation: controller as unknown as OverviewEntranceAnimationController,
 		worksiteId: () => options.worksiteId,
 		reducedMotion: () => options.reduced ?? false,
 		mounted: (run: () => void) => mounts.push(run),
 		effect: (setup: () => void) => setups.push(setup)
 	};
-	const claim = createOverviewArrivalClaim(host);
+	const claim = createOverviewEntranceGuard(host);
 	return {
 		claim,
 		controller,
@@ -106,7 +116,7 @@ function literalRoute(
 	};
 }
 
-describe('createOverviewArrivalClaim', () => {
+describe('createOverviewEntranceGuard', () => {
 	it('claims nothing before the route mounts', () => {
 		const route = literalRoute({ worksiteId: 'ws' });
 		route.flush();
@@ -114,7 +124,7 @@ describe('createOverviewArrivalClaim', () => {
 		expect(route.claim.claimedGeneration).toBeNull();
 	});
 
-	it('claims the Worksite once mounted and starts the arrival it was given', () => {
+	it('claims the Worksite once mounted and starts the entrance animation it was given', () => {
 		const route = literalRoute({ worksiteId: 'ws' });
 		route.mount();
 		route.flush();
@@ -139,16 +149,19 @@ describe('createOverviewArrivalClaim', () => {
 	});
 
 	it('reads the controller only for the generation it holds, and idle otherwise', () => {
-		const route = literalRoute({ worksiteId: 'ws', arrival: { state: 'running', elapsed: 900 } });
+		const route = literalRoute({
+			worksiteId: 'ws',
+			entranceAnimation: { state: 'running', elapsed: 900 }
+		});
 		route.mount();
 		route.flush();
-		expect(route.claim.arrivalState).toBe('running');
-		expect(route.claim.arrivalElapsed).toBe(900);
+		expect(route.claim.entranceAnimationState).toBe('running');
+		expect(route.claim.entranceAnimationElapsed).toBe(900);
 
 		route.controller.generation = 4;
 		route.flush();
 		expect(route.claim.claimedGeneration).toBeNull();
-		expect(route.claim.arrivalState).toBe('idle');
+		expect(route.claim.entranceAnimationState).toBe('idle');
 	});
 
 	it('drops a claim the controller has moved past, so a new Worksite can claim again', () => {
@@ -164,21 +177,21 @@ describe('createOverviewArrivalClaim', () => {
 		expect(route.claim.claimedGeneration).toBe(4);
 	});
 
-	it('resets a pending arrival that the route no longer holds', () => {
+	it('resets a pending entrance animation that the route no longer holds', () => {
 		const route = literalRoute({
 			worksiteId: undefined,
-			arrival: { generation: 5, pending: true, state: 'running' }
+			entranceAnimation: { generation: 5, pending: true, state: 'running' }
 		});
 		route.mount();
 		route.flush();
 		expect(route.controller.reset).toHaveBeenCalled();
 	});
 
-	it('settles a running arrival under reduced motion when the motion setting changes', () => {
+	it('settles a running entrance animation under reduced motion when the motion setting changes', () => {
 		const route = literalRoute({
 			worksiteId: undefined,
 			reduced: true,
-			arrival: { state: 'running' }
+			entranceAnimation: { state: 'running' }
 		});
 		route.mount();
 		route.flush();

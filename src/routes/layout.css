@@ -1173,10 +1173,10 @@ button[data-material='glass']:not(:disabled):is(:hover, [aria-expanded='true']) 
 	@apply font-mono text-xs font-medium tracking-key uppercase;
 }
 
-/* The arrival flicker: an old neon sign catching, hard on/off flicks (step-end), never
+/* The entrance animation flicker: an old neon sign catching, hard on/off flicks (step-end), never
    a fade. Some bulbs false-start twice, some stutter once, some hang dim before they
    take. Used by the bullseye's dots. */
-@keyframes arrival-flicker-a {
+@keyframes entrance-animation-flicker-a {
 	0%,
 	16%,
 	36% {
@@ -1200,7 +1200,7 @@ button[data-material='glass']:not(:disabled):is(:hover, [aria-expanded='true']) 
 	}
 }
 
-@keyframes arrival-flicker-b {
+@keyframes entrance-animation-flicker-b {
 	0%,
 	22% {
 		opacity: 0;
@@ -1220,7 +1220,7 @@ button[data-material='glass']:not(:disabled):is(:hover, [aria-expanded='true']) 
 	}
 }
 
-@keyframes arrival-flicker-c {
+@keyframes entrance-animation-flicker-c {
 	0%,
 	34% {
 		opacity: 0;

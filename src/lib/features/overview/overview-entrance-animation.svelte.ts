@@ -1,33 +1,33 @@
 import { getContext, setContext } from 'svelte';
 import {
-	ARRIVAL_DURATION_MS,
-	createArrivalLifecycle,
-	type OverviewArrival
-} from './overview-arrival-lifecycle.ts';
+	ENTRANCE_ANIMATION_DURATION_MS,
+	createEntranceAnimationLifecycle,
+	type OverviewEntranceAnimation
+} from './overview-entrance-animation-lifecycle.ts';
 
-export type ArrivalState = 'idle' | 'running' | 'complete';
+export type EntranceAnimationState = 'idle' | 'running' | 'complete';
 
-export type OverviewArrivalController = {
+export type OverviewEntranceAnimationController = {
 	readonly generation: number;
 	readonly pending: boolean;
-	readonly state: ArrivalState;
+	readonly state: EntranceAnimationState;
 	readonly elapsed: number;
 	observe(worksiteId: string | null): void;
-	claim(worksiteId: string): OverviewArrival | null;
+	claim(worksiteId: string): OverviewEntranceAnimation | null;
 	start(generation: number): void;
 	settle(): void;
 	reset(): void;
 };
 
-const overviewArrivalContextKey = Symbol('overview-arrival');
+const overviewEntranceAnimationContextKey = Symbol('overview-entrance-animation');
 
-/** Creates the shell-owned, in-memory arrival controller for the active Worksite. */
-export function createOverviewArrivalController(
+/** Creates the shell-owned, in-memory entrance animation controller for the active Worksite. */
+export function createOverviewEntranceAnimationController(
 	initialWorksiteId: string | null
-): OverviewArrivalController {
-	const lifecycle = createArrivalLifecycle(initialWorksiteId);
+): OverviewEntranceAnimationController {
+	const lifecycle = createEntranceAnimationLifecycle(initialWorksiteId);
 	let generation = $state(lifecycle.generation);
-	let state = $state<ArrivalState>('idle');
+	let state = $state<EntranceAnimationState>('idle');
 	let elapsed = $state(0);
 	let activeGeneration: number | null = null;
 	let frame: number | null = null;
@@ -57,7 +57,7 @@ export function createOverviewArrivalController(
 			cancelFrame();
 			activeGeneration = null;
 			generation = lifecycle.generation;
-			elapsed = wasRunning ? ARRIVAL_DURATION_MS : 0;
+			elapsed = wasRunning ? ENTRANCE_ANIMATION_DURATION_MS : 0;
 			state = wasRunning ? 'complete' : 'idle';
 		},
 		claim(worksiteId: string) {
@@ -73,8 +73,8 @@ export function createOverviewArrivalController(
 			const startedAt = performance.now();
 			const tick = (now: number) => {
 				if (activeGeneration !== nextGeneration) return;
-				elapsed = Math.min(now - startedAt, ARRIVAL_DURATION_MS);
-				if (elapsed >= ARRIVAL_DURATION_MS) {
+				elapsed = Math.min(now - startedAt, ENTRANCE_ANIMATION_DURATION_MS);
+				if (elapsed >= ENTRANCE_ANIMATION_DURATION_MS) {
 					cancelFrame();
 					activeGeneration = null;
 					state = 'complete';
@@ -85,14 +85,14 @@ export function createOverviewArrivalController(
 			if (typeof requestAnimationFrame === 'function') frame = requestAnimationFrame(tick);
 			else {
 				activeGeneration = null;
-				elapsed = ARRIVAL_DURATION_MS;
+				elapsed = ENTRANCE_ANIMATION_DURATION_MS;
 				state = 'complete';
 			}
 		},
 		settle() {
 			cancelFrame();
 			activeGeneration = null;
-			elapsed = ARRIVAL_DURATION_MS;
+			elapsed = ENTRANCE_ANIMATION_DURATION_MS;
 			state = 'complete';
 		},
 		reset() {
@@ -104,12 +104,16 @@ export function createOverviewArrivalController(
 	};
 }
 
-export function overviewArrivalController(): OverviewArrivalController {
-	const controller = getContext<OverviewArrivalController | undefined>(overviewArrivalContextKey);
-	if (!controller) throw new Error('Overview arrival controller is unavailable.');
+export function overviewEntranceAnimationController(): OverviewEntranceAnimationController {
+	const controller = getContext<OverviewEntranceAnimationController | undefined>(
+		overviewEntranceAnimationContextKey
+	);
+	if (!controller) throw new Error('Overview entrance animation controller is unavailable.');
 	return controller;
 }
 
-export function setOverviewArrivalController(controller: OverviewArrivalController): void {
-	setContext(overviewArrivalContextKey, controller);
+export function setOverviewEntranceAnimationController(
+	controller: OverviewEntranceAnimationController
+): void {
+	setContext(overviewEntranceAnimationContextKey, controller);
 }

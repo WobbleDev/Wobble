@@ -24,8 +24,8 @@
 	import { createGroupJump } from '#lib/features/overview/group-jump.svelte.ts';
 	import { frontierKey } from '#lib/features/overview/overview-comparison.ts';
 	import { getLocale } from '#lib/paraglide/runtime.js';
-	import { overviewArrivalClaim } from '#lib/features/overview/overview-arrival-claim.svelte.ts';
-	import { overviewArrivalController } from '#lib/features/overview/overview-arrival.svelte.ts';
+	import { overviewEntranceGuard } from '#lib/features/overview/overview-entrance-guard.svelte.ts';
+	import { overviewEntranceAnimationController } from '#lib/features/overview/overview-entrance-animation.svelte.ts';
 	import OverviewAgitationsCard from '#lib/features/overview/overview-agitations-card.svelte';
 	import { createOverviewAgitationsCard } from '#lib/features/overview/overview-agitations-card.svelte.ts';
 	import OverviewBreakdownCard from '#lib/features/overview/overview-breakdown-card.svelte';
@@ -43,12 +43,12 @@
 	import type { PageProps } from './$types';
 
 	let { data }: PageProps = $props();
-	// The arrival claim stays with the page, as before: the shell-owned ground
+	// The entrance guard stays with the page, as before: the shell-owned ground
 	// animates from it, and the dashboard's own entrance runs from the same claim.
-	const arrival = overviewArrivalController();
+	const entranceAnimation = overviewEntranceAnimationController();
 	const panCapability = new PanCapability();
-	const claim = overviewArrivalClaim({
-		arrival,
+	const claim = overviewEntranceGuard({
+		entranceAnimation,
 		worksiteId: () => data.worksite?.id,
 		reducedMotion: () => panCapability.reducedMotion
 	});
@@ -128,9 +128,9 @@
 	data-dashboard-root
 	class:fitted-dashboard={!view.shown}
 	data-focused={focus.focused}
-	data-overview-arrival
-	data-arrival-state={claim.arrivalState}
-	data-arrival-generation={claim.claimedGeneration ?? undefined}
+	data-overview-entrance-animation
+	data-entrance-animation-state={claim.entranceAnimationState}
+	data-entrance-animation-generation={claim.claimedGeneration ?? undefined}
 >
 	<!-- The sliding dashboard: focused it runs left under the chart and the rail,
 	     faded and blurred, and inert so every pointer and tab stop reaches the
@@ -151,8 +151,8 @@
 			{counts}
 			{coverage}
 			{target}
-			arrivalState={claim.arrivalState}
-			arrivalElapsed={claim.arrivalElapsed}
+			entranceAnimationState={claim.entranceAnimationState}
+			entranceAnimationElapsed={claim.entranceAnimationElapsed}
 			theme={rootState.theme}
 			palette={rootState.palette}
 		/>
@@ -186,8 +186,8 @@
 				workers={data.workers}
 				class="h-full"
 				zoom={view.zoom}
-				arrivalState={claim.arrivalState}
-				arrivalElapsed={claim.arrivalElapsed}
+				entranceAnimationState={claim.entranceAnimationState}
+				entranceAnimationElapsed={claim.entranceAnimationElapsed}
 				onzoomkey={(next) => view.setZoom(next)}
 			/>
 		</div>

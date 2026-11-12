@@ -18,8 +18,8 @@ function card(
 	overrides: Partial<{
 		workers: typeof workers;
 		target: number;
-		arrivalState: 'idle' | 'running' | 'complete';
-		arrivalElapsed: number;
+		entranceAnimationState: 'idle' | 'running' | 'complete';
+		entranceAnimationElapsed: number;
 	}> = {}
 ) {
 	const population = overrides.workers ?? workers;
@@ -32,8 +32,8 @@ function card(
 				counts: assessmentCounts(population),
 				coverage: coverageReading(population, target),
 				target,
-				arrivalState: overrides.arrivalState ?? 'complete',
-				arrivalElapsed: overrides.arrivalElapsed ?? 2400,
+				entranceAnimationState: overrides.entranceAnimationState ?? 'complete',
+				entranceAnimationElapsed: overrides.entranceAnimationElapsed ?? 2400,
 				theme: 'light',
 				palette: 'default'
 			}
@@ -68,9 +68,9 @@ describe('OverviewSupportCard', () => {
 		expect(body).toMatch(/role="img"/);
 	});
 
-	it('counts the figure up while the arrival runs, and reads the exact value once settled', () => {
-		const running = card({ arrivalState: 'running', arrivalElapsed: 0 });
-		const settled = card({ arrivalState: 'complete' });
+	it('counts the figure up while the entrance animation runs, and reads the exact value once settled', () => {
+		const running = card({ entranceAnimationState: 'running', entranceAnimationElapsed: 0 });
+		const settled = card({ entranceAnimationState: 'complete' });
 		expect(running).not.toMatch(/75<span class="pct-sign/);
 		expect(settled).toMatch(/75<span class="pct-sign/);
 	});
