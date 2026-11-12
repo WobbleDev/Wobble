@@ -53,9 +53,10 @@ async function seedHub(request: APIRequestContext, total = 500) {
 
 async function openMap(page: Page) {
 	await page.goto('/mapping');
-	// A 500-Worker hub takes several seconds to arrange on first load, which the
-	// network used to hide; the map says when it is done.
-	await waitForMapReady(page, 20_000);
+	// A 500-Worker hub takes several seconds to arrange on first load, and well over
+	// 15s on a shared macOS runner; the map says when it is done. Use the helper's
+	// CI-sized default so the wait is never shorter than the rest of the suite's.
+	await waitForMapReady(page);
 	await expect(page.getByTestId('relationship-map-layer')).toBeAttached();
 }
 
