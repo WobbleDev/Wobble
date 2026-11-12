@@ -6,10 +6,10 @@ import { getContext, setContext } from 'svelte';
 
 /**
  * The shell's presentation state for the Assessment bullseye: whether it draws
- * the dragged ground, and the scale the reader has set with the wheel. One owner
+ * the dragged chart backdrop, and the scale the reader has set with the wheel. One owner
  * decides both — the shell knows the route, the reader's pointer and motion
  * preferences, and holds the scale — so the Overview reads the same answer
- * rather than re-deriving it, and the ground and its in-page stand-in can never
+ * rather than re-deriving it, and the chart backdrop and its in-page stand-in can never
  * disagree about which is drawn or how large.
  */
 export interface BullseyeView {

@@ -58,7 +58,7 @@ test('the bullseye help names the controls and Reset zoom returns the scale', as
 
 	// The help is a tooltip beside the title: it takes no column height, and a
 	// keyboard reader reaches it by focusing the button. This viewport draws the
-	// ground, so its copy is the dragged form.
+	// chart backdrop, so its copy is the dragged form.
 	const help = page.getByRole('button', { name: 'How to read the chart' });
 	await expect(page.getByText('arrow keys move')).toBeHidden();
 	await help.focus();
@@ -75,7 +75,7 @@ test('the bullseye help names the controls and Reset zoom returns the scale', as
 	await expect(reset).toBeDisabled();
 
 	// It stands clear of the column, fixed at the lower right of the screen, and
-	// the bullseye ground's pass-through does not swallow the click.
+	// the bullseye chart backdrop's pass-through does not swallow the click.
 	const box = await reset.boundingBox();
 	const viewport = page.viewportSize()!;
 	expect(box!.x).toBeGreaterThan(viewport.width / 2);

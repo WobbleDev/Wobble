@@ -4,7 +4,7 @@ import { getContext, setContext } from 'svelte';
  * The Overview's focus state: at rest the dashboard reads and the bullseye is
  * a faded floor; focused, the dashboard slides aside and the bullseye answers
  * the pointer. The shell creates it beside the bullseye view state and shares
- * it through context, so the edge control, the dashboard and the ground agree.
+ * it through context, so the edge control, the dashboard and the chart backdrop agree.
  */
 export interface OverviewFocusHost {
 	/** Whether the reader is on the Overview; the shell's route, read live. */
@@ -15,7 +15,7 @@ export interface OverviewFocus {
 	readonly focused: boolean;
 	/** The edge control's flip between rest and focus. */
 	toggle(): void;
-	/** The return to rest: Escape, or the ground going away. */
+	/** The return to rest: Escape, or the chart backdrop going away. */
 	blur(): void;
 	/**
 	 * The return to rest on every Overview entrance animation, as the zoom does. The shell
@@ -61,7 +61,7 @@ export function setOverviewFocus(focus: OverviewFocus): void {
 	setContext(overviewFocusKey, focus);
 }
 
-/** Read by the edge control, the dashboard and the ground. */
+/** Read by the edge control, the dashboard and the chart backdrop. */
 export function overviewFocus(): OverviewFocus {
 	return getContext<OverviewFocus>(overviewFocusKey);
 }

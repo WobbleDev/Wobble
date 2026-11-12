@@ -13,8 +13,8 @@ import {
 
 /**
  * The Overview's focus control (ticket 02): the edge tab slides the dashboard
- * aside and wakes the bullseye ground where it lies. Focused, the dashboard is
- * inert beneath the chart and the rail; at rest the ground is inert instead.
+ * aside and wakes the bullseye chart backdrop where it lies. Focused, the dashboard is
+ * inert beneath the chart and the rail; at rest the chart backdrop is inert instead.
  * Gestures — drag, wheel, zoom keys, Reset — answer only while focused.
  */
 
@@ -121,7 +121,7 @@ async function seedDashboard(request: APIRequestContext): Promise<DashboardSeed>
 	return { deptId, roleId };
 }
 
-const ground = (page: Page) => page.locator('[data-bullseye-base]');
+const chartBackdrop = (page: Page) => page.locator('[data-bullseye-base]');
 const layer = (page: Page) => page.locator('[data-bullseye-layer]');
 const dots = (page: Page) => page.locator('[data-bullseye-base] circle[data-worker-id]');
 const dot = (page: Page, id: string) => page.locator('circle[data-worker-id="' + id + '"]');
@@ -172,14 +172,14 @@ async function drag(page: Page, from: { x: number; y: number }, to: { x: number;
  * never moves, rather than the frame's middle, which the strip can cover.
  */
 async function chartPoint(page: Page) {
-	const frame = (await ground(page).boundingBox())!;
+	const frame = (await chartBackdrop(page).boundingBox())!;
 	const strip = await stripRight(page);
 	return { x: frame.x + strip + 60, y: frame.y + frame.height / 2 };
 }
 
 /** The middle of the frame, which is always inside the chart region at these widths. */
 async function frameCentre(page: Page) {
-	const frame = (await ground(page).boundingBox())!;
+	const frame = (await chartBackdrop(page).boundingBox())!;
 	return { x: frame.x + frame.width / 2, y: frame.y + frame.height / 2 };
 }
 test('toggles the bullseye focus from the edge control, and Escape returns', async ({
@@ -270,7 +270,7 @@ test('moves the chart one for one with the pointer while focused', async ({ page
 	await page.setViewportSize({ width: 1280, height: 900 });
 	await page.goto('/overview');
 	await appReady(page);
-	await expect(ground(page)).toBeVisible();
+	await expect(chartBackdrop(page)).toBeVisible();
 	await focusBullseye(page);
 
 	const before = (await layer(page).boundingBox())!;
@@ -281,7 +281,7 @@ test('moves the chart one for one with the pointer while focused', async ({ page
 	await page.mouse.down();
 	await page.mouse.move(from.x + 20, from.y, { steps: 3 });
 	// The surface says it is being moved while the drag is in flight.
-	await expect(ground(page)).toHaveCSS('cursor', 'grabbing');
+	await expect(chartBackdrop(page)).toHaveCSS('cursor', 'grabbing');
 	await page.mouse.move(from.x + delta.x, from.y + delta.y, { steps: 6 });
 	await page.mouse.up();
 	await nextFrames(page);
@@ -289,7 +289,7 @@ test('moves the chart one for one with the pointer while focused', async ({ page
 	const after = await layer(page).boundingBox();
 	expect(Math.abs(after!.x - before.x - delta.x)).toBeLessThanOrEqual(1);
 	expect(Math.abs(after!.y - before.y - delta.y)).toBeLessThanOrEqual(1);
-	await expect(ground(page)).toHaveCSS('cursor', 'grab');
+	await expect(chartBackdrop(page)).toHaveCSS('cursor', 'grab');
 
 	// A dot is as good a handle as the empty chart is.
 	const ids = await dotIds(page);
@@ -335,14 +335,14 @@ test('never lets the chart be dragged out of the chart region while focused', as
 	await page.setViewportSize({ width: 1280, height: 900 });
 	await page.goto('/overview');
 	await appReady(page);
-	await expect(ground(page)).toBeVisible();
+	await expect(chartBackdrop(page)).toBeVisible();
 	await focusBullseye(page);
 
 	// The bound the drag is held inside: the travel model's own quarter-share of
 	// the frame's width, past the strip's right edge on the left and inside the
 	// frame on every other side.
 	const boxes = async () => {
-		const frame = (await ground(page).boundingBox())!;
+		const frame = (await chartBackdrop(page).boundingBox())!;
 		const chart = (await layer(page).boundingBox())!;
 		return { frame, chart };
 	};
@@ -530,7 +530,7 @@ test('hides the edge control below the floor and draws the fitted chart', async 
 	await appReady(page);
 
 	await expect(edge(page)).toHaveCount(0);
-	await expect(ground(page)).toHaveCount(0);
+	await expect(chartBackdrop(page)).toHaveCount(0);
 	await expect(page.locator('.no-scroll-chart')).toHaveCount(1);
 	// The fitted chart keeps its own reset: the fallback is unchanged.
 	await expect(resetZoom(page)).toBeVisible();
@@ -546,9 +546,9 @@ test('settles the focus change within one frame under reduced motion', async ({
 	await page.goto('/overview');
 	await appReady(page);
 
-	// Under reduced motion the ground never runs: no edge, fitted chart instead.
+	// Under reduced motion the chart backdrop never runs: no edge, fitted chart instead.
 	await expect(edge(page)).toHaveCount(0);
-	await expect(ground(page)).toHaveCount(0);
+	await expect(chartBackdrop(page)).toHaveCount(0);
 
 	// The dashboard's focus travel is instant: its transition collapses from 650ms
 	// to about a millisecond (this Chromium serializes that duration as 1e-05s).
@@ -642,10 +642,10 @@ test('leaves the bullseye inert at rest', async ({ page, request }) => {
 	await page.goto('/overview');
 	await appReady(page);
 
-	await expect(ground(page)).toHaveAttribute('inert', '');
-	await expect(ground(page)).toHaveAttribute('aria-hidden', 'true');
+	await expect(chartBackdrop(page)).toHaveAttribute('inert', '');
+	await expect(chartBackdrop(page)).toHaveAttribute('aria-hidden', 'true');
 
-	// A dot cannot take focus while the ground is inert.
+	// A dot cannot take focus while the chart backdrop is inert.
 	const ids = await dotIds(page);
 	const focusable = await dot(page, ids[0]).evaluate((element) => {
 		(element as SVGCircleElement).focus();

@@ -20,7 +20,7 @@
 	import { UnsavedChanges, unsavedChangesContextKey } from '#lib/shared/unsaved-changes.svelte.ts';
 	import BullseyeBase from '#lib/features/overview/bullseye/bullseye-base.svelte';
 	import ChartHelp from '#lib/features/overview/chart-help.svelte';
-	import { createBullseyeGround } from '#lib/features/overview/bullseye-ground.svelte.ts';
+	import { createBullseyeChartBackdrop } from '#lib/features/overview/bullseye-chart-backdrop.svelte.ts';
 	import {
 		createOverviewFocus,
 		setOverviewFocus
@@ -85,26 +85,26 @@
 	const noScrollSurface = $derived(
 		page.url.pathname === '/overview' || page.url.pathname === '/mapping'
 	);
-	/* The one route whose bullseye is a ground behind the shell, rather than a
+	/* The one route whose bullseye is a chart backdrop behind the shell, rather than a
 	   chart in the page beside the panels. */
 	const isOverview = $derived(page.url.pathname === '/overview');
 	const isMapping = $derived(page.url.pathname === '/mapping');
 	const isMobile = new IsMobile();
 	const panCapability = new PanCapability();
-	/* The draggable ground is shown only where it can be hovered and moved. Elsewhere
+	/* The draggable chart backdrop is shown only where it can be hovered and moved. Elsewhere
 	   — below the split, under reduced motion, or on a coarse pointer — the fitted
 	   chart is drawn in the page instead, so every dot stays reachable with no drag. */
-	/* The Overview reads the ground's state from context rather than re-deriving the
-	   same conditions, so the ground and its in-page stand-in can never both render or
+	/* The Overview reads the chart backdrop's state from context rather than re-deriving the
+	   same conditions, so the chart backdrop and its in-page stand-in can never both render or
 	   both vanish, and the chart is always sized by the one scale the shell holds. */
-	const ground = createBullseyeGround(
+	const chartBackdrop = createBullseyeChartBackdrop(
 		() => isOverview,
 		() => !isMobile.current && panCapability.allowed
 	);
-	const groundShown = $derived(ground.shown);
+	const chartBackdropShown = $derived(chartBackdrop.shown);
 	/* The Overview's focus state: at rest the dashboard reads, focused the bullseye
 	   answers. Created beside the bullseye view state and shared the same way, so
-	   the edge control, the dashboard and the ground agree. */
+	   the edge control, the dashboard and the chart backdrop agree. */
 	const focus = createOverviewFocus({ isOverview: () => isOverview });
 	setOverviewFocus(focus);
 	const isSettingsPage = $derived(page.url.pathname === '/settings');
@@ -224,7 +224,7 @@
 	});
 
 	/* Focus returns to rest on every Overview entrance animation, as the zoom does; and when
-	   the ground goes away mid-focus, so the dashboard never sits slid and inert
+	   the chart backdrop goes away mid-focus, so the dashboard never sits slid and inert
 	   where the fitted chart is drawn instead. The generation read subscribes the
 	   reset to entrance animations claimed on this route too: switching Worksites claims a
 	   new generation without a navigation. */
@@ -233,7 +233,7 @@
 		focus.resetOnEntranceAnimation();
 	});
 	$effect(() => {
-		if (!ground.shown) focus.blur();
+		if (!chartBackdrop.shown) focus.blur();
 	});
 
 	/* Created after the Overview's entrance animation effects, as the settings effects were on
@@ -284,16 +284,16 @@
 			class={cn(
 				'relative isolate flex min-h-0 min-w-0 flex-1 flex-col bg-transparent focus:outline-none',
 				/* The Overview dashboard and the bullseye floor both run under the
-				   navigation rail, in the ground and the fitted form alike. */
-				isOverview || groundShown
+				   navigation rail, in the chart backdrop and the fitted form alike. */
+				isOverview || chartBackdropShown
 					? '[clip-path:inset(0_0_0_calc(-1*var(--overview-rail-reach)))]'
 					: 'overflow-hidden'
 			)}
-			data-bullseye-base-surface={groundShown ? '' : undefined}
+			data-bullseye-base-surface={chartBackdropShown ? '' : undefined}
 		>
 			<!-- The header paints nothing of its own — no fill, no blur, no edge — so
-		     the bullseye ground reads continuously behind it. It sits above the
-		     focused ground, so the zoomed chart slides under the breadcrumbs and
+		     the bullseye chart backdrop reads continuously behind it. It sits above the
+		     focused chart backdrop, so the zoomed chart slides under the breadcrumbs and
 		     actions instead of covering them. -->
 			<AppHeaderBar worksite={data.worksite} class="relative z-[4]" />
 			{#if settingsContext.saveError}
@@ -308,7 +308,7 @@
 
 			<!-- The lead above the page title is chrome a no-scroll surface buys
 		     height back from; layout.css tightens it through --page-header-lead. -->
-			<!-- Above the focused ground with the header, so the title row does too. -->
+			<!-- Above the focused chart backdrop with the header, so the title row does too. -->
 			<div class="relative z-[4] shrink-0 px-4 pt-(--page-header-lead,1rem) lg:px-6">
 				<!-- The chart help stands beside the Overview title rather than in the
 			     column's foot, where it spent height the Breakdown needs. Only that
@@ -352,7 +352,7 @@
 							/* The card's own inset doubles the page gutter; on the map it
 						   goes below the Shell tier for the same reason. */
 							(isMapping || isOverview) && 'max-lg:[--card-spacing:0px]',
-							/* The Overview bullseye is a ground behind the pad, so the pad
+							/* The Overview bullseye is a chart backdrop behind the pad, so the pad
 						   gives up its surface; the panels carry their own. Mapping and the
 						   Workers table do the same: each panel is its own surface on the page, so a
 						   gap of page ground and its shadow separate it from the glass rail
@@ -389,7 +389,7 @@
 								{@render children()}
 							{:else}
 								<!-- Almost the only control on the Overview empty shell, so it has
-							     to re-enable the pointer the bullseye ground's pass-through
+							     to re-enable the pointer the bullseye chart backdrop's pass-through
 							     takes away; the page's own controls do the same where they
 							     sit. Without this the button is unhittable on /overview. -->
 								<section
@@ -416,14 +416,14 @@
 					</Card.Root>
 				</div>
 			</div>
-			<!-- The ground is mounted after the page so the Overview's own heading and
+			<!-- The chart backdrop is mounted after the page so the Overview's own heading and
 		     controls come first in tab order; its absolute, negative stacking keeps it
 		     behind them with no visual change. -->
-			{#if groundShown}
+			{#if chartBackdropShown}
 				<BullseyeBase
 					workers={data.workers}
 					attributes={data.attributes}
-					zoom={ground.zoom}
+					zoom={chartBackdrop.zoom}
 					entranceAnimationState={isOverview ? overviewEntranceAnimation.state : 'idle'}
 					entranceAnimationElapsed={overviewEntranceAnimation.elapsed}
 				/>

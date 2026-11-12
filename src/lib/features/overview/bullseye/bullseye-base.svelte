@@ -1,6 +1,6 @@
 <script lang="ts">
 	/**
-	 * The Overview bullseye as a ground: larger than its frame, clipped, drawn
+	 * The Overview bullseye as a chart backdrop: larger than its frame, clipped, drawn
 	 * behind the shell as the dashboard's faded floor. At rest it is inert and
 	 * hidden from assistive technology, and only the drawing is faded and
 	 * blurred; focused it grows in place and answers drag, wheel and zoom keys.
@@ -37,11 +37,11 @@
 	} = $props();
 
 	const id = $props.id();
-	/** The shell holds the one shared scale; this ground reads it and sets it. */
+	/** The shell holds the one shared scale; this chart backdrop reads it and sets it. */
 	const view = bullseyeView();
 	/** The slid strip's right edge, in the frame's coordinates: the drag's left limit. */
 	let columnRight = $state(0);
-	/** The frame's own size, read from the ground element: what the floor's placement is measured from. */
+	/** The frame's own size, read from the chart backdrop element: what the floor's placement is measured from. */
 	let frameWidth = $state(0);
 	let frameHeight = $state(0);
 	/* The shell's focus state: at rest the floor is faded and inert, focused it
@@ -50,9 +50,9 @@
 	const placement = $derived(floorPlacement(frameWidth, frameHeight, focus.focused));
 	const pan = createDragPan(() => columnRight);
 	const tooltip = createTooltip();
-	let ground = $state<HTMLElement>();
+	let chartBackdrop = $state<HTMLElement>();
 	/* A click centres a Worker and dims the rest of the chart to their ties; clicking
-	   them again, the chart's empty ground, or Escape clears it. */
+	   them again, the chart's empty area, or Escape clears it. */
 	let selectedId = $state<string | null>(null);
 	/** The selected worker and their ties, named for as long as the selection stands. */
 	let nameTags = $state<NameTag[]>([]);
@@ -65,7 +65,7 @@
 	 * keeps density out of the arithmetic.
 	 */
 	function measure(scale: number = zoom) {
-		const bounds = ground;
+		const bounds = chartBackdrop;
 		if (!bounds) return;
 
 		frameWidth = bounds.clientWidth;
@@ -86,12 +86,12 @@
 	}
 
 	/**
-	 * The wheel is the ground's own gesture: the scale changes about the point under
+	 * The wheel is the chart backdrop's own gesture: the scale changes about the point under
 	 * the pointer, so the ring being read stays under it. The event's default is
 	 * cancelled so the surface never scrolls under the chart.
 	 */
 	function onWheel(event: WheelEvent) {
-		/* The wheel answers only while focused; at rest the ground is inert and the
+		/* The wheel answers only while focused; at rest the chart backdrop is inert and the
 		   event never reaches it, but the guard keeps the gesture honest. */
 		if (!focus.focused) return;
 		const scale = zoom;
@@ -100,7 +100,7 @@
 		if (next === scale) return;
 
 		const layer = pan.layer;
-		const bounds = ground;
+		const bounds = chartBackdrop;
 		if (!layer || !bounds) return;
 
 		const box = bounds.getBoundingClientRect();
@@ -146,15 +146,15 @@
 	}
 
 	$effect(() => {
-		if (!ground) return;
-		pan.bounds = ground;
-		tooltip.reference = ground;
+		if (!chartBackdrop) return;
+		pan.bounds = chartBackdrop;
+		tooltip.reference = chartBackdrop;
 		untrack(() => measure());
 
 		const observer = new ResizeObserver(() => measure());
-		observer.observe(ground);
+		observer.observe(chartBackdrop);
 
-		/* The gesture is followed on the window rather than on the ground: a quick drag
+		/* The gesture is followed on the window rather than on the chart backdrop: a quick drag
 		   can leave the chart's own subtree — the chart sits behind the leading column,
 		   and its events are not ours to hear there — before it has moved far enough to
 		   count as a drag, and the gesture would then end before it had begun. */
@@ -206,13 +206,13 @@
 		// The click that ends a drag is the pan's tail, not a click on the chart.
 		if (pan.takeDragTail()) return;
 		if (!target?.closest('[data-worker-id]')) tooltip.hide();
-		// Only the chart's own ground clears a selection; the page's panels leave it.
+		// Only the chart's own chart backdrop clears a selection; the page's panels leave it.
 		if (target?.closest('[data-bullseye-pan-surface]')) selectedId = null;
 	}}
 	onkeydown={onKeydown}
 />
 
-<!-- The ground itself: inert and hidden from assistive technology at rest, so no
+<!-- The chart backdrop itself: inert and hidden from assistive technology at rest, so no
      dot is in the tab order and no pointer event reaches the chart below the
      dashboard; focused it rises above the dashboard and answers. -->
 <div
@@ -223,7 +223,7 @@
 	)}
 	class:cursor-grab={!pan.dragging}
 	class:cursor-grabbing={pan.dragging}
-	bind:this={ground}
+	bind:this={chartBackdrop}
 	inert={!focus.focused}
 	aria-hidden={!focus.focused}
 	data-bullseye-base
@@ -233,7 +233,7 @@
 	}}
 	onwheel={onWheel}
 >
-	<!-- The chart that is not a dot has to be draggable too, and the ground itself is
+	<!-- The chart that is not a dot has to be draggable too, and the chart backdrop itself is
 	     inert at rest: this surface is the hit target for the whole frame while
 	     focused, including the faded strip on the left where the dashboard sits
 	     inert beneath the chart. At rest it collapses to the dashboard's own right
@@ -247,7 +247,7 @@
 	></div>
 
 	<!-- The chart, sized at 1.4x the frame's height and centred at 77% of its
-	     width and 69% of its height, measured from the ground element itself.
+	     width and 69% of its height, measured from the chart backdrop element itself.
 	     The size is the frame's height times the reader's scale, and that is
 	     load-bearing rather than a taste: the chart is resized rather than scaled by
 	     a transform, so its ring names keep reading at interface pixels and its dots
@@ -319,7 +319,7 @@
 	</div>
 </div>
 
-<!-- Above the shell and outside the clip, so the ground's layering cannot hide it. -->
+<!-- Above the shell and outside the clip, so the chart backdrop's layering cannot hide it. -->
 <TooltipCallout active={tooltip.active} {attributes} />
 
 <style>

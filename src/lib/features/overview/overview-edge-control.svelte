@@ -7,7 +7,7 @@
 	import { overviewFocus } from './overview-focus.svelte.ts';
 
 	/* The shell's focus and zoom, shared through context: the focus tab and the
-	   focused ground's Reset zoom are the Overview's controls over the ground, so
+	   focused chart backdrop's Reset zoom are the Overview's controls over the chart backdrop, so
 	   they live with the Overview rather than in the shell. */
 	const focus = overviewFocus();
 	const view = bullseyeView();
@@ -28,7 +28,7 @@
 			class="size-4"
 		/>{/if}
 </button>
-<!-- Reset zoom belongs to the focused ground, at the lower right above it;
+<!-- Reset zoom belongs to the focused chart backdrop, at the lower right above it;
      the fitted chart keeps its own reset in the page. -->
 {#if focus.focused}
 	<Button

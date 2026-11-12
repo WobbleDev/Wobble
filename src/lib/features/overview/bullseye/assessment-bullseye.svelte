@@ -67,7 +67,7 @@
 	}}
 />
 
-<!-- The chart, on the ground, with no card and no key: the Overview's dominant
+<!-- The chart, on the chart backdrop, with no card and no key: the Overview's dominant
      object. Everything the removed key used to say — which colour is which
      standing, how many workers hold it, and how far the Committee reaches — is
      carried by the chart's own accessible description, so the meaning goes with

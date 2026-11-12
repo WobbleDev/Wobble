@@ -129,7 +129,7 @@ test('shows the final figure at once when reduced motion is requested', async ({
 	);
 	await appReady(page);
 	await expect(overall(page)).toContainText('100%');
-	// Under reduced motion the fitted chart stands in for the ground, settled too.
+	// Under reduced motion the fitted chart stands in for the chart backdrop, settled too.
 	await expect(page.locator('.no-scroll-chart')).toBeVisible();
 });
 

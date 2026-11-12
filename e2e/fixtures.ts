@@ -354,7 +354,7 @@ export async function scrollableOverflow(page: Page): Promise<number> {
  * Content that is hidden rather than shown: an element clipping overflow it
  * cannot fit. A no-scroll surface fits by scrolling a panel inside itself or
  * compacting, so this must stay empty there. Three kinds of clipping are
- * deliberate and skipped: the scroll region, whose clipping is the mechanism; the bullseye ground, which is
+ * deliberate and skipped: the scroll region, whose clipping is the mechanism; the bullseye chart backdrop, which is
  * oversized on purpose and dragged to; and screen-reader-only text, whose whole
  * job is to leave the visual flow.
  */

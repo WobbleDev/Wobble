@@ -78,7 +78,7 @@ describe('createChartZoomHandler', () => {
 		expect(setZoom).toHaveBeenCalledWith(zoomAfterWheel(1, 100, 0));
 	});
 
-	it('leaves the wheel alone while the ground owns it', () => {
+	it('leaves the wheel alone while the chart backdrop owns it', () => {
 		const { handle, setZoom } = setup({ shown: true });
 		const event = wheel();
 		handle(event);
@@ -174,7 +174,7 @@ describe('createOverviewChartZoom', () => {
 		expect(route.target.removeEventListener).toHaveBeenCalledWith('wheel', route.listeners[0]);
 	});
 
-	it('the direct handle leaves the wheel alone while the ground owns it', () => {
+	it('the direct handle leaves the wheel alone while the chart backdrop owns it', () => {
 		const route = literalRoute({ shown: true });
 		const { handle } = createOverviewChartZoom(route.host);
 		const event = wheel();

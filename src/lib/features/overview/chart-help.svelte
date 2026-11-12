@@ -4,7 +4,7 @@
 	 *
 	 * The help left the column's foot so the Breakdown keeps its height: it opens
 	 * on hover and on focus from a button a keyboard reader reaches. The copy keeps
-	 * its two forms — the ground is dragged and scrolled, the fitted chart only
+	 * its two forms — the chart backdrop is dragged and scrolled, the fitted chart only
 	 * scrolled — and reads the shell's own view state, so the two can never
 	 * disagree about which chart is drawn.
 	 */

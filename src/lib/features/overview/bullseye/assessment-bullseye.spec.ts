@@ -42,13 +42,13 @@ describe('AssessmentBullseye', () => {
 		expect(chart).toContain('-chart-description');
 	});
 
-	it('shows no name until one is active, and draws no ground of its own', () => {
+	it('shows no name until one is active, and draws no chart backdrop of its own', () => {
 		const { body } = render(AssessmentBullseye, { props: { workers } });
 
 		// The hover name is the reader's, not the chart's: nothing is drawn until a
 		// dot has been entered or focused...
 		expect(body).not.toContain('data-bullseye-callout');
-		// ...and the dragged ground is the shell's, so this component never claims it.
+		// ...and the dragged chart backdrop is the shell's, so this component never claims it.
 		expect(body).not.toContain('data-bullseye-base');
 	});
 });

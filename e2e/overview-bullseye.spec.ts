@@ -6,7 +6,7 @@ import { wireDefinitions, wireWorkerAttributes } from './answer-wire.ts';
 
 /**
  * The Assessment bullseye as the reader drives it: a real pointer that drags the
- * ground, a wheel over a point in it, and whatever is under the pointer at the
+ * chart backdrop, a wheel over a point in it, and whatever is under the pointer at the
  * end. The chart is moved one for one, so a drag is both how a Worker is brought
  * into view and how the bound is probed.
  */
@@ -174,7 +174,10 @@ test('falls back to the fitted chart when motion is reduced', async ({ page, req
 test.describe('a coarse pointer', () => {
 	test.use({ hasTouch: true });
 
-	test('draws the fitted chart in the page, not the dragged ground', async ({ page, request }) => {
+	test('draws the fitted chart in the page, not the dragged chart backdrop', async ({
+		page,
+		request
+	}) => {
 		await seedWorkers(request);
 
 		for (const size of [
@@ -358,7 +361,7 @@ test('scales the fitted chart under reduced motion without clipping or scrolling
 	await page.goto('/overview');
 	await appReady(page);
 
-	// No ground is drawn under reduced motion, so the chart is fitted in the page.
+	// No chart backdrop is drawn under reduced motion, so the chart is fitted in the page.
 	await expect(page.locator('[data-bullseye-base]')).toHaveCount(0);
 	await expect(page.locator('.no-scroll-chart')).toHaveCount(1);
 	const chart = chartBox(page);

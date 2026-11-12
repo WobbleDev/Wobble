@@ -3,7 +3,7 @@
  *
  * Both the chart and the page that draws it need the same sentence: the chart
  * carries it in its accessible description, and Overview prints it where the
- * chart is a ground. One owner keeps the two from drifting.
+ * chart is a chart backdrop. One owner keeps the two from drifting.
  */
 
 import { assessmentOptions, type AssessmentOption, type Worker } from '#lib/domain-vocabulary.ts';

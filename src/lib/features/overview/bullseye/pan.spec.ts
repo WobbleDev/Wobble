@@ -1,10 +1,10 @@
 /**
- * The bullseye ground's drag, specced through the factory the component mounts:
+ * The bullseye chart backdrop's drag, specced through the factory the component mounts:
  * the press that becomes a drag, the travel that keeps a quarter of the chart in
  * its region, the scale change that re-anchors the chart under the
  * pointer, and the glide that carries a dot to the middle.
  *
- * The factory reads real layout (the layer's resting box and the ground's own
+ * The factory reads real layout (the layer's resting box and the chart backdrop's own
  * size), so the elements here are the smallest literal fakes that answer those
  * reads: they are never queried or mutated by the module.
  */
@@ -80,8 +80,8 @@ function edges(pan: { x: number; y: number }, scale = 1) {
 	};
 }
 
-describe('arrival', () => {
-	it('a new ground rests at the origin with no element attached', () => {
+describe('a new chart backdrop', () => {
+	it('a new chart backdrop rests at the origin with no element attached', () => {
 		const pan = createDragPan(() => COLUMN_RIGHT);
 		expect(pan.x).toBe(0);
 		expect(pan.y).toBe(0);
@@ -392,7 +392,7 @@ describe('snapIntoView', () => {
 		expect(raf.cancel).toHaveBeenCalledWith(1);
 	});
 
-	it('stops a glide in flight when the ground goes away', () => {
+	it('stops a glide in flight when the chart backdrop goes away', () => {
 		const { pan } = setup();
 		const raf = frames();
 		pan.snapIntoView(dot);
