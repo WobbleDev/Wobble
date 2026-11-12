@@ -3,7 +3,7 @@ import { zoomAfterWheel } from './bullseye/pan-mappings.ts';
 /**
  * The Overview's wheel zoom, as a plain host-factory: the overlay skip list, the
  * no-scroll floor and the chart's bounds hit-test. The route wires the document
- * listener through overview-wheel.svelte.ts; this module holds the decisions so a
+ * listener through overview-chart-zoom.svelte.ts; this module holds the decisions so a
  * literal host can drive them in the spec beside it.
  */
 
@@ -21,7 +21,7 @@ export const OVERLAY_SELECTOR = [
 /** The no-scroll contract's own floor, matched to the layout.css media query. */
 export const NO_SCROLL_FLOOR = '(min-width: 64rem) and (min-height: 40rem)';
 
-export interface WheelBox {
+export interface ChartZoomBox {
 	readonly left: number;
 	readonly right: number;
 	readonly top: number;
@@ -29,7 +29,7 @@ export interface WheelBox {
 }
 
 /** Whether a point lies inside a box, edges included. */
-export function pointInBox(box: WheelBox, x: number, y: number): boolean {
+export function pointInBox(box: ChartZoomBox, x: number, y: number): boolean {
 	return !(x < box.left || x > box.right || y < box.top || y > box.bottom);
 }
 
@@ -47,14 +47,14 @@ export interface WheelEventLike {
 	preventDefault(): void;
 }
 
-export interface WheelZoomHost {
+export interface ChartZoomHost {
 	readonly view: {
 		readonly shown: boolean;
 		readonly zoom: number;
 		setZoom(next: number): void;
 	};
 	/** The chart's cell, or undefined while it is not drawn in the page. */
-	chart(): { getBoundingClientRect(): WheelBox } | undefined;
+	chart(): { getBoundingClientRect(): ChartZoomBox } | undefined;
 	/** Whether the no-scroll floor currently matches. */
 	floorMatches(): boolean;
 }
@@ -65,7 +65,7 @@ export interface WheelZoomHost {
  * off the chart; otherwise it cancels the default so the surface never scrolls
  * under the chart and sets the zoom the wheel asks for.
  */
-export function createWheelZoomHandler(host: WheelZoomHost): (event: WheelEventLike) => void {
+export function createChartZoomHandler(host: ChartZoomHost): (event: WheelEventLike) => void {
 	return (event) => {
 		if (host.view.shown) return;
 		if (isInsideOverlay(event.target)) return;
@@ -90,7 +90,7 @@ export interface WheelTargetLike {
 	removeEventListener(type: 'wheel', listener: (event: WheelEvent) => void): void;
 }
 
-export interface OverviewWheelHost extends WheelZoomHost {
+export interface OverviewChartZoomHost extends ChartZoomHost {
 	readonly target: WheelTargetLike;
 	/** Runs `setup` and re-runs it when its reads change; the route passes $effect here. */
 	effect(setup: () => (() => void) | void): void;
@@ -100,10 +100,10 @@ export interface OverviewWheelHost extends WheelZoomHost {
  * The route's wheel listener: registered through the host's effect, so the listener
  * lives as long as the route. Returns the handler for direct calls.
  */
-export function createOverviewWheel(host: OverviewWheelHost): {
+export function createOverviewChartZoom(host: OverviewChartZoomHost): {
 	handle(event: WheelEventLike): void;
 } {
-	const handle = createWheelZoomHandler(host);
+	const handle = createChartZoomHandler(host);
 	host.effect(() => {
 		const listener = (event: WheelEvent) => handle(event);
 		host.target.addEventListener('wheel', listener, { passive: false });
