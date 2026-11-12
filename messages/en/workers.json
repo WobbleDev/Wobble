@@ -279,6 +279,7 @@
 	"workers_copy_failed": "Could not copy",
 	"workers_draft_state_unsaved": "Unsaved changes",
 	"workers_draft_state_stored": "Draft kept on this computer",
+	"workers_draft_state_failed": "Draft not saved. Your changes are still open here.",
 	"workers_draft_compare": "{field}: saved {saved}, draft {draft}",
 	"workers_draft_compare_empty": "empty",
 	"workers_notes_search": "Search notes",

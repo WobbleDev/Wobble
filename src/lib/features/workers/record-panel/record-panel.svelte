@@ -249,7 +249,7 @@
 			if (panelDraft.stored) {
 				panelDraft.stored = false;
 				untrack(() => (panelDraft.restoredAt = null));
-				void deleteWorkerDraft(id);
+				void deleteWorkerDraft(id).catch(() => {});
 			}
 			return;
 		}
@@ -258,9 +258,17 @@
 		const save = () => {
 			clearTimeout(timer);
 			pendingSave = null;
-			panelDraft.stored = true;
-			panelDraft.status = 'stored';
-			void saveWorkerDraft(id, payload);
+			// Only a write the core accepted counts as stored; the next change retries.
+			void saveWorkerDraft(id, payload).then(
+				() => {
+					if (panelDraft.workerId !== id) return;
+					panelDraft.stored = true;
+					panelDraft.status = 'stored';
+				},
+				() => {
+					if (panelDraft.workerId === id) panelDraft.status = 'failed';
+				}
+			);
 		};
 		const timer = setTimeout(save, 1000);
 		pendingSave = save;
@@ -446,7 +454,9 @@
 				<p data-testid="draft-status" role="status" class="mx-4 mt-2 text-xs text-ink-3">
 					{panelDraft.status === 'unsaved'
 						? m.workers_draft_state_unsaved()
-						: m.workers_draft_state_stored()}
+						: panelDraft.status === 'failed'
+							? m.workers_draft_state_failed()
+							: m.workers_draft_state_stored()}
 				</p>
 			{/if}
 			<div

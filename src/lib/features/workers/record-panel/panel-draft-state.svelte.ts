@@ -36,7 +36,7 @@ export class PanelDraftState {
 	/** Where a restored draft and the saved record now disagree; shown when the base changed. */
 	differences = $state<DraftDifference[]>([]);
 	/** Whether open input is unsaved, and whether the core holds it as a draft yet. */
-	status = $state<'idle' | 'unsaved' | 'stored'>('idle');
+	status = $state<'idle' | 'unsaved' | 'stored' | 'failed'>('idle');
 	/** False while the selected Worker's stored draft is being read. The record shows
 	 *  regardless; this only holds back saving a new draft until the stored one is known. */
 	ready = $state(false);
@@ -79,7 +79,7 @@ export class PanelDraftState {
 				this.status = 'stored';
 				this.stored = true;
 			} else {
-				void deleteWorkerDraft(id);
+				void deleteWorkerDraft(id).catch(() => {});
 			}
 		}
 		this.ready = true;
@@ -115,7 +115,13 @@ export class PanelDraftState {
 		this.differences = [];
 		this.status = 'idle';
 		this.stored = false;
-		if (id) await deleteWorkerDraft(id);
+		if (id) {
+			try {
+				await deleteWorkerDraft(id);
+			} catch {
+				// A stale draft may return on the next open; the panel itself is already cleared.
+			}
+		}
 	}
 }
 
