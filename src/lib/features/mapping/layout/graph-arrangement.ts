@@ -16,7 +16,7 @@ import { regionPadding, type Point } from './graph-layout.ts';
 import { answerPositionLabel, groupValue, type LabelOf } from './graph-analysis.ts';
 import { fitAndSeparate, type StressPoint } from './graph-stress.ts';
 import { freePhysicsLayout } from './graph-free-physics.ts';
-import { detectCommunities, gatherStart } from './graph-communities.ts';
+import { detectClusters, gatherStart } from './graph-clusters.ts';
 import { layoutGroup, type CrossTie, type GroupMember } from './graph-group-layout.ts';
 import { groupOuterPadding, layoutSubGroups } from './graph-sub-group-layout.ts';
 import { fitGroupsToCanvas } from './graph-canvas-fit.ts';
@@ -583,13 +583,13 @@ export function createArranger() {
 		const positions = new Map<string, Point>();
 		const crossLinkIds = new Set<string>();
 		// Ungrouped: free physics over the whole graph, from a fresh gathered start.
-		const communities = detectCommunities(
+		const clusters = detectClusters(
 			nodes.map((node) => node.id),
 			links
 		);
 		const gathered = gatherStart(
 			nodes.map((node) => node.id),
-			communities,
+			clusters,
 			canvas,
 			links,
 			radiusFor
@@ -603,19 +603,19 @@ export function createArranger() {
 		);
 		const oriented = orientBodies(
 			laid,
-			new Map([...communities].map(([id, key]) => [id, String(key)])),
+			new Map([...clusters].map(([id, key]) => [id, String(key)])),
 			links,
 			radiusFor
 		);
 		// Preserve the existing uniform fit after rigid orientation. The final
-		// separator corrects only dot clearance; it does not re-aim communities.
+		// separator corrects only dot clearance; it does not re-aim clusters.
 		const fanned = fanLeaves(oriented, links, radiusFor);
 		const fitted = fitAndSeparate(fanned, radiusFor, canvas, { pad: freeFitPad });
-		// Each Worker tidies within reach of its community, so a cluster stays one
+		// Each Worker tidies within reach of its cluster, so a cluster stays one
 		// cluster. Tidy can move a hub; its leaves are fanned again around it.
 		const placed = fanLeaves(
 			tidyLayout(fitted, links, radiusFor, {
-				bounds: communityBounds(fitted, communities, radiusFor)
+				bounds: clusterBounds(fitted, clusters, radiusFor)
 			}),
 			links,
 			radiusFor
@@ -993,15 +993,15 @@ export function createArranger() {
 		return { composition, routes };
 	}
 
-	/** Each Worker's community circle, with the same give sub-group members get. */
-	function communityBounds(
+	/** Each Worker's cluster circle, with the same give sub-group members get. */
+	function clusterBounds(
 		positions: ReadonlyMap<string, Point>,
-		communities: ReadonlyMap<string, unknown>,
+		clusters: ReadonlyMap<string, unknown>,
 		radiusFor: (id: string) => number
 	): Map<string, LeafBound> {
 		const members = new Map<unknown, string[]>();
 		for (const id of positions.keys()) {
-			const key = communities.get(id) ?? id;
+			const key = clusters.get(id) ?? id;
 			const list = members.get(key) ?? [];
 			list.push(id);
 			members.set(key, list);

@@ -204,7 +204,7 @@ describe('composed Grouped arrangement', () => {
 					.map((text) => answerIdOf('quality-department', text))
 					.sort()
 			);
-			// All eight communities still link in a ring: every community pair keeps its two ties.
+			// All eight clusters still link in a ring: every cluster pair keeps its two ties.
 			expect(fixture.links).toHaveLength(136);
 		}
 	});

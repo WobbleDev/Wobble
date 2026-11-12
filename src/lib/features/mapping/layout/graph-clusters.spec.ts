@@ -1,6 +1,6 @@
 // @module-tag mapping
 import { describe, expect, it } from 'vitest';
-import { detectCommunities, gatherStart } from './graph-communities.ts';
+import { detectClusters, gatherStart } from './graph-clusters.ts';
 
 function clique(prefix: string, size: number) {
 	const ids = Array.from({ length: size }, (_, i) => `${prefix}${i}`);
@@ -11,28 +11,28 @@ function clique(prefix: string, size: number) {
 	return { ids, links };
 }
 
-describe('detectCommunities', () => {
+describe('detectClusters', () => {
 	const a = clique('a', 6);
 	const b = clique('b', 6);
 	const ids = [...a.ids, ...b.ids, 'loner'];
 	const links = [...a.links, ...b.links, { source: 'a0', target: 'b0' }];
 
 	it('separates two dense sets joined by one bridge', () => {
-		const c = detectCommunities(ids, links);
+		const c = detectClusters(ids, links);
 		expect(new Set(a.ids.map((id) => c.get(id))).size).toBe(1);
 		expect(new Set(b.ids.map((id) => c.get(id))).size).toBe(1);
 		expect(c.get('a0')).not.toBe(c.get('b0'));
 	});
 
 	it('leaves a worker with no Relationships alone', () => {
-		const c = detectCommunities(ids, links);
+		const c = detectClusters(ids, links);
 		const shared = ids.filter((id) => c.get(id) === c.get('loner'));
 		expect(shared).toEqual(['loner']);
 	});
 
 	it('is deterministic whatever the input order', () => {
-		const first = detectCommunities(ids, links);
-		const second = detectCommunities([...ids].reverse(), [...links].reverse());
+		const first = detectClusters(ids, links);
+		const second = detectClusters([...ids].reverse(), [...links].reverse());
 		expect([...first.entries()].sort()).toEqual([...second.entries()].sort());
 	});
 });
@@ -43,16 +43,16 @@ describe('gatherStart', () => {
 	const b = clique('b', 6);
 	const loners = Array.from({ length: 40 }, (_, i) => `z${i}`);
 	const ids = [...a.ids, ...b.ids, ...loners];
-	const communities = detectCommunities(ids, [...a.links, ...b.links]);
+	const clusters = detectClusters(ids, [...a.links, ...b.links]);
 
 	it('is identical across runs and places every worker', () => {
-		const one = gatherStart(ids, communities, canvas);
+		const one = gatherStart(ids, clusters, canvas);
 		expect(one.size).toBe(ids.length);
-		expect([...gatherStart(ids, communities, canvas)]).toEqual([...one]);
+		expect([...gatherStart(ids, clusters, canvas)]).toEqual([...one]);
 	});
 
 	it('keeps disconnected singleton Workers finite and separated', () => {
-		const start = gatherStart(ids, communities, canvas);
+		const start = gatherStart(ids, clusters, canvas);
 		for (const id of loners) {
 			const p = start.get(id)!;
 			expect(Number.isFinite(p.x) && Number.isFinite(p.y)).toBe(true);
