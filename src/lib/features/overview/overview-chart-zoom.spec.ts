@@ -1,13 +1,13 @@
 import { describe, expect, it, vi } from 'vitest';
 import { zoomAfterWheel } from './bullseye/pan-mappings.ts';
 import {
-	createOverviewWheel,
-	createWheelZoomHandler,
+	createOverviewChartZoom,
+	createChartZoomHandler,
 	isInsideOverlay,
 	pointInBox,
 	type WheelEventLike,
-	type WheelZoomHost
-} from './overview-wheel.ts';
+	type ChartZoomHost
+} from './overview-chart-zoom.ts';
 
 const BOX = { left: 100, right: 300, top: 50, bottom: 250 };
 
@@ -30,7 +30,7 @@ function setup(
 	overrides: Partial<{ shown: boolean; zoom: number; chart: boolean; floor: boolean }> = {}
 ) {
 	const setZoom = vi.fn();
-	const host: WheelZoomHost = {
+	const host: ChartZoomHost = {
 		view: {
 			shown: overrides.shown ?? false,
 			zoom: overrides.zoom ?? 1,
@@ -39,7 +39,7 @@ function setup(
 		chart: () => ((overrides.chart ?? true) ? { getBoundingClientRect: () => BOX } : undefined),
 		floorMatches: () => overrides.floor ?? true
 	};
-	return { handle: createWheelZoomHandler(host), setZoom };
+	return { handle: createChartZoomHandler(host), setZoom };
 }
 
 describe('pointInBox', () => {
@@ -69,7 +69,7 @@ describe('isInsideOverlay', () => {
 	});
 });
 
-describe('createWheelZoomHandler', () => {
+describe('createChartZoomHandler', () => {
 	it('zooms and cancels the default over the chart at the no-scroll floor', () => {
 		const { handle, setZoom } = setup();
 		const event = wheel({ deltaY: 100 });
@@ -123,7 +123,7 @@ describe('createWheelZoomHandler', () => {
  * The route's listener, specced through a literal host: the target records the
  * listener, the effect is run by the spec, and the cleanup must remove the same one.
  */
-describe('createOverviewWheel', () => {
+describe('createOverviewChartZoom', () => {
 	function literalRoute(options: { shown?: boolean } = {}) {
 		const listeners: ((event: WheelEvent) => void)[] = [];
 		const target = {
@@ -148,7 +148,7 @@ describe('createOverviewWheel', () => {
 
 	it('registers a passive:false wheel listener through the effect, not at creation', () => {
 		const route = literalRoute();
-		createOverviewWheel(route.host);
+		createOverviewChartZoom(route.host);
 		expect(route.target.addEventListener).not.toHaveBeenCalled();
 		route.run();
 		expect(route.target.addEventListener).toHaveBeenCalledWith('wheel', expect.any(Function), {
@@ -158,7 +158,7 @@ describe('createOverviewWheel', () => {
 
 	it('the registered listener zooms the chart from a wheel over it', () => {
 		const route = literalRoute();
-		createOverviewWheel(route.host);
+		createOverviewChartZoom(route.host);
 		route.run();
 		const event = wheel({ deltaY: 100 });
 		route.listeners[0]!(event as unknown as WheelEvent);
@@ -168,7 +168,7 @@ describe('createOverviewWheel', () => {
 
 	it('removes the same listener it added when the effect is torn down', () => {
 		const route = literalRoute();
-		createOverviewWheel(route.host);
+		createOverviewChartZoom(route.host);
 		const cleanup = route.run();
 		cleanup?.();
 		expect(route.target.removeEventListener).toHaveBeenCalledWith('wheel', route.listeners[0]);
@@ -176,7 +176,7 @@ describe('createOverviewWheel', () => {
 
 	it('the direct handle leaves the wheel alone while the ground owns it', () => {
 		const route = literalRoute({ shown: true });
-		const { handle } = createOverviewWheel(route.host);
+		const { handle } = createOverviewChartZoom(route.host);
 		const event = wheel();
 		handle(event);
 		expect(event.preventDefault).not.toHaveBeenCalled();

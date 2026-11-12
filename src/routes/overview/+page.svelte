@@ -34,8 +34,8 @@
 	import { createOverviewGrouping } from '#lib/features/overview/overview-grouping.svelte.ts';
 	import { overviewRootState } from '#lib/features/overview/overview-root-state.svelte.ts';
 	import OverviewSupportCard from '#lib/features/overview/overview-support-card.svelte';
-	import { NO_SCROLL_FLOOR } from '#lib/features/overview/overview-wheel.ts';
-	import { wireOverviewWheel } from '#lib/features/overview/overview-wheel.svelte.ts';
+	import { NO_SCROLL_FLOOR } from '#lib/features/overview/overview-chart-zoom.ts';
+	import { wireOverviewChartZoom } from '#lib/features/overview/overview-chart-zoom.svelte.ts';
 	import WorksiteSetupDialog from '#lib/features/overview/worksite-setup-dialog.svelte';
 	import { PanCapability } from '#lib/hooks/pan-capability.svelte.ts';
 	import { replaceCurrentUrl } from '#lib/shared/navigation.ts';
@@ -112,7 +112,7 @@
 	const focus = overviewFocus();
 	/** The chart's own cell, and the region the wheel reads while the chart is drawn here. */
 	let chartCell = $state<HTMLElement>();
-	wireOverviewWheel({
+	wireOverviewChartZoom({
 		view,
 		chart: () => chartCell,
 		floorMatches: () => window.matchMedia(NO_SCROLL_FLOOR).matches
