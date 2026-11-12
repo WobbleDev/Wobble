@@ -108,7 +108,7 @@ export type RingNames = Record<(typeof DRAWN_ASSESSMENTS)[number], string>;
 /**
  * Where on its ring a name is anchored, in degrees clockwise from twelve
  * o'clock. Negative turns the names to the left, which is also the side of the
- * frame the page has room for: the ground's centre sits right of the leading
+ * frame the page has room for: the chart backdrop's centre sits right of the leading
  * column, so names at the top would rest on the fold at the viewport floor.
  */
 const RING_LABEL_ANGLE = -44;

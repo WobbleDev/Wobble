@@ -22,7 +22,7 @@ test('new Worksites open setup, accept an optional name and import contacts only
 	await expect(page.getByRole('button', { name: 'New Worksite' })).toBeVisible();
 
 	// The empty shell is also reachable at the route that draws the bullseye
-	// ground, whose pointer pass-through disables the shell's children. This
+	// chart backdrop, whose pointer pass-through disables the shell's children. This
 	// control has to re-enable the pointer for itself, or the door into the app
 	// is dead on /overview. A trial click runs the same hit-test a real one does,
 	// without creating the Worksite yet.

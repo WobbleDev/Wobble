@@ -106,7 +106,7 @@
 	const assessmentCounts = $derived(countAssessments(workers));
 
 	/* The reach stated once. The chart carries it in its description for AT, and
-	   Overview prints the same sentence wherever the chart is a ground, so both
+	   Overview prints the same sentence wherever the chart is the backdrop, so both
 	   read from one owner. */
 	const reachLabel = $derived(committeeReach(assessmentCounts));
 
@@ -165,7 +165,7 @@
 
 	/* The chart's own rendered width, which is what turns an interface type step
 	   into a user unit. The same chart is drawn at 1.2 px to the unit as a fitted
-	   chart on a phone and at nearly 5 as the dragged ground on a wide screen, so a
+	   chart on a phone and at nearly 5 as the dragged chart backdrop on a wide screen, so a
 	   name sized in user units would be a smudge at one end and a headline at the
 	   other; measured, one chart reads the same at both. */
 	let svgElement = $state<SVGSVGElement>();
@@ -212,7 +212,7 @@
 
 	/*
 	 * A ring's name sits inside that ring, just below the edge it names. Hostile is
-	 * the exception: it holds no band, so its name sits on the ground beyond its
+	 * the exception: it holds no band, so its name sits on the chart backdrop beyond its
 	 * own track instead, clear of the dots by a gap and its own upper half. Each
 	 * name takes the stop of whatever it is drawn on as its halo, so the ties
 	 * crossing it break behind the word while the boundary above it stays whole.

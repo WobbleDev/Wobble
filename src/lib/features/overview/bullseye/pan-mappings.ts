@@ -1,5 +1,5 @@
 /**
- * The bullseye ground's own arithmetic: how far a drag may travel, how a scale
+ * The bullseye chart backdrop's own arithmetic: how far a drag may travel, how a scale
  * change keeps the point under the pointer where it is, and how a wheel becomes a
  * scale. All of it is pure and DOM-free so it can be asserted directly; the
  * gesture itself lives in `pan.svelte.ts`.
@@ -82,7 +82,7 @@ export interface PanFrame {
 	centre: Vec2;
 	/** The layer's side at this scale, so its resting box is `centre ± size / 2` on both axes. */
 	size: number;
-	/** The ground's own size. */
+	/** The chart backdrop's own size. */
 	frame: { width: number; height: number };
 	/** The leading column's right edge, which the chart's own region starts at. */
 	columnRight: number;

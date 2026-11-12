@@ -61,7 +61,7 @@ export interface ChartZoomHost {
 
 /**
  * The wheel is the fitted chart's scale gesture, and only its. The handler does
- * nothing while the ground owns the wheel, inside an overlay, below the floor, or
+ * nothing while the chart backdrop owns the wheel, inside an overlay, below the floor, or
  * off the chart; otherwise it cancels the default so the surface never scrolls
  * under the chart and sets the zoom the wheel asks for.
  */

@@ -3,7 +3,7 @@ import { createOverviewFocus } from './overview-focus.svelte.ts';
 
 /**
  * The Overview's focus state, specced through the factory the shell mounts:
- * the toggle the edge control drives, the Escape exit the ground yields to a
+ * the toggle the edge control drives, the Escape exit the chart backdrop yields to a
  * dot's own Escape, and the return to rest on every Overview entrance animation, as the
  * zoom does. The host stands in for the route, as the Mapping drag factory's
  * literal host stands in for the map.

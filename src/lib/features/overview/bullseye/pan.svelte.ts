@@ -14,12 +14,12 @@ const GLIDE_MS = 400;
 const UNMEASURED: PanBounds = { min: { x: 0, y: 0 }, max: { x: 0, y: 0 } };
 
 /**
- * The ground's drag: the pointer moves the chart one for one from where it rests,
+ * The chart backdrop's drag: the pointer moves the chart one for one from where it rests,
  * and never past the travel the bounds allow, so a quarter of the chart always
  * stays in the chart region whatever the reader does with it.
  *
  * The frame is read from real layout — the layer's untransformed resting box and
- * the ground's own size — so a resize or a scale change re-measures rather than
+ * the chart backdrop's own size — so a resize or a scale change re-measures rather than
  * being tracked, and the transform the drag writes can never feed back into the
  * measurement. Only the target is recomputed per pointer event.
  */
@@ -157,7 +157,7 @@ export function createDragPan(columnRight: () => number) {
 
 	/**
 	 * A dot can be focused or clicked without the pointer ever dragging to it. Glide
-	 * the chart so it lands in the middle of the ground, clamped to the travel so it
+	 * the chart so it lands in the middle of the chart backdrop, clamped to the travel so it
 	 * stops where the bound says. Reduced motion jumps instead.
 	 */
 	function snapIntoView(element: SVGCircleElement, settled?: () => void) {
@@ -190,7 +190,7 @@ export function createDragPan(columnRight: () => number) {
 		frame = requestAnimationFrame(step);
 	}
 
-	/** A gesture in flight when the ground goes away: the browser releases the capture itself. */
+	/** A gesture in flight when the chart backdrop goes away: the browser releases the capture itself. */
 	function cancel() {
 		stopGlide();
 		drag = undefined;

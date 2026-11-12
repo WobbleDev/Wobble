@@ -211,7 +211,7 @@
 	--radius-3xl: calc(var(--radius-base) * 5);
 	--radius-4xl: calc(var(--radius-base) * 6);
 
-	/* How far the bullseye ground runs left of the content frame, under
+	/* How far the bullseye chart backdrop runs left of the content frame, under
 	   the glass rail: more than the rail and its gutter, clipped at the viewport. */
 	--overview-rail-reach: 20rem;
 
@@ -741,14 +741,14 @@ html[data-assessment-palette='colorblind'] {
 }
 
 /* The dashboard sits over the inert floor and takes the pointer back for its
-   whole subtree; the ground beneath it is inert and catches nothing. While the
+   whole subtree; the chart backdrop beneath it is inert and catches nothing. While the
    bullseye is focused the dashboard is inert instead, so it gives the pointer
-   up and the ground answers where it lies. */
+   up and the chart backdrop answers where it lies. */
 [data-bullseye-base-surface] [data-dashboard-root]:not([data-focused='true']) {
 	pointer-events: auto;
 }
 
-/* The focus tab and the focused ground's reset sit above both layers and answer
+/* The focus tab and the focused chart backdrop's reset sit above both layers and answer
    in either state, so they take the pointer back where they sit. */
 [data-bullseye-base-surface] [data-focus-edge],
 [data-bullseye-base-surface] [data-focus-reset] {

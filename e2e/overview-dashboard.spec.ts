@@ -6,7 +6,7 @@ import { createWorker } from './api.ts';
 
 /**
  * The Overview dashboard over the faded bullseye floor (ticket 01): four
- * readings on one screen, the chosen Attribute in by=, and a ground that is
+ * readings on one screen, the chosen Attribute in by=, and a chart backdrop that is
  * faded, blurred and inert at rest.
  */
 
@@ -117,7 +117,7 @@ const overallCard = (page: Page) => page.getByRole('region', { name: 'Overall su
 const coverageCard = (page: Page) => page.getByRole('region', { name: 'Committee coverage' });
 const byCard = (page: Page, name: string) => page.getByRole('region', { name: 'By ' + name });
 const agitationsCard = (page: Page) => page.getByRole('region', { name: 'Agitations' });
-const ground = (page: Page) => page.locator('[data-bullseye-base]');
+const chartBackdrop = (page: Page) => page.locator('[data-bullseye-base]');
 const dots = (page: Page) => page.locator('[data-bullseye-base] circle[data-worker-id]');
 
 test('shows Overall support and Committee coverage figures', async ({ page, request }) => {
@@ -220,12 +220,12 @@ test('rests the bullseye floor faded, blurred and inert behind the cards', async
 	await page.goto('/overview');
 	await appReady(page);
 
-	await expect(ground(page)).toBeVisible();
-	await expect(ground(page)).toHaveAttribute('inert', '');
-	await expect(ground(page)).toHaveAttribute('aria-hidden', 'true');
+	await expect(chartBackdrop(page)).toBeVisible();
+	await expect(chartBackdrop(page)).toHaveAttribute('inert', '');
+	await expect(chartBackdrop(page)).toHaveAttribute('aria-hidden', 'true');
 
 	// Opacity and blur sit on the drawing, not the layer.
-	const drawing = ground(page).locator('svg').first();
+	const drawing = chartBackdrop(page).locator('svg').first();
 	await expect(drawing).toHaveCSS('opacity', '0.3');
 	const filter = await drawing.evaluate((el) => getComputedStyle(el).filter);
 	expect(filter).toContain('blur(2px)');
@@ -246,8 +246,8 @@ test('draws Hostile without a halo and keeps the band annuli', async ({ page, re
 	await appReady(page);
 
 	// Each band is a true annulus, with the inner boundary drawn as its own dashed circle.
-	await expect(ground(page).locator('svg circle[stroke-dasharray]')).not.toHaveCount(0);
-	await expect(ground(page).locator('svg path[fill]:not([fill="none"])')).not.toHaveCount(0);
+	await expect(chartBackdrop(page).locator('svg circle[stroke-dasharray]')).not.toHaveCount(0);
+	await expect(chartBackdrop(page).locator('svg path[fill]:not([fill="none"])')).not.toHaveCount(0);
 
 	const strokes = await dots(page).evaluateAll((elements) =>
 		elements.map((el) => ({
@@ -262,11 +262,11 @@ test('draws Hostile without a halo and keeps the band annuli', async ({ page, re
 	expect(leaderStrokes.length).toBeGreaterThan(0);
 	for (const dot of leaderStrokes) expect(dot.stroke).not.toBe('none');
 
-	const label = ground(page).locator('text.ring-label:has-text("Hostile")');
+	const label = chartBackdrop(page).locator('text.ring-label:has-text("Hostile")');
 	await expect(label).toHaveAttribute('stroke', 'none');
 });
 
-test('draws the fitted chart without a Hostile halo where the ground cannot be dragged', async ({
+test('draws the fitted chart without a Hostile halo where the chart backdrop cannot be dragged', async ({
 	page,
 	request
 }) => {
@@ -276,7 +276,7 @@ test('draws the fitted chart without a Hostile halo where the ground cannot be d
 	await page.goto('/overview');
 	await appReady(page);
 
-	await expect(ground(page)).toHaveCount(0);
+	await expect(chartBackdrop(page)).toHaveCount(0);
 	const strokes = await page.locator('circle[data-worker-id]').evaluateAll((elements) =>
 		elements.map((el) => ({
 			fill: el.getAttribute('fill'),
@@ -332,9 +332,9 @@ test('clicks through the inert floor and keeps dots out of the tab order', async
 	await appReady(page);
 	await expect(overallCard(page)).toBeVisible();
 
-	// The ground's dots sit behind the dashboard. Clicking through must land on
+	// The chart backdrop's dots sit behind the dashboard. Clicking through must land on
 	// the dashboard, never on a dot — but it must also not land on a dashboard
-	// link, which would navigate to /workers and unmount the ground. Find a dot
+	// link, which would navigate to /workers and unmount the chart backdrop. Find a dot
 	// whose centre resolves to non-interactive dashboard background.
 	const total = await dots(page).count();
 	let point: { x: number; y: number } | undefined;
@@ -372,7 +372,7 @@ test('clicks through the inert floor and keeps dots out of the tab order', async
 	await expect(page.locator('circle[data-worker-id][data-selected]')).toHaveCount(0);
 	await expect(page.locator('[data-bullseye-callout]')).toHaveCount(0);
 
-	// A dot cannot take focus while the ground is inert.
+	// A dot cannot take focus while the chart backdrop is inert.
 	const focused = await target.evaluate((el) => {
 		(el as SVGCircleElement).focus();
 		return document.activeElement === el;

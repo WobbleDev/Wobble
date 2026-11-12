@@ -5,7 +5,7 @@
 	 * Overall support and Committee coverage read the whole Worksite; By
 	 * Attribute bands and the Agitations matrix read the Attribute named by the
 	 * by parameter (Department, then the first Single-Select Attribute, when it
-	 * is missing or unknown). The shell owns the bullseye ground behind this
+	 * is missing or unknown). The shell owns the bullseye chart backdrop behind this
 	 * page; where it cannot be dragged, the fitted chart is drawn in the page
 	 * instead. The shell branches this route needs (the rail-reach clip and the
 	 * surface-less card) live in the layout, keyed on this route.
@@ -43,7 +43,7 @@
 	import type { PageProps } from './$types';
 
 	let { data }: PageProps = $props();
-	// The entrance guard stays with the page, as before: the shell-owned ground
+	// The entrance guard stays with the page, as before: the shell-owned chart backdrop
 	// animates from it, and the dashboard's own entrance runs from the same claim.
 	const entranceAnimation = overviewEntranceAnimationController();
 	const panCapability = new PanCapability();
@@ -104,7 +104,7 @@
 		]
 	});
 
-	/* The shell decides whether the bullseye is a ground behind the page or a
+	/* The shell decides whether the bullseye is a chart backdrop behind the page or a
 	   chart drawn in the page here, where there is nothing to drag; it also holds
 	   the scale the wheel sets. */
 	const view = bullseyeView();
@@ -177,7 +177,7 @@
 		/>
 	</div>
 
-	<!-- The fitted chart where the ground cannot be dragged: below the floor,
+	<!-- The fitted chart where the chart backdrop cannot be dragged: below the floor,
 	     under reduced motion, or on a coarse pointer. Drawn after the dashboard
 	     in the page flow, with every dot on screen. -->
 	{#if !view.shown}
@@ -195,9 +195,9 @@
 </div>
 
 <!-- Reset zoom is a control over the chart rather than over the column. It shows
-     here only for the fitted chart, where the ground cannot be dragged: below the
+     here only for the fitted chart, where the chart backdrop cannot be dragged: below the
      Shell tier the page flows again, so it sits in that flow under the chart. The
-     focused ground carries its own reset in the shell, at the lower right above
+     focused chart backdrop carries its own reset in the shell, at the lower right above
      the chart. The zoom lives in the shell's shared view context, so resetting
      writes that rather than touching the DOM. Its visible label names it; an
      aria-label override would break label-in-name. -->
