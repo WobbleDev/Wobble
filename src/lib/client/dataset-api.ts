@@ -40,7 +40,12 @@ export function takePrimedDataset(now = Date.now()): WorksiteDataset | undefined
 
 function decodeWorksite(value: unknown): Worksite {
 	const worksite = value as Worksite;
-	return { id: worksite.id, name: worksite.name, committeeTarget: worksite.committeeTarget };
+	return {
+		id: worksite.id,
+		name: worksite.name,
+		committeeGoal: worksite.committeeGoal,
+		committeeTarget: worksite.committeeTarget
+	};
 }
 
 /** Validates one answer list from an untrusted reply: each answer is an id and its label. */

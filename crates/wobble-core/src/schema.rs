@@ -14,7 +14,7 @@ use crate::error::{Error, Result};
 use crate::id::{random_id, IdSource};
 use crate::phone::normalize_phone;
 
-pub const CURRENT_SCHEMA_VERSION: i64 = 24;
+pub const CURRENT_SCHEMA_VERSION: i64 = 25;
 /// The versions this app upgrades from. v12 to v13 adds drafts, v13 to v14 assigns answer ids,
 /// v14 to v15 adds lookup indexes, v15 to v16 reformats stored clean phone numbers, v16
 /// to v17 replaces the single settings row with the typed key/value registry, v17 to v18
@@ -23,8 +23,8 @@ pub const CURRENT_SCHEMA_VERSION: i64 = 24;
 /// to Work Assignment scope and draft state, and v21 to v22 flattens every saved assignment
 /// answer into ordinary Worker Attribute values and removes the obsolete schema, and v22 to
 /// v23 gives every Attribute value a generated Short form (ADR 0046), and v23 to v24 adds the
-/// Worksite's saved views.
-const UPGRADABLE_SCHEMA_VERSIONS: [i64; 12] = [12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
+/// Worksite's saved views, and v24 to v25 adds the committee goal column beside the committee target.
+const UPGRADABLE_SCHEMA_VERSIONS: [i64; 13] = [12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24];
 
 /// Whether an existing database at this version is upgraded in place. The upgrade entry point
 /// backs a file-backed database up before handing it to `apply_migrations`; adding a version
@@ -89,24 +89,38 @@ impl WorksiteTemplateLocale {
 }
 
 /// A Worksite as the handlers surface it. Serializes as the TS shape
-/// (`{id, name, committeeTarget}`) so route bodies match byte-for-byte.
+/// (`{id, name, committeeGoal, committeeTarget}`) so route bodies match byte-for-byte.
 #[derive(Debug, Clone, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 #[cfg_attr(feature = "ts", derive(ts_rs::TS), ts(export))]
 pub struct Worksite {
     pub id: String,
     pub name: String,
-    // Wire name stays `committeeTarget` until the committee-goal expand step.
-    #[serde(rename = "committeeTarget")]
     #[cfg_attr(feature = "ts", ts(type = "number"))]
     pub committee_goal: i64,
+    /// The old wire name for `committee_goal`. It always equals the goal and is answered beside
+    /// it until the contract step removes it; build a Worksite through `Worksite::new`.
+    #[cfg_attr(feature = "ts", ts(type = "number"))]
+    pub committee_target: i64,
+}
+
+impl Worksite {
+    pub fn new(id: String, name: String, committee_goal: i64) -> Self {
+        Self {
+            id,
+            name,
+            committee_goal,
+            committee_target: committee_goal,
+        }
+    }
 }
 
 const DDL: &str = r#"
 CREATE TABLE worksites (
   id TEXT PRIMARY KEY NOT NULL,
   name TEXT NOT NULL,
-  committee_target INTEGER NOT NULL DEFAULT 5
+  committee_target INTEGER NOT NULL DEFAULT 5,
+  committee_goal INTEGER NOT NULL DEFAULT 5
 );
 CREATE TABLE workers (
   id TEXT PRIMARY KEY NOT NULL,
@@ -486,6 +500,32 @@ fn backfill_short_forms(conn: &Connection) -> Result<()> {
     Ok(())
 }
 
+/// The v25 step: adds `committee_goal` beside `committee_target`, copies every value across, and
+/// fails (rolling the whole upgrade back) if any row still disagrees afterwards. A file that
+/// already has the column keeps its values when they agree and is refused when they do not.
+fn add_committee_goal(conn: &Connection) -> Result<()> {
+    let has_goal_column = conn
+        .prepare("SELECT 1 FROM pragma_table_info('worksites') WHERE name = 'committee_goal'")?
+        .exists([])?;
+    if !has_goal_column {
+        conn.execute_batch(
+            "ALTER TABLE worksites ADD COLUMN committee_goal INTEGER NOT NULL DEFAULT 5;
+             UPDATE worksites SET committee_goal = committee_target;",
+        )?;
+    }
+    let disagreeing: i64 = conn.query_row(
+        "SELECT COUNT(*) FROM worksites WHERE committee_goal IS NOT committee_target",
+        [],
+        |row| row.get(0),
+    )?;
+    if disagreeing > 0 {
+        return Err(Error::Message(format!(
+            "The committee goal and committee target disagree on {disagreeing} Worksite(s); the upgrade was not applied."
+        )));
+    }
+    Ok(())
+}
+
 /// Bootstraps an empty database, keeps an already-current one, upgrades any version listed in
 /// `UPGRADABLE_SCHEMA_VERSIONS` to `CURRENT_SCHEMA_VERSION` in one transaction, and refuses the
 /// rest. Each step runs only for the versions that still need
@@ -554,6 +594,12 @@ pub fn apply_migrations(conn: &Connection) -> Result<()> {
             tx.execute_batch(SAVED_VIEW_DDL)?;
             record_migration(&tx, 24, "saved-views")?;
         }
+        // v25 expands the committee target: the goal column sits beside it with the same
+        // values. The old column is dropped in the contract step.
+        if version <= 24 {
+            add_committee_goal(&tx)?;
+            record_migration(&tx, 25, "committee-goal")?;
+        }
         tx.commit()?;
         return Ok(());
     }
@@ -566,7 +612,7 @@ pub fn apply_migrations(conn: &Connection) -> Result<()> {
             .map(|v| v.to_string())
             .unwrap_or_else(|| "unknown".to_owned());
         return Err(Error::UnsupportedSchema(format!(
-            "Worker database schema version {version_text} is unsupported. This app supports schema version {CURRENT_SCHEMA_VERSION} and upgrades version 12, version 13, version 14, version 15, version 16, version 17, version 18, version 19, version 20, version 21, version 22 and version 23 databases; migrate older versions before starting the app."
+            "Worker database schema version {version_text} is unsupported. This app supports schema version {CURRENT_SCHEMA_VERSION} and upgrades version 12, version 13, version 14, version 15, version 16, version 17, version 18, version 19, version 20, version 21, version 22, version 23 and version 24 databases; migrate older versions before starting the app."
         )));
     }
 
@@ -579,13 +625,9 @@ pub fn insert_worksite(
     name: &str,
     id_source: &impl IdSource,
 ) -> Result<Worksite> {
-    let worksite = Worksite {
-        id: id_source.next_id(),
-        name: name.to_owned(),
-        committee_goal: DEFAULT_COMMITTEE_GOAL,
-    };
+    let worksite = Worksite::new(id_source.next_id(), name.to_owned(), DEFAULT_COMMITTEE_GOAL);
     conn.execute(
-        "INSERT INTO worksites (id, name, committee_target) VALUES (?1, ?2, ?3)",
+        "INSERT INTO worksites (id, name, committee_target, committee_goal) VALUES (?1, ?2, ?3, ?3)",
         params![worksite.id, worksite.name, worksite.committee_goal],
     )?;
     Ok(worksite)
@@ -703,6 +745,7 @@ mod tests {
             id: WORKSITE_ID.to_owned(),
             name: "Kitchen".to_owned(),
             committee_goal: 5,
+            committee_target: 5,
         })
     }
 
@@ -799,7 +842,7 @@ mod tests {
     }
 
     #[test]
-    fn upgrades_a_populated_v12_database_through_every_retained_step_to_v24() {
+    fn upgrades_a_populated_v12_database_through_every_retained_step_to_v25() {
         let conn = Connection::open_in_memory().unwrap();
         seed_populated(&conn, 12, "\"Back of House\"");
 
@@ -823,7 +866,7 @@ mod tests {
             .unwrap();
         assert_eq!(
             migrations,
-            [12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24],
+            [12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25],
             "a v12 source runs every step once"
         );
     }
@@ -929,7 +972,7 @@ mod tests {
             .unwrap()
             .collect::<rusqlite::Result<_>>()
             .unwrap();
-        assert_eq!(migrations, [14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]);
+        assert_eq!(migrations, [14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25]);
         let settings: Vec<(String, String)> = conn
             .prepare("SELECT key, value FROM app_settings ORDER BY rowid")
             .unwrap()
@@ -1140,7 +1183,7 @@ mod tests {
 
         apply_migrations(&conn).unwrap();
 
-        assert_eq!(read_schema_version(&conn).unwrap(), Some(24));
+        assert_eq!(read_schema_version(&conn).unwrap(), Some(25));
         let migrations: Vec<(i64, String)> = conn
             .prepare("SELECT version, name FROM schema_migrations ORDER BY version")
             .unwrap()
@@ -1161,6 +1204,7 @@ mod tests {
                 (22, "flatten-work-assignments".to_owned()),
                 (23, "short-forms".to_owned()),
                 (24, "saved-views".to_owned()),
+                (25, "committee-goal".to_owned()),
             ]
         );
 
@@ -1223,7 +1267,7 @@ mod tests {
 
         apply_migrations(&conn).unwrap();
 
-        assert_eq!(read_schema_version(&conn).unwrap(), Some(24));
+        assert_eq!(read_schema_version(&conn).unwrap(), Some(25));
         let migrations: Vec<(i64, String)> = conn
             .prepare("SELECT version, name FROM schema_migrations ORDER BY version")
             .unwrap()
@@ -1243,6 +1287,7 @@ mod tests {
                 (22, "flatten-work-assignments".to_owned()),
                 (23, "short-forms".to_owned()),
                 (24, "saved-views".to_owned()),
+                (25, "committee-goal".to_owned()),
             ]
         );
         let rows: Vec<(String, String)> = conn
@@ -1274,10 +1319,10 @@ mod tests {
             message.contains("schema version 11 is unsupported"),
             "{message}"
         );
-        assert!(message.contains("schema version 24"), "{message}");
+        assert!(message.contains("schema version 25"), "{message}");
         assert!(
             message.contains(
-                "version 12, version 13, version 14, version 15, version 16, version 17, version 18, version 19, version 20, version 21, version 22 and version 23"
+                "version 12, version 13, version 14, version 15, version 16, version 17, version 18, version 19, version 20, version 21, version 22, version 23 and version 24"
             ),
             "{message}"
         );
@@ -1305,7 +1350,7 @@ mod tests {
 
         apply_migrations(&conn).unwrap();
 
-        assert_eq!(read_schema_version(&conn).unwrap(), Some(24));
+        assert_eq!(read_schema_version(&conn).unwrap(), Some(25));
         assert_no_assignment_schema(&conn);
         let migrations: Vec<(i64, String)> = conn
             .prepare("SELECT version, name FROM schema_migrations ORDER BY version")
@@ -1324,6 +1369,7 @@ mod tests {
                 (22, "flatten-work-assignments".to_owned()),
                 (23, "short-forms".to_owned()),
                 (24, "saved-views".to_owned()),
+                (25, "committee-goal".to_owned()),
             ]
         );
         let worker: String = conn
@@ -1386,7 +1432,7 @@ mod tests {
 
         apply_migrations(&conn).unwrap();
 
-        assert_eq!(read_schema_version(&conn).unwrap(), Some(24));
+        assert_eq!(read_schema_version(&conn).unwrap(), Some(25));
         assert_no_assignment_schema(&conn);
         let migrations: Vec<(i64, String)> = conn
             .prepare("SELECT version, name FROM schema_migrations ORDER BY version")
@@ -1404,6 +1450,7 @@ mod tests {
                 (22, "flatten-work-assignments".to_owned()),
                 (23, "short-forms".to_owned()),
                 (24, "saved-views".to_owned()),
+                (25, "committee-goal".to_owned()),
             ]
         );
         let workers = read_workers(&conn, &worksite()).unwrap();
@@ -1411,19 +1458,19 @@ mod tests {
     }
 
     #[test]
-    fn a_fresh_database_bootstraps_at_v24_with_the_final_schema() {
+    fn a_fresh_database_bootstraps_at_v25_with_the_final_schema() {
         let conn = Connection::open_in_memory().unwrap();
 
         apply_migrations(&conn).unwrap();
 
-        assert_eq!(read_schema_version(&conn).unwrap(), Some(24));
+        assert_eq!(read_schema_version(&conn).unwrap(), Some(25));
         assert_no_assignment_schema(&conn);
         let bootstrap: (i64, String) = conn
             .query_row("SELECT version, name FROM schema_migrations", [], |row| {
                 Ok((row.get(0)?, row.get(1)?))
             })
             .unwrap();
-        assert_eq!(bootstrap, (24, "current-schema-bootstrap".to_owned()));
+        assert_eq!(bootstrap, (25, "current-schema-bootstrap".to_owned()));
     }
 
     /// A fresh bootstrap and an upgraded source end with the same schema: the same objects,

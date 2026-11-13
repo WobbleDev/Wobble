@@ -253,8 +253,8 @@ export class ConfigurationDraftState {
 
 		this.worksiteName = untrack(() => worksite.name);
 		this.savedWorksiteName = untrack(() => worksite.name);
-		this.draftCommitteeGoal = untrack(() => String(worksite.committeeTarget));
-		this.savedCommitteeGoal = untrack(() => worksite.committeeTarget);
+		this.draftCommitteeGoal = untrack(() => String(worksite.committeeGoal));
+		this.savedCommitteeGoal = untrack(() => worksite.committeeGoal);
 		this.draftAttributes = untrack(() => fromWorkerAttributeDefinitions(attributes));
 		this.savedConfiguration = untrack(() => toWorkerAttributeDefinitions(this.draftAttributes));
 		this.draftAgitations = untrack(() => agitations.map((agitation) => ({ ...agitation })));

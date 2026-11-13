@@ -152,17 +152,20 @@
 				],
 				"worksite": {
 					"committeeTarget": 5,
+					"committeeGoal": 5,
 					"id": "004dc36a-19d6-4b28-99ce-3ee4d7dac34d",
 					"name": "My Worksite"
 				},
 				"worksites": [
 					{
 						"committeeTarget": 5,
+						"committeeGoal": 5,
 						"id": "004dc36a-19d6-4b28-99ce-3ee4d7dac34d",
 						"name": "My Worksite"
 					},
 					{
 						"committeeTarget": 5,
+						"committeeGoal": 5,
 						"id": "912cd833-2b0c-4960-a7bc-43d52fa469da",
 						"name": "My Worksite 2"
 					}
@@ -273,17 +276,20 @@
 				],
 				"worksite": {
 					"committeeTarget": 5,
+					"committeeGoal": 5,
 					"id": "004dc36a-19d6-4b28-99ce-3ee4d7dac34d",
 					"name": "My Worksite"
 				},
 				"worksites": [
 					{
 						"committeeTarget": 5,
+						"committeeGoal": 5,
 						"id": "004dc36a-19d6-4b28-99ce-3ee4d7dac34d",
 						"name": "My Worksite"
 					},
 					{
 						"committeeTarget": 5,
+						"committeeGoal": 5,
 						"id": "912cd833-2b0c-4960-a7bc-43d52fa469da",
 						"name": "My Worksite 2"
 					}
@@ -394,17 +400,20 @@
 				],
 				"worksite": {
 					"committeeTarget": 5,
+					"committeeGoal": 5,
 					"id": "004dc36a-19d6-4b28-99ce-3ee4d7dac34d",
 					"name": "My Worksite"
 				},
 				"worksites": [
 					{
 						"committeeTarget": 5,
+						"committeeGoal": 5,
 						"id": "004dc36a-19d6-4b28-99ce-3ee4d7dac34d",
 						"name": "My Worksite"
 					},
 					{
 						"committeeTarget": 5,
+						"committeeGoal": 5,
 						"id": "912cd833-2b0c-4960-a7bc-43d52fa469da",
 						"name": "My Worksite 2"
 					}
@@ -515,17 +524,20 @@
 				],
 				"worksite": {
 					"committeeTarget": 5,
+					"committeeGoal": 5,
 					"id": "004dc36a-19d6-4b28-99ce-3ee4d7dac34d",
 					"name": "My Worksite"
 				},
 				"worksites": [
 					{
 						"committeeTarget": 5,
+						"committeeGoal": 5,
 						"id": "004dc36a-19d6-4b28-99ce-3ee4d7dac34d",
 						"name": "My Worksite"
 					},
 					{
 						"committeeTarget": 5,
+						"committeeGoal": 5,
 						"id": "912cd833-2b0c-4960-a7bc-43d52fa469da",
 						"name": "My Worksite 2"
 					}
@@ -560,6 +572,7 @@
 			"body": {
 				"worksite": {
 					"committeeTarget": 5,
+					"committeeGoal": 5,
 					"id": "004dc36a-19d6-4b28-99ce-3ee4d7dac34d",
 					"name": "My Worksite"
 				}
@@ -817,6 +830,7 @@
 	],
 	"worksite": {
 		"committeeTarget": 5,
+		"committeeGoal": 5,
 		"id": "004dc36a-19d6-4b28-99ce-3ee4d7dac34d",
 		"name": "My Worksite"
 	}

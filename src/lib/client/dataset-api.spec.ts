@@ -54,8 +54,8 @@ const populatedWire = {
 	],
 	agitations: [{ id: 'g1', text: 'Pay' }],
 	languages: [{ id: 'l1', name: 'Polish' }],
-	worksite: { id: 'ws1', name: 'My Worksite', committeeTarget: 5 },
-	worksites: [{ id: 'ws1', name: 'My Worksite', committeeTarget: 5 }],
+	worksite: { id: 'ws1', name: 'My Worksite', committeeGoal: 5, committeeTarget: 5 },
+	worksites: [{ id: 'ws1', name: 'My Worksite', committeeGoal: 5, committeeTarget: 5 }],
 	settings: { ...defaultAppSettings, theme: 'dark', density: 'compact' }
 };
 
@@ -93,8 +93,8 @@ const populatedDataset = {
 	],
 	agitations: [{ id: 'g1', text: 'Pay' }],
 	languages: [{ id: 'l1', name: 'Polish' }],
-	worksite: { id: 'ws1', name: 'My Worksite', committeeTarget: 5 },
-	worksites: [{ id: 'ws1', name: 'My Worksite', committeeTarget: 5 }],
+	worksite: { id: 'ws1', name: 'My Worksite', committeeGoal: 5, committeeTarget: 5 },
+	worksites: [{ id: 'ws1', name: 'My Worksite', committeeGoal: 5, committeeTarget: 5 }],
 	settings: { ...defaultAppSettings, theme: 'dark', density: 'compact' }
 };
 

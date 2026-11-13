@@ -305,7 +305,7 @@ async function seedHero(request: APIRequestContext) {
 		])
 	});
 	expect(configured.ok()).toBeTruthy();
-	const target = await request.put('/api/worksite', { data: { committeeTarget: 1 } });
+	const target = await request.put('/api/worksite', { data: { committeeGoal: 1 } });
 	expect(target.ok()).toBeTruthy();
 
 	const pay = await request.post('/api/agitations', { data: { text: 'Pay' } });

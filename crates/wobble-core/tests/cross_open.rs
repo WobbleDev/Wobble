@@ -62,8 +62,8 @@ fn reads_a_node_created_v12_database_fully() {
     assert_eq!(state.len(), 12, "all 12 current tables are dumped");
     assert_eq!(
         state["schema_migrations"].len(),
-        13,
-        "12, then 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23 and 24"
+        14,
+        "12, then 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24 and 25"
     );
     assert_eq!(state["app_settings"].len(), 2);
     assert_eq!(state["worksites"].len(), 1);
@@ -85,6 +85,7 @@ fn reads_a_node_created_v12_database_fully() {
     let worksite = &state["worksites"][0];
     assert_eq!(worksite["name"], "My Worksite");
     assert_eq!(worksite["committee_target"], 5);
+    assert_eq!(worksite["committee_goal"], 5);
 
     let setting = |key: &str| {
         state["app_settings"]
@@ -127,6 +128,9 @@ fn reads_a_node_created_v12_database_fully() {
     assert_eq!(migrations[12]["version"], 24);
     assert_eq!(migrations[12]["name"], "saved-views");
     assert_eq!(migrations[12]["applied_at"], "$t");
+    assert_eq!(migrations[13]["version"], 25);
+    assert_eq!(migrations[13]["name"], "committee-goal");
+    assert_eq!(migrations[13]["applied_at"], "$t");
 
     // The answers are `{id, value}` now: the reader returns each one with its id.
     let worksite = active_worksite(conn);
@@ -159,7 +163,7 @@ fn reads_a_rust_created_v12_database_fully() {
     let conn = db.conn();
 
     let migrations = dump_state(conn).expect("dumps every table")["schema_migrations"].clone();
-    assert_eq!(migrations.len(), 13);
+    assert_eq!(migrations.len(), 14);
     assert_eq!(migrations[2]["version"], 14);
     assert_eq!(migrations[3]["version"], 15);
     assert_eq!(migrations[3]["name"], "lookup-indexes");
@@ -185,6 +189,9 @@ fn reads_a_rust_created_v12_database_fully() {
     assert_eq!(migrations[12]["version"], 24);
     assert_eq!(migrations[12]["name"], "saved-views");
     assert_eq!(migrations[12]["applied_at"], "$t");
+    assert_eq!(migrations[13]["version"], 25);
+    assert_eq!(migrations[13]["name"], "committee-goal");
+    assert_eq!(migrations[13]["applied_at"], "$t");
 
     let workers = read_workers(conn, &Some(active_worksite(conn))).expect("decodes both workers");
     assert_eq!(workers.len(), 2);
@@ -335,6 +342,7 @@ fn assert_fixture_contents(conn: &Connection) {
     assert_eq!(worksite["id"], counter_id(1));
     assert_eq!(worksite["name"], "My Worksite");
     assert_eq!(worksite["committee_target"], 5);
+    assert_eq!(worksite["committee_goal"], 5);
 
     let setting = |key: &str| {
         state["app_settings"]

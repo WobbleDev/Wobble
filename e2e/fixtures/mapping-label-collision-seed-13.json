@@ -1013,17 +1013,20 @@
 		],
 		"worksite": {
 			"committeeTarget": 5,
+			"committeeGoal": 5,
 			"id": "287f0662-4859-4592-bdd1-1f2c163814fa",
 			"name": "My Worksite 2"
 		},
 		"worksites": [
 			{
 				"committeeTarget": 5,
+				"committeeGoal": 5,
 				"id": "521736c9-c34c-42b3-8f22-5920b9631566",
 				"name": "My Worksite"
 			},
 			{
 				"committeeTarget": 5,
+				"committeeGoal": 5,
 				"id": "287f0662-4859-4592-bdd1-1f2c163814fa",
 				"name": "My Worksite 2"
 			}

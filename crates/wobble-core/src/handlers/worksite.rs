@@ -22,6 +22,8 @@ use crate::worksite_persistence::{
 const PROVIDE_WORKSITE_FIELD_MESSAGE: &str =
     "Provide a worksite name or a committee coverage target.";
 const WORKSITE_NAME_REQUIRED_MESSAGE: &str = "Worksite name is required.";
+const COMMITTEE_GOAL_CONFLICT_MESSAGE: &str =
+    "Send committeeGoal or committeeTarget, not both with different values.";
 const COMMITTEE_GOAL_MESSAGE: &str =
     "Committee coverage target must be a whole number from 1 to 100.";
 const WORKSITE_ID_REQUIRED_MESSAGE: &str = "Worksite ID is required.";
@@ -180,7 +182,15 @@ pub(crate) fn put_worksite(db: &Db, request: &Request) -> Result<Response> {
     }
 
     let has_name = payload.get("name").is_some();
-    let committee_goal = payload.get("committeeTarget");
+    // Step 1 of the rename: the goal is the new name and the target the old one. Either is
+    // accepted; sending both with different values is a 400.
+    let committee_goal = match (payload.get("committeeGoal"), payload.get("committeeTarget")) {
+        (Some(goal), Some(target)) if goal != target => {
+            return Ok(message_response(400, COMMITTEE_GOAL_CONFLICT_MESSAGE));
+        }
+        (Some(goal), _) => Some(goal),
+        (None, target) => target,
+    };
     if !has_name && committee_goal.is_none() {
         return Ok(message_response(400, PROVIDE_WORKSITE_FIELD_MESSAGE));
     }
@@ -384,6 +394,7 @@ mod tests {
         );
         assert_eq!(first.status, 201);
         assert_eq!(first.body["worksite"]["name"], json!("Mi lugar de trabajo"));
+        assert_eq!(first.body["worksite"]["committeeGoal"], json!(5));
         assert_eq!(first.body["worksite"]["committeeTarget"], json!(5));
         let id = first.body["worksite"]["id"].as_str().unwrap();
         assert_eq!(
@@ -506,6 +517,70 @@ mod tests {
             find_worksite(db.conn(), &id).unwrap().unwrap().name,
             "Renamed"
         );
+    }
+
+    #[test]
+    fn put_worksite_accepts_the_goal_or_the_old_target_name_and_answers_with_both() {
+        let (db, ids) = seeded();
+        let id = first_worksite(&db);
+
+        for (body, expected) in [
+            (json!({ "committeeGoal": 9 }), 9),
+            (json!({ "committeeTarget": 11 }), 11),
+            (json!({ "committeeGoal": 13, "committeeTarget": 13 }), 13),
+        ] {
+            let response = dispatch(
+                &db,
+                &request_for("PUT", "/api/worksite", &id, Some(body)),
+                &ids,
+            );
+            assert_eq!(response.status, 200);
+            assert_eq!(response.body["worksite"]["committeeGoal"], json!(expected));
+            assert_eq!(
+                response.body["worksite"]["committeeTarget"],
+                json!(expected)
+            );
+            let stored: (i64, i64) = db
+                .conn()
+                .query_row(
+                    "SELECT committee_goal, committee_target FROM worksites WHERE id = ?1",
+                    [&id],
+                    |row| Ok((row.get(0)?, row.get(1)?)),
+                )
+                .unwrap();
+            assert_eq!(stored, (expected, expected));
+        }
+    }
+
+    #[test]
+    fn put_worksite_refuses_a_goal_and_target_that_disagree_without_writing() {
+        let (db, ids) = seeded();
+        let id = first_worksite(&db);
+
+        let response = dispatch(
+            &db,
+            &request_for(
+                "PUT",
+                "/api/worksite",
+                &id,
+                Some(json!({ "committeeGoal": 7, "committeeTarget": 8 })),
+            ),
+            &ids,
+        );
+        assert_eq!(response.status, 400);
+        assert_eq!(
+            response.body,
+            json!({ "message": COMMITTEE_GOAL_CONFLICT_MESSAGE })
+        );
+        let stored: (i64, i64) = db
+            .conn()
+            .query_row(
+                "SELECT committee_goal, committee_target FROM worksites WHERE id = ?1",
+                [&id],
+                |row| Ok((row.get(0)?, row.get(1)?)),
+            )
+            .unwrap();
+        assert_eq!(stored, (5, 5));
     }
 
     #[test]

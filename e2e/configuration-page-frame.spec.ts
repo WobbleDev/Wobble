@@ -24,7 +24,7 @@ import {
 
 /**
  * Ticket 04: Configuration is one scrolling page of four parts. The Worksite card holds
- * the name and Committee coverage target, one ordered Attributes list follows, Agitations
+ * the name and Committee coverage goal, one ordered Attributes list follows, Agitations
  * and Languages share a row beneath it, and the danger zone is last.
  * A card keeps its size and scrolls inside itself, under its own sticky header, rather than stretching its row.
  */

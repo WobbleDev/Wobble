@@ -1,7 +1,7 @@
 import { appReady } from './page-ready.ts';
 import { expect, test } from './fixtures.ts';
 
-test('sets the committee coverage target in Configuration and persists it', async ({
+test('sets the committee coverage goal in Configuration and persists it', async ({
 	page,
 	request
 }) => {
@@ -21,7 +21,7 @@ test('sets the committee coverage target in Configuration and persists it', asyn
 	await expect
 		.poll(async () => {
 			const response = await request.get('/api/worksite');
-			return (await response.json()).worksite.committeeTarget;
+			return (await response.json()).worksite.committeeGoal;
 		})
 		.toBe(3);
 

@@ -61,22 +61,26 @@
 				"workers": [],
 				"worksite": {
 					"committeeTarget": 5,
+					"committeeGoal": 5,
 					"id": "33d8ac47-c9ac-49d8-9f78-0542615dd3a3",
 					"name": "My Worksite 3"
 				},
 				"worksites": [
 					{
 						"committeeTarget": 5,
+						"committeeGoal": 5,
 						"id": "945df0ac-d4f7-4298-a80a-63cde69d2984",
 						"name": "My Worksite"
 					},
 					{
 						"committeeTarget": 5,
+						"committeeGoal": 5,
 						"id": "d7e8a889-ea11-4ddf-99c5-98fdfcd4473e",
 						"name": "My Worksite 2"
 					},
 					{
 						"committeeTarget": 5,
+						"committeeGoal": 5,
 						"id": "33d8ac47-c9ac-49d8-9f78-0542615dd3a3",
 						"name": "My Worksite 3"
 					}
@@ -120,27 +124,32 @@
 				"workers": [],
 				"worksite": {
 					"committeeTarget": 5,
+					"committeeGoal": 5,
 					"id": "33d8ac47-c9ac-49d8-9f78-0542615dd3a3",
 					"name": "My Worksite 3"
 				},
 				"worksites": [
 					{
 						"committeeTarget": 5,
+						"committeeGoal": 5,
 						"id": "945df0ac-d4f7-4298-a80a-63cde69d2984",
 						"name": "My Worksite"
 					},
 					{
 						"committeeTarget": 5,
+						"committeeGoal": 5,
 						"id": "d7e8a889-ea11-4ddf-99c5-98fdfcd4473e",
 						"name": "My Worksite 2"
 					},
 					{
 						"committeeTarget": 5,
+						"committeeGoal": 5,
 						"id": "33d8ac47-c9ac-49d8-9f78-0542615dd3a3",
 						"name": "My Worksite 3"
 					},
 					{
 						"committeeTarget": 5,
+						"committeeGoal": 5,
 						"id": "89349663-7945-44bb-8890-4f3969ea502c",
 						"name": "My Worksite 4"
 					}
@@ -175,6 +184,7 @@
 			"body": {
 				"worksite": {
 					"committeeTarget": 5,
+					"committeeGoal": 5,
 					"id": "33d8ac47-c9ac-49d8-9f78-0542615dd3a3",
 					"name": "My Worksite 3"
 				}
@@ -218,6 +228,7 @@
 	],
 	"worksite": {
 		"committeeTarget": 5,
+		"committeeGoal": 5,
 		"id": "33d8ac47-c9ac-49d8-9f78-0542615dd3a3",
 		"name": "My Worksite 3"
 	}

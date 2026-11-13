@@ -195,7 +195,7 @@ describe('saving the Configuration with its attribute move resolutions', () => {
 	});
 });
 
-describe('saving the committee coverage target', () => {
+describe('saving the committee coverage goal', () => {
 	it('puts the target to the worksite endpoint', async () => {
 		const fetchMock = vi.fn().mockResolvedValue(jsonResponse({ worksite: {} }));
 		vi.stubGlobal('fetch', fetchMock);
@@ -203,7 +203,7 @@ describe('saving the committee coverage target', () => {
 		await expect(saveWorksiteCommitteeGoal(12)).resolves.toBeUndefined();
 		expect(fetchMock).toHaveBeenCalledWith(
 			'/api/worksite',
-			expect.objectContaining({ method: 'PUT', body: JSON.stringify({ committeeTarget: 12 }) })
+			expect.objectContaining({ method: 'PUT', body: JSON.stringify({ committeeGoal: 12 }) })
 		);
 	});
 });

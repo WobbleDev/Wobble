@@ -161,10 +161,10 @@ fn fresh_create_and_seed_matches_node() {
             row.get(0)
         })
         .unwrap();
-    assert_eq!(version, 24);
+    assert_eq!(version, 25);
     let migration_name: String = conn
         .query_row(
-            "SELECT name FROM schema_migrations WHERE version = 24",
+            "SELECT name FROM schema_migrations WHERE version = 25",
             [],
             |row| row.get(0),
         )

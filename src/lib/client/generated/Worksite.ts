@@ -2,6 +2,15 @@
 
 /**
  * A Worksite as the handlers surface it. Serializes as the TS shape
- * (`{id, name, committeeTarget}`) so route bodies match byte-for-byte.
+ * (`{id, name, committeeGoal, committeeTarget}`) so route bodies match byte-for-byte.
  */
-export type Worksite = { id: string; name: string; committeeTarget: number };
+export type Worksite = {
+	id: string;
+	name: string;
+	committeeGoal: number;
+	/**
+	 * The old wire name for `committee_goal`. It always equals the goal and is answered beside
+	 * it until the contract step removes it; build a Worksite through `Worksite::new`.
+	 */
+	committeeTarget: number;
+};

@@ -1013,42 +1013,50 @@
 		],
 		"worksite": {
 			"committeeTarget": 5,
+			"committeeGoal": 5,
 			"id": "721dc191-4dc1-4dbf-957f-3f488b2b4558",
 			"name": "My Worksite 7"
 		},
 		"worksites": [
 			{
 				"committeeTarget": 5,
+				"committeeGoal": 5,
 				"id": "629a8dd1-3a2b-4377-a603-66d3a5eb59a6",
 				"name": "My Worksite"
 			},
 			{
 				"committeeTarget": 5,
+				"committeeGoal": 5,
 				"id": "f0064e4c-38dc-4da8-a8c4-eafb887f8a3b",
 				"name": "My Worksite 2"
 			},
 			{
 				"committeeTarget": 5,
+				"committeeGoal": 5,
 				"id": "4bc6fe43-88fc-4a71-9009-ecfe7d6b5520",
 				"name": "My Worksite 3"
 			},
 			{
 				"committeeTarget": 5,
+				"committeeGoal": 5,
 				"id": "ce66252b-c99f-40a1-8249-366d71f5ecec",
 				"name": "My Worksite 4"
 			},
 			{
 				"committeeTarget": 5,
+				"committeeGoal": 5,
 				"id": "5fe9a892-c969-44a0-9229-91328ebbac03",
 				"name": "My Worksite 5"
 			},
 			{
 				"committeeTarget": 5,
+				"committeeGoal": 5,
 				"id": "e5879080-74f2-48cd-9421-43a33067ab6c",
 				"name": "My Worksite 6"
 			},
 			{
 				"committeeTarget": 5,
+				"committeeGoal": 5,
 				"id": "721dc191-4dc1-4dbf-957f-3f488b2b4558",
 				"name": "My Worksite 7"
 			}

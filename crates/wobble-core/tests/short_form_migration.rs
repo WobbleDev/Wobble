@@ -50,10 +50,10 @@ fn every_upgradable_version_backfills_a_generated_short_form_for_every_value() {
         let data = dataset(&app);
         // LEGACY-PLAINTEXT-FIXTURE: temp-constructed legacy-schema source for upgrade-read test (intentional plaintext, never production).
         let conn = Connection::open(&path).expect("opens the upgraded database");
-        assert_eq!(raw_version(&conn), Some(24), "v{version}");
+        assert_eq!(raw_version(&conn), Some(25), "v{version}");
         assert_eq!(
             migration_rows(&conn).last().unwrap(),
-            &(24, "saved-views".to_owned()),
+            &(25, "committee-goal".to_owned()),
             "v{version}"
         );
         let options = &data["attributes"][0]["options"];
