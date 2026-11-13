@@ -9,8 +9,8 @@
 		hasError: (answer: AttributeAnswerDraft) => boolean;
 		onRename: (answerId: string, text: string) => ValueTextCheck;
 		/** The text the answer's Short form field shows. */
-		shortFormShown: (answer: AttributeAnswerDraft) => string;
-		onShortForm: (answerId: string, text: string) => void;
+		abbreviationShown: (answer: AttributeAnswerDraft) => string;
+		onAbbreviation: (answerId: string, text: string) => void;
 		onDuplicate: (answerId: string, text: string, survivorId: string) => void;
 		onRequestRemove: (answerId: string) => void;
 		reorder: AnswerReorder;
@@ -31,7 +31,7 @@
 	import type { AnswerPopulationCounts } from '#lib/shared/worker-population.ts';
 	import EditableChip from './editable-chip.svelte';
 	import OutlineCount from './outline-count.svelte';
-	import ShortFormField from './short-form-field.svelte';
+	import AbbreviationField from './abbreviation-field.svelte';
 	import Self from './answer-outline.svelte';
 
 	/**
@@ -204,12 +204,12 @@
 					/>
 				</div>
 			</div>
-			<ShortFormField
+			<AbbreviationField
 				name={chipLabel}
-				shown={actions.shortFormShown(answer)}
+				shown={actions.abbreviationShown(answer)}
 				edited={answer.shortFormOrigin === 'edited'}
 				{disabled}
-				onInput={(text) => actions.onShortForm(answer.id, text)}
+				onInput={(text) => actions.onAbbreviation(answer.id, text)}
 			/>
 			{#if expandable}
 				<button

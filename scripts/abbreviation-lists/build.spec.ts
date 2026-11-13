@@ -117,7 +117,7 @@ describe('extractors', () => {
 		expect(extractKaikkiPairs(french)).toEqual([]);
 	});
 
-	it('reads short-form-shaped Wikidata aliases and P1813 names per language', () => {
+	it('reads abbreviation-shaped Wikidata aliases and P1813 names per language', () => {
 		const pairs = extractWikidataPairs({
 			label: { en: 'information technology' },
 			aliases: { en: ['IT', 'TI', 'Shelf:Information technology'], es: [] },
@@ -202,9 +202,9 @@ describe('splitGroups and splitDuplicates', () => {
 });
 
 describe('fixture build', () => {
-	const inputDir = 'scripts/short-form-lists/filtered-input';
+	const inputDir = 'scripts/abbreviation-lists/filtered-input';
 	const runBuild = () => {
-		const dir = mkdtempSync(join(tmpdir(), 'short-forms-'));
+		const dir = mkdtempSync(join(tmpdir(), 'abbreviations-'));
 		const paths = {
 			snapshotPath: join(dir, 'snapshot.rs'),
 			reportPath: join(dir, 'report.json'),
@@ -261,7 +261,7 @@ describe('fixture build', () => {
 	});
 
 	it('refuses inputs whose checksum changed', async () => {
-		const dir = mkdtempSync(join(tmpdir(), 'short-forms-'));
+		const dir = mkdtempSync(join(tmpdir(), 'abbreviations-'));
 		const { copyFileSync, writeFileSync, mkdirSync } = await import('node:fs');
 		mkdirSync(join(dir, 'in'));
 		copyFileSync(join(inputDir, 'manifest.json'), join(dir, 'in', 'manifest.json'));

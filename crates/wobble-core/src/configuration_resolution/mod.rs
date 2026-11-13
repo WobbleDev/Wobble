@@ -425,7 +425,7 @@ pub fn save_attributes_with_resolutions(
         &prepared.cardinality_choices,
     )?;
 
-    let lists_current = crate::short_form_revision::lists_current(conn, &worksite.id)?;
+    let lists_current = crate::abbreviation_revision::lists_current(conn, &worksite.id)?;
     let plan = compute_attribute_migration_plan_in(
         locale,
         &existing,
@@ -445,7 +445,7 @@ pub fn save_attributes_with_resolutions(
     // Only the save that observes a stale revision records the new one; see
     // `replace_worker_attributes_in` for why the mark is conditional.
     if !lists_current {
-        crate::short_form_revision::mark_lists_current(conn, &worksite.id)?;
+        crate::abbreviation_revision::mark_lists_current(conn, &worksite.id)?;
     }
 
     Ok(ResolutionSaveOutcome::Saved {

@@ -5,12 +5,12 @@ use rusqlite::Connection;
 mod common;
 
 use common::temp_db_path;
+use wobble_core::abbreviation_lists::REVISION;
+use wobble_core::abbreviation_revision::revision_key;
 use wobble_core::db::{self, Db};
 use wobble_core::handle::{App, Request};
 use wobble_core::id::{counter_id, CounterId};
 use wobble_core::schema;
-use wobble_core::short_form_lists::REVISION;
-use wobble_core::short_form_revision::revision_key;
 
 #[test]
 fn bundled_sqlite_is_at_least_3_38() {

@@ -28,7 +28,7 @@ export type OutlineTreeHost = {
 	/** The Attribute's trimmed name; empty when it has none. */
 	attributeName: (id: string) => string;
 	/** Clicks the row's own edit or remove control; true when that control was present and enabled. */
-	activate: (id: string, action: 'edit' | 'remove' | 'short-form') => boolean;
+	activate: (id: string, action: 'edit' | 'remove' | 'abbreviation') => boolean;
 	/** The top-level row under a point, with its box, for dropping an Attribute. */
 	rowAtPoint: (x: number, y: number) => { id: string; top: number; height: number } | null;
 	/** The id of the row whose own element is the target; null for a control inside a row or any other target. */
@@ -197,7 +197,7 @@ export function createOutlineTree(host: OutlineTreeHost) {
 			case 'F2':
 				// Shift+F2 goes to the row's Short form field; Enter and F2 edit its name.
 				if (event.key === 'F2' && event.shiftKey) {
-					if (host.activate(rowId, 'short-form')) event.preventDefault();
+					if (host.activate(rowId, 'abbreviation')) event.preventDefault();
 					return;
 				}
 				if (host.activate(rowId, 'edit')) event.preventDefault();

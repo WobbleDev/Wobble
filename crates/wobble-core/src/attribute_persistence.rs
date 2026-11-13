@@ -507,7 +507,7 @@ pub fn replace_worker_attributes_in(
     // A bundled lists revision newer than the Worksite's stored one regenerates
     // every still-generated Short form once (ADR 0046, ticket 05); the revision is
     // recorded after the plan below commits.
-    let lists_current = crate::short_form_revision::lists_current(conn, &worksite.id)?;
+    let lists_current = crate::abbreviation_revision::lists_current(conn, &worksite.id)?;
     let plan = compute_attribute_migration_plan_in(
         locale,
         &existing,
@@ -538,7 +538,7 @@ pub fn replace_worker_attributes_in(
     // Only the save that observes a stale revision records the new one, so a steady-state
     // save writes nothing it does not have to (a no-op UPDATE would still count as a write).
     if !lists_current {
-        crate::short_form_revision::mark_lists_current(conn, &worksite.id)?;
+        crate::abbreviation_revision::mark_lists_current(conn, &worksite.id)?;
     }
 
     get_worker_attributes(conn, &Some(worksite.clone()))

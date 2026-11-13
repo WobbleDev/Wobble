@@ -1,7 +1,7 @@
 NOTICE: bundled Short form list sources (revision sf05-fixture-1)
 
 The app's generated Short forms draw on word shortenings and acronyms built from
-these sources by scripts/short-form-lists/. Neither src/ nor crates/ contains
+these sources by scripts/abbreviation-lists/. Neither src/ nor crates/ contains
 networking code; the lists reach the app only through the versioned snapshot.
 
 1. O*NET Database 31.0, U.S. Department of Labor, Employment and Training
@@ -24,7 +24,7 @@ networking code; the lists reach the app only through the versioned snapshot.
 3. Wikidata concept entities (per-item revision ids in the build inputs).
    License: CC0 1.0 Universal, https://creativecommons.org/publicdomain/zero/1.0/ .
    Source: https://www.wikidata.org/ . Changes: P1813 short names and
-   short-form-shaped aliases of the concept list the script defines.
+   abbreviation-shaped aliases of the concept list the script defines.
 
 Kept pairs this revision: 32 (dropped: 11).
 GPO Style Manual ch. 9 (public domain) and the RAE DPD are cited authorities,

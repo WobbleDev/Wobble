@@ -8,7 +8,7 @@ import type {
 	AttributeAnswer,
 	AssessmentOption,
 	ConfigurationPreview,
-	ConfigurationPreviewShortForm,
+	ConfigurationPreviewAbbreviation,
 	ConfigurationResolutions,
 	Language,
 	Worker,
@@ -25,7 +25,7 @@ import type { WorkerAttributeDefinition } from '#lib/domain-vocabulary.ts';
 import {
 	decodeAgitation,
 	decodeConfigurationPreview,
-	decodeShortFormSuggestions,
+	decodeAbbreviationSuggestions,
 	decodeImportResult,
 	type ImportResult,
 	decodeLanguage,
@@ -416,14 +416,14 @@ export function previewConfiguration(
  * Asks the core for the Short form each value of a proposed Save would be stored with. Read
  * only and light: no impacts are computed, so it can follow every edit.
  */
-export function suggestShortForms(
+export function suggestAbbreviations(
 	request: ConfigurationPreviewRequest
-): Promise<ConfigurationPreviewShortForm[]> {
+): Promise<ConfigurationPreviewAbbreviation[]> {
 	return requestJson(
 		'/api/configuration/short-forms',
 		localizedJsonInit('POST', request),
 		(status) => `Could not suggest Short forms (HTTP ${status}).`,
-		decodeShortFormSuggestions
+		decodeAbbreviationSuggestions
 	);
 }
 

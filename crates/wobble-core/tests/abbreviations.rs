@@ -5,11 +5,11 @@ mod common;
 
 use common::http::request;
 use serde_json::{json, Value};
+use wobble_core::abbreviation_lists::REVISION;
+use wobble_core::abbreviation_revision::revision_key;
 use wobble_core::db::{open_seeded, Db};
 use wobble_core::id::CounterId;
 use wobble_core::router::dispatch;
-use wobble_core::short_form_lists::REVISION;
-use wobble_core::short_form_revision::revision_key;
 
 struct Site {
     db: Db,
@@ -116,7 +116,7 @@ fn the_limit_counts_graphemes_not_bytes_or_code_points() {
 }
 
 #[test]
-fn an_edited_short_form_round_trips_and_survives_a_rename() {
+fn an_edited_abbreviation_round_trips_and_survives_a_rename() {
     let site = Site::new();
     let saved = site.save(json!([
         { "id": "a", "value": "Customer Service North",
@@ -144,7 +144,7 @@ fn an_edited_short_form_round_trips_and_survives_a_rename() {
 }
 
 #[test]
-fn an_edited_short_form_is_trimmed_and_limited_to_ten_graphemes_with_a_coded_error() {
+fn an_edited_abbreviation_is_trimmed_and_limited_to_ten_graphemes_with_a_coded_error() {
     let site = Site::new();
     let trimmed = site.save(json!([
         { "id": "a", "value": "Kitchen staff", "shortForm": "  KS  ", "shortFormOrigin": "edited" }
@@ -179,7 +179,7 @@ fn a_malformed_origin_or_a_form_without_an_origin_is_refused() {
 }
 
 #[test]
-fn a_new_value_gets_a_readable_short_form_through_save() {
+fn a_new_value_gets_a_readable_abbreviation_through_save() {
     let site = Site::new();
     let saved = site.save(json!([
         { "id": "a", "value": "Customer Service" },
@@ -510,7 +510,7 @@ fn a_preview_suggestion_is_what_saving_the_same_draft_stores() {
 }
 
 #[test]
-fn the_configuration_preview_reports_the_same_suggestions_as_the_short_forms_route() {
+fn the_configuration_preview_reports_the_same_suggestions_as_the_abbreviations_route() {
     let site = Site::new();
     site.save(json!([{ "id": "a", "value": "Customer Service" }]));
     let draft = json!([
@@ -524,7 +524,7 @@ fn the_configuration_preview_reports_the_same_suggestions_as_the_short_forms_rou
 }
 
 #[test]
-fn the_short_forms_route_refuses_an_invalid_draft_and_writes_nothing() {
+fn the_abbreviations_route_refuses_an_invalid_draft_and_writes_nothing() {
     let site = Site::new();
     site.save(json!([{ "id": "a", "value": "Customer Service" }]));
     let refused = site.send(
@@ -541,7 +541,7 @@ fn the_short_forms_route_refuses_an_invalid_draft_and_writes_nothing() {
 }
 
 #[test]
-fn the_short_forms_route_answers_only_the_suggestions() {
+fn the_abbreviations_route_answers_only_the_suggestions() {
     let site = Site::new();
     let reply = site.send(
         "POST",
@@ -590,7 +590,7 @@ impl Site {
 
 // Sourced acronyms (ADR 0046): generation uses the worksite's own values across every
 // Attribute, not just the one being saved. "PR" for "Public Relations" is the seed
-// acronym's ambiguous pair with "Payroll" (crate::short_form_lists::ENGLISH).
+// acronym's ambiguous pair with "Payroll" (crate::abbreviation_lists::ENGLISH).
 
 #[test]
 fn adding_a_value_in_another_attribute_regenerates_a_generated_acronym_that_now_conflicts() {

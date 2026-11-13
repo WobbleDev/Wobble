@@ -6,7 +6,7 @@ import { appReady } from './page-ready.ts';
 import { createWorker } from './api.ts';
 import { wireDefinitions } from './answer-wire.ts';
 import { addValue, answerRow, openAttributeEditor, saveAll } from './configuration-outline.ts';
-import { SHORT_FORM_LIMIT } from '../src/lib/shared/short-form.ts';
+import { ABBREVIATION_LIMIT } from '../src/lib/shared/abbreviation.ts';
 
 /**
  * Short forms in the Configuration outline (ADR 0046): the core suggests one for every
@@ -58,12 +58,12 @@ test('a new value shows a greyed suggestion, typing makes it edited, and eleven 
 	await input.fill('Eleven char');
 	await expect(input).toHaveAttribute('data-origin', 'edited');
 	await expect(input).not.toHaveClass(/text-ink-3/);
-	await expect(row.getByTestId('short-form-count')).toHaveText(`11/${SHORT_FORM_LIMIT}`);
+	await expect(row.getByTestId('abbreviation-count')).toHaveText(`11/${ABBREVIATION_LIMIT}`);
 	await expect(input).toHaveAttribute('aria-invalid', 'true');
 	await expect(page.getByRole('button', { name: 'Save all', exact: true })).toBeDisabled();
 
 	await input.fill('CS');
-	await expect(row.getByTestId('short-form-count')).toHaveText(`2/${SHORT_FORM_LIMIT}`);
+	await expect(row.getByTestId('abbreviation-count')).toHaveText(`2/${ABBREVIATION_LIMIT}`);
 	await expect(input).not.toHaveAttribute('aria-invalid', 'true');
 	await saveAll(page);
 

@@ -200,7 +200,7 @@ The bullseye is designed around a roughly fifty-worker worksite. The Workers tab
 
 The generated Short forms draw on word shortenings and acronyms built from
 O*NET 31.0 (CC BY 4.0), Wiktionary via kaikki.org (the derived file is
-CC BY-SA 4.0) and Wikidata (CC0) by `scripts/short-form-lists/`, which also
+CC BY-SA 4.0) and Wikidata (CC0) by `scripts/abbreviation-lists/`, which also
 writes the repo-root `NOTICE` with the full credits and license links. This is
 not legal advice; get a legal check before any commercial distribution.
 

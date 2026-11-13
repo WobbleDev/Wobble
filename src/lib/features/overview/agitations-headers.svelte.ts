@@ -1,9 +1,12 @@
-import { chooseShortFormLabels, type ShortFormLabelEntry } from '#lib/shared/short-form-label.ts';
+import {
+	chooseAbbreviationLabels,
+	type AbbreviationLabelEntry
+} from '#lib/shared/abbreviation-label.ts';
 import { GROUP_GAP_PX } from './agitations-paging.svelte.ts';
 
 type HeaderHost = {
 	/** Every value of the grouping, whether or not a Worker holds it, so counts never rename one. */
-	values: () => readonly ShortFormLabelEntry[];
+	values: () => readonly AbbreviationLabelEntry[];
 	locale: () => string;
 	allLabel: () => string;
 	largestGroup: () => number;
@@ -25,7 +28,7 @@ export function createAgitationsHeaders(host: HeaderHost) {
 	let availableWidth = $state(160);
 	const minimumBudget = $derived(measure(MINIMUM_BUDGET_SAMPLE));
 	const labels = $derived(
-		chooseShortFormLabels(host.values(), {
+		chooseAbbreviationLabels(host.values(), {
 			measure,
 			budget: minimumBudget,
 			reserved: [host.allLabel()]
@@ -44,7 +47,7 @@ export function createAgitationsHeaders(host: HeaderHost) {
 		)
 	);
 	const pageLabels = $derived(
-		chooseShortFormLabels(host.values(), {
+		chooseAbbreviationLabels(host.values(), {
 			measure,
 			budget: pageBudget,
 			reserved: [host.allLabel()]

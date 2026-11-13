@@ -7,7 +7,7 @@ import {
 	decodeRuntimeInfo,
 	decodeSafetyCopyPath,
 	decodeSettings,
-	decodeShortFormSuggestions,
+	decodeAbbreviationSuggestions,
 	decodeWorksiteId,
 	isRecord
 } from '#lib/client/api-decode.ts';
@@ -43,7 +43,7 @@ const decoders: Record<string, Decoder> = {
 	'POST /api/agitations': (body) => decodeAgitation(body),
 	'POST /api/languages': (body) => decodeLanguage(body),
 	'POST /api/configuration/preview': (body) => decodeConfigurationPreview(body),
-	'POST /api/configuration/short-forms': (body) => decodeShortFormSuggestions(body),
+	'POST /api/configuration/short-forms': (body) => decodeAbbreviationSuggestions(body),
 	'GET /api/data-file': (body) => decodeDataFile(body),
 	'GET /api/runtime': (body) => decodeRuntimeInfo(body),
 	'POST /api/restore': (body) => decodeSafetyCopyPath(body),

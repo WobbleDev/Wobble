@@ -16,7 +16,7 @@ import type {
 import {
 	attributeWrites,
 	previewConfiguration,
-	suggestShortForms,
+	suggestAbbreviations,
 	saveAgitations,
 	saveAttributes,
 	saveConfigurationAttributes,
@@ -89,11 +89,11 @@ import {
 } from './attribute-moves.ts';
 
 import {
-	editShortForm,
+	editAbbreviation,
 	renameAnswerValue,
-	shortFormTooLong,
-	shownShortForm
-} from './short-form-draft.ts';
+	abbreviationTooLong,
+	shownAbbreviation
+} from './abbreviation-draft.ts';
 import type { AttributeAnswerDraft } from './attribute-draft.ts';
 
 export const configurationDraftContextKey = Symbol('configuration-draft');
@@ -148,7 +148,7 @@ export class ConfigurationDraftState {
 	 * The core's suggested Short form for each value that has no edited one, by answer id.
 	 * The frontend never generates a form: it shows what the preview answered.
 	 */
-	readonly suggestedShortForms = new SvelteMap<string, string>();
+	readonly suggestedAbbreviations = new SvelteMap<string, string>();
 	private suggestionToken = 0;
 
 	/** The last preview of the current draft, and whether its confirmation is open. */
@@ -416,7 +416,7 @@ export class ConfigurationDraftState {
 				candidate.id === answerId ? renameAnswerValue(candidate, label) : candidate
 			);
 			// A generated form follows the new name; the old suggestion no longer describes it.
-			this.suggestedShortForms.delete(answerId);
+			this.suggestedAbbreviations.delete(answerId);
 			attribute.removalError = '';
 			attribute.moveError = '';
 		}
@@ -424,20 +424,20 @@ export class ConfigurationDraftState {
 	}
 
 	/** Typing a Short form edits it; clearing it returns the value to a generated form. */
-	editShortForm(attributeId: string, answerId: string, text: string) {
+	editAbbreviation(attributeId: string, answerId: string, text: string) {
 		if (this.saving) return;
 		const attribute = this.draftAttributes.find((candidate) => candidate.id === attributeId);
 		if (!attribute) return;
 		attribute.answers = attribute.answers.map((candidate) =>
-			candidate.id === answerId ? editShortForm(candidate, text) : candidate
+			candidate.id === answerId ? editAbbreviation(candidate, text) : candidate
 		);
 		// A cleared form is generated again: the suggestion held for the old name is stale.
-		if (!text.trim()) this.suggestedShortForms.delete(answerId);
+		if (!text.trim()) this.suggestedAbbreviations.delete(answerId);
 	}
 
 	/** The text a value's Short form field shows. */
-	shortFormShown(answer: AttributeAnswerDraft): string {
-		return shownShortForm(answer, this.suggestedShortForms);
+	abbreviationShown(answer: AttributeAnswerDraft): string {
+		return shownAbbreviation(answer, this.suggestedAbbreviations);
 	}
 
 	/**
@@ -449,15 +449,16 @@ export class ConfigurationDraftState {
 		const request = suggestionRequest(this.draftInput);
 		const key = previewRequestKey(request);
 		if (expectedKey !== undefined && key !== expectedKey) return;
-		if (this.draftAttributes.some((attribute) => attribute.answers.some(shortFormTooLong))) return;
+		if (this.draftAttributes.some((attribute) => attribute.answers.some(abbreviationTooLong)))
+			return;
 		const token = ++this.suggestionToken;
 		try {
-			const forms = await suggestShortForms(request);
+			const forms = await suggestAbbreviations(request);
 			if (token !== this.suggestionToken) return;
-			this.suggestedShortForms.clear();
+			this.suggestedAbbreviations.clear();
 			for (const form of forms) {
 				if (form.shortFormOrigin === 'generated') {
-					this.suggestedShortForms.set(form.answerId, form.shortForm);
+					this.suggestedAbbreviations.set(form.answerId, form.shortForm);
 				}
 			}
 		} catch {

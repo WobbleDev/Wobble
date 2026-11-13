@@ -1,7 +1,7 @@
 # Short form list pipeline (ticket 05, ADR 0046)
 
 A developer-run pipeline that builds the versioned Short form snapshot bundled in
-`crates/wobble-core/src/short_form_lists_generated.rs` from pinned, checksummed
+`crates/wobble-core/src/abbreviation_lists_generated.rs` from pinned, checksummed
 source inputs. It never runs as part of the app build, and neither `src/` nor
 `crates/` contains networking code.
 
@@ -10,14 +10,14 @@ source inputs. It never runs as part of the app build, and neither `src/` nor
 - `fetch.mjs` — downloads the pinned sources, keeps only the records the build
   reads, and writes them as filtered inputs plus `filtered-input/manifest.json`
   (SHA-256 per file, source, pin, record count). Maintainer-run, needs network:
-  `node scripts/short-form-lists/fetch.mjs --revision <name> [--out <dir>]`.
+  `node scripts/abbreviation-lists/fetch.mjs --revision <name> [--out <dir>]`.
 - `gates.mjs` — the automatic gates every pair must pass (spec "Sources"):
   first letter, letters in order, shorter than the expansion, exact whole-word
   phrase. Pure, no I/O.
 - `build.mjs` — reads the filtered inputs named in the manifest, verifies
   checksums, extracts candidates, applies the gates, and writes the snapshot,
   `build-report.json` (kept/dropped counts with reasons) and the repo-root
-  `NOTICE` together. No network: `node scripts/short-form-lists/build.mjs`.
+  `NOTICE` together. No network: `node scripts/abbreviation-lists/build.mjs`.
 - `filtered-input/` — the saved inputs the build reads. Rebuilding from these
   files is byte-identical (proven by `build.spec.ts`). Refreshing a source
   means rerunning `fetch.mjs` and committing the new inputs as a reviewable diff.
@@ -45,4 +45,4 @@ every still-generated Short form once via the stored per-Worksite revision.
 
 Run `cargo fmt` on the snapshot (the `test:rust` gate checks formatting), then
 the affected Rust tests. `connectors` and `qualifiers` stay hand-authored in
-`short_form_lists.rs`: they are closed function-word lists with no source.
+`abbreviation_lists.rs`: they are closed function-word lists with no source.

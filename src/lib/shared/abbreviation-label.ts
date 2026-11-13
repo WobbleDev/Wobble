@@ -13,7 +13,7 @@
 const SEPARATOR = ' › ';
 
 /** One value to label, with its ancestors nearest first. */
-export type ShortFormLabelEntry = {
+export type AbbreviationLabelEntry = {
 	id: string;
 	/** The full name. */
 	value: string;
@@ -24,7 +24,7 @@ export type ShortFormLabelEntry = {
 	system?: boolean;
 };
 
-export type ShortFormLabelOptions = {
+export type AbbreviationLabelOptions = {
 	/** The rendered width of a label in the view's own voice. */
 	measure: (label: string) => number;
 	/** The width one label may take before its Short form is shown instead. */
@@ -41,15 +41,15 @@ function identity(label: string): string {
 		.replace(/[\p{P}\p{Z}\s]/gu, '');
 }
 
-export function chooseShortFormLabels(
-	entries: readonly ShortFormLabelEntry[],
-	{ measure, budget, reserved = [] }: ShortFormLabelOptions
+export function chooseAbbreviationLabels(
+	entries: readonly AbbreviationLabelEntry[],
+	{ measure, budget, reserved = [] }: AbbreviationLabelOptions
 ): ReadonlyMap<string, string> {
 	const own = (item: { value: string; shortForm?: string }) =>
 		item.shortForm !== undefined && measure(item.value) > budget ? item.shortForm : item.value;
 	const reservedKeys = new Set(reserved.map(identity));
 
-	type State = { entry: ShortFormLabelEntry; depth: number; full: boolean };
+	type State = { entry: AbbreviationLabelEntry; depth: number; full: boolean };
 	const states: State[] = entries.map((entry) => ({ entry, depth: 0, full: false }));
 
 	const label = ({ entry, depth, full }: State): string => {

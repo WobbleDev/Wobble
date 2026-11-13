@@ -24,7 +24,7 @@ import {
 	saveLanguages,
 	saveWorkerDraft,
 	saveWorksiteName,
-	suggestShortForms,
+	suggestAbbreviations,
 	undoWorkerMerge,
 	updateWorkerAssessment,
 	updateWorkerAttribute,
@@ -210,8 +210,8 @@ const cases: Case[] = [
 		refused: 'Could not check these changes (HTTP 500).'
 	},
 	{
-		name: 'suggestShortForms',
-		call: () => suggestShortForms({ attributes: [], agitations: [], languages: [] }),
+		name: 'suggestAbbreviations',
+		call: () => suggestAbbreviations({ attributes: [], agitations: [], languages: [] }),
 		method: 'POST',
 		path: '/api/configuration/short-forms',
 		body: { attributes: [], agitations: [], languages: [] },

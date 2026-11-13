@@ -1,10 +1,10 @@
 // Fetch pinned revisions of the bulk Short form sources (ADR 0046, ticket 05).
 //
-// Maintainer-run: `node scripts/short-form-lists/fetch.mjs --revision <name> [--out <dir>]`.
+// Maintainer-run: `node scripts/abbreviation-lists/fetch.mjs --revision <name> [--out <dir>]`.
 // Needs network access. Downloads each pinned source, keeps only the records the
 // build reads, and writes them as filtered inputs plus a manifest with SHA-256
 // hashes and source metadata. A rebuild from the saved inputs
-// (`node scripts/short-form-lists/build.mjs`) is byte-identical. Refreshing a
+// (`node scripts/abbreviation-lists/build.mjs`) is byte-identical. Refreshing a
 // source means rerunning this script and committing the new inputs, which shows
 // up as a reviewable diff.
 //
@@ -56,7 +56,7 @@ export const PINS = {
 };
 
 /** Senses whose tags mark a short form (kept); everything else is skipped. */
-export const SHORT_FORM_TAGS = new Set(['abbreviation', 'acronym', 'initialism']);
+export const ABBREVIATION_TAGS = new Set(['abbreviation', 'acronym', 'initialism']);
 
 export function entityDataUrl(id, revision) {
 	const base = `https://www.wikidata.org/wiki/Special:EntityData/${id}.json`;
@@ -84,7 +84,7 @@ export function filterOnetRows(rows) {
 
 /**
  * Whether a kaikki record is one the word-shortening extractor reads: English or
- * Spanish with a short-form sense carrying exactly one alt_of target.
+ * Spanish with a abbreviation sense carrying exactly one alt_of target.
  * Pure: tested in build.spec.ts.
  */
 export function keepKaikkiRecord(record) {
@@ -93,7 +93,7 @@ export function keepKaikkiRecord(record) {
 	return record.senses.some(
 		(sense) =>
 			Array.isArray(sense.tags) &&
-			sense.tags.some((tag) => SHORT_FORM_TAGS.has(tag)) &&
+			sense.tags.some((tag) => ABBREVIATION_TAGS.has(tag)) &&
 			Array.isArray(sense.alt_of) &&
 			sense.alt_of.length === 1 &&
 			typeof sense.alt_of[0].word === 'string'
@@ -209,7 +209,7 @@ async function main() {
 		entities.length
 	);
 
-	const manifest = { revision, generatedBy: 'scripts/short-form-lists/fetch.mjs', files: [] };
+	const manifest = { revision, generatedBy: 'scripts/abbreviation-lists/fetch.mjs', files: [] };
 	for (const file of files) {
 		const text = await readFile(join(outDir, file.path), 'utf8');
 		manifest.files.push({ ...file, sha256: sha256Hex(text) });

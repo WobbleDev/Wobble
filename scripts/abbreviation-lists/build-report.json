@@ -1,6 +1,6 @@
 {
 	"revision": "sf05-fixture-1",
-	"generatedBy": "scripts/short-form-lists/build.mjs",
+	"generatedBy": "scripts/abbreviation-lists/build.mjs",
 	"inputs": [
 		{
 			"path": "onet-job-titles.fixture.json",

@@ -29,9 +29,9 @@ fn dataset(app: &App) -> Value {
 }
 
 #[test]
-fn every_upgradable_version_backfills_a_generated_short_form_for_every_value() {
+fn every_upgradable_version_backfills_a_generated_abbreviation_for_every_value() {
     for version in [12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22] {
-        let (path, conn) = start_source("short-forms", &format!("v{version}"));
+        let (path, conn) = start_source("abbreviations", &format!("v{version}"));
         add_worksite(&conn, WS, "Versioned");
         add_attribute(
             &conn,

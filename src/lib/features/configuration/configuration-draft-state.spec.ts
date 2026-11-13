@@ -482,25 +482,25 @@ describe('ConfigurationDraftState Short forms (ADR 0046)', () => {
 	it('editing a form makes the draft dirty and clearing it makes it clean again', () => {
 		const draft = openWith([...stored]);
 
-		draft.editShortForm('dept', 'a', 'CS');
+		draft.editAbbreviation('dept', 'a', 'CS');
 		expect(draft.dirtyAttributes).toBe(true);
 		expect(draft.draftAttributes[0].answers[0]).toMatchObject({
 			shortForm: 'CS',
 			shortFormOrigin: 'edited'
 		});
 
-		draft.editShortForm('dept', 'a', '');
+		draft.editAbbreviation('dept', 'a', '');
 		expect(draft.dirtyAttributes).toBe(false);
 		expect(draft.draftAttributes[0].answers[0].shortFormOrigin).toBeUndefined();
 	});
 
 	it('clearing an edited form drops the stale suggestion until the core answers again', () => {
 		const draft = openWith([...stored]);
-		draft.suggestedShortForms.set('b', 'Maint.');
+		draft.suggestedAbbreviations.set('b', 'Maint.');
 
-		draft.editShortForm('dept', 'b', '');
+		draft.editAbbreviation('dept', 'b', '');
 
-		expect(draft.shortFormShown(draft.draftAttributes[0].answers[1])).toBe('');
+		expect(draft.abbreviationShown(draft.draftAttributes[0].answers[1])).toBe('');
 	});
 
 	it('a rename drops a generated form and keeps an edited one', () => {
@@ -516,28 +516,28 @@ describe('ConfigurationDraftState Short forms (ADR 0046)', () => {
 
 	it('shows the core suggestion for a generated value and the typed text for an edited one', () => {
 		const draft = openWith([...stored]);
-		draft.suggestedShortForms.set('a', 'Night Svc.');
+		draft.suggestedAbbreviations.set('a', 'Night Svc.');
 
-		expect(draft.shortFormShown(draft.draftAttributes[0].answers[0])).toBe('Night Svc.');
-		expect(draft.shortFormShown(draft.draftAttributes[0].answers[1])).toBe('MX');
+		expect(draft.abbreviationShown(draft.draftAttributes[0].answers[0])).toBe('Night Svc.');
+		expect(draft.abbreviationShown(draft.draftAttributes[0].answers[1])).toBe('MX');
 	});
 
 	it('blocks Save while an edited form is beyond the limit and allows it once it fits', () => {
 		const draft = openWith([...stored]);
 
-		draft.editShortForm('dept', 'a', 'Eleven char');
+		draft.editAbbreviation('dept', 'a', 'Eleven char');
 		expect(draft.canSave).toBe(false);
 
-		draft.editShortForm('dept', 'a', 'Ten chars!!');
+		draft.editAbbreviation('dept', 'a', 'Ten chars!!');
 		expect(draft.canSave).toBe(false);
-		draft.editShortForm('dept', 'a', 'Ten chars!');
+		draft.editAbbreviation('dept', 'a', 'Ten chars!');
 		expect(draft.canSave).toBe(true);
 	});
 
 	it('saves an edited form with its origin and leaves a generated one to the core', async () => {
 		const { calls } = scriptFetch({ 'PUT /api/attributes': () => ({}) });
 		const draft = openWith([...stored]);
-		draft.editShortForm('dept', 'a', 'CS');
+		draft.editAbbreviation('dept', 'a', 'CS');
 
 		await draft.saveAll();
 
@@ -585,7 +585,7 @@ describe('ConfigurationDraftState Short forms (ADR 0046)', () => {
 
 		expect(calls).toHaveLength(1);
 		expect(calls[0].path).toBe('/api/configuration/short-forms');
-		expect(draft.shortFormShown(draft.draftAttributes[0].answers[0])).toBe('Night Svc.');
-		expect([...draft.suggestedShortForms.keys()]).toEqual(['a']);
+		expect(draft.abbreviationShown(draft.draftAttributes[0].answers[0])).toBe('Night Svc.');
+		expect([...draft.suggestedAbbreviations.keys()]).toEqual(['a']);
 	});
 });

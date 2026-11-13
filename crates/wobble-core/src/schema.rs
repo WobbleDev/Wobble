@@ -466,7 +466,7 @@ fn reformat_stored_phones(conn: &Connection) -> Result<()> {
 /// Gives every stored answer of every Attribute a generated Short form (ADR 0046). An answer
 /// that already carries one keeps it, so the step is safe to run over a partly upgraded
 /// file. Runs inside the caller's transaction.
-fn backfill_short_forms(conn: &Connection) -> Result<()> {
+fn backfill_abbreviations(conn: &Connection) -> Result<()> {
     let attributes: Vec<(String, String)> = {
         let mut statement = conn.prepare("SELECT id, options FROM worker_attributes")?;
         let rows = statement.query_map([], |row| Ok((row.get(0)?, row.get(1)?)))?;
@@ -481,7 +481,7 @@ fn backfill_short_forms(conn: &Connection) -> Result<()> {
         let parsed: Value = serde_json::from_str(&options).map_err(|_| invalid())?;
         let mut answers = answers_from_json(&parsed).ok_or_else(invalid)?;
         for answer in &mut answers {
-            let (form, origin) = crate::short_form::resolve(
+            let (form, origin) = crate::abbreviation::resolve(
                 "en",
                 &answer.value,
                 answer.short_form.as_deref(),
@@ -586,7 +586,7 @@ pub fn apply_migrations(conn: &Connection) -> Result<()> {
         }
         // v23 is data-only: the stored answers gain a generated Short form and its origin.
         if version <= 22 {
-            backfill_short_forms(&tx)?;
+            backfill_abbreviations(&tx)?;
             record_migration(&tx, 23, "short-forms")?;
         }
         // v24 is schema-only: the saved views table, with no rows to convert.
@@ -669,7 +669,7 @@ pub fn seed_default_worker_attributes_for(
     }
     // Stock attributes ship with no options, so there is nothing to resolve: record the
     // bundled lists revision now and a first save takes the steady-state path.
-    crate::short_form_revision::mark_lists_current(conn, worksite_id)?;
+    crate::abbreviation_revision::mark_lists_current(conn, worksite_id)?;
     Ok(())
 }
 

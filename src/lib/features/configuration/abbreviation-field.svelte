@@ -2,7 +2,7 @@
 	import { Input } from '#lib/components/ui/input/index.ts';
 	import { m } from '#lib/paraglide/messages.js';
 	import { cn } from '#lib/utils.ts';
-	import { SHORT_FORM_LIMIT, graphemeCount } from '#lib/shared/short-form.ts';
+	import { ABBREVIATION_LIMIT, graphemeCount } from '#lib/shared/abbreviation.ts';
 
 	type Props = {
 		/** The value's name, for the accessible name. */
@@ -21,7 +21,7 @@
 	let typing = $state<string | null>(null);
 	const text = $derived(typing ?? shown);
 	const count = $derived(graphemeCount(text.trim()));
-	const tooLong = $derived(count > SHORT_FORM_LIMIT);
+	const tooLong = $derived(count > ABBREVIATION_LIMIT);
 
 	function giveFocusBack(input: HTMLInputElement) {
 		input.closest<HTMLElement>('[role="treeitem"]')?.focus();
@@ -44,11 +44,11 @@
 			!edited && typing === null && 'text-ink-3',
 			(typing !== null || tooLong) && 'pr-9'
 		)}
-		aria-label={m.configuration_short_form_aria({ name })}
+		aria-label={m.configuration_abbreviation_aria({ name })}
 		aria-invalid={tooLong || undefined}
-		data-testid="short-form-field"
+		data-testid="abbreviation-field"
 		data-origin={edited ? 'edited' : 'generated'}
-		data-action="short-form"
+		data-action="abbreviation"
 		tabindex={-1}
 		{disabled}
 		oninput={(event) => {
@@ -62,14 +62,14 @@
 	{#if typing !== null || tooLong}
 		<span
 			aria-hidden="true"
-			data-testid="short-form-count"
+			data-testid="abbreviation-count"
 			class={cn(
 				'pointer-events-none absolute top-1/2 right-2 -translate-y-1/2 text-[0.6875rem] tabular-nums',
 				tooLong ? 'text-state-error' : 'text-ink-3'
-			)}>{count}/{SHORT_FORM_LIMIT}</span
+			)}>{count}/{ABBREVIATION_LIMIT}</span
 		>
 		<span class="sr-only" aria-live="polite"
-			>{m.configuration_short_form_count({ count, max: SHORT_FORM_LIMIT })}</span
+			>{m.configuration_abbreviation_count({ count, max: ABBREVIATION_LIMIT })}</span
 		>
 	{/if}
 </div>
