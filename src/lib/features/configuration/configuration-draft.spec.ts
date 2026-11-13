@@ -13,7 +13,7 @@ import {
 	canSaveWorksiteName,
 	checkValueText,
 	findDuplicateValue,
-	getCommitteeTargetError,
+	getCommitteeGoalError,
 	getDirtyState,
 	hasUnsavedDraft,
 	canPersistAttributes,
@@ -54,8 +54,8 @@ function cleanDraft(overrides: Partial<ConfigurationDraft> = {}): ConfigurationD
 	return {
 		worksiteName: 'Downtown',
 		savedWorksiteName: 'Downtown',
-		draftCommitteeTarget: '5',
-		savedCommitteeTarget: 5,
+		draftCommitteeGoal: '5',
+		savedCommitteeGoal: 5,
 		draftAttributes: [attribute()],
 		savedConfiguration: [definition()],
 		draftAgitations: [{ id: 'ag-1', text: 'Picketing' }],
@@ -73,7 +73,7 @@ describe('getDirtyState', () => {
 	it('reports nothing dirty when every section matches what was saved', () => {
 		expect(getDirtyState(cleanDraft())).toEqual({
 			name: false,
-			committeeTarget: false,
+			committeeGoal: false,
 			attributes: false,
 			agitations: false,
 			languages: false,
@@ -95,9 +95,9 @@ describe('getDirtyState', () => {
 	});
 
 	it('names the committee coverage target when only it changed', () => {
-		const dirty = getDirtyState(cleanDraft({ draftCommitteeTarget: '8' }));
+		const dirty = getDirtyState(cleanDraft({ draftCommitteeGoal: '8' }));
 
-		expect(dirty.committeeTarget).toBe(true);
+		expect(dirty.committeeGoal).toBe(true);
 		expect(dirty.sections).toEqual(['committee coverage target']);
 	});
 
@@ -188,20 +188,20 @@ describe('getDirtyState', () => {
 	});
 });
 
-describe('getCommitteeTargetError', () => {
+describe('getCommitteeGoalError', () => {
 	it('accepts whole numbers from 1 to 100', () => {
-		expect(getCommitteeTargetError('1')).toBe('');
-		expect(getCommitteeTargetError('5')).toBe('');
-		expect(getCommitteeTargetError('100')).toBe('');
+		expect(getCommitteeGoalError('1')).toBe('');
+		expect(getCommitteeGoalError('5')).toBe('');
+		expect(getCommitteeGoalError('100')).toBe('');
 	});
 
 	it('rejects empty, non-integer, and out-of-range input', () => {
-		expect(getCommitteeTargetError('')).not.toBe('');
-		expect(getCommitteeTargetError('   ')).not.toBe('');
-		expect(getCommitteeTargetError('1.5')).not.toBe('');
-		expect(getCommitteeTargetError('ten')).not.toBe('');
-		expect(getCommitteeTargetError('0')).not.toBe('');
-		expect(getCommitteeTargetError('101')).not.toBe('');
+		expect(getCommitteeGoalError('')).not.toBe('');
+		expect(getCommitteeGoalError('   ')).not.toBe('');
+		expect(getCommitteeGoalError('1.5')).not.toBe('');
+		expect(getCommitteeGoalError('ten')).not.toBe('');
+		expect(getCommitteeGoalError('0')).not.toBe('');
+		expect(getCommitteeGoalError('101')).not.toBe('');
 	});
 });
 
@@ -279,14 +279,14 @@ describe('canSave', () => {
 		expect(canSave(cleanDraft({ draftAgitations: [{ id: 'ag-2', text: 'Strike' }] }))).toBe(true);
 	});
 
-	it('allows saving a valid changed committee target', () => {
-		expect(canSave(cleanDraft({ draftCommitteeTarget: '8' }))).toBe(true);
+	it('allows saving a valid changed committee goal', () => {
+		expect(canSave(cleanDraft({ draftCommitteeGoal: '8' }))).toBe(true);
 	});
 
-	it('blocks saving an invalid committee target', () => {
-		expect(canSave(cleanDraft({ draftCommitteeTarget: '0' }))).toBe(false);
-		expect(canSave(cleanDraft({ draftCommitteeTarget: '1.5' }))).toBe(false);
-		expect(canSave(cleanDraft({ draftCommitteeTarget: '' }))).toBe(false);
+	it('blocks saving an invalid committee goal', () => {
+		expect(canSave(cleanDraft({ draftCommitteeGoal: '0' }))).toBe(false);
+		expect(canSave(cleanDraft({ draftCommitteeGoal: '1.5' }))).toBe(false);
+		expect(canSave(cleanDraft({ draftCommitteeGoal: '' }))).toBe(false);
 	});
 
 	it('allows saving valid changed attributes', () => {
@@ -312,7 +312,7 @@ describe('planConfigurationSave', () => {
 		const plan = planConfigurationSave(cleanDraft());
 
 		expect(plan.worksiteName.dirty).toBe(false);
-		expect(plan.committeeTarget.dirty).toBe(false);
+		expect(plan.committeeGoal.dirty).toBe(false);
 		expect(plan.attributes.dirty).toBe(false);
 		expect(plan.agitations.dirty).toBe(false);
 		expect(plan.languages.dirty).toBe(false);
@@ -375,10 +375,10 @@ describe('planConfigurationSave', () => {
 		});
 	});
 
-	it('plans a changed committee target as a number', () => {
-		const plan = planConfigurationSave(cleanDraft({ draftCommitteeTarget: ' 12 ' }));
+	it('plans a changed committee goal as a number', () => {
+		const plan = planConfigurationSave(cleanDraft({ draftCommitteeGoal: ' 12 ' }));
 
-		expect(plan.committeeTarget).toEqual({ dirty: true, snapshot: 12 });
+		expect(plan.committeeGoal).toEqual({ dirty: true, snapshot: 12 });
 	});
 
 	it('trims attribute names and option values into the snapshot', () => {

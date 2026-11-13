@@ -13,16 +13,16 @@ use crate::read_json_request::read_json_request;
 use crate::request_worksite::{no_active_worksite_response, resolve_request_worksite};
 use crate::router::{json_response, message_response, read_payload};
 use crate::schema::{Worksite, WorksiteTemplateLocale};
-use crate::serialization::is_committee_target;
+use crate::serialization::is_committee_goal;
 use crate::worksite_persistence::{
     count_worksite_workers, create_worksite_with_template, delete_worksite,
-    resolve_active_worksite, save_worksite_committee_target, save_worksite_name, select_worksite,
+    resolve_active_worksite, save_worksite_committee_goal, save_worksite_name, select_worksite,
 };
 
 const PROVIDE_WORKSITE_FIELD_MESSAGE: &str =
     "Provide a worksite name or a committee coverage target.";
 const WORKSITE_NAME_REQUIRED_MESSAGE: &str = "Worksite name is required.";
-const COMMITTEE_TARGET_MESSAGE: &str =
+const COMMITTEE_GOAL_MESSAGE: &str =
     "Committee coverage target must be a whole number from 1 to 100.";
 const WORKSITE_ID_REQUIRED_MESSAGE: &str = "Worksite ID is required.";
 
@@ -180,8 +180,8 @@ pub(crate) fn put_worksite(db: &Db, request: &Request) -> Result<Response> {
     }
 
     let has_name = payload.get("name").is_some();
-    let committee_target = payload.get("committeeTarget");
-    if !has_name && committee_target.is_none() {
+    let committee_goal = payload.get("committeeTarget");
+    if !has_name && committee_goal.is_none() {
         return Ok(message_response(400, PROVIDE_WORKSITE_FIELD_MESSAGE));
     }
 
@@ -200,10 +200,10 @@ pub(crate) fn put_worksite(db: &Db, request: &Request) -> Result<Response> {
     }
 
     // Both fields are validated before either is written, exactly as the TS does.
-    let target = match committee_target {
+    let target = match committee_goal {
         Some(target) => {
-            if !is_committee_target(target) {
-                return Ok(message_response(400, COMMITTEE_TARGET_MESSAGE));
+            if !is_committee_goal(target) {
+                return Ok(message_response(400, COMMITTEE_GOAL_MESSAGE));
             }
             // D-g: an integer binds directly; an integer-valued float such as 5.0
             // converts to 5, which SQLite's INTEGER affinity then stores as 5.
@@ -212,7 +212,7 @@ pub(crate) fn put_worksite(db: &Db, request: &Request) -> Result<Response> {
                 .or_else(|| target.as_f64().map(|number| number as i64))
             {
                 Some(target) => Some(target),
-                None => return Ok(message_response(400, COMMITTEE_TARGET_MESSAGE)),
+                None => return Ok(message_response(400, COMMITTEE_GOAL_MESSAGE)),
             }
         }
         None => None,
@@ -223,7 +223,7 @@ pub(crate) fn put_worksite(db: &Db, request: &Request) -> Result<Response> {
         updated = save_worksite_name(db.conn(), &updated, name)?;
     }
     if let Some(target) = target {
-        updated = save_worksite_committee_target(db.conn(), &updated, target)?;
+        updated = save_worksite_committee_goal(db.conn(), &updated, target)?;
     }
 
     Ok(json_response(

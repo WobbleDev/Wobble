@@ -14,9 +14,9 @@
 	import { leaderTarget } from '#lib/features/overview/support-summary.ts';
 	import { m } from '#lib/paraglide/messages.js';
 
-	let { committeeTarget = 5 }: { committeeTarget?: number } = $props();
+	let { committeeGoal = 5 }: { committeeGoal?: number } = $props();
 	const view = bullseyeView();
-	const perLeader = $derived(leaderTarget(committeeTarget));
+	const perLeader = $derived(leaderTarget(committeeGoal));
 </script>
 
 <Tooltip.Root>

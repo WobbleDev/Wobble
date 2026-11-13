@@ -1,15 +1,15 @@
 <script lang="ts">
-	import { committeeTargetMaximum, committeeTargetMinimum } from '#lib/domain-vocabulary.ts';
+	import { committeeGoalMaximum, committeeGoalMinimum } from '#lib/domain-vocabulary.ts';
 	import { Input } from '#lib/components/ui/input/index.ts';
 	import { m } from '#lib/paraglide/messages.js';
 
 	type Props = {
-		committeeTarget?: string;
+		committeeGoal?: string;
 		error: string;
 		saving: boolean;
 	};
 
-	let { committeeTarget = $bindable(''), error, saving }: Props = $props();
+	let { committeeGoal = $bindable(''), error, saving }: Props = $props();
 
 	/**
 	 * The target reads as one sentence with the number in place of the word itself,
@@ -22,32 +22,32 @@
 </script>
 
 <!--
-  The Committee coverage target is a property of the Worksite, so it reads as a
+  The Committee coverage goal is a property of the Worksite, so it reads as a
   sentence directly beneath the Worksite name rather than as a section of its own.
   The input holds the sentence's number, keeping the same id, label, 1–100 rule and
   error handling the standalone field had.
 -->
 <div class="grid max-w-md gap-1">
-	<label class="sr-only" for="committee-target">{m.configuration_committee_field()}</label>
+	<label class="sr-only" for="committee-goal">{m.configuration_committee_field()}</label>
 	<div class="flex flex-wrap items-center gap-2 text-sm text-ink-2">
 		<span>{beforeCount}</span>
 		<Input
-			id="committee-target"
+			id="committee-goal"
 			type="number"
-			min={committeeTargetMinimum}
-			max={committeeTargetMaximum}
+			min={committeeGoalMinimum}
+			max={committeeGoalMaximum}
 			step="1"
-			value={committeeTarget}
-			oninput={(event) => (committeeTarget = event.currentTarget.value)}
+			value={committeeGoal}
+			oninput={(event) => (committeeGoal = event.currentTarget.value)}
 			class="min-h-tap w-20 md:min-h-(--control-h)"
 			aria-invalid={Boolean(error)}
-			aria-describedby={error ? 'committee-target-error' : undefined}
+			aria-describedby={error ? 'committee-goal-error' : undefined}
 			disabled={saving}
 		/>
 		<span>{afterCount}</span>
 	</div>
 	{#if error}
-		<p id="committee-target-error" class="text-sm text-state-error" role="alert">
+		<p id="committee-goal-error" class="text-sm text-state-error" role="alert">
 			{error}
 		</p>
 	{/if}

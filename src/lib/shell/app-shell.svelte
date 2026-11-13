@@ -316,7 +316,7 @@
 				<PageHeader>
 					{#snippet titleAccessory()}
 						{#if isOverview}
-							<ChartHelp committeeTarget={data.worksite?.committeeTarget ?? 5} />
+							<ChartHelp committeeGoal={data.worksite?.committeeTarget ?? 5} />
 						{/if}
 					{/snippet}
 				</PageHeader>

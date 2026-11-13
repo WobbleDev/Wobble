@@ -34,7 +34,7 @@ pub(crate) fn is_upgradable_source(version: i64) -> bool {
 }
 
 pub const DEFAULT_WORKSITE_NAME: &str = "My Worksite";
-const DEFAULT_COMMITTEE_TARGET: i64 = 5;
+const DEFAULT_COMMITTEE_GOAL: i64 = 5;
 
 /// Stock attributes ship with no options: the names and kinds are defaults, the values belong
 /// to each organizer.
@@ -96,8 +96,10 @@ impl WorksiteTemplateLocale {
 pub struct Worksite {
     pub id: String,
     pub name: String,
+    // Wire name stays `committeeTarget` until the committee-goal expand step.
+    #[serde(rename = "committeeTarget")]
     #[cfg_attr(feature = "ts", ts(type = "number"))]
-    pub committee_target: i64,
+    pub committee_goal: i64,
 }
 
 const DDL: &str = r#"
@@ -571,7 +573,7 @@ pub fn apply_migrations(conn: &Connection) -> Result<()> {
     bootstrap(conn)
 }
 
-/// Inserts a Worksite with the default committee target and returns it.
+/// Inserts a Worksite with the default committee goal and returns it.
 pub fn insert_worksite(
     conn: &Connection,
     name: &str,
@@ -580,11 +582,11 @@ pub fn insert_worksite(
     let worksite = Worksite {
         id: id_source.next_id(),
         name: name.to_owned(),
-        committee_target: DEFAULT_COMMITTEE_TARGET,
+        committee_goal: DEFAULT_COMMITTEE_GOAL,
     };
     conn.execute(
         "INSERT INTO worksites (id, name, committee_target) VALUES (?1, ?2, ?3)",
-        params![worksite.id, worksite.name, worksite.committee_target],
+        params![worksite.id, worksite.name, worksite.committee_goal],
     )?;
     Ok(worksite)
 }
@@ -700,7 +702,7 @@ mod tests {
         Some(Worksite {
             id: WORKSITE_ID.to_owned(),
             name: "Kitchen".to_owned(),
-            committee_target: 5,
+            committee_goal: 5,
         })
     }
 

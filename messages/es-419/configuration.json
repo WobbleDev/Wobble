@@ -88,7 +88,7 @@
 	"configuration_agitation_exists": "Ese asunto laboral ya está en la lista.",
 	"configuration_language_exists": "Ese idioma ya está en la lista.",
 	"configuration_dirty_worksite_name": "nombre del lugar de trabajo",
-	"configuration_dirty_committee_target": "meta de cobertura del comité",
+	"configuration_dirty_committee_goal": "meta de cobertura del comité",
 	"configuration_dirty_attributes": "atributos ({count})",
 	"configuration_dirty_agitations": "asuntos laborales",
 	"configuration_dirty_languages": "idiomas",

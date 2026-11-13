@@ -21,7 +21,7 @@ import {
 	saveAttributes,
 	saveConfigurationAttributes,
 	saveLanguages,
-	saveWorksiteCommitteeTarget,
+	saveWorksiteCommitteeGoal,
 	saveWorksiteName
 } from '#lib/client/workers-api.ts';
 import type { ConfigurationPreview } from '#lib/domain-vocabulary.ts';
@@ -46,7 +46,7 @@ import {
 	canSaveWorksiteName as computeCanSaveWorksiteName,
 	checkValueText,
 	findDuplicateValue,
-	getCommitteeTargetError,
+	getCommitteeGoalError,
 	getDirtyState,
 	hasUnsavedDraft as computeHasUnsavedDraft,
 	attributeSaveBlockReason as computeAttributeSaveBlockReason,
@@ -110,8 +110,8 @@ export class ConfigurationDraftState {
 	worksiteName = $state('');
 	savedWorksiteName = $state('');
 	editingName = $state(false);
-	draftCommitteeTarget = $state('');
-	savedCommitteeTarget = $state(0);
+	draftCommitteeGoal = $state('');
+	savedCommitteeGoal = $state(0);
 
 	draftAttributes = $state<AttributeDraft[]>([]);
 	savedConfiguration = $state<WorkerAttributeDefinition[]>([]);
@@ -214,7 +214,7 @@ export class ConfigurationDraftState {
 
 	private dirty = $derived(getDirtyState(this.draftInput));
 	dirtyName = $derived(this.dirty.name);
-	dirtyCommitteeTarget = $derived(this.dirty.committeeTarget);
+	dirtyCommitteeGoal = $derived(this.dirty.committeeGoal);
 	dirtyAttributes = $derived(this.dirty.attributes);
 	dirtyAgitations = $derived(this.dirty.agitations);
 	dirtyLanguages = $derived(this.dirty.languages);
@@ -224,8 +224,8 @@ export class ConfigurationDraftState {
 	attributeSaveBlockReason = $derived(computeAttributeSaveBlockReason(this.draftInput));
 	canSaveWorksiteName = $derived(computeCanSaveWorksiteName(this.draftInput));
 	canSave = $derived(computeCanSave(this.draftInput));
-	committeeTargetError = $derived(
-		this.dirtyCommitteeTarget ? getCommitteeTargetError(this.draftCommitteeTarget) : ''
+	committeeGoalError = $derived(
+		this.dirtyCommitteeGoal ? getCommitteeGoalError(this.draftCommitteeGoal) : ''
 	);
 	showSaveBar = $derived(
 		this.saving ||
@@ -253,8 +253,8 @@ export class ConfigurationDraftState {
 
 		this.worksiteName = untrack(() => worksite.name);
 		this.savedWorksiteName = untrack(() => worksite.name);
-		this.draftCommitteeTarget = untrack(() => String(worksite.committeeTarget));
-		this.savedCommitteeTarget = untrack(() => worksite.committeeTarget);
+		this.draftCommitteeGoal = untrack(() => String(worksite.committeeTarget));
+		this.savedCommitteeGoal = untrack(() => worksite.committeeTarget);
 		this.draftAttributes = untrack(() => fromWorkerAttributeDefinitions(attributes));
 		this.savedConfiguration = untrack(() => toWorkerAttributeDefinitions(this.draftAttributes));
 		this.draftAgitations = untrack(() => agitations.map((agitation) => ({ ...agitation })));
@@ -295,8 +295,8 @@ export class ConfigurationDraftState {
 		return {
 			worksiteName: this.worksiteName,
 			savedWorksiteName: this.savedWorksiteName,
-			draftCommitteeTarget: this.draftCommitteeTarget,
-			savedCommitteeTarget: this.savedCommitteeTarget,
+			draftCommitteeGoal: this.draftCommitteeGoal,
+			savedCommitteeGoal: this.savedCommitteeGoal,
 			draftAttributes: this.draftAttributes,
 			savedConfiguration: this.savedConfiguration,
 			draftAgitations: this.draftAgitations,
@@ -826,12 +826,12 @@ export class ConfigurationDraftState {
 					})
 				);
 			}
-			if (plan.committeeTarget.dirty) {
-				const nextTarget = plan.committeeTarget.snapshot;
+			if (plan.committeeGoal.dirty) {
+				const nextTarget = plan.committeeGoal.snapshot;
 				saves.push(
-					saveWorksiteCommitteeTarget(nextTarget).then(() => {
-						this.savedCommitteeTarget = nextTarget;
-						this.draftCommitteeTarget = String(nextTarget);
+					saveWorksiteCommitteeGoal(nextTarget).then(() => {
+						this.savedCommitteeGoal = nextTarget;
+						this.draftCommitteeGoal = String(nextTarget);
 					})
 				);
 			}
@@ -946,7 +946,7 @@ export class ConfigurationDraftState {
 		this.closePreview();
 		this.worksiteName = this.savedWorksiteName;
 		this.editingName = false;
-		this.draftCommitteeTarget = String(this.savedCommitteeTarget);
+		this.draftCommitteeGoal = String(this.savedCommitteeGoal);
 		this.draftAttributes = fromWorkerAttributeDefinitions(this.savedConfiguration);
 		this.draftAgitations = this.savedAgitations.map((agitation) => ({ ...agitation }));
 		this.newAgitationText = '';

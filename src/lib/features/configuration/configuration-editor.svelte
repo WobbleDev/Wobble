@@ -1,6 +1,6 @@
 <!--
 	Configuration editor
-	One page in three parts: the Worksite card (name and Committee coverage target), one
+	One page in three parts: the Worksite card (name and Committee coverage goal), one
 	ordered Attributes column, and the Worksite danger zone at the foot. Above the tablet
 	breakpoint the column is capped to the viewport and scrolls inside itself under its
 	pinned head; below it the column grows with the page. One foot clip tracks changes
@@ -165,8 +165,8 @@
 			bind:editing={draftState.editingName}
 			saving={draftState.saving}
 			dirty={draftState.dirtyName}
-			bind:committeeTarget={draftState.draftCommitteeTarget}
-			committeeTargetError={draftState.committeeTargetError}
+			bind:committeeGoal={draftState.draftCommitteeGoal}
+			committeeGoalError={draftState.committeeGoalError}
 		/>
 
 		<SectionCard

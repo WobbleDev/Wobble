@@ -459,10 +459,10 @@ export async function saveWorksiteName(name: string): Promise<void> {
 	);
 }
 
-export async function saveWorksiteCommitteeTarget(committeeTarget: number): Promise<void> {
+export async function saveWorksiteCommitteeGoal(committeeGoal: number): Promise<void> {
 	await requestVoid(
 		'/api/worksite',
-		jsonInit('PUT', { committeeTarget }),
+		jsonInit('PUT', { committeeTarget: committeeGoal }),
 		(status) => `Could not save the committee coverage target (HTTP ${status}).`
 	);
 }
