@@ -139,7 +139,7 @@ mod tests {
         let worksite = crate::schema::Worksite {
             id: worksite_id.to_owned(),
             name: String::new(),
-            committee_target: 5,
+            committee_goal: 5,
         };
         let definitions =
             crate::attribute_persistence::get_worker_attributes(db.conn(), &Some(worksite))

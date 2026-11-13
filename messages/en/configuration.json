@@ -88,7 +88,7 @@
 	"configuration_agitation_exists": "That agitation is already in the list.",
 	"configuration_language_exists": "That language is already in the list.",
 	"configuration_dirty_worksite_name": "worksite name",
-	"configuration_dirty_committee_target": "committee coverage target",
+	"configuration_dirty_committee_goal": "committee coverage target",
 	"configuration_dirty_attributes": "attributes ({count})",
 	"configuration_dirty_agitations": "agitations",
 	"configuration_dirty_languages": "languages",

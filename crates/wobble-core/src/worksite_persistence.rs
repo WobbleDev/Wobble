@@ -1,4 +1,4 @@
-//! Worksite storage: list, find, select, create, delete, and update the name and committee target.
+//! Worksite storage: list, find, select, create, delete, and update the name and committee goal.
 
 use rusqlite::{params, Connection, Row, Transaction, TransactionBehavior};
 
@@ -11,7 +11,7 @@ fn row_to_worksite(row: &Row) -> rusqlite::Result<Worksite> {
     Ok(Worksite {
         id: row.get(0)?,
         name: row.get(1)?,
-        committee_target: row.get(2)?,
+        committee_goal: row.get(2)?,
     })
 }
 
@@ -145,8 +145,8 @@ pub fn save_worksite_name(conn: &Connection, worksite: &Worksite, name: &str) ->
     })
 }
 
-/// `saveWorksiteCommitteeTarget`: writes the target and returns the updated Worksite.
-pub fn save_worksite_committee_target(
+/// `saveWorksiteCommitteeGoal`: writes the target and returns the updated Worksite.
+pub fn save_worksite_committee_goal(
     conn: &Connection,
     worksite: &Worksite,
     target: i64,
@@ -157,7 +157,7 @@ pub fn save_worksite_committee_target(
     )?;
 
     Ok(Worksite {
-        committee_target: target,
+        committee_goal: target,
         ..worksite.clone()
     })
 }
@@ -186,7 +186,7 @@ mod tests {
 
         assert_eq!(worksites.len(), 1);
         assert_eq!(worksites[0].name, DEFAULT_WORKSITE_NAME);
-        assert_eq!(worksites[0].committee_target, 5);
+        assert_eq!(worksites[0].committee_goal, 5);
         assert_eq!(
             find_worksite(db.conn(), &worksites[0].id).unwrap(),
             Some(worksites[0].clone())
@@ -323,10 +323,10 @@ mod tests {
         let renamed = save_worksite_name(db.conn(), &worksite, "Renamed").unwrap();
         assert_eq!(renamed.name, "Renamed");
         assert_eq!(renamed.id, worksite.id);
-        assert_eq!(renamed.committee_target, 5);
+        assert_eq!(renamed.committee_goal, 5);
 
-        let retargeted = save_worksite_committee_target(db.conn(), &renamed, 12).unwrap();
-        assert_eq!(retargeted.committee_target, 12);
+        let retargeted = save_worksite_committee_goal(db.conn(), &renamed, 12).unwrap();
+        assert_eq!(retargeted.committee_goal, 12);
         assert_eq!(
             find_worksite(db.conn(), &worksite.id).unwrap(),
             Some(retargeted)

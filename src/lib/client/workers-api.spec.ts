@@ -12,7 +12,7 @@ import {
 	removeWorkerRelationship,
 	restoreWorkerNote,
 	saveConfigurationAttributes,
-	saveWorksiteCommitteeTarget,
+	saveWorksiteCommitteeGoal,
 	unassignWorkerAgitation,
 	updateWorkerField
 } from './workers-api.ts';
@@ -200,7 +200,7 @@ describe('saving the committee coverage target', () => {
 		const fetchMock = vi.fn().mockResolvedValue(jsonResponse({ worksite: {} }));
 		vi.stubGlobal('fetch', fetchMock);
 
-		await expect(saveWorksiteCommitteeTarget(12)).resolves.toBeUndefined();
+		await expect(saveWorksiteCommitteeGoal(12)).resolves.toBeUndefined();
 		expect(fetchMock).toHaveBeenCalledWith(
 			'/api/worksite',
 			expect.objectContaining({ method: 'PUT', body: JSON.stringify({ committeeTarget: 12 }) })

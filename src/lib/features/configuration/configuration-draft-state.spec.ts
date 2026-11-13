@@ -64,12 +64,12 @@ describe('ConfigurationDraftState', () => {
 	it('discardAll puts every edit back to the saved Worksite', () => {
 		const draft = openDraft();
 		draft.worksiteName = 'Warehouse';
-		draft.draftCommitteeTarget = '25';
+		draft.draftCommitteeGoal = '25';
 
 		draft.discardAll();
 
 		expect(draft.worksiteName).toBe('Depot');
-		expect(draft.draftCommitteeTarget).toBe('10');
+		expect(draft.draftCommitteeGoal).toBe('10');
 		expect(draft.hasUnsavedDraft).toBe(false);
 	});
 

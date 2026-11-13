@@ -49,8 +49,8 @@ function draftOf(overrides: Partial<ConfigurationDraft> = {}): ConfigurationDraf
 	return {
 		worksiteName: 'Worksite',
 		savedWorksiteName: 'Worksite',
-		draftCommitteeTarget: '5',
-		savedCommitteeTarget: 5,
+		draftCommitteeGoal: '5',
+		savedCommitteeGoal: 5,
 		draftAttributes: fromWorkerAttributeDefinitions(saved),
 		savedConfiguration: saved,
 		draftAgitations: [{ id: 'equipment', text: 'Equipment' }],

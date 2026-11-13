@@ -1,4 +1,4 @@
-//! Shape validators for stored and request JSON: worker fields, attributes, agitations, languages and committee target.
+//! Shape validators for stored and request JSON: worker fields, attributes, agitations, languages and committee goal.
 
 use std::collections::{HashMap, HashSet};
 
@@ -57,11 +57,11 @@ pub const ASSESSMENT_OPTIONS: [&str; 6] = [
     "Hostile",
 ];
 
-/// `committeeTargetMinimum`.
-pub const COMMITTEE_TARGET_MINIMUM: i64 = 1;
+/// `committeeGoalMinimum`.
+pub const COMMITTEE_GOAL_MINIMUM: i64 = 1;
 
-/// `committeeTargetMaximum`.
-pub const COMMITTEE_TARGET_MAXIMUM: i64 = 100;
+/// `committeeGoalMaximum`.
+pub const COMMITTEE_GOAL_MAXIMUM: i64 = 100;
 
 /// `isAssessmentOption`: a string, matched case-sensitively against the options.
 pub fn is_assessment_option(value: &Value) -> bool {
@@ -772,17 +772,17 @@ pub fn is_language_ids(value: &Value) -> bool {
         && has_unique_values(ids)
 }
 
-/// `isCommitteeTarget`: a whole number of workers per Leader, 1 to 100.
+/// `isCommitteeGoal`: a whole number of workers per Leader, 1 to 100.
 /// JS `Number.isInteger` accepts integer-valued floats, so `5.0` and `1e2`
 /// pass here too; NaN and infinity are rejected by `is_finite`.
-pub fn is_committee_target(value: &Value) -> bool {
+pub fn is_committee_goal(value: &Value) -> bool {
     match value.as_i64() {
-        Some(target) => (COMMITTEE_TARGET_MINIMUM..=COMMITTEE_TARGET_MAXIMUM).contains(&target),
+        Some(target) => (COMMITTEE_GOAL_MINIMUM..=COMMITTEE_GOAL_MAXIMUM).contains(&target),
         None => value.as_f64().is_some_and(|target| {
             target.is_finite()
                 && target.fract() == 0.0
-                && target >= COMMITTEE_TARGET_MINIMUM as f64
-                && target <= COMMITTEE_TARGET_MAXIMUM as f64
+                && target >= COMMITTEE_GOAL_MINIMUM as f64
+                && target <= COMMITTEE_GOAL_MAXIMUM as f64
         }),
     }
 }
@@ -1460,30 +1460,30 @@ mod tests {
     }
 
     #[test]
-    fn committee_target_accepts_whole_numbers_from_one_to_one_hundred() {
-        assert!(is_committee_target(&json!(1)));
-        assert!(is_committee_target(&json!(5)));
-        assert!(is_committee_target(&json!(100)));
+    fn committee_goal_accepts_whole_numbers_from_one_to_one_hundred() {
+        assert!(is_committee_goal(&json!(1)));
+        assert!(is_committee_goal(&json!(5)));
+        assert!(is_committee_goal(&json!(100)));
     }
 
     #[test]
-    fn committee_target_rejects_non_integers_out_of_range_values_and_non_numbers() {
-        assert!(!is_committee_target(&json!(0)));
-        assert!(!is_committee_target(&json!(101)));
-        assert!(!is_committee_target(&json!(1.5)));
-        assert!(!is_committee_target(&json!(-1)));
-        assert!(!is_committee_target(&json!("5")));
+    fn committee_goal_rejects_non_integers_out_of_range_values_and_non_numbers() {
+        assert!(!is_committee_goal(&json!(0)));
+        assert!(!is_committee_goal(&json!(101)));
+        assert!(!is_committee_goal(&json!(1.5)));
+        assert!(!is_committee_goal(&json!(-1)));
+        assert!(!is_committee_goal(&json!("5")));
         // Number.NaN and Number.POSITIVE_INFINITY have no JSON representation.
-        assert!(!is_committee_target(&Value::Null));
+        assert!(!is_committee_goal(&Value::Null));
     }
 
     #[test]
-    fn committee_target_accepts_integer_valued_floats_like_js() {
-        // JS is_committee_target = Number.isInteger(value) && 1 <= value <= 100.
-        assert!(is_committee_target(&json!(5.0))); // Number.isInteger(5.0) === true
-        assert!(is_committee_target(&json!(1e2))); // 100.0
-        assert!(!is_committee_target(&json!(1.5)));
-        assert!(!is_committee_target(&json!(0.0)));
+    fn committee_goal_accepts_integer_valued_floats_like_js() {
+        // JS is_committee_goal = Number.isInteger(value) && 1 <= value <= 100.
+        assert!(is_committee_goal(&json!(5.0))); // Number.isInteger(5.0) === true
+        assert!(is_committee_goal(&json!(1e2))); // 100.0
+        assert!(!is_committee_goal(&json!(1.5)));
+        assert!(!is_committee_goal(&json!(0.0)));
     }
 
     #[test]

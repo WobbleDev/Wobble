@@ -61,9 +61,9 @@ export type { SavedViewWorkers } from '#lib/client/generated/SavedViewWorkers.ts
 export type { SavedViewMapping } from '#lib/client/generated/SavedViewMapping.ts';
 export type { SavedViewPopulation } from '#lib/client/generated/SavedViewPopulation.ts';
 
-/** The Committee coverage target: workers per Leader, a whole number in these bounds. */
-export const committeeTargetMinimum = 1;
-export const committeeTargetMaximum = 100;
+/** The Committee coverage goal: workers per Leader, a whole number in these bounds. */
+export const committeeGoalMinimum = 1;
+export const committeeGoalMaximum = 100;
 
 export type Worker = {
 	id: string;
