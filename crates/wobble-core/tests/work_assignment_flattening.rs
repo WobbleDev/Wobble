@@ -945,7 +945,7 @@ fn every_previously_supported_source_version_reaches_v25() {
         assert_eq!(rows.last().unwrap(), &(25, "committee-goal".to_owned()));
         assert_eq!(
             rows.len() as i64,
-            25 - version,
+            26 - version,
             "v{version} runs each step once"
         );
         assert_eq!(rows[0].0, version);
