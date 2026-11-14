@@ -1,7 +1,7 @@
 //! The v26 migration adds `abbreviation` and `abbreviationOrigin` beside `shortForm` and
 //! `shortFormOrigin` in every stored answer, and copies each lists-revision setting to its new
-//! key. It never guesses: two different values on one answer or setting fail the upgrade.
-//! Synthetic data only.
+//! key; the v28 migration removes the old keys and settings. Neither guesses: two different
+//! values on one answer or setting fail the upgrade. Synthetic data only.
 
 mod common;
 
@@ -76,23 +76,22 @@ fn v25_source(name: &str) -> (String, Connection) {
 }
 
 #[test]
-fn a_v25_database_gains_the_new_keys_beside_the_old_and_keeps_everything_else() {
+fn a_v25_database_ends_with_the_abbreviation_keys_alone_and_keeps_everything_else() {
     let (path, conn) = v25_source("copy");
     finish_source(&path, conn, 25);
 
     drop(App::open_legacy_fixture(&path));
     // LEGACY-PLAINTEXT-FIXTURE: temp-constructed legacy-schema source for upgrade-read test (intentional plaintext, never production).
     let conn = Connection::open(&path).unwrap();
-    assert_eq!(raw_version(&conn), Some(27));
+    assert_eq!(raw_version(&conn), Some(28));
     assert!(migration_rows(&conn).contains(&(26, "abbreviation".to_owned())));
+    assert!(migration_rows(&conn).contains(&(28, "abbreviation-contract".to_owned())));
     assert_eq!(
         options_of(&conn, "dept"),
         json!([
-            { "id": "a", "value": "Customer Service North", "shortForm": "CS North",
-              "shortFormOrigin": "edited", "abbreviation": "CS North",
+            { "id": "a", "value": "Customer Service North", "abbreviation": "CS North",
               "abbreviationOrigin": "edited" },
             { "id": "b", "value": "Back of House", "parentId": "a", "mode": "single",
-              "shortForm": "Back of Ho…", "shortFormOrigin": "generated",
               "abbreviation": "Back of Ho…", "abbreviationOrigin": "generated" }
         ])
     );
@@ -101,14 +100,14 @@ fn a_v25_database_gains_the_new_keys_beside_the_old_and_keeps_everything_else() 
         Some("rev-1")
     );
     assert_eq!(
-        setting(&conn, &format!("shortFormListsRevision::{WS}")).as_deref(),
-        Some("rev-1"),
-        "the old key stays until the contract step"
+        setting(&conn, &format!("shortFormListsRevision::{WS}")),
+        None,
+        "the old key is removed by the contract step"
     );
 }
 
 #[test]
-fn every_upgradable_version_ends_with_both_key_sets_equal() {
+fn every_upgradable_version_ends_with_the_abbreviation_keys_alone() {
     for version in [12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22] {
         let (path, conn) = start_source("abbreviation-expand", &format!("v{version}"));
         add_worksite(&conn, WS, "Worksite Alpha");
@@ -128,17 +127,15 @@ fn every_upgradable_version_ends_with_both_key_sets_equal() {
         drop(App::open_legacy_fixture(&path));
         // LEGACY-PLAINTEXT-FIXTURE: temp-constructed legacy-schema source for upgrade-read test (intentional plaintext, never production).
         let conn = Connection::open(&path).unwrap();
-        assert_eq!(raw_version(&conn), Some(27), "v{version}");
+        assert_eq!(raw_version(&conn), Some(28), "v{version}");
         let options = options_of(&conn, "dept");
         let answers = options.as_array().unwrap();
         assert_eq!(answers.len(), 2, "v{version}");
         for answer in answers {
             assert!(answer["abbreviation"].is_string(), "v{version}");
-            assert_eq!(answer["abbreviation"], answer["shortForm"], "v{version}");
-            assert_eq!(
-                answer["abbreviationOrigin"], answer["shortFormOrigin"],
-                "v{version}"
-            );
+            assert!(answer["abbreviationOrigin"].is_string(), "v{version}");
+            assert!(answer.get("shortForm").is_none(), "v{version}");
+            assert!(answer.get("shortFormOrigin").is_none(), "v{version}");
         }
     }
 }
@@ -200,4 +197,110 @@ fn a_lists_revision_whose_two_keys_disagree_fails_the_upgrade_and_rolls_back() {
     let error = apply_migrations(&conn).expect_err("a disagreement must stop the upgrade");
     assert!(error.to_string().contains("disagree"), "{error}");
     assert_eq!(raw_version(&conn), Some(25));
+}
+
+/// A v27 source whose answers carry both key sets, as a v26 upgrade leaves them.
+fn v27_source(name: &str) -> (String, Connection) {
+    let (path, conn) = start_source("abbreviation-contract", name);
+    add_worksite(&conn, WS, "Worksite Alpha");
+    common::legacy_db::add_attribute(
+        &conn,
+        WS,
+        "dept",
+        "Department",
+        "category",
+        "worker",
+        true,
+        &[("a", "x")],
+        0,
+    );
+    put_options(
+        &conn,
+        "dept",
+        &json!([
+            { "id": "a", "value": "Customer Service North", "shortForm": "CS North",
+              "shortFormOrigin": "edited", "abbreviation": "CS North",
+              "abbreviationOrigin": "edited" }
+        ]),
+    );
+    for key in ["shortFormListsRevision", "abbreviationListsRevision"] {
+        conn.execute(
+            "INSERT INTO app_settings (key, value) VALUES (?1, 'rev-1')",
+            [format!("{key}::{WS}")],
+        )
+        .expect("a lists revision setting");
+    }
+    (path, conn)
+}
+
+#[test]
+fn a_v27_database_loses_the_old_keys_and_settings_and_keeps_the_new_ones() {
+    let (path, conn) = v27_source("strip");
+    finish_source(&path, conn, 27);
+
+    drop(App::open_legacy_fixture(&path));
+    // LEGACY-PLAINTEXT-FIXTURE: temp-constructed legacy-schema source for upgrade-read test (intentional plaintext, never production).
+    let conn = Connection::open(&path).unwrap();
+    assert_eq!(raw_version(&conn), Some(28));
+    assert_eq!(
+        migration_rows(&conn).last().unwrap(),
+        &(28, "abbreviation-contract".to_owned())
+    );
+    assert_eq!(
+        options_of(&conn, "dept"),
+        json!([
+            { "id": "a", "value": "Customer Service North", "abbreviation": "CS North",
+              "abbreviationOrigin": "edited" }
+        ])
+    );
+    assert_eq!(
+        setting(&conn, &format!("abbreviationListsRevision::{WS}")).as_deref(),
+        Some("rev-1")
+    );
+    assert_eq!(
+        setting(&conn, &format!("shortFormListsRevision::{WS}")),
+        None
+    );
+}
+
+#[test]
+fn a_v27_answer_whose_two_names_disagree_fails_the_contract_and_rolls_back() {
+    let (path, conn) = v27_source("contract-disagree");
+    finish_source(&path, conn, 27);
+    // LEGACY-PLAINTEXT-FIXTURE: temp-constructed legacy-schema source for upgrade-read test (intentional plaintext, never production).
+    let conn = Connection::open(&path).unwrap();
+    let mut options = options_of(&conn, "dept");
+    options[0]["abbreviation"] = json!("Different");
+    put_options(&conn, "dept", &options);
+
+    let error = apply_migrations(&conn).expect_err("a disagreement must stop the upgrade");
+    assert!(error.to_string().contains("disagree"), "{error}");
+    assert_eq!(raw_version(&conn), Some(27), "the version is not advanced");
+    assert_eq!(options_of(&conn, "dept"), options, "nothing was rewritten");
+    assert_eq!(
+        setting(&conn, &format!("shortFormListsRevision::{WS}")).as_deref(),
+        Some("rev-1"),
+        "no setting was removed"
+    );
+}
+
+#[test]
+fn a_v27_lists_revision_whose_two_keys_disagree_fails_the_contract_and_rolls_back() {
+    let (path, conn) = v27_source("contract-setting");
+    finish_source(&path, conn, 27);
+    // LEGACY-PLAINTEXT-FIXTURE: temp-constructed legacy-schema source for upgrade-read test (intentional plaintext, never production).
+    let conn = Connection::open(&path).unwrap();
+    conn.execute(
+        "UPDATE app_settings SET value = 'rev-2' WHERE key = ?1",
+        [format!("abbreviationListsRevision::{WS}")],
+    )
+    .unwrap();
+
+    let error = apply_migrations(&conn).expect_err("a disagreement must stop the upgrade");
+    assert!(error.to_string().contains("disagree"), "{error}");
+    assert_eq!(raw_version(&conn), Some(27));
+    assert_eq!(
+        setting(&conn, &format!("shortFormListsRevision::{WS}")).as_deref(),
+        Some("rev-1")
+    );
 }

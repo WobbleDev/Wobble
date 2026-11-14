@@ -47,15 +47,7 @@
 						"value": "sf05-fixture-1"
 					},
 					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
-					},
-					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000005",
-						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000005",
 						"value": "sf05-fixture-1"
 					}
 				],
@@ -64,7 +56,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -183,10 +175,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -194,7 +182,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -287,10 +275,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -298,7 +282,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -391,10 +375,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -402,7 +382,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -488,10 +468,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -499,7 +475,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -582,15 +558,7 @@
 						"value": "sf05-fixture-1"
 					},
 					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
-					},
-					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000005",
-						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000005",
 						"value": "sf05-fixture-1"
 					}
 				],
@@ -599,7 +567,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -754,10 +722,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -765,7 +729,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -857,10 +821,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -868,7 +828,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -1083,10 +1043,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -1094,7 +1050,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -1237,10 +1193,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -1248,7 +1200,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -1325,17 +1277,13 @@
 									"options": [
 										{
 											"id": "dept:A",
-											"shortForm": "A",
 											"abbreviation": "A",
-											"shortFormOrigin": "generated",
 											"abbreviationOrigin": "generated",
 											"value": "A"
 										},
 										{
 											"id": "dept:B",
-											"shortForm": "B",
 											"abbreviation": "B",
-											"shortFormOrigin": "generated",
 											"abbreviationOrigin": "generated",
 											"value": "B"
 										}
@@ -1437,10 +1385,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -1448,7 +1392,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -1464,7 +1408,7 @@
 						"id": "dept",
 						"kind": "category",
 						"name": "Department",
-						"options": "[{\"abbreviation\":\"A\",\"abbreviationOrigin\":\"generated\",\"id\":\"dept:A\",\"shortForm\":\"A\",\"shortFormOrigin\":\"generated\",\"value\":\"A\"},{\"abbreviation\":\"B\",\"abbreviationOrigin\":\"generated\",\"id\":\"dept:B\",\"shortForm\":\"B\",\"shortFormOrigin\":\"generated\",\"value\":\"B\"}]",
+						"options": "[{\"abbreviation\":\"A\",\"abbreviationOrigin\":\"generated\",\"id\":\"dept:A\",\"value\":\"A\"},{\"abbreviation\":\"B\",\"abbreviationOrigin\":\"generated\",\"id\":\"dept:B\",\"value\":\"B\"}]",
 						"position": 0,
 						"worksite_id": "00000000-0000-4000-8000-000000000001"
 					}
@@ -1644,10 +1588,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -1655,7 +1595,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [
@@ -1835,10 +1775,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [
@@ -1852,7 +1788,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -1985,10 +1921,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -1996,7 +1928,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -2096,10 +2028,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -2107,7 +2035,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -2206,10 +2134,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -2217,7 +2141,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -2333,10 +2257,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -2344,7 +2264,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -2463,10 +2383,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [
@@ -2480,7 +2396,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -2573,10 +2489,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [
@@ -2590,7 +2502,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -2687,10 +2599,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [
@@ -2704,7 +2612,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -2796,17 +2704,13 @@
 									"options": [
 										{
 											"id": "dept:A",
-											"shortForm": "A",
 											"abbreviation": "A",
-											"shortFormOrigin": "generated",
 											"abbreviationOrigin": "generated",
 											"value": "A"
 										},
 										{
 											"id": "dept:B",
-											"shortForm": "B",
 											"abbreviation": "B",
-											"shortFormOrigin": "generated",
 											"abbreviationOrigin": "generated",
 											"value": "B"
 										}
@@ -2831,10 +2735,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -2842,7 +2742,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -2852,7 +2752,7 @@
 						"id": "dept",
 						"kind": "category",
 						"name": "Department",
-						"options": "[{\"abbreviation\":\"A\",\"abbreviationOrigin\":\"generated\",\"id\":\"dept:A\",\"shortForm\":\"A\",\"shortFormOrigin\":\"generated\",\"value\":\"A\"},{\"abbreviation\":\"B\",\"abbreviationOrigin\":\"generated\",\"id\":\"dept:B\",\"shortForm\":\"B\",\"shortFormOrigin\":\"generated\",\"value\":\"B\"}]",
+						"options": "[{\"abbreviation\":\"A\",\"abbreviationOrigin\":\"generated\",\"id\":\"dept:A\",\"value\":\"A\"},{\"abbreviation\":\"B\",\"abbreviationOrigin\":\"generated\",\"id\":\"dept:B\",\"value\":\"B\"}]",
 						"position": 0,
 						"worksite_id": "00000000-0000-4000-8000-000000000001"
 					}
@@ -2923,10 +2823,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -2934,7 +2830,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -3035,10 +2931,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -3046,7 +2938,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -3147,10 +3039,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -3158,7 +3046,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -3342,10 +3230,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -3353,7 +3237,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -3454,10 +3338,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -3465,7 +3345,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -3556,10 +3436,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -3567,7 +3443,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -3660,10 +3536,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -3671,7 +3543,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -3764,10 +3636,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -3775,7 +3643,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -3868,10 +3736,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -3879,7 +3743,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -3946,10 +3810,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -3957,7 +3817,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -4104,10 +3964,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -4115,7 +3971,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -4216,10 +4072,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -4227,7 +4079,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -4359,10 +4211,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -4370,7 +4218,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -4500,10 +4348,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -4511,7 +4355,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -4644,10 +4488,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -4655,7 +4495,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -4732,17 +4572,13 @@
 									"options": [
 										{
 											"id": "dept:A",
-											"shortForm": "A",
 											"abbreviation": "A",
-											"shortFormOrigin": "generated",
 											"abbreviationOrigin": "generated",
 											"value": "A"
 										},
 										{
 											"id": "dept:B",
-											"shortForm": "B",
 											"abbreviation": "B",
-											"shortFormOrigin": "generated",
 											"abbreviationOrigin": "generated",
 											"value": "B"
 										}
@@ -4832,10 +4668,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -4843,7 +4675,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -4859,7 +4691,7 @@
 						"id": "dept",
 						"kind": "category",
 						"name": "Department",
-						"options": "[{\"abbreviation\":\"A\",\"abbreviationOrigin\":\"generated\",\"id\":\"dept:A\",\"shortForm\":\"A\",\"shortFormOrigin\":\"generated\",\"value\":\"A\"},{\"abbreviation\":\"B\",\"abbreviationOrigin\":\"generated\",\"id\":\"dept:B\",\"shortForm\":\"B\",\"shortFormOrigin\":\"generated\",\"value\":\"B\"}]",
+						"options": "[{\"abbreviation\":\"A\",\"abbreviationOrigin\":\"generated\",\"id\":\"dept:A\",\"value\":\"A\"},{\"abbreviation\":\"B\",\"abbreviationOrigin\":\"generated\",\"id\":\"dept:B\",\"value\":\"B\"}]",
 						"position": 0,
 						"worksite_id": "00000000-0000-4000-8000-000000000001"
 					}
@@ -4930,10 +4762,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -4941,7 +4769,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -5030,10 +4858,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -5041,7 +4865,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -5138,10 +4962,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -5149,7 +4969,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -5238,10 +5058,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -5249,7 +5065,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -5346,10 +5162,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -5357,7 +5169,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -5462,10 +5274,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -5473,7 +5281,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -5574,10 +5382,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -5585,7 +5389,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -5672,10 +5476,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -5683,7 +5483,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -5774,10 +5574,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -5785,7 +5581,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -5874,10 +5670,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -5885,7 +5677,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -5972,10 +5764,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -5983,7 +5771,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -6072,10 +5860,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -6083,7 +5867,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -6172,10 +5956,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -6183,7 +5963,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -6270,10 +6050,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -6281,7 +6057,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -6370,10 +6146,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -6381,7 +6153,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -6494,10 +6266,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -6505,7 +6273,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -6579,10 +6347,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -6590,7 +6354,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -6662,10 +6426,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -6673,7 +6433,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -6747,10 +6507,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -6758,7 +6514,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -6830,10 +6586,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -6841,7 +6593,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -6913,10 +6665,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -6924,7 +6672,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -6998,10 +6746,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -7009,7 +6753,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -7079,10 +6823,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -7090,7 +6830,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -7182,10 +6922,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -7193,7 +6929,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -7310,10 +7046,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [
@@ -7327,7 +7059,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -7419,17 +7151,13 @@
 									"options": [
 										{
 											"id": "dept:A",
-											"shortForm": "A",
 											"abbreviation": "A",
-											"shortFormOrigin": "generated",
 											"abbreviationOrigin": "generated",
 											"value": "A"
 										},
 										{
 											"id": "dept:B",
-											"shortForm": "B",
 											"abbreviation": "B",
-											"shortFormOrigin": "generated",
 											"abbreviationOrigin": "generated",
 											"value": "B"
 										}
@@ -7516,9 +7244,7 @@
 									"options": [
 										{
 											"id": "dept:B",
-											"shortForm": "B",
 											"abbreviation": "B",
-											"shortFormOrigin": "generated",
 											"abbreviationOrigin": "generated",
 											"value": "B"
 										}
@@ -7543,10 +7269,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -7554,7 +7276,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -7570,7 +7292,7 @@
 						"id": "dept",
 						"kind": "tag",
 						"name": "Squad",
-						"options": "[{\"abbreviation\":\"B\",\"abbreviationOrigin\":\"generated\",\"id\":\"dept:B\",\"shortForm\":\"B\",\"shortFormOrigin\":\"generated\",\"value\":\"B\"}]",
+						"options": "[{\"abbreviation\":\"B\",\"abbreviationOrigin\":\"generated\",\"id\":\"dept:B\",\"value\":\"B\"}]",
 						"position": 0,
 						"worksite_id": "00000000-0000-4000-8000-000000000001"
 					}
@@ -7706,10 +7428,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -7717,7 +7435,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -7858,10 +7576,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [
@@ -7880,7 +7594,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -8037,10 +7751,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -8048,7 +7758,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -8364,10 +8074,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -8375,7 +8081,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -8570,15 +8276,7 @@
 						"value": "sf05-fixture-1"
 					},
 					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
-					},
-					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000005",
-						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000005",
 						"value": "sf05-fixture-1"
 					}
 				],
@@ -8587,7 +8285,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -8745,15 +8443,7 @@
 						"value": "sf05-fixture-1"
 					},
 					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
-					},
-					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000005",
-						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000005",
 						"value": "sf05-fixture-1"
 					}
 				],
@@ -8762,7 +8452,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -8852,10 +8542,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -8863,7 +8549,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -8950,10 +8636,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -8961,7 +8643,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -9048,10 +8730,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -9059,7 +8737,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -9146,10 +8824,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -9157,7 +8831,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -9244,10 +8918,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -9255,7 +8925,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -9346,10 +9016,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -9357,7 +9023,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -9487,10 +9153,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -9498,7 +9160,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -9650,10 +9312,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -9661,7 +9319,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -9779,10 +9437,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -9790,7 +9444,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -9931,10 +9585,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -9942,7 +9592,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -10067,10 +9717,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -10078,7 +9724,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -10154,17 +9800,13 @@
 									"options": [
 										{
 											"id": "a:A",
-											"shortForm": "A",
 											"abbreviation": "A",
-											"shortFormOrigin": "generated",
 											"abbreviationOrigin": "generated",
 											"value": "A"
 										},
 										{
 											"id": "a:B",
-											"shortForm": "B",
 											"abbreviation": "B",
-											"shortFormOrigin": "generated",
 											"abbreviationOrigin": "generated",
 											"value": "B"
 										}
@@ -10255,17 +9897,13 @@
 									"options": [
 										{
 											"id": "a:A",
-											"shortForm": "A",
 											"abbreviation": "A",
-											"shortFormOrigin": "generated",
 											"abbreviationOrigin": "generated",
 											"value": "A"
 										},
 										{
 											"id": "a:B",
-											"shortForm": "B",
 											"abbreviation": "B",
-											"shortFormOrigin": "generated",
 											"abbreviationOrigin": "generated",
 											"value": "B"
 										}
@@ -10290,10 +9928,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -10301,7 +9935,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -10317,7 +9951,7 @@
 						"id": "a",
 						"kind": "tag",
 						"name": "Team",
-						"options": "[{\"abbreviation\":\"A\",\"abbreviationOrigin\":\"generated\",\"id\":\"a:A\",\"shortForm\":\"A\",\"shortFormOrigin\":\"generated\",\"value\":\"A\"},{\"abbreviation\":\"B\",\"abbreviationOrigin\":\"generated\",\"id\":\"a:B\",\"shortForm\":\"B\",\"shortFormOrigin\":\"generated\",\"value\":\"B\"}]",
+						"options": "[{\"abbreviation\":\"A\",\"abbreviationOrigin\":\"generated\",\"id\":\"a:A\",\"value\":\"A\"},{\"abbreviation\":\"B\",\"abbreviationOrigin\":\"generated\",\"id\":\"a:B\",\"value\":\"B\"}]",
 						"position": 0,
 						"worksite_id": "00000000-0000-4000-8000-000000000001"
 					}
@@ -10393,17 +10027,13 @@
 									"options": [
 										{
 											"id": "a:X",
-											"shortForm": "X",
 											"abbreviation": "X",
-											"shortFormOrigin": "generated",
 											"abbreviationOrigin": "generated",
 											"value": "X"
 										},
 										{
 											"id": "a:Y",
-											"shortForm": "Y",
 											"abbreviation": "Y",
-											"shortFormOrigin": "generated",
 											"abbreviationOrigin": "generated",
 											"value": "Y"
 										}
@@ -10498,17 +10128,13 @@
 									"options": [
 										{
 											"id": "a:X",
-											"shortForm": "X",
 											"abbreviation": "X",
-											"shortFormOrigin": "generated",
 											"abbreviationOrigin": "generated",
 											"value": "X"
 										},
 										{
 											"id": "a:Y",
-											"shortForm": "Y",
 											"abbreviation": "Y",
-											"shortFormOrigin": "generated",
 											"abbreviationOrigin": "generated",
 											"value": "Y"
 										}
@@ -10533,10 +10159,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -10544,7 +10166,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -10560,7 +10182,7 @@
 						"id": "a",
 						"kind": "category",
 						"name": "Skills",
-						"options": "[{\"abbreviation\":\"X\",\"abbreviationOrigin\":\"generated\",\"id\":\"a:X\",\"shortForm\":\"X\",\"shortFormOrigin\":\"generated\",\"value\":\"X\"},{\"abbreviation\":\"Y\",\"abbreviationOrigin\":\"generated\",\"id\":\"a:Y\",\"shortForm\":\"Y\",\"shortFormOrigin\":\"generated\",\"value\":\"Y\"}]",
+						"options": "[{\"abbreviation\":\"X\",\"abbreviationOrigin\":\"generated\",\"id\":\"a:X\",\"value\":\"X\"},{\"abbreviation\":\"Y\",\"abbreviationOrigin\":\"generated\",\"id\":\"a:Y\",\"value\":\"Y\"}]",
 						"position": 0,
 						"worksite_id": "00000000-0000-4000-8000-000000000001"
 					}
@@ -10636,17 +10258,13 @@
 									"options": [
 										{
 											"id": "a:A",
-											"shortForm": "A",
 											"abbreviation": "A",
-											"shortFormOrigin": "generated",
 											"abbreviationOrigin": "generated",
 											"value": "A"
 										},
 										{
 											"id": "a:B",
-											"shortForm": "B",
 											"abbreviation": "B",
-											"shortFormOrigin": "generated",
 											"abbreviationOrigin": "generated",
 											"value": "B"
 										}
@@ -10733,9 +10351,7 @@
 									"options": [
 										{
 											"id": "a:A",
-											"shortForm": "A",
 											"abbreviation": "A",
-											"shortFormOrigin": "generated",
 											"abbreviationOrigin": "generated",
 											"value": "A"
 										}
@@ -10760,10 +10376,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -10771,7 +10383,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -10787,7 +10399,7 @@
 						"id": "a",
 						"kind": "category",
 						"name": "Team",
-						"options": "[{\"abbreviation\":\"A\",\"abbreviationOrigin\":\"generated\",\"id\":\"a:A\",\"shortForm\":\"A\",\"shortFormOrigin\":\"generated\",\"value\":\"A\"}]",
+						"options": "[{\"abbreviation\":\"A\",\"abbreviationOrigin\":\"generated\",\"id\":\"a:A\",\"value\":\"A\"}]",
 						"position": 0,
 						"worksite_id": "00000000-0000-4000-8000-000000000001"
 					}
@@ -10863,17 +10475,13 @@
 									"options": [
 										{
 											"id": "a:A",
-											"shortForm": "A",
 											"abbreviation": "A",
-											"shortFormOrigin": "generated",
 											"abbreviationOrigin": "generated",
 											"value": "A"
 										},
 										{
 											"id": "a:B",
-											"shortForm": "B",
 											"abbreviation": "B",
-											"shortFormOrigin": "generated",
 											"abbreviationOrigin": "generated",
 											"value": "B"
 										}
@@ -10964,17 +10572,13 @@
 									"options": [
 										{
 											"id": "a:A+",
-											"shortForm": "A+",
 											"abbreviation": "A+",
-											"shortFormOrigin": "generated",
 											"abbreviationOrigin": "generated",
 											"value": "A+"
 										},
 										{
 											"id": "a:B",
-											"shortForm": "B",
 											"abbreviation": "B",
-											"shortFormOrigin": "generated",
 											"abbreviationOrigin": "generated",
 											"value": "B"
 										}
@@ -10999,10 +10603,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -11010,7 +10610,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -11026,7 +10626,7 @@
 						"id": "a",
 						"kind": "category",
 						"name": "Team",
-						"options": "[{\"abbreviation\":\"A+\",\"abbreviationOrigin\":\"generated\",\"id\":\"a:A+\",\"shortForm\":\"A+\",\"shortFormOrigin\":\"generated\",\"value\":\"A+\"},{\"abbreviation\":\"B\",\"abbreviationOrigin\":\"generated\",\"id\":\"a:B\",\"shortForm\":\"B\",\"shortFormOrigin\":\"generated\",\"value\":\"B\"}]",
+						"options": "[{\"abbreviation\":\"A+\",\"abbreviationOrigin\":\"generated\",\"id\":\"a:A+\",\"value\":\"A+\"},{\"abbreviation\":\"B\",\"abbreviationOrigin\":\"generated\",\"id\":\"a:B\",\"value\":\"B\"}]",
 						"position": 0,
 						"worksite_id": "00000000-0000-4000-8000-000000000001"
 					}
@@ -11098,10 +10698,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -11109,7 +10705,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -11237,10 +10833,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -11248,7 +10840,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -11349,15 +10941,7 @@
 						"value": "sf05-fixture-1"
 					},
 					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
-					},
-					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000005",
-						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000005",
 						"value": "sf05-fixture-1"
 					}
 				],
@@ -11366,7 +10950,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -11456,10 +11040,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -11467,7 +11047,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -11557,10 +11137,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -11568,7 +11144,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -11682,10 +11258,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -11693,7 +11265,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -11819,10 +11391,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -11830,7 +11398,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -11972,10 +11540,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -11983,7 +11547,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -12070,10 +11634,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -12081,7 +11641,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -12157,10 +11717,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -12168,7 +11724,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -12246,10 +11802,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -12257,7 +11809,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -12324,17 +11876,13 @@
 									"options": [
 										{
 											"id": "dept:A",
-											"shortForm": "A",
 											"abbreviation": "A",
-											"shortFormOrigin": "generated",
 											"abbreviationOrigin": "generated",
 											"value": "A"
 										},
 										{
 											"id": "dept:B",
-											"shortForm": "B",
 											"abbreviation": "B",
-											"shortFormOrigin": "generated",
 											"abbreviationOrigin": "generated",
 											"value": "B"
 										}
@@ -12381,10 +11929,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -12392,7 +11936,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -12402,7 +11946,7 @@
 						"id": "dept",
 						"kind": "category",
 						"name": "Department",
-						"options": "[{\"abbreviation\":\"A\",\"abbreviationOrigin\":\"generated\",\"id\":\"dept:A\",\"shortForm\":\"A\",\"shortFormOrigin\":\"generated\",\"value\":\"A\"},{\"abbreviation\":\"B\",\"abbreviationOrigin\":\"generated\",\"id\":\"dept:B\",\"shortForm\":\"B\",\"shortFormOrigin\":\"generated\",\"value\":\"B\"}]",
+						"options": "[{\"abbreviation\":\"A\",\"abbreviationOrigin\":\"generated\",\"id\":\"dept:A\",\"value\":\"A\"},{\"abbreviation\":\"B\",\"abbreviationOrigin\":\"generated\",\"id\":\"dept:B\",\"value\":\"B\"}]",
 						"position": 0,
 						"worksite_id": "00000000-0000-4000-8000-000000000001"
 					}
@@ -12483,10 +12027,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -12494,7 +12034,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -12613,10 +12153,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -12624,7 +12160,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -12716,10 +12252,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -12727,7 +12259,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -12846,10 +12378,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -12857,7 +12385,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -12942,10 +12470,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -12953,7 +12477,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -13051,10 +12575,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -13062,7 +12582,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -13207,10 +12727,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -13218,7 +12734,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -13352,10 +12868,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -13363,7 +12875,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -13496,10 +13008,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -13507,7 +13015,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -13640,10 +13148,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -13651,7 +13155,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -13957,10 +13461,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -13968,7 +13468,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -14044,10 +13544,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -14055,7 +13551,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -14125,10 +13621,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -14136,7 +13628,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -14244,10 +13736,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -14255,7 +13743,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -14388,10 +13876,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [
@@ -14405,7 +13889,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -14553,15 +14037,7 @@
 						"value": "sf05-fixture-1"
 					},
 					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
-					},
-					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000005",
-						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000005",
 						"value": "sf05-fixture-1"
 					}
 				],
@@ -14570,7 +14046,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -14741,15 +14217,7 @@
 						"value": "sf05-fixture-1"
 					},
 					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
-					},
-					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000005",
-						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000005",
 						"value": "sf05-fixture-1"
 					}
 				],
@@ -14764,7 +14232,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -14941,15 +14409,7 @@
 						"value": "sf05-fixture-1"
 					},
 					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
-					},
-					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000005",
-						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000005",
 						"value": "sf05-fixture-1"
 					}
 				],
@@ -14958,7 +14418,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -15061,10 +14521,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -15072,7 +14528,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -15146,10 +14602,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -15157,7 +14609,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -15255,9 +14707,7 @@
 									"options": [
 										{
 											"id": "a:A",
-											"shortForm": "A",
 											"abbreviation": "A",
-											"shortFormOrigin": "generated",
 											"abbreviationOrigin": "generated",
 											"value": "A"
 										}
@@ -15301,9 +14751,7 @@
 									"options": [
 										{
 											"id": "a:A",
-											"shortForm": "A",
 											"abbreviation": "A",
-											"shortFormOrigin": "generated",
 											"abbreviationOrigin": "generated",
 											"value": "A"
 										}
@@ -15328,10 +14776,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -15339,7 +14783,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -15349,7 +14793,7 @@
 						"id": "a",
 						"kind": "category",
 						"name": "Alpha",
-						"options": "[{\"abbreviation\":\"A\",\"abbreviationOrigin\":\"generated\",\"id\":\"a:A\",\"shortForm\":\"A\",\"shortFormOrigin\":\"generated\",\"value\":\"A\"}]",
+						"options": "[{\"abbreviation\":\"A\",\"abbreviationOrigin\":\"generated\",\"id\":\"a:A\",\"value\":\"A\"}]",
 						"position": 0,
 						"worksite_id": "00000000-0000-4000-8000-000000000001"
 					}
@@ -15411,9 +14855,7 @@
 									"options": [
 										{
 											"id": "a:A",
-											"shortForm": "A",
 											"abbreviation": "A",
-											"shortFormOrigin": "generated",
 											"abbreviationOrigin": "generated",
 											"value": "A"
 										}
@@ -15511,9 +14953,7 @@
 									"options": [
 										{
 											"id": "a:A",
-											"shortForm": "A",
 											"abbreviation": "A",
-											"shortFormOrigin": "generated",
 											"abbreviationOrigin": "generated",
 											"value": "A"
 										}
@@ -15526,9 +14966,7 @@
 									"options": [
 										{
 											"id": "b:X",
-											"shortForm": "X",
 											"abbreviation": "X",
-											"shortFormOrigin": "generated",
 											"abbreviationOrigin": "generated",
 											"value": "X"
 										}
@@ -15553,10 +14991,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -15564,7 +14998,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -15585,7 +15019,7 @@
 						"id": "a",
 						"kind": "category",
 						"name": "Alpha",
-						"options": "[{\"abbreviation\":\"A\",\"abbreviationOrigin\":\"generated\",\"id\":\"a:A\",\"shortForm\":\"A\",\"shortFormOrigin\":\"generated\",\"value\":\"A\"}]",
+						"options": "[{\"abbreviation\":\"A\",\"abbreviationOrigin\":\"generated\",\"id\":\"a:A\",\"value\":\"A\"}]",
 						"position": 0,
 						"worksite_id": "00000000-0000-4000-8000-000000000001"
 					},
@@ -15593,7 +15027,7 @@
 						"id": "b",
 						"kind": "tag",
 						"name": "Beta",
-						"options": "[{\"abbreviation\":\"X\",\"abbreviationOrigin\":\"generated\",\"id\":\"b:X\",\"shortForm\":\"X\",\"shortFormOrigin\":\"generated\",\"value\":\"X\"}]",
+						"options": "[{\"abbreviation\":\"X\",\"abbreviationOrigin\":\"generated\",\"id\":\"b:X\",\"value\":\"X\"}]",
 						"position": 1,
 						"worksite_id": "00000000-0000-4000-8000-000000000001"
 					}
@@ -15666,10 +15100,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -15677,7 +15107,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -15764,10 +15194,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -15775,7 +15201,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -15862,10 +15288,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -15873,7 +15295,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -15960,10 +15382,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -15971,7 +15389,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -16058,10 +15476,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -16069,7 +15483,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -16156,10 +15570,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -16167,7 +15577,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -16254,10 +15664,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -16265,7 +15671,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -16352,10 +15758,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -16363,7 +15765,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -16450,10 +15852,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -16461,7 +15859,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -16548,10 +15946,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -16559,7 +15953,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -16646,10 +16040,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -16657,7 +16047,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -16994,10 +16384,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -17005,7 +16391,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -17126,10 +16512,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -17137,7 +16519,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -17228,10 +16610,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -17239,7 +16617,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -17323,10 +16701,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -17334,7 +16708,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -17409,10 +16783,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -17420,7 +16790,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -17494,10 +16864,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -17505,7 +16871,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -17694,10 +17060,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -17705,7 +17067,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -17965,10 +17327,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -17976,7 +17334,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -18105,10 +17463,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -18116,7 +17470,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -18210,7 +17564,6 @@
 							"moves": [],
 							"removedAnswers": [],
 							"removedAttributes": [],
-							"shortForms": [],
 							"abbreviations": [],
 							"totals": {
 								"affectedDrafts": 0,
@@ -18236,10 +17589,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -18247,7 +17596,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -18342,9 +17691,7 @@
 								{
 									"answerId": "00000000-0000-4000-8000-000000000010",
 									"attributeId": "00000000-0000-4000-8000-000000000002",
-									"shortForm": "Cust. Svc.",
 									"abbreviation": "Cust. Svc.",
-									"shortFormOrigin": "generated",
 									"abbreviationOrigin": "generated"
 								}
 							]
@@ -18366,10 +17713,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -18377,137 +17720,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
-					}
-				],
-				"worker_agitations": [],
-				"worker_attribute_values": [],
-				"worker_attributes": [
-					{
-						"id": "00000000-0000-4000-8000-000000000002",
-						"kind": "category",
-						"name": "Department",
-						"options": "[]",
-						"position": 0,
-						"worksite_id": "00000000-0000-4000-8000-000000000001"
-					},
-					{
-						"id": "00000000-0000-4000-8000-000000000003",
-						"kind": "category",
-						"name": "Role",
-						"options": "[]",
-						"position": 1,
-						"worksite_id": "00000000-0000-4000-8000-000000000001"
-					},
-					{
-						"id": "00000000-0000-4000-8000-000000000004",
-						"kind": "tag",
-						"name": "Shifts",
-						"options": "[]",
-						"position": 2,
-						"worksite_id": "00000000-0000-4000-8000-000000000001"
-					}
-				],
-				"worker_drafts": [],
-				"worker_languages": [],
-				"worker_relationships": [],
-				"workers": [],
-				"worksites": [
-					{
-						"committee_goal": 5,
-						"id": "00000000-0000-4000-8000-000000000001",
-						"name": "My Worksite"
-					}
-				]
-			}
-		},
-		{
-			"name": "configuration/short-forms-suggested",
-			"checklist": [],
-			"description": "POST /api/configuration/short-forms answers only the suggested Short forms",
-			"setup": {
-				"sql": []
-			},
-			"steps": [
-				{
-					"request": {
-						"method": "POST",
-						"path": "/api/configuration/short-forms",
-						"headers": {},
-						"body": {
-							"agitations": [],
-							"attributes": [
-								{
-									"id": "00000000-0000-4000-8000-000000000002",
-									"kind": "category",
-									"name": "Department",
-									"options": [
-										{
-											"id": "00000000-0000-4000-8000-000000000010",
-											"value": "Customer Service"
-										}
-									]
-								},
-								{
-									"id": "00000000-0000-4000-8000-000000000003",
-									"kind": "category",
-									"name": "Role",
-									"options": []
-								},
-								{
-									"id": "00000000-0000-4000-8000-000000000004",
-									"kind": "tag",
-									"name": "Shifts",
-									"options": []
-								}
-							],
-							"languages": []
-						},
-						"rawBody": false
-					},
-					"response": {
-						"status": 200,
-						"body": {
-							"shortForms": [
-								{
-									"answerId": "00000000-0000-4000-8000-000000000010",
-									"attributeId": "00000000-0000-4000-8000-000000000002",
-									"shortForm": "Cust. Svc.",
-									"abbreviation": "Cust. Svc.",
-									"shortFormOrigin": "generated",
-									"abbreviationOrigin": "generated"
-								}
-							]
-						}
-					}
-				}
-			],
-			"state": {
-				"agitations": [],
-				"app_settings": [
-					{
-						"key": "theme",
-						"value": "system"
-					},
-					{
-						"key": "density",
-						"value": "standard"
-					},
-					{
-						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
-					}
-				],
-				"languages": [],
-				"schema_migrations": [
-					{
-						"applied_at": "$t",
-						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -18601,7 +17814,6 @@
 							"moves": [],
 							"removedAnswers": [],
 							"removedAttributes": [],
-							"shortForms": [],
 							"abbreviations": [],
 							"totals": {
 								"affectedDrafts": 0,
@@ -18627,10 +17839,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -18638,7 +17846,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],
@@ -18743,10 +17951,6 @@
 					{
 						"key": "abbreviationListsRevision::00000000-0000-4000-8000-000000000001",
 						"value": "sf05-fixture-1"
-					},
-					{
-						"key": "shortFormListsRevision::00000000-0000-4000-8000-000000000001",
-						"value": "sf05-fixture-1"
 					}
 				],
 				"languages": [],
@@ -18754,7 +17958,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 27
+						"version": 28
 					}
 				],
 				"worker_agitations": [],

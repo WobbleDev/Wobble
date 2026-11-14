@@ -26,17 +26,13 @@
 						"options": [
 							{
 								"id": "410319a3-bdfa-4bd1-9552-ebd455cce908~Front of House",
-								"shortForm": "Front of …",
 								"abbreviation": "Front of …",
-								"shortFormOrigin": "generated",
 								"abbreviationOrigin": "generated",
 								"value": "Front of House"
 							},
 							{
 								"id": "410319a3-bdfa-4bd1-9552-ebd455cce908~Back of House",
-								"shortForm": "Back of H…",
 								"abbreviation": "Back of H…",
-								"shortFormOrigin": "generated",
 								"abbreviationOrigin": "generated",
 								"value": "Back of House"
 							}
@@ -49,17 +45,13 @@
 						"options": [
 							{
 								"id": "5caf443d-27b3-4a64-abc5-bdbd885253f0~Server",
-								"shortForm": "Server",
 								"abbreviation": "Server",
-								"shortFormOrigin": "generated",
 								"abbreviationOrigin": "generated",
 								"value": "Server"
 							},
 							{
 								"id": "5caf443d-27b3-4a64-abc5-bdbd885253f0~Cook",
-								"shortForm": "Cook",
 								"abbreviation": "Cook",
-								"shortFormOrigin": "generated",
 								"abbreviationOrigin": "generated",
 								"value": "Cook"
 							}
@@ -72,17 +64,13 @@
 						"options": [
 							{
 								"id": "530027ee-e23d-49c8-a4cc-8d357d917563~Dinner",
-								"shortForm": "Dinner",
 								"abbreviation": "Dinner",
-								"shortFormOrigin": "generated",
 								"abbreviationOrigin": "generated",
 								"value": "Dinner"
 							},
 							{
 								"id": "530027ee-e23d-49c8-a4cc-8d357d917563~Brunch",
-								"shortForm": "Brunch",
 								"abbreviation": "Brunch",
-								"shortFormOrigin": "generated",
 								"abbreviationOrigin": "generated",
 								"value": "Brunch"
 							}
@@ -1371,17 +1359,13 @@
 						"options": [
 							{
 								"id": "410319a3-bdfa-4bd1-9552-ebd455cce908~Front of House",
-								"shortForm": "Front of …",
 								"abbreviation": "Front of …",
-								"shortFormOrigin": "generated",
 								"abbreviationOrigin": "generated",
 								"value": "Front of House"
 							},
 							{
 								"id": "410319a3-bdfa-4bd1-9552-ebd455cce908~Back of House",
-								"shortForm": "Back of H…",
 								"abbreviation": "Back of H…",
-								"shortFormOrigin": "generated",
 								"abbreviationOrigin": "generated",
 								"value": "Back of House"
 							}
@@ -1394,17 +1378,13 @@
 						"options": [
 							{
 								"id": "5caf443d-27b3-4a64-abc5-bdbd885253f0~Server",
-								"shortForm": "Server",
 								"abbreviation": "Server",
-								"shortFormOrigin": "generated",
 								"abbreviationOrigin": "generated",
 								"value": "Server"
 							},
 							{
 								"id": "5caf443d-27b3-4a64-abc5-bdbd885253f0~Cook",
-								"shortForm": "Cook",
 								"abbreviation": "Cook",
-								"shortFormOrigin": "generated",
 								"abbreviationOrigin": "generated",
 								"value": "Cook"
 							}
@@ -1417,17 +1397,13 @@
 						"options": [
 							{
 								"id": "530027ee-e23d-49c8-a4cc-8d357d917563~Dinner",
-								"shortForm": "Dinner",
 								"abbreviation": "Dinner",
-								"shortFormOrigin": "generated",
 								"abbreviationOrigin": "generated",
 								"value": "Dinner"
 							},
 							{
 								"id": "530027ee-e23d-49c8-a4cc-8d357d917563~Brunch",
-								"shortForm": "Brunch",
 								"abbreviation": "Brunch",
-								"shortFormOrigin": "generated",
 								"abbreviationOrigin": "generated",
 								"value": "Brunch"
 							}

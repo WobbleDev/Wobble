@@ -159,10 +159,8 @@ pub struct ConfigurationPreview {
     pub attribute_moves: Vec<AttributeMoveImpact>,
     /// Every Attribute whose select-mode change trims the answers some Workers hold.
     pub mode_changes: Vec<ModeImpact>,
-    /// The Short form each surviving proposed value would be stored with (ADR 0046), so the
+    /// The Abbreviation each surviving proposed value would be stored with (ADR 0046), so the
     /// frontend never generates one.
-    pub short_forms: Vec<SuggestedAbbreviation>,
-    /// The same suggestions under their new name; `short_forms` is removed in the contract step.
     pub abbreviations: Vec<SuggestedAbbreviation>,
 }
 
@@ -177,13 +175,6 @@ pub struct ConfigurationPreview {
 pub struct SuggestedAbbreviation {
     pub attribute_id: String,
     pub answer_id: String,
-    pub short_form: String,
-    #[cfg_attr(
-        feature = "ts",
-        ts(as = "crate::attribute_migration::AbbreviationOriginTs")
-    )]
-    pub short_form_origin: String,
-    /// The new name for `short_form`; always equal to it until the contract step.
     pub abbreviation: String,
     #[cfg_attr(
         feature = "ts",
@@ -220,13 +211,11 @@ fn suggested_forms(
     proposed_abbreviations(locale, stored, proposed, lists_current)
         .into_iter()
         .map(
-            |(attribute_id, answer_id, short_form, short_form_origin)| SuggestedAbbreviation {
+            |(attribute_id, answer_id, abbreviation, abbreviation_origin)| SuggestedAbbreviation {
                 attribute_id,
                 answer_id,
-                abbreviation: short_form.clone(),
-                abbreviation_origin: short_form_origin.clone(),
-                short_form,
-                short_form_origin,
+                abbreviation,
+                abbreviation_origin,
             },
         )
         .collect()
@@ -322,7 +311,6 @@ pub fn preview_configuration(
         moves: move_impacts.moves,
         attribute_moves,
         mode_changes,
-        short_forms: abbreviations.clone(),
         abbreviations,
     })
 }

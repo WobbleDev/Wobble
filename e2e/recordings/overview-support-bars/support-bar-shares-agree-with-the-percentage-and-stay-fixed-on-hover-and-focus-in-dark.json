@@ -26,25 +26,19 @@
 						"options": [
 							{
 								"id": "80533727-3e80-4799-8812-4d69dd67e206~Mixed",
-								"shortForm": "Mixed",
 								"abbreviation": "Mixed",
-								"shortFormOrigin": "generated",
 								"abbreviationOrigin": "generated",
 								"value": "Mixed"
 							},
 							{
 								"id": "80533727-3e80-4799-8812-4d69dd67e206~Unassessed only",
-								"shortForm": "Unassesse…",
 								"abbreviation": "Unassesse…",
-								"shortFormOrigin": "generated",
 								"abbreviationOrigin": "generated",
 								"value": "Unassessed only"
 							},
 							{
 								"id": "80533727-3e80-4799-8812-4d69dd67e206~Support only",
-								"shortForm": "Sup. only",
 								"abbreviation": "Sup. only",
-								"shortFormOrigin": "generated",
 								"abbreviationOrigin": "generated",
 								"value": "Support only"
 							}
@@ -1203,25 +1197,19 @@
 						"options": [
 							{
 								"id": "80533727-3e80-4799-8812-4d69dd67e206~Mixed",
-								"shortForm": "Mixed",
 								"abbreviation": "Mixed",
-								"shortFormOrigin": "generated",
 								"abbreviationOrigin": "generated",
 								"value": "Mixed"
 							},
 							{
 								"id": "80533727-3e80-4799-8812-4d69dd67e206~Unassessed only",
-								"shortForm": "Unassesse…",
 								"abbreviation": "Unassesse…",
-								"shortFormOrigin": "generated",
 								"abbreviationOrigin": "generated",
 								"value": "Unassessed only"
 							},
 							{
 								"id": "80533727-3e80-4799-8812-4d69dd67e206~Support only",
-								"shortForm": "Sup. only",
 								"abbreviation": "Sup. only",
-								"shortFormOrigin": "generated",
 								"abbreviationOrigin": "generated",
 								"value": "Support only"
 							}

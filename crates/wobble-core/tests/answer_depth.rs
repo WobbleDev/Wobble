@@ -70,8 +70,6 @@ fn a_five_level_answer_tree_saves_reads_back_and_is_held_by_a_worker() {
         // Every value carries its generated Short form; these names all fit in 10 graphemes.
         let mut expected = five_levels();
         for option in expected.as_array_mut().expect("options") {
-            option["shortForm"] = option["value"].clone();
-            option["shortFormOrigin"] = json!("generated");
             option["abbreviation"] = option["value"].clone();
             option["abbreviationOrigin"] = json!("generated");
         }

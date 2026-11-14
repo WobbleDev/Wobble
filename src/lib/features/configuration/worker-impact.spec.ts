@@ -45,7 +45,6 @@ const preview = {
 	moves: [],
 	attributeMoves: [],
 	modeChanges: [],
-	shortForms: [],
 	abbreviations: []
 } as unknown as ConfigurationPreview;
 

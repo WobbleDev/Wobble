@@ -96,7 +96,6 @@ function previewOf(overrides: Partial<ConfigurationPreview> = {}): Configuration
 		moves: [],
 		attributeMoves: [],
 		modeChanges: [],
-		shortForms: [],
 		abbreviations: [],
 		...overrides
 	};

@@ -33,64 +33,48 @@
 								"abbreviation": "Customer …",
 								"abbreviationOrigin": "generated",
 								"id": "f6aa36d4-ce6f-424f-8706-266c2807d4ed~Customer Service North",
-								"shortForm": "Customer …",
-								"shortFormOrigin": "generated",
 								"value": "Customer Service North"
 							},
 							{
 								"abbreviation": "Customer …",
 								"abbreviationOrigin": "generated",
 								"id": "f6aa36d4-ce6f-424f-8706-266c2807d4ed~Customer Service South",
-								"shortForm": "Customer …",
-								"shortFormOrigin": "generated",
 								"value": "Customer Service South"
 							},
 							{
 								"abbreviation": "BHM",
 								"abbreviationOrigin": "generated",
 								"id": "f6aa36d4-ce6f-424f-8706-266c2807d4ed~Back of House Maintenance",
-								"shortForm": "BHM",
-								"shortFormOrigin": "generated",
 								"value": "Back of House Maintenance"
 							},
 							{
 								"abbreviation": "FHC",
 								"abbreviationOrigin": "generated",
 								"id": "f6aa36d4-ce6f-424f-8706-266c2807d4ed~Front of House Cleaning",
-								"shortForm": "FHC",
-								"shortFormOrigin": "generated",
 								"value": "Front of House Cleaning"
 							},
 							{
 								"abbreviation": "CST",
 								"abbreviationOrigin": "generated",
 								"id": "f6aa36d4-ce6f-424f-8706-266c2807d4ed~Community Support Team",
-								"shortForm": "CST",
-								"shortFormOrigin": "generated",
 								"value": "Community Support Team"
 							},
 							{
 								"abbreviation": "Night War…",
 								"abbreviationOrigin": "generated",
 								"id": "f6aa36d4-ce6f-424f-8706-266c2807d4ed~Night Warehouse Receiving",
-								"shortForm": "Night War…",
-								"shortFormOrigin": "generated",
 								"value": "Night Warehouse Receiving"
 							},
 							{
 								"abbreviation": "Day Wareh…",
 								"abbreviationOrigin": "generated",
 								"id": "f6aa36d4-ce6f-424f-8706-266c2807d4ed~Day Warehouse Shipping",
-								"shortForm": "Day Wareh…",
-								"shortFormOrigin": "generated",
 								"value": "Day Warehouse Shipping"
 							},
 							{
 								"abbreviation": "Overnight…",
 								"abbreviationOrigin": "generated",
 								"id": "f6aa36d4-ce6f-424f-8706-266c2807d4ed~Overnight Deep-Clean Crew",
-								"shortForm": "Overnight…",
-								"shortFormOrigin": "generated",
 								"value": "Overnight Deep-Clean Crew"
 							}
 						]
@@ -352,64 +336,48 @@
 								"abbreviation": "Customer …",
 								"abbreviationOrigin": "generated",
 								"id": "f6aa36d4-ce6f-424f-8706-266c2807d4ed~Customer Service North",
-								"shortForm": "Customer …",
-								"shortFormOrigin": "generated",
 								"value": "Customer Service North"
 							},
 							{
 								"abbreviation": "Customer …",
 								"abbreviationOrigin": "generated",
 								"id": "f6aa36d4-ce6f-424f-8706-266c2807d4ed~Customer Service South",
-								"shortForm": "Customer …",
-								"shortFormOrigin": "generated",
 								"value": "Customer Service South"
 							},
 							{
 								"abbreviation": "BHM",
 								"abbreviationOrigin": "generated",
 								"id": "f6aa36d4-ce6f-424f-8706-266c2807d4ed~Back of House Maintenance",
-								"shortForm": "BHM",
-								"shortFormOrigin": "generated",
 								"value": "Back of House Maintenance"
 							},
 							{
 								"abbreviation": "FHC",
 								"abbreviationOrigin": "generated",
 								"id": "f6aa36d4-ce6f-424f-8706-266c2807d4ed~Front of House Cleaning",
-								"shortForm": "FHC",
-								"shortFormOrigin": "generated",
 								"value": "Front of House Cleaning"
 							},
 							{
 								"abbreviation": "CST",
 								"abbreviationOrigin": "generated",
 								"id": "f6aa36d4-ce6f-424f-8706-266c2807d4ed~Community Support Team",
-								"shortForm": "CST",
-								"shortFormOrigin": "generated",
 								"value": "Community Support Team"
 							},
 							{
 								"abbreviation": "Night War…",
 								"abbreviationOrigin": "generated",
 								"id": "f6aa36d4-ce6f-424f-8706-266c2807d4ed~Night Warehouse Receiving",
-								"shortForm": "Night War…",
-								"shortFormOrigin": "generated",
 								"value": "Night Warehouse Receiving"
 							},
 							{
 								"abbreviation": "Day Wareh…",
 								"abbreviationOrigin": "generated",
 								"id": "f6aa36d4-ce6f-424f-8706-266c2807d4ed~Day Warehouse Shipping",
-								"shortForm": "Day Wareh…",
-								"shortFormOrigin": "generated",
 								"value": "Day Warehouse Shipping"
 							},
 							{
 								"abbreviation": "Overnight…",
 								"abbreviationOrigin": "generated",
 								"id": "f6aa36d4-ce6f-424f-8706-266c2807d4ed~Overnight Deep-Clean Crew",
-								"shortForm": "Overnight…",
-								"shortFormOrigin": "generated",
 								"value": "Overnight Deep-Clean Crew"
 							}
 						]

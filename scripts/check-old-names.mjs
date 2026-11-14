@@ -8,7 +8,8 @@ import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 
 /** Names that were contracted away. */
-const OLD_NAMES = /committee_target|committeeTarget/;
+const OLD_NAMES =
+	/committee_target|committeeTarget|short_form|shortForm|short-form|ShortForm|SHORT_FORM/;
 
 /** The places where an old name is allowed. Keep this list short. */
 const ALLOWED = new Set([
@@ -16,8 +17,11 @@ const ALLOWED = new Set([
 	'crates/wobble-core/src/schema.rs',
 	// The 400 for a request that still carries the retired wire name, and its tests.
 	'crates/wobble-core/src/handlers/worksite.rs',
-	// Migration tests that build and open databases from before the contract.
+	// Migration tests that build and open databases from before the contract, and the tests that
+	// check the retired wire names are refused.
 	'crates/wobble-core/tests/committee_goal_migration.rs',
+	'crates/wobble-core/tests/abbreviation_expand_migration.rs',
+	'crates/wobble-core/tests/abbreviations.rs',
 	'crates/wobble-core/tests/common/legacy_db.rs',
 	// Documents the retired name in the route table.
 	'contract/route-table.md',
@@ -39,8 +43,10 @@ for (const file of files) {
 	} catch {
 		continue;
 	}
-	if (OLD_NAMES.test(text)) {
-		const count = text.split('\n').filter((line) => OLD_NAMES.test(line)).length;
+	// The v23 migration's recorded name is part of the `schema_migrations` history.
+	const body = text.replace(/(['"])short-forms\1/g, '');
+	if (OLD_NAMES.test(body)) {
+		const count = body.split('\n').filter((line) => OLD_NAMES.test(line)).length;
 		offenders.push(`${file}: ${count} line(s)`);
 	}
 }

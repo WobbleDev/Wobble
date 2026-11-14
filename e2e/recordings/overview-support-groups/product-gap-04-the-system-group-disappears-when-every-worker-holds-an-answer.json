@@ -26,17 +26,13 @@
 						"options": [
 							{
 								"id": "0190d030-7826-4239-9a4f-39c834920fc8~Packing",
-								"shortForm": "Packing",
 								"abbreviation": "Packing",
-								"shortFormOrigin": "generated",
 								"abbreviationOrigin": "generated",
 								"value": "Packing"
 							},
 							{
 								"id": "0190d030-7826-4239-9a4f-39c834920fc8~Delivery",
-								"shortForm": "Delivery",
 								"abbreviation": "Delivery",
-								"shortFormOrigin": "generated",
 								"abbreviationOrigin": "generated",
 								"value": "Delivery"
 							}
@@ -1103,17 +1099,13 @@
 						"options": [
 							{
 								"id": "0190d030-7826-4239-9a4f-39c834920fc8~Packing",
-								"shortForm": "Packing",
 								"abbreviation": "Packing",
-								"shortFormOrigin": "generated",
 								"abbreviationOrigin": "generated",
 								"value": "Packing"
 							},
 							{
 								"id": "0190d030-7826-4239-9a4f-39c834920fc8~Delivery",
-								"shortForm": "Delivery",
 								"abbreviation": "Delivery",
-								"shortFormOrigin": "generated",
 								"abbreviationOrigin": "generated",
 								"value": "Delivery"
 							}

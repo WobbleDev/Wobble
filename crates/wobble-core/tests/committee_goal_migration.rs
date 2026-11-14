@@ -50,10 +50,9 @@ fn every_upgradable_version_keeps_the_goal_and_drops_the_target_column() {
         let _app = App::open_legacy_fixture(&path);
         // LEGACY-PLAINTEXT-FIXTURE: temp-constructed legacy-schema source for upgrade-read test (intentional plaintext, never production).
         let conn = Connection::open(&path).expect("opens the upgraded database");
-        assert_eq!(raw_version(&conn), Some(27), "v{version}");
-        assert_eq!(
-            migration_rows(&conn).last().unwrap(),
-            &(27, "committee-goal-contract".to_owned()),
+        assert_eq!(raw_version(&conn), Some(28), "v{version}");
+        assert!(
+            migration_rows(&conn).contains(&(27, "committee-goal-contract".to_owned())),
             "v{version}"
         );
         assert!(!has_target_column(&conn), "v{version}");
@@ -100,7 +99,7 @@ fn opening_an_upgraded_file_again_changes_nothing() {
     drop(App::open_legacy_fixture(&path));
     // LEGACY-PLAINTEXT-FIXTURE: temp-constructed legacy-schema source for upgrade-read test (intentional plaintext, never production).
     let conn = Connection::open(&path).unwrap();
-    assert_eq!(raw_version(&conn), Some(27));
+    assert_eq!(raw_version(&conn), Some(28));
     assert!(!has_target_column(&conn));
     assert_eq!(goals(&conn), vec![("ws-a".to_owned(), 4)]);
     assert_eq!(

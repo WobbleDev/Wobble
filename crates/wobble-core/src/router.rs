@@ -47,9 +47,6 @@ pub(crate) fn dispatch_keyed(
         ("POST", "/api/configuration/abbreviations") => {
             configuration::post_configuration_abbreviations(db, request)
         }
-        ("POST", "/api/configuration/short-forms") => {
-            configuration::post_configuration_short_forms(db, request)
-        }
         ("GET", "/api/agitations") => vocabulary::get_agitations_route(db, request),
         ("POST", "/api/agitations") => vocabulary::post_agitation(db, request, id_source),
         ("PUT", "/api/agitations") => vocabulary::put_agitations(db, request, id_source),

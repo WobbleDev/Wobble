@@ -301,8 +301,6 @@ fn answer_fields(value: &Value) -> Option<AnswerFields<'_>> {
                 | "mergedInto"
                 | "parentId"
                 | "mode"
-                | "shortForm"
-                | "shortFormOrigin"
                 | "abbreviation"
                 | "abbreviationOrigin"
         )
@@ -362,27 +360,16 @@ fn answer_fields(value: &Value) -> Option<AnswerFields<'_>> {
     })
 }
 
-/// Why an answer's `shortForm` and `shortFormOrigin` cannot be saved, or `None` when they
+/// Why an answer's `abbreviation` and `abbreviationOrigin` cannot be saved, or `None` when they
 /// are absent or acceptable: both are given or neither, the origin is `generated` or
-/// `edited`, and an edited form is 1 to 10 graphemes after trimming. A generated form is
+/// `edited`, and an edited abbreviation is 1 to 10 graphemes after trimming. A generated one is
 /// produced by the core, so only its shape is checked.
 fn abbreviation_problem(answer: &serde_json::Map<String, Value>) -> Option<&'static str> {
-    // Either wire name may carry the pair while both exist; when both pairs are sent they
-    // must say the same thing.
-    let old = (answer.get("shortForm"), answer.get("shortFormOrigin"));
-    let new = (answer.get("abbreviation"), answer.get("abbreviationOrigin"));
-    if old.0.is_some() && new.0.is_some() && (old.0 != new.0 || old.1 != new.1) {
-        return Some("malformed");
-    }
-    [old, new]
-        .into_iter()
-        .filter_map(|pair| abbreviation_pair_problem(pair.0, pair.1))
-        .min()
+    abbreviation_pair_problem(answer.get("abbreviation"), answer.get("abbreviationOrigin"))
 }
 
-/// The problem with one `(form, origin)` pair of wire values, or `None` when it is absent or
-/// acceptable. `"invalid"` sorts before `"malformed"`, so `min` reports a malformed pair first
-/// only when no pair is merely invalid; both refuse the save.
+/// The problem with the `(abbreviation, origin)` pair of wire values, or `None` when it is absent
+/// or acceptable. Both `"invalid"` and `"malformed"` refuse the save.
 fn abbreviation_pair_problem(form: Option<&Value>, origin: Option<&Value>) -> Option<&'static str> {
     let (form, origin) = match (form, origin) {
         (None, None) => return None,
@@ -433,17 +420,10 @@ pub fn diagnose_attribute_hierarchy(value: &Value) -> Option<AttributeHierarchyD
             let option = option.as_object()?;
             let id = option.get("id")?.as_str()?;
             if abbreviation_problem(option) == Some("invalid") {
-                // A request that used the new wire name gets the new code and wording; the
-                // old name keeps the old ones until the contract step removes them.
-                let (code, noun) = if option.contains_key("abbreviation") {
-                    ("abbreviation_invalid", "Abbreviation")
-                } else {
-                    ("short_form_invalid", "Short form")
-                };
                 return Some(AttributeHierarchyDiagnosis {
-                    code,
+                    code: "abbreviation_invalid",
                     message: format!(
-                        "Answer \"{id}\" has a {noun} that is not 1 to {} characters.",
+                        "Answer \"{id}\" has an Abbreviation that is not 1 to {} characters.",
                         crate::abbreviation::ABBREVIATION_LIMIT
                     ),
                 });

@@ -184,6 +184,7 @@ fn upgrading_a_version_15_database_reformats_clean_phones_and_leaves_others_alon
             (25, "committee-goal".to_owned()),
             (26, "abbreviation".to_owned()),
             (27, "committee-goal-contract".to_owned()),
+            (28, "abbreviation-contract".to_owned()),
         ]
     );
 
@@ -223,6 +224,7 @@ fn upgrading_a_version_14_database_chains_through_15_to_20() {
             (25, "committee-goal".to_owned()),
             (26, "abbreviation".to_owned()),
             (27, "committee-goal-contract".to_owned()),
+            (28, "abbreviation-contract".to_owned()),
         ]
     );
 
@@ -256,6 +258,7 @@ fn upgrading_a_version_13_database_chains_through_14_and_15_to_20() {
             (25, "committee-goal".to_owned()),
             (26, "abbreviation".to_owned()),
             (27, "committee-goal-contract".to_owned()),
+            (28, "abbreviation-contract".to_owned()),
         ]
     );
 
@@ -328,6 +331,7 @@ fn upgrading_a_version_12_database_chains_through_16_to_20_and_reformats_its_pho
             (25, "committee-goal".to_owned()),
             (26, "abbreviation".to_owned()),
             (27, "committee-goal-contract".to_owned()),
+            (28, "abbreviation-contract".to_owned()),
         ]
     );
 
@@ -343,7 +347,7 @@ fn a_fresh_database_bootstraps_at_version_24() {
     assert_eq!(dataset(&app)["workers"], json!([]));
     assert_eq!(
         current_migration_rows(&path),
-        [(27, "current-schema-bootstrap".to_owned())]
+        [(28, "current-schema-bootstrap".to_owned())]
     );
 
     remove_database(&path);
@@ -377,6 +381,7 @@ fn upgrading_a_version_20_database_runs_the_legacy_conversion_once() {
             (25, "committee-goal".to_owned()),
             (26, "abbreviation".to_owned()),
             (27, "committee-goal-contract".to_owned()),
+            (28, "abbreviation-contract".to_owned()),
         ]
     );
 
@@ -396,7 +401,7 @@ fn opening_a_current_version_24_database_writes_nothing() {
     assert_eq!(dataset(&app)["workers"], json!([]));
     assert_eq!(
         current_migration_rows(&path),
-        [(27, "current-schema-bootstrap".to_owned())],
+        [(28, "current-schema-bootstrap".to_owned())],
         "opening a current database writes nothing, not even another migration row"
     );
 
@@ -451,6 +456,7 @@ fn upgrading_a_version17_database_flattens_its_starter_questions() {
             (25, "committee-goal".to_owned()),
             (26, "abbreviation".to_owned()),
             (27, "committee-goal-contract".to_owned()),
+            (28, "abbreviation-contract".to_owned()),
         ]
     );
     remove_database(&path);
@@ -487,6 +493,7 @@ fn a_version_16_database_keeps_its_phones_while_the_settings_registry_upgrades()
             (25, "committee-goal".to_owned()),
             (26, "abbreviation".to_owned()),
             (27, "committee-goal-contract".to_owned()),
+            (28, "abbreviation-contract".to_owned()),
         ]
     );
 

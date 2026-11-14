@@ -33,16 +33,12 @@
 								"abbreviation": "Customer …",
 								"abbreviationOrigin": "generated",
 								"id": "bccfcb19-0bc1-4330-868c-990e9efcfb5c~Customer Service North",
-								"shortForm": "Customer …",
-								"shortFormOrigin": "generated",
 								"value": "Customer Service North"
 							},
 							{
 								"abbreviation": "BHM",
 								"abbreviationOrigin": "generated",
 								"id": "bccfcb19-0bc1-4330-868c-990e9efcfb5c~Back of House Maintenance",
-								"shortForm": "BHM",
-								"shortFormOrigin": "generated",
 								"value": "Back of House Maintenance"
 							}
 						]
@@ -205,16 +201,12 @@
 								"abbreviation": "Customer …",
 								"abbreviationOrigin": "generated",
 								"id": "bccfcb19-0bc1-4330-868c-990e9efcfb5c~Customer Service North",
-								"shortForm": "Customer …",
-								"shortFormOrigin": "generated",
 								"value": "Customer Service North"
 							},
 							{
 								"abbreviation": "BHM",
 								"abbreviationOrigin": "generated",
 								"id": "bccfcb19-0bc1-4330-868c-990e9efcfb5c~Back of House Maintenance",
-								"shortForm": "BHM",
-								"shortFormOrigin": "generated",
 								"value": "Back of House Maintenance"
 							}
 						]

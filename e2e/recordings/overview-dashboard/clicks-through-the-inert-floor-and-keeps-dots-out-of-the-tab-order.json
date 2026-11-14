@@ -39,17 +39,13 @@
 						"options": [
 							{
 								"id": "0b526b15-5d72-458b-8272-e63c357cc577~Front of House",
-								"shortForm": "Front of …",
 								"abbreviation": "Front of …",
-								"shortFormOrigin": "generated",
 								"abbreviationOrigin": "generated",
 								"value": "Front of House"
 							},
 							{
 								"id": "0b526b15-5d72-458b-8272-e63c357cc577~Back of House",
-								"shortForm": "Back of H…",
 								"abbreviation": "Back of H…",
-								"shortFormOrigin": "generated",
 								"abbreviationOrigin": "generated",
 								"value": "Back of House"
 							}
@@ -62,17 +58,13 @@
 						"options": [
 							{
 								"id": "505002d2-154f-4eeb-8db8-69f79dddb204~Cook",
-								"shortForm": "Cook",
 								"abbreviation": "Cook",
-								"shortFormOrigin": "generated",
 								"abbreviationOrigin": "generated",
 								"value": "Cook"
 							},
 							{
 								"id": "505002d2-154f-4eeb-8db8-69f79dddb204~Server",
-								"shortForm": "Server",
 								"abbreviation": "Server",
-								"shortFormOrigin": "generated",
 								"abbreviationOrigin": "generated",
 								"value": "Server"
 							}
@@ -1133,17 +1125,13 @@
 						"options": [
 							{
 								"id": "0b526b15-5d72-458b-8272-e63c357cc577~Front of House",
-								"shortForm": "Front of …",
 								"abbreviation": "Front of …",
-								"shortFormOrigin": "generated",
 								"abbreviationOrigin": "generated",
 								"value": "Front of House"
 							},
 							{
 								"id": "0b526b15-5d72-458b-8272-e63c357cc577~Back of House",
-								"shortForm": "Back of H…",
 								"abbreviation": "Back of H…",
-								"shortFormOrigin": "generated",
 								"abbreviationOrigin": "generated",
 								"value": "Back of House"
 							}
@@ -1156,17 +1144,13 @@
 						"options": [
 							{
 								"id": "505002d2-154f-4eeb-8db8-69f79dddb204~Cook",
-								"shortForm": "Cook",
 								"abbreviation": "Cook",
-								"shortFormOrigin": "generated",
 								"abbreviationOrigin": "generated",
 								"value": "Cook"
 							},
 							{
 								"id": "505002d2-154f-4eeb-8db8-69f79dddb204~Server",
-								"shortForm": "Server",
 								"abbreviation": "Server",
-								"shortFormOrigin": "generated",
 								"abbreviationOrigin": "generated",
 								"value": "Server"
 							}
