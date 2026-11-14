@@ -6,19 +6,15 @@ use crate::error::Result;
 use crate::id::IdSource;
 use crate::schema::{self, Worksite, WorksiteTemplateLocale};
 
-/// `SELECT id, name, committee_target AS committeeTarget` in one row mapper.
+/// `SELECT id, name, committee_goal AS committeeGoal` in one row mapper.
 fn row_to_worksite(row: &Row) -> rusqlite::Result<Worksite> {
-    Ok(Worksite {
-        id: row.get(0)?,
-        name: row.get(1)?,
-        committee_goal: row.get(2)?,
-    })
+    Ok(Worksite::new(row.get(0)?, row.get(1)?, row.get(2)?))
 }
 
 /// `listWorksites`: every Worksite, in insertion order (`ORDER BY rowid`).
 pub fn list_worksites(conn: &Connection) -> Result<Vec<Worksite>> {
     let mut statement =
-        conn.prepare("SELECT id, name, committee_target FROM worksites ORDER BY rowid")?;
+        conn.prepare("SELECT id, name, committee_goal FROM worksites ORDER BY rowid")?;
     let worksites = statement
         .query_map([], row_to_worksite)?
         .collect::<rusqlite::Result<Vec<Worksite>>>()?;
@@ -55,7 +51,7 @@ pub fn count_worksite_workers(conn: &Connection) -> Result<Vec<WorksiteWorkerCou
 /// `findWorksite`: one Worksite by exact id, or null.
 pub fn find_worksite(conn: &Connection, id: &str) -> Result<Option<Worksite>> {
     let mut statement =
-        conn.prepare("SELECT id, name, committee_target FROM worksites WHERE id = ?1")?;
+        conn.prepare("SELECT id, name, committee_goal FROM worksites WHERE id = ?1")?;
     let mut rows = statement.query_map([id], row_to_worksite)?;
     match rows.next() {
         Some(row) => Ok(Some(row?)),
@@ -152,12 +148,13 @@ pub fn save_worksite_committee_goal(
     target: i64,
 ) -> Result<Worksite> {
     conn.execute(
-        "UPDATE worksites SET committee_target = ?1 WHERE id = ?2",
+        "UPDATE worksites SET committee_goal = ?1, committee_target = ?1 WHERE id = ?2",
         params![target, worksite.id],
     )?;
 
     Ok(Worksite {
         committee_goal: target,
+        committee_target: target,
         ..worksite.clone()
     })
 }

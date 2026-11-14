@@ -131,7 +131,7 @@ export function supportReading(workers: readonly Worker[]): SupportReading {
 const defaultTarget = 5;
 
 /**
- * The effective Committee coverage target: the given number of workers per
+ * The effective Committee coverage goal: the given number of workers per
  * Leader when it is a positive whole number, otherwise the default.
  */
 export function leaderTarget(target: number): number {

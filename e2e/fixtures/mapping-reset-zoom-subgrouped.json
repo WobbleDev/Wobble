@@ -1302,22 +1302,26 @@
 		],
 		"worksite": {
 			"committeeTarget": 5,
+			"committeeGoal": 5,
 			"id": "4d52cc93-3f77-4269-8016-52a0c48e5a1c",
 			"name": "My Worksite 3"
 		},
 		"worksites": [
 			{
 				"committeeTarget": 5,
+				"committeeGoal": 5,
 				"id": "5ca90a05-1e9c-4a18-834a-125cd2b7d489",
 				"name": "My Worksite"
 			},
 			{
 				"committeeTarget": 5,
+				"committeeGoal": 5,
 				"id": "f90122f1-1655-4229-a5ee-9f261a11a7be",
 				"name": "My Worksite 2"
 			},
 			{
 				"committeeTarget": 5,
+				"committeeGoal": 5,
 				"id": "4d52cc93-3f77-4269-8016-52a0c48e5a1c",
 				"name": "My Worksite 3"
 			}

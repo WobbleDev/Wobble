@@ -1,6 +1,6 @@
 //! Ticket 03: the 15 to 16 upgrade reformats stored clean phone numbers at the request
 //! boundary (`App::open`, then reads through `App::handle`), leaves every other stored
-//! value alone, and preserves the supported migration chain through schema 24.
+//! value alone, and preserves the supported migration chain through schema 25.
 
 mod common;
 
@@ -181,6 +181,7 @@ fn upgrading_a_version_15_database_reformats_clean_phones_and_leaves_others_alon
             (22, "flatten-work-assignments".to_owned()),
             (23, "short-forms".to_owned()),
             (24, "saved-views".to_owned()),
+            (25, "committee-goal".to_owned()),
         ]
     );
 
@@ -217,6 +218,7 @@ fn upgrading_a_version_14_database_chains_through_15_to_20() {
             (22, "flatten-work-assignments".to_owned()),
             (23, "short-forms".to_owned()),
             (24, "saved-views".to_owned()),
+            (25, "committee-goal".to_owned()),
         ]
     );
 
@@ -247,6 +249,7 @@ fn upgrading_a_version_13_database_chains_through_14_and_15_to_20() {
             (22, "flatten-work-assignments".to_owned()),
             (23, "short-forms".to_owned()),
             (24, "saved-views".to_owned()),
+            (25, "committee-goal".to_owned()),
         ]
     );
 
@@ -316,6 +319,7 @@ fn upgrading_a_version_12_database_chains_through_16_to_20_and_reformats_its_pho
             (22, "flatten-work-assignments".to_owned()),
             (23, "short-forms".to_owned()),
             (24, "saved-views".to_owned()),
+            (25, "committee-goal".to_owned()),
         ]
     );
 
@@ -331,7 +335,7 @@ fn a_fresh_database_bootstraps_at_version_24() {
     assert_eq!(dataset(&app)["workers"], json!([]));
     assert_eq!(
         current_migration_rows(&path),
-        [(24, "current-schema-bootstrap".to_owned())]
+        [(25, "current-schema-bootstrap".to_owned())]
     );
 
     remove_database(&path);
@@ -362,6 +366,7 @@ fn upgrading_a_version_20_database_runs_the_legacy_conversion_once() {
             (22, "flatten-work-assignments".to_owned()),
             (23, "short-forms".to_owned()),
             (24, "saved-views".to_owned()),
+            (25, "committee-goal".to_owned()),
         ]
     );
 
@@ -381,7 +386,7 @@ fn opening_a_current_version_24_database_writes_nothing() {
     assert_eq!(dataset(&app)["workers"], json!([]));
     assert_eq!(
         current_migration_rows(&path),
-        [(24, "current-schema-bootstrap".to_owned())],
+        [(25, "current-schema-bootstrap".to_owned())],
         "opening a current database writes nothing, not even another migration row"
     );
 
@@ -433,6 +438,7 @@ fn upgrading_a_version17_database_flattens_its_starter_questions() {
             (22, "flatten-work-assignments".to_owned()),
             (23, "short-forms".to_owned()),
             (24, "saved-views".to_owned()),
+            (25, "committee-goal".to_owned()),
         ]
     );
     remove_database(&path);
@@ -466,6 +472,7 @@ fn a_version_16_database_keeps_its_phones_while_the_settings_registry_upgrades()
             (22, "flatten-work-assignments".to_owned()),
             (23, "short-forms".to_owned()),
             (24, "saved-views".to_owned()),
+            (25, "committee-goal".to_owned()),
         ]
     );
 

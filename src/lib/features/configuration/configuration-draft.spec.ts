@@ -94,11 +94,11 @@ describe('getDirtyState', () => {
 		expect(getDirtyState(cleanDraft({ worksiteName: ' Downtown ' })).sections).toEqual([]);
 	});
 
-	it('names the committee coverage target when only it changed', () => {
+	it('names the committee coverage goal when only it changed', () => {
 		const dirty = getDirtyState(cleanDraft({ draftCommitteeGoal: '8' }));
 
 		expect(dirty.committeeGoal).toBe(true);
-		expect(dirty.sections).toEqual(['committee coverage target']);
+		expect(dirty.sections).toEqual(['committee coverage goal']);
 	});
 
 	it('labels the attributes section with how many attributes the draft holds', () => {

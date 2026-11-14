@@ -28,6 +28,7 @@
 			"body": {
 				"worksite": {
 					"committeeTarget": 5,
+					"committeeGoal": 5,
 					"id": "7b5bd7c9-bb8b-437c-a540-cb2e699fa9c3",
 					"name": "My Worksite 16"
 				}
@@ -36,6 +37,7 @@
 	],
 	"worksite": {
 		"committeeTarget": 5,
+		"committeeGoal": 5,
 		"id": "7b5bd7c9-bb8b-437c-a540-cb2e699fa9c3",
 		"name": "My Worksite 16"
 	}

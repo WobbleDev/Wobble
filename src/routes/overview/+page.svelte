@@ -57,7 +57,7 @@
 	const rootState = overviewRootState();
 
 	const workers = $derived(data.workers);
-	const target = $derived(data.worksite?.committeeTarget ?? 5);
+	const target = $derived(data.worksite?.committeeGoal ?? 5);
 	const overall = $derived(supportReading(workers));
 	const counts = $derived(assessmentCounts(workers));
 	const coverage = $derived(coverageReading(workers, target));

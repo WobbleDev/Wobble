@@ -323,12 +323,14 @@
 				],
 				"worksite": {
 					"committeeTarget": 5,
+					"committeeGoal": 5,
 					"id": "a3811d67-782a-45ef-ac70-63f8d20ae054",
 					"name": "My Worksite"
 				},
 				"worksites": [
 					{
 						"committeeTarget": 5,
+						"committeeGoal": 5,
 						"id": "a3811d67-782a-45ef-ac70-63f8d20ae054",
 						"name": "My Worksite"
 					}
@@ -622,12 +624,14 @@
 				],
 				"worksite": {
 					"committeeTarget": 5,
+					"committeeGoal": 5,
 					"id": "a3811d67-782a-45ef-ac70-63f8d20ae054",
 					"name": "My Worksite"
 				},
 				"worksites": [
 					{
 						"committeeTarget": 5,
+						"committeeGoal": 5,
 						"id": "a3811d67-782a-45ef-ac70-63f8d20ae054",
 						"name": "My Worksite"
 					}
@@ -921,12 +925,14 @@
 				],
 				"worksite": {
 					"committeeTarget": 5,
+					"committeeGoal": 5,
 					"id": "a3811d67-782a-45ef-ac70-63f8d20ae054",
 					"name": "My Worksite"
 				},
 				"worksites": [
 					{
 						"committeeTarget": 5,
+						"committeeGoal": 5,
 						"id": "a3811d67-782a-45ef-ac70-63f8d20ae054",
 						"name": "My Worksite"
 					}
@@ -961,6 +967,7 @@
 			"body": {
 				"worksite": {
 					"committeeTarget": 5,
+					"committeeGoal": 5,
 					"id": "a3811d67-782a-45ef-ac70-63f8d20ae054",
 					"name": "My Worksite"
 				}
@@ -1593,6 +1600,7 @@
 	],
 	"worksite": {
 		"committeeTarget": 5,
+		"committeeGoal": 5,
 		"id": "a3811d67-782a-45ef-ac70-63f8d20ae054",
 		"name": "My Worksite"
 	}

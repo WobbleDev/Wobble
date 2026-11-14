@@ -43,7 +43,7 @@ function open(initial: WorkerAttributeDefinition[] = attributes) {
 			{ id: 'greek', name: 'Greek' },
 			{ id: 'latin', name: 'Latin' }
 		],
-		worksite: { id: 'ws-1', name: 'Harbour Depot', committeeTarget: 10 },
+		worksite: { id: 'ws-1', name: 'Harbour Depot', committeeGoal: 10, committeeTarget: 10 },
 		configurationDraft: { hasUnsavedChanges: false }
 	});
 }

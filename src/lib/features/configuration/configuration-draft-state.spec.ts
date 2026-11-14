@@ -21,7 +21,7 @@ function openDraft() {
 		attributes: [],
 		agitations: [{ id: 'ag-1', text: 'Parking fees' }],
 		languages: [{ id: 'lang-1', name: 'Spanish' }],
-		worksite: { id: 'ws-1', name: 'Depot', committeeTarget: 10 },
+		worksite: { id: 'ws-1', name: 'Depot', committeeGoal: 10, committeeTarget: 10 },
 		configurationDraft: { hasUnsavedChanges: false }
 	});
 }
@@ -196,7 +196,7 @@ describe('ConfigurationDraftState Attribute moves', () => {
 			attributes,
 			agitations: [],
 			languages: [],
-			worksite: { id: 'ws-1', name: 'Depot', committeeTarget: 10 },
+			worksite: { id: 'ws-1', name: 'Depot', committeeGoal: 10, committeeTarget: 10 },
 			configurationDraft: { hasUnsavedChanges: false }
 		});
 	}
@@ -371,7 +371,7 @@ describe('ConfigurationDraftState five-level Attribute answers', () => {
 			attributes: [deepRegion],
 			agitations: [],
 			languages: [],
-			worksite: { id: 'ws-1', name: 'Depot', committeeTarget: 10 },
+			worksite: { id: 'ws-1', name: 'Depot', committeeGoal: 10, committeeTarget: 10 },
 			configurationDraft: { hasUnsavedChanges: false }
 		});
 	}
@@ -469,7 +469,7 @@ describe('ConfigurationDraftState Short forms (ADR 0046)', () => {
 			attributes: [{ id: 'dept', name: 'Department', kind: 'category', answers }],
 			agitations: [],
 			languages: [],
-			worksite: { id: 'ws-1', name: 'Depot', committeeTarget: 10 },
+			worksite: { id: 'ws-1', name: 'Depot', committeeGoal: 10, committeeTarget: 10 },
 			configurationDraft: { hasUnsavedChanges: false }
 		});
 	}

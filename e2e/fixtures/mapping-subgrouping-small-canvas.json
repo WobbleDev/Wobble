@@ -7,11 +7,26 @@
 				"kind": "category",
 				"name": "Department",
 				"options": [
-					{ "id": "afa74e93-75c4-4f09-9686-2ed37b1c5fd1~D1", "value": "D1" },
-					{ "id": "afa74e93-75c4-4f09-9686-2ed37b1c5fd1~D2", "value": "D2" },
-					{ "id": "afa74e93-75c4-4f09-9686-2ed37b1c5fd1~D3", "value": "D3" },
-					{ "id": "afa74e93-75c4-4f09-9686-2ed37b1c5fd1~D4", "value": "D4" },
-					{ "id": "afa74e93-75c4-4f09-9686-2ed37b1c5fd1~D5", "value": "D5" }
+					{
+						"id": "afa74e93-75c4-4f09-9686-2ed37b1c5fd1~D1",
+						"value": "D1"
+					},
+					{
+						"id": "afa74e93-75c4-4f09-9686-2ed37b1c5fd1~D2",
+						"value": "D2"
+					},
+					{
+						"id": "afa74e93-75c4-4f09-9686-2ed37b1c5fd1~D3",
+						"value": "D3"
+					},
+					{
+						"id": "afa74e93-75c4-4f09-9686-2ed37b1c5fd1~D4",
+						"value": "D4"
+					},
+					{
+						"id": "afa74e93-75c4-4f09-9686-2ed37b1c5fd1~D5",
+						"value": "D5"
+					}
 				]
 			},
 			{
@@ -19,10 +34,22 @@
 				"kind": "category",
 				"name": "Role",
 				"options": [
-					{ "id": "1f68ed71-4199-43dd-a5ef-a2f4d48efab1~R1", "value": "R1" },
-					{ "id": "1f68ed71-4199-43dd-a5ef-a2f4d48efab1~R2", "value": "R2" },
-					{ "id": "1f68ed71-4199-43dd-a5ef-a2f4d48efab1~R3", "value": "R3" },
-					{ "id": "1f68ed71-4199-43dd-a5ef-a2f4d48efab1~R4", "value": "R4" }
+					{
+						"id": "1f68ed71-4199-43dd-a5ef-a2f4d48efab1~R1",
+						"value": "R1"
+					},
+					{
+						"id": "1f68ed71-4199-43dd-a5ef-a2f4d48efab1~R2",
+						"value": "R2"
+					},
+					{
+						"id": "1f68ed71-4199-43dd-a5ef-a2f4d48efab1~R3",
+						"value": "R3"
+					},
+					{
+						"id": "1f68ed71-4199-43dd-a5ef-a2f4d48efab1~R4",
+						"value": "R4"
+					}
 				]
 			}
 		],
@@ -1275,11 +1302,17 @@
 		],
 		"worksite": {
 			"committeeTarget": 5,
+			"committeeGoal": 5,
 			"id": "85db8f86-4064-4bd8-843b-88de069715be",
 			"name": "My Worksite"
 		},
 		"worksites": [
-			{ "committeeTarget": 5, "id": "85db8f86-4064-4bd8-843b-88de069715be", "name": "My Worksite" }
+			{
+				"committeeTarget": 5,
+				"committeeGoal": 5,
+				"id": "85db8f86-4064-4bd8-843b-88de069715be",
+				"name": "My Worksite"
+			}
 		]
 	},
 	"group": "afa74e93-75c4-4f09-9686-2ed37b1c5fd1",

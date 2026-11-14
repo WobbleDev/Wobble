@@ -102,6 +102,9 @@ pub fn finish_source(path: &str, conn: Connection, version: i64) {
     if version >= 18 {
         conn.execute_batch(LEGACY_SCOPE_COLUMNS)
             .expect("restores the v18 Attribute shape");
+        // A source without Attributes never created the staging table.
+        conn.execute_batch(ATTRIBUTE_SCOPE_STAGING_DDL)
+            .expect("ensures the scope staging table");
         let staged: Vec<(String, String, i64)> = {
             let mut statement = conn
                 .prepare(
@@ -157,6 +160,12 @@ pub fn finish_source(path: &str, conn: Connection, version: i64) {
     if version < 24 {
         conn.execute_batch("DROP TABLE IF EXISTS saved_views;")
             .expect("removes saved views from a pre-v24 target");
+    }
+
+    // v25 added the committee goal column beside the committee target.
+    if version < 25 {
+        conn.execute_batch("ALTER TABLE worksites DROP COLUMN committee_goal;")
+            .expect("removes the committee goal from a pre-v25 target");
     }
 
     if version < 13 {
