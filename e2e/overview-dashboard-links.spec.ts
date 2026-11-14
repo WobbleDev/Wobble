@@ -204,39 +204,42 @@ test("an All cell opens the Agitation's full holder count", async ({ page, reque
 	}
 });
 
-test('every dashboard Workers link is reachable by Tab and opens with Enter', async ({
-	page,
-	request,
-	browserName
-}) => {
-	// Playwright's WebKit Tab skips links unless Option is held (the WKWebView tabFocusesLinks
-	// default), so the harness cannot press its way to them. The Mac app itself was checked by
-	// hand (Tom, Nov 11): Tab lands on the count links. Chromium covers the order.
-	test.skip(browserName === 'webkit', 'WebKit Tab does not reach links without Option');
-	await seedDashboard(request);
-	await openOverview(page);
+// Two group names, four nonzero matrix cells and three All cells; zero cells stay plain.
+// One test per link: reloading the Overview and Tabbing to each of the nine links inside one
+// test spent the whole test budget on a loaded runner.
+const dashboardLinkCount = 9;
 
-	// Two group names, four nonzero matrix cells and three All cells; zero cells stay plain.
-	const hrefs = [
-		...(await byCard(page, 'Department')
-			.getByRole('link')
-			.evaluateAll((elements) => elements.map((el) => el.getAttribute('href')))),
-		...(await agitationsCard(page)
-			.getByRole('link')
-			.evaluateAll((elements) => elements.map((el) => el.getAttribute('href'))))
-	];
-	expect(hrefs).toHaveLength(9);
-	expect(new Set(hrefs).size).toBe(9);
-
-	for (const href of hrefs) {
+for (let index = 0; index < dashboardLinkCount; index += 1) {
+	test(`dashboard Workers link ${index + 1} of ${dashboardLinkCount} is reachable by Tab and opens with Enter`, async ({
+		page,
+		request,
+		browserName
+	}) => {
+		// Playwright's WebKit Tab skips links unless Option is held (the WKWebView tabFocusesLinks
+		// default), so the harness cannot press its way to them. The Mac app itself was checked by
+		// hand (Tom, Nov 11): Tab lands on the count links. Chromium covers the order.
+		test.skip(browserName === 'webkit', 'WebKit Tab does not reach links without Option');
+		await seedDashboard(request);
 		await openOverview(page);
-		await tabTo(page, page.locator(`[data-dashboard] a[href="${href}"]`));
+
+		const hrefs = [
+			...(await byCard(page, 'Department')
+				.getByRole('link')
+				.evaluateAll((elements) => elements.map((el) => el.getAttribute('href')))),
+			...(await agitationsCard(page)
+				.getByRole('link')
+				.evaluateAll((elements) => elements.map((el) => el.getAttribute('href'))))
+		];
+		expect(hrefs).toHaveLength(dashboardLinkCount);
+		expect(new Set(hrefs).size).toBe(dashboardLinkCount);
+
+		await tabTo(page, page.locator(`[data-dashboard] a[href="${hrefs[index]}"]`));
 		await page.keyboard.press('Enter');
 		await page.waitForURL(/\/workers/);
 		await appReady(page);
 		await expect(workerRows(page).first()).toBeVisible();
-	}
-});
+	});
+}
 
 /** Tabs from the address bar until the link itself holds focus. */
 async function tabTo(page: Page, link: Locator): Promise<void> {
