@@ -2,7 +2,7 @@ import captured from './fixtures/mapping-subgrouping-small-canvas.json' with { t
 import type { Page } from '@playwright/test';
 import { appReady } from './page-ready.ts';
 import { populateWorksite, ringWorksite } from './mapping-composition-worksite.ts';
-import { settled, waitForMapInteraction, waitForMapReady } from './map.ts';
+import { settled, waitForMapInteraction, waitForMapReady, waitForSceneReady } from './map.ts';
 import { clippedNames, readNames } from './mapping-name-framing.ts';
 import { clippedContent, expect, scrollableOverflow, test } from './fixtures.ts';
 import {
@@ -22,6 +22,13 @@ import {
 // must not run against it in parallel.
 test.describe.configure({ mode: 'serial' });
 test.use({ splash: 'hold' });
+
+/** The camera's revision counter: it moves on every camera change, so a test can wait for one. */
+async function cameraRevision(page: Page): Promise<number> {
+	return Number(
+		await page.getByTestId('relationship-map-surface').getAttribute('data-camera-revision')
+	);
+}
 
 const sizes = [
 	{ width: 1024, height: 640 },
@@ -93,6 +100,9 @@ for (const density of densities) {
 					'data-map-settled',
 					'true'
 				);
+				// Names are read only once they are frozen at the final camera, not while the
+				// resting names are still being searched.
+				await waitForSceneReady(page);
 				expect(await scrollableOverflow(page)).toBe(0);
 				expect(await clippedContent(page)).toEqual([]);
 				const reading = await readNames(page);
@@ -294,6 +304,7 @@ for (const density of densityCases) {
 				'true'
 			);
 			await expect(page.locator('html')).toHaveCSS('font-size', density.rootFont);
+			await waitForSceneReady(page);
 
 			const initial = await settled(() => readNames(page));
 			const tag = `${density.name} initial`;
@@ -302,7 +313,9 @@ for (const density of densityCases) {
 			expectInside(await overflow(page), tag);
 
 			await page.getByRole('button', { name: 'Zoom in', exact: true }).click();
+			const beforeReset = await cameraRevision(page);
 			await page.getByRole('button', { name: 'Reset zoom', exact: true }).click();
+			await waitForSceneReady(page, { cameraAfter: beforeReset });
 			const reset = await settled(() => readNames(page));
 			expect(Math.abs(reset.scale / initial.scale - 1), `${density.name} reset scale`).toBeLessThan(
 				0.005
@@ -348,6 +361,7 @@ for (const density of densityCases) {
 					await page.evaluate(() => document.fonts.ready.then(() => undefined));
 					await expect(surface).toHaveAttribute('data-map-settled', 'true');
 					await expect(page.locator('html')).toHaveCSS('font-size', density.rootFont);
+					await waitForSceneReady(page);
 					const tag = `${reading} ${density.value} load ${load}`;
 					const size = await surface.evaluate(
 						(element) => `${element.clientWidth}x${element.clientHeight}`
@@ -362,7 +376,9 @@ for (const density of densityCases) {
 						`${tag} initial ${JSON.stringify({ chrome: initial.chrome, usable: initial.usable, layoutCanvas: initial.layoutCanvas, names: initial.names.filter((n) => clippedNames({ ...initial, names: [n] }).length) })}`
 					).toEqual([]);
 					const keyAtRest = (await dotKey.boundingBox())!;
+					const beforeZoom = await cameraRevision(page);
 					await page.getByRole('button', { name: 'Zoom in', exact: true }).click();
+					await waitForSceneReady(page, { cameraAfter: beforeZoom });
 					await settled(() => readNames(page));
 					const keyZoomed = (await dotKey.boundingBox())!;
 					for (const side of ['x', 'y', 'width', 'height'] as const)
@@ -370,7 +386,9 @@ for (const density of densityCases) {
 							Math.abs(keyZoomed[side] - keyAtRest[side]),
 							`${tag} dot-size key ${side} ${JSON.stringify({ keyAtRest, keyZoomed })}`
 						).toBeLessThanOrEqual(1);
+					const beforeReset = await cameraRevision(page);
 					await page.getByRole('button', { name: 'Reset zoom', exact: true }).click();
+					await waitForSceneReady(page, { cameraAfter: beforeReset });
 					const reset = await settled(() => readNames(page));
 					expect(
 						clippedNames(reset),
