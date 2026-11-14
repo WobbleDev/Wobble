@@ -44,43 +44,57 @@
 							{
 								"id": "e74e6519-033d-4d8d-8638-ea2a4f8affa8~Front of House Cleaning",
 								"shortForm": "FHC",
+								"abbreviation": "FHC",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Front of House Cleaning"
 							},
 							{
 								"id": "e74e6519-033d-4d8d-8638-ea2a4f8affa8~Back of House Maintenance",
 								"shortForm": "BHM",
+								"abbreviation": "BHM",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Back of House Maintenance"
 							},
 							{
 								"id": "e74e6519-033d-4d8d-8638-ea2a4f8affa8~Customer Service North",
 								"shortForm": "Customer …",
+								"abbreviation": "Customer …",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Customer Service North"
 							},
 							{
 								"id": "e74e6519-033d-4d8d-8638-ea2a4f8affa8~Community Support Team",
 								"shortForm": "CST",
+								"abbreviation": "CST",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Community Support Team"
 							},
 							{
 								"id": "e74e6519-033d-4d8d-8638-ea2a4f8affa8~North Warehouse Receiving",
 								"shortForm": "North War…",
+								"abbreviation": "North War…",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "North Warehouse Receiving"
 							},
 							{
 								"id": "e74e6519-033d-4d8d-8638-ea2a4f8affa8~South Warehouse Shipping",
 								"shortForm": "South War…",
+								"abbreviation": "South War…",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "South Warehouse Shipping"
 							},
 							{
 								"id": "e74e6519-033d-4d8d-8638-ea2a4f8affa8~Ward 12",
 								"shortForm": "Ward 12",
+								"abbreviation": "Ward 12",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Ward 12"
 							}
 						]
@@ -93,13 +107,17 @@
 							{
 								"id": "1bbaaabe-4782-4793-8d9b-d274f9c59731~Customer Service",
 								"shortForm": "Cust. Svc.",
+								"abbreviation": "Cust. Svc.",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Customer Service"
 							},
 							{
 								"id": "1bbaaabe-4782-4793-8d9b-d274f9c59731~Community Support",
 								"shortForm": "Comm. Sup.",
+								"abbreviation": "Comm. Sup.",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Community Support"
 							}
 						]
@@ -315,43 +333,57 @@
 							{
 								"id": "e74e6519-033d-4d8d-8638-ea2a4f8affa8~Front of House Cleaning",
 								"shortForm": "FHC",
+								"abbreviation": "FHC",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Front of House Cleaning"
 							},
 							{
 								"id": "e74e6519-033d-4d8d-8638-ea2a4f8affa8~Back of House Maintenance",
 								"shortForm": "BHM",
+								"abbreviation": "BHM",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Back of House Maintenance"
 							},
 							{
 								"id": "e74e6519-033d-4d8d-8638-ea2a4f8affa8~Customer Service North",
 								"shortForm": "Customer …",
+								"abbreviation": "Customer …",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Customer Service North"
 							},
 							{
 								"id": "e74e6519-033d-4d8d-8638-ea2a4f8affa8~Community Support Team",
 								"shortForm": "CST",
+								"abbreviation": "CST",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Community Support Team"
 							},
 							{
 								"id": "e74e6519-033d-4d8d-8638-ea2a4f8affa8~North Warehouse Receiving",
 								"shortForm": "North War…",
+								"abbreviation": "North War…",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "North Warehouse Receiving"
 							},
 							{
 								"id": "e74e6519-033d-4d8d-8638-ea2a4f8affa8~South Warehouse Shipping",
 								"shortForm": "South War…",
+								"abbreviation": "South War…",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "South Warehouse Shipping"
 							},
 							{
 								"id": "e74e6519-033d-4d8d-8638-ea2a4f8affa8~Ward 12",
 								"shortForm": "Ward 12",
+								"abbreviation": "Ward 12",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Ward 12"
 							}
 						]
@@ -364,13 +396,17 @@
 							{
 								"id": "1bbaaabe-4782-4793-8d9b-d274f9c59731~Customer Service",
 								"shortForm": "Cust. Svc.",
+								"abbreviation": "Cust. Svc.",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Customer Service"
 							},
 							{
 								"id": "1bbaaabe-4782-4793-8d9b-d274f9c59731~Community Support",
 								"shortForm": "Comm. Sup.",
+								"abbreviation": "Comm. Sup.",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Community Support"
 							}
 						]
@@ -672,43 +708,57 @@
 							{
 								"id": "e74e6519-033d-4d8d-8638-ea2a4f8affa8~Front of House Cleaning",
 								"shortForm": "FHC",
+								"abbreviation": "FHC",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Front of House Cleaning"
 							},
 							{
 								"id": "e74e6519-033d-4d8d-8638-ea2a4f8affa8~Back of House Maintenance",
 								"shortForm": "BHM",
+								"abbreviation": "BHM",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Back of House Maintenance"
 							},
 							{
 								"id": "e74e6519-033d-4d8d-8638-ea2a4f8affa8~Customer Service North",
 								"shortForm": "Customer …",
+								"abbreviation": "Customer …",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Customer Service North"
 							},
 							{
 								"id": "e74e6519-033d-4d8d-8638-ea2a4f8affa8~Community Support Team",
 								"shortForm": "CST",
+								"abbreviation": "CST",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Community Support Team"
 							},
 							{
 								"id": "e74e6519-033d-4d8d-8638-ea2a4f8affa8~North Warehouse Receiving",
 								"shortForm": "North War…",
+								"abbreviation": "North War…",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "North Warehouse Receiving"
 							},
 							{
 								"id": "e74e6519-033d-4d8d-8638-ea2a4f8affa8~South Warehouse Shipping",
 								"shortForm": "South War…",
+								"abbreviation": "South War…",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "South Warehouse Shipping"
 							},
 							{
 								"id": "e74e6519-033d-4d8d-8638-ea2a4f8affa8~Ward 12",
 								"shortForm": "Ward 12",
+								"abbreviation": "Ward 12",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Ward 12"
 							}
 						]
@@ -721,13 +771,17 @@
 							{
 								"id": "1bbaaabe-4782-4793-8d9b-d274f9c59731~Customer Service",
 								"shortForm": "Cust. Svc.",
+								"abbreviation": "Cust. Svc.",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Customer Service"
 							},
 							{
 								"id": "1bbaaabe-4782-4793-8d9b-d274f9c59731~Community Support",
 								"shortForm": "Comm. Sup.",
+								"abbreviation": "Comm. Sup.",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Community Support"
 							}
 						]

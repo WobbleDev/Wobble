@@ -32,43 +32,57 @@
 							{
 								"id": "c02e9bfb-739c-42ff-8e70-37e2c15e9b42~Front of House Cleaning",
 								"shortForm": "FHC",
+								"abbreviation": "FHC",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Front of House Cleaning"
 							},
 							{
 								"id": "c02e9bfb-739c-42ff-8e70-37e2c15e9b42~Back of House Maintenance",
 								"shortForm": "BHM",
+								"abbreviation": "BHM",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Back of House Maintenance"
 							},
 							{
 								"id": "c02e9bfb-739c-42ff-8e70-37e2c15e9b42~Customer Service North",
 								"shortForm": "Customer …",
+								"abbreviation": "Customer …",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Customer Service North"
 							},
 							{
 								"id": "c02e9bfb-739c-42ff-8e70-37e2c15e9b42~Community Support Team",
 								"shortForm": "CST",
+								"abbreviation": "CST",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Community Support Team"
 							},
 							{
 								"id": "c02e9bfb-739c-42ff-8e70-37e2c15e9b42~North Warehouse Receiving",
 								"shortForm": "North War…",
+								"abbreviation": "North War…",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "North Warehouse Receiving"
 							},
 							{
 								"id": "c02e9bfb-739c-42ff-8e70-37e2c15e9b42~South Warehouse Shipping",
 								"shortForm": "South War…",
+								"abbreviation": "South War…",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "South Warehouse Shipping"
 							},
 							{
 								"id": "c02e9bfb-739c-42ff-8e70-37e2c15e9b42~Ward 12",
 								"shortForm": "Ward 12",
+								"abbreviation": "Ward 12",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Ward 12"
 							}
 						]
@@ -308,43 +322,57 @@
 							{
 								"id": "c02e9bfb-739c-42ff-8e70-37e2c15e9b42~Front of House Cleaning",
 								"shortForm": "FHC",
+								"abbreviation": "FHC",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Front of House Cleaning"
 							},
 							{
 								"id": "c02e9bfb-739c-42ff-8e70-37e2c15e9b42~Back of House Maintenance",
 								"shortForm": "BHM",
+								"abbreviation": "BHM",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Back of House Maintenance"
 							},
 							{
 								"id": "c02e9bfb-739c-42ff-8e70-37e2c15e9b42~Customer Service North",
 								"shortForm": "Customer …",
+								"abbreviation": "Customer …",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Customer Service North"
 							},
 							{
 								"id": "c02e9bfb-739c-42ff-8e70-37e2c15e9b42~Community Support Team",
 								"shortForm": "CST",
+								"abbreviation": "CST",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Community Support Team"
 							},
 							{
 								"id": "c02e9bfb-739c-42ff-8e70-37e2c15e9b42~North Warehouse Receiving",
 								"shortForm": "North War…",
+								"abbreviation": "North War…",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "North Warehouse Receiving"
 							},
 							{
 								"id": "c02e9bfb-739c-42ff-8e70-37e2c15e9b42~South Warehouse Shipping",
 								"shortForm": "South War…",
+								"abbreviation": "South War…",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "South Warehouse Shipping"
 							},
 							{
 								"id": "c02e9bfb-739c-42ff-8e70-37e2c15e9b42~Ward 12",
 								"shortForm": "Ward 12",
+								"abbreviation": "Ward 12",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Ward 12"
 							}
 						]

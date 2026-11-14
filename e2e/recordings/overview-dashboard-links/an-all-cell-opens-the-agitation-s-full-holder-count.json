@@ -40,13 +40,17 @@
 							{
 								"id": "8da4ef41-d6d1-465f-8f36-951f636ebec3~Front of House",
 								"shortForm": "Front of …",
+								"abbreviation": "Front of …",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Front of House"
 							},
 							{
 								"id": "8da4ef41-d6d1-465f-8f36-951f636ebec3~Back of House",
 								"shortForm": "Back of H…",
+								"abbreviation": "Back of H…",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Back of House"
 							}
 						]
@@ -59,13 +63,17 @@
 							{
 								"id": "7f9e26c2-9051-4b1e-8da5-f0fa74d4bace~Cook",
 								"shortForm": "Cook",
+								"abbreviation": "Cook",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Cook"
 							},
 							{
 								"id": "7f9e26c2-9051-4b1e-8da5-f0fa74d4bace~Server",
 								"shortForm": "Server",
+								"abbreviation": "Server",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Server"
 							}
 						]
@@ -1226,13 +1234,17 @@
 							{
 								"id": "8da4ef41-d6d1-465f-8f36-951f636ebec3~Front of House",
 								"shortForm": "Front of …",
+								"abbreviation": "Front of …",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Front of House"
 							},
 							{
 								"id": "8da4ef41-d6d1-465f-8f36-951f636ebec3~Back of House",
 								"shortForm": "Back of H…",
+								"abbreviation": "Back of H…",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Back of House"
 							}
 						]
@@ -1245,13 +1257,17 @@
 							{
 								"id": "7f9e26c2-9051-4b1e-8da5-f0fa74d4bace~Cook",
 								"shortForm": "Cook",
+								"abbreviation": "Cook",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Cook"
 							},
 							{
 								"id": "7f9e26c2-9051-4b1e-8da5-f0fa74d4bace~Server",
 								"shortForm": "Server",
+								"abbreviation": "Server",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Server"
 							}
 						]

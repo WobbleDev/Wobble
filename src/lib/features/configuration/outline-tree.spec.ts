@@ -219,7 +219,7 @@ describe('activation', () => {
 		expect(event.preventDefault).toHaveBeenCalledOnce();
 	});
 
-	it('Shift+F2 moves into the Short form field of the row', async () => {
+	it('Shift+F2 moves into the Abbreviation field of the row', async () => {
 		const { outline, host } = setup();
 		const event = key('F2', onRow('a1'), { shiftKey: true });
 		await outline.keydown(event);

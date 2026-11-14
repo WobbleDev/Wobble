@@ -195,7 +195,7 @@ export function createOutlineTree(host: OutlineTreeHost) {
 				return;
 			case 'Enter':
 			case 'F2':
-				// Shift+F2 goes to the row's Short form field; Enter and F2 edit its name.
+				// Shift+F2 goes to the row's Abbreviation field; Enter and F2 edit its name.
 				if (event.key === 'F2' && event.shiftKey) {
 					if (host.activate(rowId, 'abbreviation')) event.preventDefault();
 					return;

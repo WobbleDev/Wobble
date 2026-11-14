@@ -23,11 +23,11 @@ export type AttributeAnswer = {
 	parentId?: string;
 	mode?: SelectMode;
 	/**
-	 * The stored Short form (ADR 0046) and how it came to be. Both come from the core with
+	 * The stored Abbreviation (ADR 0046) and how it came to be. Both come from the core with
 	 * every saved value; a value not yet saved has neither.
 	 */
-	shortForm?: string;
-	shortFormOrigin?: AbbreviationOrigin;
+	abbreviation?: string;
+	abbreviationOrigin?: AbbreviationOrigin;
 };
 
 export const assessmentOptions = [

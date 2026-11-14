@@ -1,9 +1,9 @@
 /**
- * The display rule for Short forms (ADR 0046). Pure: it decides which text a narrow view
- * shows for each Attribute value from the full name, the stored Short form, the ancestor
+ * The display rule for Abbreviations (ADR 0046). Pure: it decides which text a narrow view
+ * shows for each Attribute value from the full name, the stored Abbreviation, the ancestor
  * path and the column budget. Callers supply the measurement of their own rendered voice.
  *
- * A value shows its full name when that fits the budget and its Short form otherwise. Values
+ * A value shows its full name when that fits the budget and its Abbreviation otherwise. Values
  * that would then show the same text are told apart by the fewest nearest ancestors, each
  * shown by the same rule and joined root first with " › ". Values that no ancestor can tell
  * apart fall back to their full names, so no counter is ever invented. The choice is made
@@ -17,9 +17,9 @@ export type AbbreviationLabelEntry = {
 	id: string;
 	/** The full name. */
 	value: string;
-	/** The stored Short form; absent for a value that has none yet. */
-	shortForm?: string;
-	ancestors?: readonly { value: string; shortForm?: string }[];
+	/** The stored Abbreviation; absent for a value that has none yet. */
+	abbreviation?: string;
+	ancestors?: readonly { value: string; abbreviation?: string }[];
 	/** A system reading (No value) is always shown in full. */
 	system?: boolean;
 };
@@ -27,7 +27,7 @@ export type AbbreviationLabelEntry = {
 export type AbbreviationLabelOptions = {
 	/** The rendered width of a label in the view's own voice. */
 	measure: (label: string) => number;
-	/** The width one label may take before its Short form is shown instead. */
+	/** The width one label may take before its Abbreviation is shown instead. */
 	budget: number;
 	/** Headings that no value may be mistaken for, such as All. */
 	reserved?: readonly string[];
@@ -45,8 +45,10 @@ export function chooseAbbreviationLabels(
 	entries: readonly AbbreviationLabelEntry[],
 	{ measure, budget, reserved = [] }: AbbreviationLabelOptions
 ): ReadonlyMap<string, string> {
-	const own = (item: { value: string; shortForm?: string }) =>
-		item.shortForm !== undefined && measure(item.value) > budget ? item.shortForm : item.value;
+	const own = (item: { value: string; abbreviation?: string }) =>
+		item.abbreviation !== undefined && measure(item.value) > budget
+			? item.abbreviation
+			: item.value;
 	const reservedKeys = new Set(reserved.map(identity));
 
 	type State = { entry: AbbreviationLabelEntry; depth: number; full: boolean };

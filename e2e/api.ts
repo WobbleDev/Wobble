@@ -156,7 +156,7 @@ export function observeWrites(page: Page): string[] {
 		if (
 			method === 'GET' ||
 			path === '/api/configuration/preview' ||
-			path === '/api/configuration/short-forms'
+			path === '/api/configuration/abbreviations'
 		)
 			return;
 		writes.push(`${method} ${path}`);

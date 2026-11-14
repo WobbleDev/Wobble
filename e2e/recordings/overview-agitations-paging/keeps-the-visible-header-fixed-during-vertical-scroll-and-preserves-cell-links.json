@@ -88,61 +88,81 @@
 							{
 								"id": "2426e137-475f-462e-83ed-a60fb4e4a29b~Team 01",
 								"shortForm": "Team 01",
+								"abbreviation": "Team 01",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Team 01"
 							},
 							{
 								"id": "2426e137-475f-462e-83ed-a60fb4e4a29b~Team 02",
 								"shortForm": "Team 02",
+								"abbreviation": "Team 02",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Team 02"
 							},
 							{
 								"id": "2426e137-475f-462e-83ed-a60fb4e4a29b~Team 03",
 								"shortForm": "Team 03",
+								"abbreviation": "Team 03",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Team 03"
 							},
 							{
 								"id": "2426e137-475f-462e-83ed-a60fb4e4a29b~Team 04",
 								"shortForm": "Team 04",
+								"abbreviation": "Team 04",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Team 04"
 							},
 							{
 								"id": "2426e137-475f-462e-83ed-a60fb4e4a29b~Team 05",
 								"shortForm": "Team 05",
+								"abbreviation": "Team 05",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Team 05"
 							},
 							{
 								"id": "2426e137-475f-462e-83ed-a60fb4e4a29b~Team 06",
 								"shortForm": "Team 06",
+								"abbreviation": "Team 06",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Team 06"
 							},
 							{
 								"id": "2426e137-475f-462e-83ed-a60fb4e4a29b~Team 07",
 								"shortForm": "Team 07",
+								"abbreviation": "Team 07",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Team 07"
 							},
 							{
 								"id": "2426e137-475f-462e-83ed-a60fb4e4a29b~Team 08",
 								"shortForm": "Team 08",
+								"abbreviation": "Team 08",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Team 08"
 							},
 							{
 								"id": "2426e137-475f-462e-83ed-a60fb4e4a29b~Team 09",
 								"shortForm": "Team 09",
+								"abbreviation": "Team 09",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Team 09"
 							},
 							{
 								"id": "2426e137-475f-462e-83ed-a60fb4e4a29b~Team 10",
 								"shortForm": "Team 10",
+								"abbreviation": "Team 10",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Team 10"
 							}
 						]
@@ -155,13 +175,17 @@
 							{
 								"id": "44b8c519-1306-42f8-8cfc-662a57b1f406~Cook",
 								"shortForm": "Cook",
+								"abbreviation": "Cook",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Cook"
 							},
 							{
 								"id": "44b8c519-1306-42f8-8cfc-662a57b1f406~Server",
 								"shortForm": "Server",
+								"abbreviation": "Server",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Server"
 							}
 						]
@@ -1214,61 +1238,81 @@
 							{
 								"id": "2426e137-475f-462e-83ed-a60fb4e4a29b~Team 01",
 								"shortForm": "Team 01",
+								"abbreviation": "Team 01",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Team 01"
 							},
 							{
 								"id": "2426e137-475f-462e-83ed-a60fb4e4a29b~Team 02",
 								"shortForm": "Team 02",
+								"abbreviation": "Team 02",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Team 02"
 							},
 							{
 								"id": "2426e137-475f-462e-83ed-a60fb4e4a29b~Team 03",
 								"shortForm": "Team 03",
+								"abbreviation": "Team 03",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Team 03"
 							},
 							{
 								"id": "2426e137-475f-462e-83ed-a60fb4e4a29b~Team 04",
 								"shortForm": "Team 04",
+								"abbreviation": "Team 04",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Team 04"
 							},
 							{
 								"id": "2426e137-475f-462e-83ed-a60fb4e4a29b~Team 05",
 								"shortForm": "Team 05",
+								"abbreviation": "Team 05",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Team 05"
 							},
 							{
 								"id": "2426e137-475f-462e-83ed-a60fb4e4a29b~Team 06",
 								"shortForm": "Team 06",
+								"abbreviation": "Team 06",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Team 06"
 							},
 							{
 								"id": "2426e137-475f-462e-83ed-a60fb4e4a29b~Team 07",
 								"shortForm": "Team 07",
+								"abbreviation": "Team 07",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Team 07"
 							},
 							{
 								"id": "2426e137-475f-462e-83ed-a60fb4e4a29b~Team 08",
 								"shortForm": "Team 08",
+								"abbreviation": "Team 08",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Team 08"
 							},
 							{
 								"id": "2426e137-475f-462e-83ed-a60fb4e4a29b~Team 09",
 								"shortForm": "Team 09",
+								"abbreviation": "Team 09",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Team 09"
 							},
 							{
 								"id": "2426e137-475f-462e-83ed-a60fb4e4a29b~Team 10",
 								"shortForm": "Team 10",
+								"abbreviation": "Team 10",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Team 10"
 							}
 						]
@@ -1281,13 +1325,17 @@
 							{
 								"id": "44b8c519-1306-42f8-8cfc-662a57b1f406~Cook",
 								"shortForm": "Cook",
+								"abbreviation": "Cook",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Cook"
 							},
 							{
 								"id": "44b8c519-1306-42f8-8cfc-662a57b1f406~Server",
 								"shortForm": "Server",
+								"abbreviation": "Server",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Server"
 							}
 						]

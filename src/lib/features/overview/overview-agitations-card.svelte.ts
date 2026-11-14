@@ -27,7 +27,7 @@ export function createOverviewAgitationsCard(host: OverviewAgitationsCardHost) {
 			...(host.attribute()?.answers ?? []).map((answer) => ({
 				id: answer.id,
 				value: answer.value,
-				shortForm: answer.shortForm,
+				abbreviation: answer.abbreviation,
 				// Nearest ancestor first: the path runs root to the value itself.
 				ancestors: answerPath(host.attribute()?.answers ?? [], answer.id)
 					.slice(0, -1)

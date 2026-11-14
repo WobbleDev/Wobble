@@ -32,37 +32,49 @@
 							{
 								"id": "4bea1f9e-0db0-4878-a2b0-3c3fc87429ed~North",
 								"shortForm": "North",
+								"abbreviation": "North",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "North"
 							},
 							{
 								"id": "4bea1f9e-0db0-4878-a2b0-3c3fc87429ed~South",
 								"shortForm": "South",
+								"abbreviation": "South",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "South"
 							},
 							{
 								"id": "4bea1f9e-0db0-4878-a2b0-3c3fc87429ed~East",
 								"shortForm": "East",
+								"abbreviation": "East",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "East"
 							},
 							{
 								"id": "4bea1f9e-0db0-4878-a2b0-3c3fc87429ed~West",
 								"shortForm": "West",
+								"abbreviation": "West",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "West"
 							},
 							{
 								"id": "4bea1f9e-0db0-4878-a2b0-3c3fc87429ed~Central",
 								"shortForm": "Central",
+								"abbreviation": "Central",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Central"
 							},
 							{
 								"id": "4bea1f9e-0db0-4878-a2b0-3c3fc87429ed~Riverside",
 								"shortForm": "Riverside",
+								"abbreviation": "Riverside",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Riverside"
 							}
 						]
@@ -1050,37 +1062,49 @@
 							{
 								"id": "4bea1f9e-0db0-4878-a2b0-3c3fc87429ed~North",
 								"shortForm": "North",
+								"abbreviation": "North",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "North"
 							},
 							{
 								"id": "4bea1f9e-0db0-4878-a2b0-3c3fc87429ed~South",
 								"shortForm": "South",
+								"abbreviation": "South",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "South"
 							},
 							{
 								"id": "4bea1f9e-0db0-4878-a2b0-3c3fc87429ed~East",
 								"shortForm": "East",
+								"abbreviation": "East",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "East"
 							},
 							{
 								"id": "4bea1f9e-0db0-4878-a2b0-3c3fc87429ed~West",
 								"shortForm": "West",
+								"abbreviation": "West",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "West"
 							},
 							{
 								"id": "4bea1f9e-0db0-4878-a2b0-3c3fc87429ed~Central",
 								"shortForm": "Central",
+								"abbreviation": "Central",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Central"
 							},
 							{
 								"id": "4bea1f9e-0db0-4878-a2b0-3c3fc87429ed~Riverside",
 								"shortForm": "Riverside",
+								"abbreviation": "Riverside",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Riverside"
 							}
 						]

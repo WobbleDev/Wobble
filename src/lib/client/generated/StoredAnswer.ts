@@ -25,5 +25,14 @@ export type StoredAnswer = {
 	 * How `short_form` came to be: `generated` or `edited`.
 	 */
 	shortFormOrigin?: AbbreviationOrigin;
+	/**
+	 * The new wire and stored name for `short_form` (the abbreviation rename). It always equals
+	 * `short_form`: `sync_abbreviation` fills whichever side is missing, and both are written.
+	 */
+	abbreviation?: string;
+	/**
+	 * The new name for `short_form_origin`: `generated` or `edited`.
+	 */
+	abbreviationOrigin?: AbbreviationOrigin;
 	mergedInto?: string;
 };

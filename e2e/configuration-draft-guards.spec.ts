@@ -42,8 +42,8 @@ test('a dirty Configuration holds a rail navigation until answered', async ({ pa
 	// Any write while the draft is dirty would mean the draft left with the page.
 	const writes: string[] = [];
 	page.on('request', (request) => {
-		// The Short form suggestions are a read, not a write.
-		if (request.method() !== 'GET' && !request.url().endsWith('/api/configuration/short-forms')) {
+		// The Abbreviation suggestions are a read, not a write.
+		if (request.method() !== 'GET' && !request.url().endsWith('/api/configuration/abbreviations')) {
 			writes.push(`${request.method()} ${new URL(request.url()).pathname}`);
 		}
 	});

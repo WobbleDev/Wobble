@@ -39,34 +39,44 @@
 							{
 								"id": "territory-3c2d9ff3-904a-4770-8894-1eed99e6051a~Downtown",
 								"shortForm": "Downtown",
+								"abbreviation": "Downtown",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Downtown"
 							},
 							{
 								"id": "territory-3c2d9ff3-904a-4770-8894-1eed99e6051a~Store A",
 								"parentId": "territory-3c2d9ff3-904a-4770-8894-1eed99e6051a~Downtown",
 								"shortForm": "Store A",
+								"abbreviation": "Store A",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Store A"
 							},
 							{
 								"id": "territory-3c2d9ff3-904a-4770-8894-1eed99e6051a~Store B",
 								"parentId": "territory-3c2d9ff3-904a-4770-8894-1eed99e6051a~Downtown",
 								"shortForm": "Store B",
+								"abbreviation": "Store B",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Store B"
 							},
 							{
 								"id": "territory-3c2d9ff3-904a-4770-8894-1eed99e6051a~Uptown",
 								"shortForm": "Uptown",
+								"abbreviation": "Uptown",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Uptown"
 							},
 							{
 								"id": "territory-3c2d9ff3-904a-4770-8894-1eed99e6051a~North Store",
 								"parentId": "territory-3c2d9ff3-904a-4770-8894-1eed99e6051a~Uptown",
 								"shortForm": "N. Store",
+								"abbreviation": "N. Store",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "North Store"
 							}
 						]
@@ -79,13 +89,17 @@
 							{
 								"id": "position-dbdb2df1-029a-449f-8686-056696d07a3b~Cashier",
 								"shortForm": "Cashier",
+								"abbreviation": "Cashier",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Cashier"
 							},
 							{
 								"id": "position-dbdb2df1-029a-449f-8686-056696d07a3b~Stocker",
 								"shortForm": "Stocker",
+								"abbreviation": "Stocker",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Stocker"
 							}
 						]
@@ -98,13 +112,17 @@
 							{
 								"id": "shift-d961f1bb-637d-450e-8eab-c507a7ad2606~Days",
 								"shortForm": "Days",
+								"abbreviation": "Days",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Days"
 							},
 							{
 								"id": "shift-d961f1bb-637d-450e-8eab-c507a7ad2606~Nights",
 								"shortForm": "Nights",
+								"abbreviation": "Nights",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Nights"
 							}
 						]
@@ -117,13 +135,17 @@
 							{
 								"id": "team-8a5ce45d-6727-4829-8392-60f09000cf97~Team A",
 								"shortForm": "Team A",
+								"abbreviation": "Team A",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Team A"
 							},
 							{
 								"id": "team-8a5ce45d-6727-4829-8392-60f09000cf97~Team B",
 								"shortForm": "Team B",
+								"abbreviation": "Team B",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Team B"
 							}
 						]
@@ -568,34 +590,44 @@
 							{
 								"id": "territory-3c2d9ff3-904a-4770-8894-1eed99e6051a~Downtown",
 								"shortForm": "Downtown",
+								"abbreviation": "Downtown",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Downtown"
 							},
 							{
 								"id": "territory-3c2d9ff3-904a-4770-8894-1eed99e6051a~Store A",
 								"parentId": "territory-3c2d9ff3-904a-4770-8894-1eed99e6051a~Downtown",
 								"shortForm": "Store A",
+								"abbreviation": "Store A",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Store A"
 							},
 							{
 								"id": "territory-3c2d9ff3-904a-4770-8894-1eed99e6051a~Store B",
 								"parentId": "territory-3c2d9ff3-904a-4770-8894-1eed99e6051a~Downtown",
 								"shortForm": "SBR",
+								"abbreviation": "SBR",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Store B Renamed"
 							},
 							{
 								"id": "territory-3c2d9ff3-904a-4770-8894-1eed99e6051a~Uptown",
 								"shortForm": "Uptown",
+								"abbreviation": "Uptown",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Uptown"
 							},
 							{
 								"id": "territory-3c2d9ff3-904a-4770-8894-1eed99e6051a~North Store",
 								"parentId": "territory-3c2d9ff3-904a-4770-8894-1eed99e6051a~Uptown",
 								"shortForm": "N. Store",
+								"abbreviation": "N. Store",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "North Store"
 							}
 						]
@@ -608,13 +640,17 @@
 							{
 								"id": "position-dbdb2df1-029a-449f-8686-056696d07a3b~Cashier",
 								"shortForm": "Cashier",
+								"abbreviation": "Cashier",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Cashier"
 							},
 							{
 								"id": "position-dbdb2df1-029a-449f-8686-056696d07a3b~Stocker",
 								"shortForm": "Stocker",
+								"abbreviation": "Stocker",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Stocker"
 							}
 						]
@@ -627,13 +663,17 @@
 							{
 								"id": "shift-d961f1bb-637d-450e-8eab-c507a7ad2606~Days",
 								"shortForm": "Days",
+								"abbreviation": "Days",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Days"
 							},
 							{
 								"id": "shift-d961f1bb-637d-450e-8eab-c507a7ad2606~Nights",
 								"shortForm": "Nights",
+								"abbreviation": "Nights",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Nights"
 							}
 						]
@@ -646,13 +686,17 @@
 							{
 								"id": "team-8a5ce45d-6727-4829-8392-60f09000cf97~Team A",
 								"shortForm": "Team A",
+								"abbreviation": "Team A",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Team A"
 							},
 							{
 								"id": "team-8a5ce45d-6727-4829-8392-60f09000cf97~Team B",
 								"shortForm": "Team B",
+								"abbreviation": "Team B",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Team B"
 							}
 						]
@@ -1213,34 +1257,44 @@
 							{
 								"id": "territory-3c2d9ff3-904a-4770-8894-1eed99e6051a~Downtown",
 								"shortForm": "Downtown",
+								"abbreviation": "Downtown",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Downtown"
 							},
 							{
 								"id": "territory-3c2d9ff3-904a-4770-8894-1eed99e6051a~Store A",
 								"parentId": "territory-3c2d9ff3-904a-4770-8894-1eed99e6051a~Downtown",
 								"shortForm": "Store A",
+								"abbreviation": "Store A",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Store A"
 							},
 							{
 								"id": "territory-3c2d9ff3-904a-4770-8894-1eed99e6051a~Store B",
 								"parentId": "territory-3c2d9ff3-904a-4770-8894-1eed99e6051a~Downtown",
 								"shortForm": "Store B",
+								"abbreviation": "Store B",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Store B"
 							},
 							{
 								"id": "territory-3c2d9ff3-904a-4770-8894-1eed99e6051a~Uptown",
 								"shortForm": "Uptown",
+								"abbreviation": "Uptown",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Uptown"
 							},
 							{
 								"id": "territory-3c2d9ff3-904a-4770-8894-1eed99e6051a~North Store",
 								"parentId": "territory-3c2d9ff3-904a-4770-8894-1eed99e6051a~Uptown",
 								"shortForm": "N. Store",
+								"abbreviation": "N. Store",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "North Store"
 							}
 						]
@@ -1253,13 +1307,17 @@
 							{
 								"id": "position-dbdb2df1-029a-449f-8686-056696d07a3b~Cashier",
 								"shortForm": "Cashier",
+								"abbreviation": "Cashier",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Cashier"
 							},
 							{
 								"id": "position-dbdb2df1-029a-449f-8686-056696d07a3b~Stocker",
 								"shortForm": "Stocker",
+								"abbreviation": "Stocker",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Stocker"
 							}
 						]
@@ -1272,13 +1330,17 @@
 							{
 								"id": "shift-d961f1bb-637d-450e-8eab-c507a7ad2606~Days",
 								"shortForm": "Days",
+								"abbreviation": "Days",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Days"
 							},
 							{
 								"id": "shift-d961f1bb-637d-450e-8eab-c507a7ad2606~Nights",
 								"shortForm": "Nights",
+								"abbreviation": "Nights",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Nights"
 							}
 						]
@@ -1291,13 +1353,17 @@
 							{
 								"id": "team-8a5ce45d-6727-4829-8392-60f09000cf97~Team A",
 								"shortForm": "Team A",
+								"abbreviation": "Team A",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Team A"
 							},
 							{
 								"id": "team-8a5ce45d-6727-4829-8392-60f09000cf97~Team B",
 								"shortForm": "Team B",
+								"abbreviation": "Team B",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Team B"
 							}
 						]
@@ -1873,34 +1939,44 @@
 							{
 								"id": "territory-3c2d9ff3-904a-4770-8894-1eed99e6051a~Downtown",
 								"shortForm": "Downtown",
+								"abbreviation": "Downtown",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Downtown"
 							},
 							{
 								"id": "territory-3c2d9ff3-904a-4770-8894-1eed99e6051a~Store A",
 								"parentId": "territory-3c2d9ff3-904a-4770-8894-1eed99e6051a~Downtown",
 								"shortForm": "Store A",
+								"abbreviation": "Store A",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Store A"
 							},
 							{
 								"id": "territory-3c2d9ff3-904a-4770-8894-1eed99e6051a~Store B",
 								"parentId": "territory-3c2d9ff3-904a-4770-8894-1eed99e6051a~Downtown",
 								"shortForm": "SBR",
+								"abbreviation": "SBR",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Store B Renamed"
 							},
 							{
 								"id": "territory-3c2d9ff3-904a-4770-8894-1eed99e6051a~Uptown",
 								"shortForm": "Uptown",
+								"abbreviation": "Uptown",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Uptown"
 							},
 							{
 								"id": "territory-3c2d9ff3-904a-4770-8894-1eed99e6051a~North Store",
 								"parentId": "territory-3c2d9ff3-904a-4770-8894-1eed99e6051a~Uptown",
 								"shortForm": "N. Store",
+								"abbreviation": "N. Store",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "North Store"
 							}
 						]
@@ -1913,13 +1989,17 @@
 							{
 								"id": "position-dbdb2df1-029a-449f-8686-056696d07a3b~Cashier",
 								"shortForm": "Cashier",
+								"abbreviation": "Cashier",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Cashier"
 							},
 							{
 								"id": "position-dbdb2df1-029a-449f-8686-056696d07a3b~Stocker",
 								"shortForm": "Stocker",
+								"abbreviation": "Stocker",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Stocker"
 							}
 						]
@@ -1932,13 +2012,17 @@
 							{
 								"id": "shift-d961f1bb-637d-450e-8eab-c507a7ad2606~Days",
 								"shortForm": "Days",
+								"abbreviation": "Days",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Days"
 							},
 							{
 								"id": "shift-d961f1bb-637d-450e-8eab-c507a7ad2606~Nights",
 								"shortForm": "Nights",
+								"abbreviation": "Nights",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Nights"
 							}
 						]
@@ -1951,13 +2035,17 @@
 							{
 								"id": "team-8a5ce45d-6727-4829-8392-60f09000cf97~Team A",
 								"shortForm": "Team A",
+								"abbreviation": "Team A",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Team A"
 							},
 							{
 								"id": "team-8a5ce45d-6727-4829-8392-60f09000cf97~Team B",
 								"shortForm": "Team B",
+								"abbreviation": "Team B",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Team B"
 							}
 						]

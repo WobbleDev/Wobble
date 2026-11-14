@@ -36,7 +36,7 @@ describe('jsonInit', () => {
 });
 
 describe('localizedJsonInit', () => {
-	it('adds the applied app locale, which the core uses to pick its Short form lists', () => {
+	it('adds the applied app locale, which the core uses to pick its Abbreviation lists', () => {
 		appliedLocale.mockReturnValueOnce('es-419');
 		expect(localizedJsonInit('PUT', [1])).toEqual({
 			method: 'PUT',

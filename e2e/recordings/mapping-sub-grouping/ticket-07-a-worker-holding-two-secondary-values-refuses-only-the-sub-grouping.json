@@ -39,21 +39,27 @@
 							{
 								"id": "loc-9ea3b1d3-1235-4868-8ced-f99876f82a3a~Central",
 								"shortForm": "Central",
+								"abbreviation": "Central",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Central"
 							},
 							{
 								"id": "loc-9ea3b1d3-1235-4868-8ced-f99876f82a3a~Store A",
 								"parentId": "loc-9ea3b1d3-1235-4868-8ced-f99876f82a3a~Central",
 								"shortForm": "Store A",
+								"abbreviation": "Store A",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Store A"
 							},
 							{
 								"id": "loc-9ea3b1d3-1235-4868-8ced-f99876f82a3a~Store B",
 								"parentId": "loc-9ea3b1d3-1235-4868-8ced-f99876f82a3a~Central",
 								"shortForm": "Store B",
+								"abbreviation": "Store B",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Store B"
 							}
 						]
@@ -66,19 +72,25 @@
 							{
 								"id": "job-eb35c3d7-9b85-4189-8177-54958ae788dd~Cashier",
 								"shortForm": "Cashier",
+								"abbreviation": "Cashier",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Cashier"
 							},
 							{
 								"id": "job-eb35c3d7-9b85-4189-8177-54958ae788dd~Stocker",
 								"shortForm": "Stocker",
+								"abbreviation": "Stocker",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Stocker"
 							},
 							{
 								"id": "job-eb35c3d7-9b85-4189-8177-54958ae788dd~Unknown Job",
 								"shortForm": "Unknown J…",
+								"abbreviation": "Unknown J…",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Unknown Job"
 							}
 						]
@@ -91,13 +103,17 @@
 							{
 								"id": "shift-0cba7eec-86d9-4ff5-8b81-dea93bb30663~Days",
 								"shortForm": "Days",
+								"abbreviation": "Days",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Days"
 							},
 							{
 								"id": "shift-0cba7eec-86d9-4ff5-8b81-dea93bb30663~Nights",
 								"shortForm": "Nights",
+								"abbreviation": "Nights",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Nights"
 							}
 						]
@@ -110,13 +126,17 @@
 							{
 								"id": "dept-db260efa-7a30-4b29-82bc-a4d705101dd2~Front of House",
 								"shortForm": "Front of …",
+								"abbreviation": "Front of …",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Front of House"
 							},
 							{
 								"id": "dept-db260efa-7a30-4b29-82bc-a4d705101dd2~Back of House",
 								"shortForm": "Back of H…",
+								"abbreviation": "Back of H…",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Back of House"
 							}
 						]
@@ -843,21 +863,27 @@
 							{
 								"id": "loc-9ea3b1d3-1235-4868-8ced-f99876f82a3a~Central",
 								"shortForm": "Central",
+								"abbreviation": "Central",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Central"
 							},
 							{
 								"id": "loc-9ea3b1d3-1235-4868-8ced-f99876f82a3a~Store A",
 								"parentId": "loc-9ea3b1d3-1235-4868-8ced-f99876f82a3a~Central",
 								"shortForm": "Store A",
+								"abbreviation": "Store A",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Store A"
 							},
 							{
 								"id": "loc-9ea3b1d3-1235-4868-8ced-f99876f82a3a~Store B",
 								"parentId": "loc-9ea3b1d3-1235-4868-8ced-f99876f82a3a~Central",
 								"shortForm": "Store B",
+								"abbreviation": "Store B",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Store B"
 							}
 						]
@@ -870,19 +896,25 @@
 							{
 								"id": "job-eb35c3d7-9b85-4189-8177-54958ae788dd~Cashier",
 								"shortForm": "Cashier",
+								"abbreviation": "Cashier",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Cashier"
 							},
 							{
 								"id": "job-eb35c3d7-9b85-4189-8177-54958ae788dd~Stocker",
 								"shortForm": "Stocker",
+								"abbreviation": "Stocker",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Stocker"
 							},
 							{
 								"id": "job-eb35c3d7-9b85-4189-8177-54958ae788dd~Unknown Job",
 								"shortForm": "Unknown J…",
+								"abbreviation": "Unknown J…",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Unknown Job"
 							}
 						]
@@ -895,13 +927,17 @@
 							{
 								"id": "shift-0cba7eec-86d9-4ff5-8b81-dea93bb30663~Days",
 								"shortForm": "Days",
+								"abbreviation": "Days",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Days"
 							},
 							{
 								"id": "shift-0cba7eec-86d9-4ff5-8b81-dea93bb30663~Nights",
 								"shortForm": "Nights",
+								"abbreviation": "Nights",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Nights"
 							}
 						]
@@ -914,13 +950,17 @@
 							{
 								"id": "dept-db260efa-7a30-4b29-82bc-a4d705101dd2~Front of House",
 								"shortForm": "Front of …",
+								"abbreviation": "Front of …",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Front of House"
 							},
 							{
 								"id": "dept-db260efa-7a30-4b29-82bc-a4d705101dd2~Back of House",
 								"shortForm": "Back of H…",
+								"abbreviation": "Back of H…",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Back of House"
 							}
 						]
@@ -1758,21 +1798,27 @@
 							{
 								"id": "loc-9ea3b1d3-1235-4868-8ced-f99876f82a3a~Central",
 								"shortForm": "Central",
+								"abbreviation": "Central",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Central"
 							},
 							{
 								"id": "loc-9ea3b1d3-1235-4868-8ced-f99876f82a3a~Store A",
 								"parentId": "loc-9ea3b1d3-1235-4868-8ced-f99876f82a3a~Central",
 								"shortForm": "Store A",
+								"abbreviation": "Store A",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Store A"
 							},
 							{
 								"id": "loc-9ea3b1d3-1235-4868-8ced-f99876f82a3a~Store B",
 								"parentId": "loc-9ea3b1d3-1235-4868-8ced-f99876f82a3a~Central",
 								"shortForm": "Store B",
+								"abbreviation": "Store B",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Store B"
 							}
 						]
@@ -1785,19 +1831,25 @@
 							{
 								"id": "job-eb35c3d7-9b85-4189-8177-54958ae788dd~Cashier",
 								"shortForm": "Cashier",
+								"abbreviation": "Cashier",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Cashier"
 							},
 							{
 								"id": "job-eb35c3d7-9b85-4189-8177-54958ae788dd~Stocker",
 								"shortForm": "Stocker",
+								"abbreviation": "Stocker",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Stocker"
 							},
 							{
 								"id": "job-eb35c3d7-9b85-4189-8177-54958ae788dd~Unknown Job",
 								"shortForm": "Unknown J…",
+								"abbreviation": "Unknown J…",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Unknown Job"
 							}
 						]
@@ -1810,13 +1862,17 @@
 							{
 								"id": "shift-0cba7eec-86d9-4ff5-8b81-dea93bb30663~Days",
 								"shortForm": "Days",
+								"abbreviation": "Days",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Days"
 							},
 							{
 								"id": "shift-0cba7eec-86d9-4ff5-8b81-dea93bb30663~Nights",
 								"shortForm": "Nights",
+								"abbreviation": "Nights",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Nights"
 							}
 						]
@@ -1829,13 +1885,17 @@
 							{
 								"id": "dept-db260efa-7a30-4b29-82bc-a4d705101dd2~Front of House",
 								"shortForm": "Front of …",
+								"abbreviation": "Front of …",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Front of House"
 							},
 							{
 								"id": "dept-db260efa-7a30-4b29-82bc-a4d705101dd2~Back of House",
 								"shortForm": "Back of H…",
+								"abbreviation": "Back of H…",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Back of House"
 							}
 						]

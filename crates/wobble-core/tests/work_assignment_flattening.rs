@@ -243,7 +243,7 @@ fn converts_the_required_ada_bea_cy_example() {
 
     // LEGACY-PLAINTEXT-FIXTURE: temp-constructed legacy-schema source for upgrade-read test (intentional plaintext, never production).
     let conn = Connection::open(&path).expect("opens the upgraded database");
-    assert_eq!(raw_version(&conn), Some(25));
+    assert_eq!(raw_version(&conn), Some(26));
     for table in [
         "work_assignments",
         "work_assignment_answers",
@@ -901,7 +901,7 @@ fn reopening_v22_is_a_no_op_and_does_not_reconvert() {
 }
 
 #[test]
-fn every_previously_supported_source_version_reaches_v25() {
+fn every_previously_supported_source_version_reaches_v26() {
     for version in 12..=21 {
         let name = format!("version-{version}");
         let (path, conn) = start_source("work-assignment-flattening", &name);
@@ -940,12 +940,12 @@ fn every_previously_supported_source_version_reaches_v25() {
         let data = dataset(&app, WS);
         // LEGACY-PLAINTEXT-FIXTURE: temp-constructed legacy-schema source for upgrade-read test (intentional plaintext, never production).
         let conn = Connection::open(&path).expect("opens the upgraded database");
-        assert_eq!(raw_version(&conn), Some(25), "v{version}");
+        assert_eq!(raw_version(&conn), Some(26), "v{version}");
         let rows = migration_rows(&conn);
-        assert_eq!(rows.last().unwrap(), &(25, "committee-goal".to_owned()));
+        assert_eq!(rows.last().unwrap(), &(26, "abbreviation".to_owned()));
         assert_eq!(
             rows.len() as i64,
-            26 - version,
+            27 - version,
             "v{version} runs each step once"
         );
         assert_eq!(rows[0].0, version);

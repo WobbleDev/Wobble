@@ -27,13 +27,17 @@
 							{
 								"id": "74ae1893-cd07-468f-945b-930a745bf719~Shipping",
 								"shortForm": "Shipping",
+								"abbreviation": "Shipping",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Shipping"
 							},
 							{
 								"id": "74ae1893-cd07-468f-945b-930a745bf719~Support",
 								"shortForm": "Support",
+								"abbreviation": "Support",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Support"
 							}
 						]
@@ -763,13 +767,17 @@
 							{
 								"id": "74ae1893-cd07-468f-945b-930a745bf719~Shipping",
 								"shortForm": "Shipping",
+								"abbreviation": "Shipping",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Shipping"
 							},
 							{
 								"id": "74ae1893-cd07-468f-945b-930a745bf719~Support",
 								"shortForm": "Support",
+								"abbreviation": "Support",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Support"
 							}
 						]

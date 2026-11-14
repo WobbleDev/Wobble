@@ -27,13 +27,17 @@
 							{
 								"id": "e3c64290-fbfe-4a53-8c1b-19759ab202af~Front of House",
 								"shortForm": "Front of …",
+								"abbreviation": "Front of …",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Front of House"
 							},
 							{
 								"id": "e3c64290-fbfe-4a53-8c1b-19759ab202af~Back of House",
 								"shortForm": "Back of H…",
+								"abbreviation": "Back of H…",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Back of House"
 							}
 						]
@@ -46,13 +50,17 @@
 							{
 								"id": "431d86bd-a7c5-44ae-821f-5af1ad0cf621~Server",
 								"shortForm": "Server",
+								"abbreviation": "Server",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Server"
 							},
 							{
 								"id": "431d86bd-a7c5-44ae-821f-5af1ad0cf621~Cook",
 								"shortForm": "Cook",
+								"abbreviation": "Cook",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Cook"
 							}
 						]
@@ -515,13 +523,17 @@
 							{
 								"id": "e3c64290-fbfe-4a53-8c1b-19759ab202af~Front of House",
 								"shortForm": "Front of …",
+								"abbreviation": "Front of …",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Front of House"
 							},
 							{
 								"id": "e3c64290-fbfe-4a53-8c1b-19759ab202af~Back of House",
 								"shortForm": "Back of H…",
+								"abbreviation": "Back of H…",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Back of House"
 							}
 						]
@@ -534,13 +546,17 @@
 							{
 								"id": "431d86bd-a7c5-44ae-821f-5af1ad0cf621~Server",
 								"shortForm": "Server",
+								"abbreviation": "Server",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Server"
 							},
 							{
 								"id": "431d86bd-a7c5-44ae-821f-5af1ad0cf621~Cook",
 								"shortForm": "Cook",
+								"abbreviation": "Cook",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Cook"
 							}
 						]

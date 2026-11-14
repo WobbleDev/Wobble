@@ -33,6 +33,14 @@
 			}
 		},
 		{
+			"method": "POST",
+			"path": "/api/configuration/abbreviations",
+			"status": 200,
+			"body": {
+				"abbreviations": []
+			}
+		},
+		{
 			"method": "GET",
 			"path": "/api/data-file",
 			"status": 200,

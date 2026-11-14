@@ -162,6 +162,8 @@ pub struct ConfigurationPreview {
     /// The Short form each surviving proposed value would be stored with (ADR 0046), so the
     /// frontend never generates one.
     pub short_forms: Vec<SuggestedAbbreviation>,
+    /// The same suggestions under their new name; `short_forms` is removed in the contract step.
+    pub abbreviations: Vec<SuggestedAbbreviation>,
 }
 
 /// One proposed value's Short form and its origin.
@@ -181,6 +183,13 @@ pub struct SuggestedAbbreviation {
         ts(as = "crate::attribute_migration::AbbreviationOriginTs")
     )]
     pub short_form_origin: String,
+    /// The new name for `short_form`; always equal to it until the contract step.
+    pub abbreviation: String,
+    #[cfg_attr(
+        feature = "ts",
+        ts(as = "crate::attribute_migration::AbbreviationOriginTs")
+    )]
+    pub abbreviation_origin: String,
 }
 
 /// The Short form each surviving value of the proposed Attributes would be stored with:
@@ -214,6 +223,8 @@ fn suggested_forms(
             |(attribute_id, answer_id, short_form, short_form_origin)| SuggestedAbbreviation {
                 attribute_id,
                 answer_id,
+                abbreviation: short_form.clone(),
+                abbreviation_origin: short_form_origin.clone(),
                 short_form,
                 short_form_origin,
             },
@@ -298,7 +309,7 @@ pub fn preview_configuration(
         &language_holders,
     )?;
 
-    let short_forms = suggested_forms(locale, &stored, &proposal.attributes, lists_current);
+    let abbreviations = suggested_forms(locale, &stored, &proposal.attributes, lists_current);
 
     let totals = accumulator.totals();
     Ok(ConfigurationPreview {
@@ -311,7 +322,8 @@ pub fn preview_configuration(
         moves: move_impacts.moves,
         attribute_moves,
         mode_changes,
-        short_forms,
+        short_forms: abbreviations.clone(),
+        abbreviations,
     })
 }
 
