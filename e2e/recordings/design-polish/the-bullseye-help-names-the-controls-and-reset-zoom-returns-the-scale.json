@@ -59,20 +59,17 @@
 					}
 				],
 				"worksite": {
-					"committeeTarget": 5,
 					"committeeGoal": 5,
 					"id": "945df0ac-d4f7-4298-a80a-63cde69d2984",
 					"name": "My Worksite"
 				},
 				"worksites": [
 					{
-						"committeeTarget": 5,
 						"committeeGoal": 5,
 						"id": "945df0ac-d4f7-4298-a80a-63cde69d2984",
 						"name": "My Worksite"
 					},
 					{
-						"committeeTarget": 5,
 						"committeeGoal": 5,
 						"id": "d7e8a889-ea11-4ddf-99c5-98fdfcd4473e",
 						"name": "My Worksite 2"
@@ -107,7 +104,6 @@
 			"status": 200,
 			"body": {
 				"worksite": {
-					"committeeTarget": 5,
 					"committeeGoal": 5,
 					"id": "945df0ac-d4f7-4298-a80a-63cde69d2984",
 					"name": "My Worksite"
@@ -185,7 +181,6 @@
 		}
 	],
 	"worksite": {
-		"committeeTarget": 5,
 		"committeeGoal": 5,
 		"id": "945df0ac-d4f7-4298-a80a-63cde69d2984",
 		"name": "My Worksite"

@@ -148,13 +148,12 @@ pub fn save_worksite_committee_goal(
     target: i64,
 ) -> Result<Worksite> {
     conn.execute(
-        "UPDATE worksites SET committee_goal = ?1, committee_target = ?1 WHERE id = ?2",
+        "UPDATE worksites SET committee_goal = ?1 WHERE id = ?2",
         params![target, worksite.id],
     )?;
 
     Ok(Worksite {
         committee_goal: target,
-        committee_target: target,
         ..worksite.clone()
     })
 }

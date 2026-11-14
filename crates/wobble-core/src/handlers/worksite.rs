@@ -22,8 +22,8 @@ use crate::worksite_persistence::{
 const PROVIDE_WORKSITE_FIELD_MESSAGE: &str =
     "Provide a worksite name or a committee coverage target.";
 const WORKSITE_NAME_REQUIRED_MESSAGE: &str = "Worksite name is required.";
-const COMMITTEE_GOAL_CONFLICT_MESSAGE: &str =
-    "Send committeeGoal or committeeTarget, not both with different values.";
+const COMMITTEE_TARGET_RETIRED_MESSAGE: &str =
+    "committeeTarget is no longer accepted; send committeeGoal.";
 const COMMITTEE_GOAL_MESSAGE: &str =
     "Committee coverage target must be a whole number from 1 to 100.";
 const WORKSITE_ID_REQUIRED_MESSAGE: &str = "Worksite ID is required.";
@@ -182,15 +182,12 @@ pub(crate) fn put_worksite(db: &Db, request: &Request) -> Result<Response> {
     }
 
     let has_name = payload.get("name").is_some();
-    // Step 1 of the rename: the goal is the new name and the target the old one. Either is
-    // accepted; sending both with different values is a 400.
-    let committee_goal = match (payload.get("committeeGoal"), payload.get("committeeTarget")) {
-        (Some(goal), Some(target)) if goal != target => {
-            return Ok(message_response(400, COMMITTEE_GOAL_CONFLICT_MESSAGE));
-        }
-        (Some(goal), _) => Some(goal),
-        (None, target) => target,
-    };
+    // The old wire name was retired with schema v27; a request that still carries it is refused
+    // rather than read as the goal.
+    if payload.get("committeeTarget").is_some() {
+        return Ok(message_response(400, COMMITTEE_TARGET_RETIRED_MESSAGE));
+    }
+    let committee_goal = payload.get("committeeGoal");
     if !has_name && committee_goal.is_none() {
         return Ok(message_response(400, PROVIDE_WORKSITE_FIELD_MESSAGE));
     }
@@ -395,7 +392,7 @@ mod tests {
         assert_eq!(first.status, 201);
         assert_eq!(first.body["worksite"]["name"], json!("Mi lugar de trabajo"));
         assert_eq!(first.body["worksite"]["committeeGoal"], json!(5));
-        assert_eq!(first.body["worksite"]["committeeTarget"], json!(5));
+        assert!(first.body["worksite"].get("committeeTarget").is_none());
         let id = first.body["worksite"]["id"].as_str().unwrap();
         assert_eq!(
             attribute_names(&db, id),
@@ -457,7 +454,7 @@ mod tests {
         let response = dispatch(&db, &request("POST", "/api/worksite", None), &ids);
         assert_eq!(response.status, 201);
         assert_eq!(response.body["worksite"]["name"], json!("My Worksite 2"));
-        assert_eq!(response.body["worksite"]["committeeTarget"], json!(5));
+        assert!(response.body["worksite"].get("committeeTarget").is_none());
         assert_eq!(
             response.body["worksite"]["id"],
             json!("00000000-0000-4000-8000-000000000005")
@@ -506,13 +503,13 @@ mod tests {
                 "PUT",
                 "/api/worksite",
                 &id,
-                Some(json!({ "name": "  Renamed  ", "committeeTarget": 12 })),
+                Some(json!({ "name": "  Renamed  ", "committeeGoal": 12 })),
             ),
             &ids,
         );
         assert_eq!(response.status, 200);
         assert_eq!(response.body["worksite"]["name"], json!("Renamed"));
-        assert_eq!(response.body["worksite"]["committeeTarget"], json!(12));
+        assert_eq!(response.body["worksite"]["committeeGoal"], json!(12));
         assert_eq!(
             find_worksite(db.conn(), &id).unwrap().unwrap().name,
             "Renamed"
@@ -520,40 +517,7 @@ mod tests {
     }
 
     #[test]
-    fn put_worksite_accepts_the_goal_or_the_old_target_name_and_answers_with_both() {
-        let (db, ids) = seeded();
-        let id = first_worksite(&db);
-
-        for (body, expected) in [
-            (json!({ "committeeGoal": 9 }), 9),
-            (json!({ "committeeTarget": 11 }), 11),
-            (json!({ "committeeGoal": 13, "committeeTarget": 13 }), 13),
-        ] {
-            let response = dispatch(
-                &db,
-                &request_for("PUT", "/api/worksite", &id, Some(body)),
-                &ids,
-            );
-            assert_eq!(response.status, 200);
-            assert_eq!(response.body["worksite"]["committeeGoal"], json!(expected));
-            assert_eq!(
-                response.body["worksite"]["committeeTarget"],
-                json!(expected)
-            );
-            let stored: (i64, i64) = db
-                .conn()
-                .query_row(
-                    "SELECT committee_goal, committee_target FROM worksites WHERE id = ?1",
-                    [&id],
-                    |row| Ok((row.get(0)?, row.get(1)?)),
-                )
-                .unwrap();
-            assert_eq!(stored, (expected, expected));
-        }
-    }
-
-    #[test]
-    fn put_worksite_refuses_a_goal_and_target_that_disagree_without_writing() {
+    fn put_worksite_saves_the_goal_and_answers_without_the_old_target_name() {
         let (db, ids) = seeded();
         let id = first_worksite(&db);
 
@@ -563,24 +527,58 @@ mod tests {
                 "PUT",
                 "/api/worksite",
                 &id,
-                Some(json!({ "committeeGoal": 7, "committeeTarget": 8 })),
+                Some(json!({ "committeeGoal": 9 })),
             ),
             &ids,
         );
-        assert_eq!(response.status, 400);
-        assert_eq!(
-            response.body,
-            json!({ "message": COMMITTEE_GOAL_CONFLICT_MESSAGE })
-        );
-        let stored: (i64, i64) = db
+        assert_eq!(response.status, 200);
+        assert_eq!(response.body["worksite"]["committeeGoal"], json!(9));
+        assert!(response.body["worksite"].get("committeeTarget").is_none());
+        let stored: i64 = db
             .conn()
             .query_row(
-                "SELECT committee_goal, committee_target FROM worksites WHERE id = ?1",
+                "SELECT committee_goal FROM worksites WHERE id = ?1",
                 [&id],
-                |row| Ok((row.get(0)?, row.get(1)?)),
+                |row| row.get(0),
             )
             .unwrap();
-        assert_eq!(stored, (5, 5));
+        assert_eq!(stored, 9);
+    }
+
+    #[test]
+    fn put_worksite_refuses_the_retired_target_name_without_writing() {
+        let (db, ids) = seeded();
+        let id = first_worksite(&db);
+
+        for body in [
+            json!({ "committeeTarget": 7 }),
+            json!({ "committeeGoal": 7, "committeeTarget": 7 }),
+            json!({ "name": "Renamed", "committeeTarget": 7 }),
+        ] {
+            let response = dispatch(
+                &db,
+                &request_for("PUT", "/api/worksite", &id, Some(body)),
+                &ids,
+            );
+            assert_eq!(response.status, 400);
+            assert_eq!(
+                response.body,
+                json!({ "message": COMMITTEE_TARGET_RETIRED_MESSAGE })
+            );
+        }
+        let stored: i64 = db
+            .conn()
+            .query_row(
+                "SELECT committee_goal FROM worksites WHERE id = ?1",
+                [&id],
+                |row| row.get(0),
+            )
+            .unwrap();
+        assert_eq!(stored, 5);
+        assert_eq!(
+            find_worksite(db.conn(), &id).unwrap().unwrap().name,
+            "My Worksite"
+        );
     }
 
     #[test]
@@ -595,7 +593,7 @@ mod tests {
                 "PUT",
                 "/api/worksite",
                 &id,
-                Some(json!({ "name": "Renamed", "committeeTarget": 0 })),
+                Some(json!({ "name": "Renamed", "committeeGoal": 0 })),
             ),
             &ids,
         );
@@ -622,7 +620,7 @@ mod tests {
                 "PUT",
                 "/api/worksite",
                 &id,
-                Some(json!({ "name": "   ", "committeeTarget": 0 })),
+                Some(json!({ "name": "   ", "committeeGoal": 0 })),
             ),
             &ids,
         );

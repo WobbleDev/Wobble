@@ -217,20 +217,17 @@
 				],
 				"worksite": {
 					"committeeGoal": 5,
-					"committeeTarget": 5,
 					"id": "f185edef-8a8a-456d-9d4d-acf88005698b",
 					"name": "My Worksite"
 				},
 				"worksites": [
 					{
 						"committeeGoal": 5,
-						"committeeTarget": 5,
 						"id": "f185edef-8a8a-456d-9d4d-acf88005698b",
 						"name": "My Worksite"
 					},
 					{
 						"committeeGoal": 5,
-						"committeeTarget": 5,
 						"id": "3d66a931-ed20-4a66-9d55-484a01bb8da7",
 						"name": "My Worksite 2"
 					}
@@ -265,7 +262,6 @@
 			"body": {
 				"worksite": {
 					"committeeGoal": 5,
-					"committeeTarget": 5,
 					"id": "f185edef-8a8a-456d-9d4d-acf88005698b",
 					"name": "My Worksite"
 				}
@@ -664,7 +660,6 @@
 	],
 	"worksite": {
 		"committeeGoal": 5,
-		"committeeTarget": 5,
 		"id": "f185edef-8a8a-456d-9d4d-acf88005698b",
 		"name": "My Worksite"
 	}

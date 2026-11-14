@@ -162,6 +162,15 @@ pub fn finish_source(path: &str, conn: Connection, version: i64) {
             .expect("removes saved views from a pre-v24 target");
     }
 
+    // v27 dropped the committee target column. A source from before then still had it, holding
+    // the same value as the goal.
+    if version < 27 {
+        conn.execute_batch(
+            "ALTER TABLE worksites ADD COLUMN committee_target INTEGER NOT NULL DEFAULT 5;
+             UPDATE worksites SET committee_target = committee_goal;",
+        )
+        .expect("restores the committee target of a pre-v27 target");
+    }
     // v25 added the committee goal column beside the committee target.
     if version < 25 {
         conn.execute_batch("ALTER TABLE worksites DROP COLUMN committee_goal;")
@@ -291,7 +300,7 @@ pub fn downgrade_answers_to_text(conn: &Connection) {
 
 pub fn add_worksite(conn: &Connection, id: &str, name: &str) {
     conn.execute(
-        "INSERT INTO worksites (id, name, committee_target) VALUES (?1, ?2, 5)",
+        "INSERT INTO worksites (id, name, committee_goal) VALUES (?1, ?2, 5)",
         params![id, name],
     )
     .expect("a Worksite");

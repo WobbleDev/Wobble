@@ -534,7 +534,7 @@ mod tests {
         assign(&db, "worker_agitations", "agitation_id", "w1", &wages);
         db.conn()
             .execute(
-                "INSERT INTO worksites (id, name, committee_target) VALUES ('other', 'Other', 5)",
+                "INSERT INTO worksites (id, name, committee_goal) VALUES ('other', 'Other', 5)",
                 [],
             )
             .unwrap();

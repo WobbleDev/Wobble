@@ -23,7 +23,6 @@
 						"status": 201,
 						"body": {
 							"worksite": {
-								"committeeTarget": 5,
 								"committeeGoal": 5,
 								"id": "00000000-0000-4000-8000-000000000005",
 								"name": "My Worksite 2"
@@ -65,7 +64,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -126,13 +125,11 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
 					},
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000005",
 						"name": "My Worksite 2"
@@ -164,7 +161,6 @@
 						"status": 200,
 						"body": {
 							"worksite": {
-								"committeeTarget": 5,
 								"committeeGoal": 5,
 								"id": "00000000-0000-4000-8000-000000000001",
 								"name": "My Worksite"
@@ -198,7 +194,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -235,7 +231,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -270,7 +265,6 @@
 						"status": 200,
 						"body": {
 							"worksite": {
-								"committeeTarget": 5,
 								"committeeGoal": 5,
 								"id": "00000000-0000-4000-8000-000000000001",
 								"name": "Renamed Worksite"
@@ -304,7 +298,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -341,7 +335,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "Renamed Worksite"
@@ -368,7 +361,6 @@
 							"x-wobble-worksite": "00000000-0000-4000-8000-000000000001"
 						},
 						"body": {
-							"committeeTarget": 12,
 							"committeeGoal": 12
 						},
 						"rawBody": false
@@ -377,7 +369,6 @@
 						"status": 200,
 						"body": {
 							"worksite": {
-								"committeeTarget": 12,
 								"committeeGoal": 12,
 								"id": "00000000-0000-4000-8000-000000000001",
 								"name": "My Worksite"
@@ -411,7 +402,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -448,7 +439,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 12,
 						"committee_goal": 12,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -509,7 +499,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -544,7 +534,6 @@
 						"status": 201,
 						"body": {
 							"worksite": {
-								"committeeTarget": 5,
 								"committeeGoal": 5,
 								"id": "00000000-0000-4000-8000-000000000005",
 								"name": "My Worksite 2"
@@ -569,7 +558,6 @@
 						"status": 200,
 						"body": {
 							"worksite": {
-								"committeeTarget": 5,
 								"committeeGoal": 5,
 								"id": "00000000-0000-4000-8000-000000000005",
 								"name": "My Worksite 2"
@@ -611,7 +599,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -672,13 +660,11 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
 					},
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000005",
 						"name": "My Worksite 2"
@@ -779,7 +765,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -801,7 +787,6 @@
 				],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -883,7 +868,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -970,7 +955,6 @@
 				],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -1110,7 +1094,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -1132,7 +1116,6 @@
 				],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -1265,7 +1248,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -1287,7 +1270,6 @@
 				],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -1466,7 +1448,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -1503,7 +1485,6 @@
 				],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -1674,7 +1655,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [
@@ -1701,7 +1682,6 @@
 				],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -1872,7 +1852,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -1899,7 +1879,6 @@
 				],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -2017,7 +1996,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -2029,7 +2008,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -2129,7 +2107,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -2166,7 +2144,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -2240,7 +2217,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -2277,7 +2254,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -2368,7 +2344,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -2405,7 +2381,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -2505,7 +2480,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -2542,7 +2517,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -2616,7 +2590,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -2653,7 +2627,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -2731,7 +2704,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -2768,7 +2741,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -2870,7 +2842,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -2891,7 +2863,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -2963,7 +2934,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -3000,7 +2971,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -3076,7 +3046,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -3113,7 +3083,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -3189,7 +3158,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -3226,7 +3195,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -3345,14 +3313,12 @@
 								}
 							],
 							"worksite": {
-								"committeeTarget": 5,
 								"committeeGoal": 5,
 								"id": "00000000-0000-4000-8000-000000000001",
 								"name": "My Worksite"
 							},
 							"worksites": [
 								{
-									"committeeTarget": 5,
 									"committeeGoal": 5,
 									"id": "00000000-0000-4000-8000-000000000001",
 									"name": "My Worksite"
@@ -3387,7 +3353,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -3409,7 +3375,6 @@
 				],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -3500,7 +3465,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -3512,7 +3477,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -3603,7 +3567,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -3615,7 +3579,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -3708,7 +3671,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -3720,7 +3683,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -3813,7 +3775,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -3825,7 +3787,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -3918,7 +3879,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -3930,7 +3891,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -3997,7 +3957,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -4034,7 +3994,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -4156,7 +4115,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -4178,7 +4137,6 @@
 				],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -4269,7 +4227,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -4281,7 +4239,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -4413,7 +4370,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -4435,7 +4392,6 @@
 				],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -4555,7 +4511,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -4577,7 +4533,6 @@
 				],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -4700,7 +4655,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -4722,7 +4677,6 @@
 				],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -4889,7 +4843,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -4926,7 +4880,6 @@
 				],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -4988,7 +4941,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -5025,7 +4978,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -5089,7 +5041,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -5126,7 +5078,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -5198,7 +5149,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -5235,7 +5186,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -5299,7 +5249,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -5336,7 +5286,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -5408,7 +5357,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -5445,7 +5394,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -5525,7 +5473,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -5562,7 +5510,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -5638,7 +5585,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -5675,7 +5622,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -5737,7 +5683,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -5774,7 +5720,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -5840,7 +5785,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -5877,7 +5822,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -5941,7 +5885,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -5978,7 +5922,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -6040,7 +5983,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -6077,7 +6020,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -6141,7 +6083,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -6178,7 +6120,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -6205,7 +6146,6 @@
 							"x-wobble-worksite": "00000000-0000-4000-8000-000000000001"
 						},
 						"body": {
-							"committeeTarget": 0,
 							"committeeGoal": 0
 						},
 						"rawBody": false
@@ -6243,7 +6183,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -6280,7 +6220,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -6342,7 +6281,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -6379,7 +6318,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -6443,7 +6381,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -6480,7 +6418,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -6568,7 +6505,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -6653,7 +6590,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -6736,7 +6673,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -6821,7 +6758,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -6904,7 +6841,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -6987,7 +6924,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -7072,7 +7009,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -7153,7 +7090,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -7256,7 +7193,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -7293,7 +7230,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -7391,7 +7327,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -7428,7 +7364,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -7619,7 +7554,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -7656,7 +7591,6 @@
 				],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -7783,7 +7717,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -7820,7 +7754,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -7947,7 +7880,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -7984,7 +7917,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -8116,7 +8048,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -8145,7 +8077,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -8404,14 +8335,12 @@
 								}
 							],
 							"worksite": {
-								"committeeTarget": 5,
 								"committeeGoal": 5,
 								"id": "00000000-0000-4000-8000-000000000001",
 								"name": "My Worksite"
 							},
 							"worksites": [
 								{
-									"committeeTarget": 5,
 									"committeeGoal": 5,
 									"id": "00000000-0000-4000-8000-000000000001",
 									"name": "My Worksite"
@@ -8446,7 +8375,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -8482,7 +8411,6 @@
 				],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -8512,7 +8440,6 @@
 						"status": 201,
 						"body": {
 							"worksite": {
-								"committeeTarget": 5,
 								"committeeGoal": 5,
 								"id": "00000000-0000-4000-8000-000000000005",
 								"name": "My Worksite 2"
@@ -8660,7 +8587,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -8682,13 +8609,11 @@
 				],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
 					},
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000005",
 						"name": "My Worksite 2"
@@ -8718,7 +8643,6 @@
 						"status": 201,
 						"body": {
 							"worksite": {
-								"committeeTarget": 5,
 								"committeeGoal": 5,
 								"id": "00000000-0000-4000-8000-000000000005",
 								"name": "My Worksite 2"
@@ -8797,7 +8721,6 @@
 						"status": 200,
 						"body": {
 							"worksite": {
-								"committeeTarget": 5,
 								"committeeGoal": 5,
 								"id": "00000000-0000-4000-8000-000000000001",
 								"name": "My Worksite"
@@ -8839,7 +8762,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -8876,7 +8799,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -8908,7 +8830,6 @@
 						"status": 200,
 						"body": {
 							"worksite": {
-								"committeeTarget": 5,
 								"committeeGoal": 5,
 								"id": "00000000-0000-4000-8000-000000000001",
 								"name": "My Worksite"
@@ -8942,7 +8863,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -8979,7 +8900,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -9041,7 +8961,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -9078,7 +8998,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -9140,7 +9059,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -9177,7 +9096,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -9239,7 +9157,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -9276,7 +9194,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -9338,7 +9255,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -9375,7 +9292,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -9441,7 +9357,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -9488,7 +9404,6 @@
 				],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -9583,7 +9498,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -9706,14 +9621,12 @@
 								}
 							],
 							"worksite": {
-								"committeeTarget": 5,
 								"committeeGoal": 5,
 								"id": "00000000-0000-4000-8000-000000000001",
 								"name": "My Worksite"
 							},
 							"worksites": [
 								{
-									"committeeTarget": 5,
 									"committeeGoal": 5,
 									"id": "00000000-0000-4000-8000-000000000001",
 									"name": "My Worksite"
@@ -9748,7 +9661,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -9770,7 +9683,6 @@
 				],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -9878,7 +9790,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -9899,7 +9811,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -10031,7 +9942,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -10060,7 +9971,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -10168,7 +10078,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -10189,7 +10099,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -10392,7 +10301,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -10429,7 +10338,6 @@
 				],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -10636,7 +10544,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -10673,7 +10581,6 @@
 				],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -10864,7 +10771,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -10901,7 +10808,6 @@
 				],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -11104,7 +11010,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -11141,7 +11047,6 @@
 				],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -11171,7 +11076,6 @@
 						"status": 200,
 						"body": {
 							"worksite": {
-								"committeeTarget": 5,
 								"committeeGoal": 5,
 								"id": "00000000-0000-4000-8000-000000000001",
 								"name": "My Worksite"
@@ -11205,7 +11109,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -11242,7 +11146,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -11345,7 +11248,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -11380,7 +11283,6 @@
 						"status": 201,
 						"body": {
 							"worksite": {
-								"committeeTarget": 5,
 								"committeeGoal": 5,
 								"id": "00000000-0000-4000-8000-000000000005",
 								"name": "My Worksite 2"
@@ -11402,7 +11304,6 @@
 						"status": 200,
 						"body": {
 							"worksite": {
-								"committeeTarget": 5,
 								"committeeGoal": 5,
 								"id": "00000000-0000-4000-8000-000000000001",
 								"name": "My Worksite"
@@ -11424,7 +11325,6 @@
 						"status": 200,
 						"body": {
 							"worksite": {
-								"committeeTarget": 5,
 								"committeeGoal": 5,
 								"id": "00000000-0000-4000-8000-000000000001",
 								"name": "My Worksite"
@@ -11466,7 +11366,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -11503,7 +11403,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -11568,7 +11467,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -11605,7 +11504,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -11670,7 +11568,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -11707,7 +11605,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -11796,7 +11693,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -11933,7 +11830,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -11955,7 +11852,6 @@
 				],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -12087,7 +11983,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -12109,7 +12005,6 @@
 				],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -12186,7 +12081,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -12273,7 +12168,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -12362,7 +12257,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -12374,7 +12269,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -12498,7 +12392,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -12519,7 +12413,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -12601,7 +12494,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -12731,7 +12624,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -12753,7 +12646,6 @@
 				],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -12835,7 +12727,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -12965,7 +12857,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -12987,7 +12879,6 @@
 				],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -13062,7 +12953,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -13099,7 +12990,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -13172,7 +13062,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -13209,7 +13099,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -13329,7 +13218,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -13351,7 +13240,6 @@
 				],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -13475,7 +13363,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -13497,7 +13385,6 @@
 				],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -13620,7 +13507,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -13642,7 +13529,6 @@
 				],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -13765,7 +13651,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -13787,7 +13673,6 @@
 				],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -14083,7 +13968,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -14095,7 +13980,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -14171,7 +14055,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -14252,7 +14136,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -14371,7 +14255,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -14408,7 +14292,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -14522,7 +14405,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -14559,7 +14442,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -14589,7 +14471,6 @@
 						"status": 201,
 						"body": {
 							"worksite": {
-								"committeeTarget": 5,
 								"committeeGoal": 5,
 								"id": "00000000-0000-4000-8000-000000000005",
 								"name": "My Worksite 2"
@@ -14689,7 +14570,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -14750,13 +14631,11 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
 					},
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000005",
 						"name": "My Worksite 2"
@@ -14786,7 +14665,6 @@
 						"status": 201,
 						"body": {
 							"worksite": {
-								"committeeTarget": 5,
 								"committeeGoal": 5,
 								"id": "00000000-0000-4000-8000-000000000005",
 								"name": "My Worksite 2"
@@ -14886,7 +14764,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -14947,13 +14825,11 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
 					},
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000005",
 						"name": "My Worksite 2"
@@ -14983,7 +14859,6 @@
 						"status": 201,
 						"body": {
 							"worksite": {
-								"committeeTarget": 5,
 								"committeeGoal": 5,
 								"id": "00000000-0000-4000-8000-000000000005",
 								"name": "My Worksite 2"
@@ -15083,7 +14958,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -15128,13 +15003,11 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
 					},
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000005",
 						"name": "My Worksite 2"
@@ -15199,7 +15072,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -15221,7 +15094,6 @@
 				],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -15285,7 +15157,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -15332,7 +15204,6 @@
 				],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -15468,7 +15339,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -15489,7 +15360,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -15694,7 +15564,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -15744,7 +15614,6 @@
 				],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -15808,7 +15677,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -15845,7 +15714,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -15907,7 +15775,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -15944,7 +15812,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -16006,7 +15873,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -16043,7 +15910,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -16105,7 +15971,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -16142,7 +16008,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -16204,7 +16069,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -16241,7 +16106,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -16303,7 +16167,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -16340,7 +16204,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -16402,7 +16265,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -16439,7 +16302,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -16501,7 +16363,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -16538,7 +16400,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -16600,7 +16461,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -16637,7 +16498,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -16699,7 +16559,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -16736,7 +16596,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -16798,7 +16657,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -16835,7 +16694,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -17107,14 +16965,12 @@
 								}
 							],
 							"worksite": {
-								"committeeTarget": 5,
 								"committeeGoal": 5,
 								"id": "00000000-0000-4000-8000-000000000001",
 								"name": "My Worksite"
 							},
 							"worksites": [
 								{
-									"committeeTarget": 5,
 									"committeeGoal": 5,
 									"id": "00000000-0000-4000-8000-000000000001",
 									"name": "My Worksite"
@@ -17149,7 +17005,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -17198,7 +17054,6 @@
 				],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -17282,7 +17137,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -17319,7 +17174,6 @@
 				],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -17385,7 +17239,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -17414,7 +17268,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -17481,7 +17334,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -17502,7 +17355,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -17568,7 +17420,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -17597,7 +17449,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -17654,7 +17505,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -17691,7 +17542,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -17855,7 +17705,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -17892,7 +17742,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -18127,7 +17976,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -18190,7 +18039,6 @@
 				],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -18268,7 +18116,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -18305,7 +18153,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -18400,7 +18247,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -18437,7 +18284,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -18531,7 +18377,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -18568,7 +18414,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -18662,7 +18507,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -18699,7 +18544,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -18794,7 +18638,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -18831,7 +18675,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"
@@ -18911,7 +18754,7 @@
 					{
 						"applied_at": "$t",
 						"name": "current-schema-bootstrap",
-						"version": 26
+						"version": 27
 					}
 				],
 				"worker_agitations": [],
@@ -18948,7 +18791,6 @@
 				"workers": [],
 				"worksites": [
 					{
-						"committee_target": 5,
 						"committee_goal": 5,
 						"id": "00000000-0000-4000-8000-000000000001",
 						"name": "My Worksite"

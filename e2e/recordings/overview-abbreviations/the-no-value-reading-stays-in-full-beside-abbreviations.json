@@ -113,32 +113,27 @@
 				],
 				"worksite": {
 					"committeeGoal": 5,
-					"committeeTarget": 5,
 					"id": "2e134793-fd92-447b-a8f9-346133141c2c",
 					"name": "My Worksite 4"
 				},
 				"worksites": [
 					{
 						"committeeGoal": 5,
-						"committeeTarget": 5,
 						"id": "f185edef-8a8a-456d-9d4d-acf88005698b",
 						"name": "My Worksite"
 					},
 					{
 						"committeeGoal": 5,
-						"committeeTarget": 5,
 						"id": "3d66a931-ed20-4a66-9d55-484a01bb8da7",
 						"name": "My Worksite 2"
 					},
 					{
 						"committeeGoal": 5,
-						"committeeTarget": 5,
 						"id": "e66eef25-ddd9-4134-a2cf-10bc1ee7901f",
 						"name": "My Worksite 3"
 					},
 					{
 						"committeeGoal": 5,
-						"committeeTarget": 5,
 						"id": "2e134793-fd92-447b-a8f9-346133141c2c",
 						"name": "My Worksite 4"
 					}
@@ -173,7 +168,6 @@
 			"body": {
 				"worksite": {
 					"committeeGoal": 5,
-					"committeeTarget": 5,
 					"id": "2e134793-fd92-447b-a8f9-346133141c2c",
 					"name": "My Worksite 4"
 				}
@@ -360,7 +354,6 @@
 	],
 	"worksite": {
 		"committeeGoal": 5,
-		"committeeTarget": 5,
 		"id": "2e134793-fd92-447b-a8f9-346133141c2c",
 		"name": "My Worksite 4"
 	}
