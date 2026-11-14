@@ -42,10 +42,10 @@ fn every_upgradable_version_copies_the_target_into_the_goal() {
         let _app = App::open_legacy_fixture(&path);
         // LEGACY-PLAINTEXT-FIXTURE: temp-constructed legacy-schema source for upgrade-read test (intentional plaintext, never production).
         let conn = Connection::open(&path).expect("opens the upgraded database");
-        assert_eq!(raw_version(&conn), Some(25), "v{version}");
+        assert_eq!(raw_version(&conn), Some(26), "v{version}");
         assert_eq!(
             migration_rows(&conn).last().unwrap(),
-            &(25, "committee-goal".to_owned()),
+            &(26, "abbreviation".to_owned()),
             "v{version}"
         );
         assert_eq!(
@@ -100,7 +100,7 @@ fn a_half_migrated_file_with_matching_columns_upgrades_and_opening_twice_changes
     drop(App::open_legacy_fixture(&path));
     // LEGACY-PLAINTEXT-FIXTURE: temp-constructed legacy-schema source for upgrade-read test (intentional plaintext, never production).
     let conn = Connection::open(&path).unwrap();
-    assert_eq!(raw_version(&conn), Some(25));
+    assert_eq!(raw_version(&conn), Some(26));
     assert_eq!(worksite_pairs(&conn), vec![("ws-a".to_owned(), 4, 4)]);
     assert_eq!(
         migration_rows(&conn)

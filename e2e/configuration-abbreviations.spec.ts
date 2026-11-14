@@ -9,7 +9,7 @@ import { addValue, answerRow, openAttributeEditor, saveAll } from './configurati
 import { ABBREVIATION_LIMIT } from '../src/lib/shared/abbreviation.ts';
 
 /**
- * Short forms in the Configuration outline (ADR 0046): the core suggests one for every
+ * Abbreviations in the Configuration outline (ADR 0046): the core suggests one for every
  * new or renamed value, the field greys a generated form, typing makes it edited, and
  * the Save bar refuses more than ten graphemes.
  */
@@ -24,7 +24,7 @@ async function seedDepartments(request: APIRequestContext, values: string[]) {
 }
 
 const field = (row: Locator, name: string) =>
-	row.getByRole('textbox', { name: `Short form of ${name}`, exact: true });
+	row.getByRole('textbox', { name: `Abbreviation of ${name}`, exact: true });
 
 async function storedForms(request: APIRequestContext, attributeId: string) {
 	const dataset = await request.get('/api/dataset');
@@ -32,12 +32,15 @@ async function storedForms(request: APIRequestContext, attributeId: string) {
 		(await dataset.json()) as {
 			attributes: {
 				id: string;
-				options: { value: string; shortForm: string; shortFormOrigin: string }[];
+				options: { value: string; abbreviation: string; abbreviationOrigin: string }[];
 			}[];
 		}
 	).attributes.find((candidate) => candidate.id === attributeId)!;
 	return Object.fromEntries(
-		attribute.options.map((option) => [option.value, [option.shortForm, option.shortFormOrigin]])
+		attribute.options.map((option) => [
+			option.value,
+			[option.abbreviation, option.abbreviationOrigin]
+		])
 	);
 }
 
@@ -79,7 +82,7 @@ test('a new value shows a greyed suggestion, typing makes it edited, and eleven 
 	await expect(reloaded).toHaveAttribute('data-origin', 'edited');
 });
 
-test('a rename refreshes a generated Short form but not an edited one, and clearing returns to generated', async ({
+test('a rename refreshes a generated Abbreviation but not an edited one, and clearing returns to generated', async ({
 	page,
 	request
 }) => {
@@ -133,7 +136,7 @@ test('the field is named, and Shift+F2 on a row moves into it', async ({ page, r
 	await expect(row).toBeFocused();
 });
 
-test('an edited Short form appears in an Agitations header', async ({ page, request }) => {
+test('an edited Abbreviation appears in an Agitations header', async ({ page, request }) => {
 	const id = await seedDepartments(request, ['Customer Service North', 'Maintenance Hub']);
 	const agitation = await request.post('/api/agitations', { data: { text: 'Pay' } });
 	const agitationId = (await agitation.json()).agitation.id as string;

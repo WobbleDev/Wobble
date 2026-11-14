@@ -299,37 +299,42 @@ describe('decoding answer select modes (ADR 0043)', () => {
 	});
 });
 
-describe('decoding answer Short forms (ADR 0046)', () => {
+describe('decoding answer Abbreviations (ADR 0046)', () => {
 	const withOptions = (options: unknown[]) => ({
 		...emptyDataset,
 		attributes: [{ id: 'role', name: 'Role', kind: 'category', options }]
 	});
 
-	it('keeps a Short form and its origin', () => {
+	it('keeps a Abbreviation and its origin', () => {
 		const dataset = decodeWorksiteDataset(
 			withOptions([
 				{
 					id: 'a',
 					value: 'Customer Service',
-					shortForm: 'Customer …',
-					shortFormOrigin: 'generated'
+					abbreviation: 'Customer …',
+					abbreviationOrigin: 'generated'
 				},
-				{ id: 'b', value: 'Kitchen', shortForm: 'Kit', shortFormOrigin: 'edited' }
+				{ id: 'b', value: 'Kitchen', abbreviation: 'Kit', abbreviationOrigin: 'edited' }
 			])
 		);
 
 		expect(dataset.attributes[0].answers).toEqual([
-			{ id: 'a', value: 'Customer Service', shortForm: 'Customer …', shortFormOrigin: 'generated' },
-			{ id: 'b', value: 'Kitchen', shortForm: 'Kit', shortFormOrigin: 'edited' }
+			{
+				id: 'a',
+				value: 'Customer Service',
+				abbreviation: 'Customer …',
+				abbreviationOrigin: 'generated'
+			},
+			{ id: 'b', value: 'Kitchen', abbreviation: 'Kit', abbreviationOrigin: 'edited' }
 		]);
 	});
 
 	it('counts the 10-character limit in graphemes, not code units', () => {
 		const family = '👨‍👩‍👧‍👦'.repeat(10);
 		const dataset = decodeWorksiteDataset(
-			withOptions([{ id: 'a', value: 'x', shortForm: family, shortFormOrigin: 'edited' }])
+			withOptions([{ id: 'a', value: 'x', abbreviation: family, abbreviationOrigin: 'edited' }])
 		);
 
-		expect(dataset.attributes[0].answers[0].shortForm).toBe(family);
+		expect(dataset.attributes[0].answers[0].abbreviation).toBe(family);
 	});
 });

@@ -161,7 +161,7 @@ describe('decoding a Configuration preview select-mode section (ADR 0043)', () =
 	});
 });
 
-describe('decoding the Configuration preview Short form suggestions (ADR 0046)', () => {
+describe('decoding the Configuration preview Abbreviation suggestions (ADR 0046)', () => {
 	const preview = {
 		base: 'base-1',
 		changes: [],
@@ -172,26 +172,26 @@ describe('decoding the Configuration preview Short form suggestions (ADR 0046)',
 	const suggestion = {
 		attributeId: 'dept',
 		answerId: 'a',
-		shortForm: 'Cust. Svc.',
-		shortFormOrigin: 'generated'
+		abbreviation: 'Cust. Svc.',
+		abbreviationOrigin: 'generated'
 	};
 
 	it('decodes the suggested forms', () => {
-		expect(decodeConfigurationPreview({ ...preview, shortForms: [suggestion] }).shortForms).toEqual(
-			[suggestion]
-		);
+		expect(
+			decodeConfigurationPreview({ ...preview, abbreviations: [suggestion] }).abbreviations
+		).toEqual([suggestion]);
 	});
 });
 
-describe('decoding Short form suggestions (ADR 0046)', () => {
+describe('decoding Abbreviation suggestions (ADR 0046)', () => {
 	const suggestion = {
 		attributeId: 'dept',
 		answerId: 'a',
-		shortForm: 'Cust. Svc.',
-		shortFormOrigin: 'generated'
+		abbreviation: 'Cust. Svc.',
+		abbreviationOrigin: 'generated'
 	};
 
 	it('decodes the listed forms', () => {
-		expect(decodeAbbreviationSuggestions({ shortForms: [suggestion] })).toEqual([suggestion]);
+		expect(decodeAbbreviationSuggestions({ abbreviations: [suggestion] })).toEqual([suggestion]);
 	});
 });

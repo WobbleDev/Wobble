@@ -277,7 +277,8 @@ describe('the preview-then-save flow', () => {
 		moves: [],
 		attributeMoves: [],
 		modeChanges: [],
-		shortForms: []
+		shortForms: [],
+		abbreviations: []
 	};
 
 	it('saves a harmless edit straight away, with no preview request', async () => {

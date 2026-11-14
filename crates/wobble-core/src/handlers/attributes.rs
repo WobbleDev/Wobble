@@ -188,30 +188,20 @@ pub(crate) fn decode_attribute_definitions(payload: &Value) -> Vec<WorkerAttribu
 /// value trimmed, plus the `mergedInto` marker when present. The guard has already proved
 /// the shape, so a missing field reads as `None` and the answer is dropped.
 fn wire_answer(answer: &Value) -> Option<StoredAnswer> {
-    Some(StoredAnswer {
+    let text = |key: &str| answer.get(key).and_then(Value::as_str).map(str::to_owned);
+    let mut stored = StoredAnswer {
         id: answer.get("id")?.as_str()?.to_owned(),
         value: answer.get("value")?.as_str()?.trim().to_owned(),
-        parent_id: answer
-            .get("parentId")
-            .and_then(Value::as_str)
-            .map(str::to_owned),
-        mode: answer
-            .get("mode")
-            .and_then(Value::as_str)
-            .map(str::to_owned),
-        short_form: answer
-            .get("shortForm")
-            .and_then(Value::as_str)
-            .map(str::to_owned),
-        short_form_origin: answer
-            .get("shortFormOrigin")
-            .and_then(Value::as_str)
-            .map(str::to_owned),
-        merged_into: answer
-            .get("mergedInto")
-            .and_then(Value::as_str)
-            .map(str::to_owned),
-    })
+        parent_id: text("parentId"),
+        mode: text("mode"),
+        short_form: text("shortForm"),
+        short_form_origin: text("shortFormOrigin"),
+        abbreviation: text("abbreviation"),
+        abbreviation_origin: text("abbreviationOrigin"),
+        merged_into: text("mergedInto"),
+    };
+    // Either wire name is accepted while both exist; both together must agree.
+    stored.sync_abbreviation().then_some(stored)
 }
 
 #[cfg(test)]
@@ -286,8 +276,8 @@ mod tests {
             response.body,
             json!({ "attributes": [
                 { "id": "dept", "name": "Department", "kind": "tag", "options": [
-                    { "id": "dinner", "value": "Dinner", "shortForm": "Dinner", "shortFormOrigin": "generated" },
-                    { "id": "prep", "value": "Prep", "shortForm": "Prep", "shortFormOrigin": "generated" }
+                    { "id": "dinner", "value": "Dinner", "shortForm": "Dinner", "shortFormOrigin": "generated", "abbreviation": "Dinner", "abbreviationOrigin": "generated" },
+                    { "id": "prep", "value": "Prep", "shortForm": "Prep", "shortFormOrigin": "generated", "abbreviation": "Prep", "abbreviationOrigin": "generated" }
                 ] }
             ] })
         );
@@ -436,7 +426,7 @@ mod tests {
         assert_eq!(merged.status, 200, "{:?}", merged.body);
         assert_eq!(
             merged.body["attributes"][0]["options"],
-            json!([{ "id": "d1", "value": "Front", "shortForm": "Front", "shortFormOrigin": "generated" }])
+            json!([{ "id": "d1", "value": "Front", "shortForm": "Front", "shortFormOrigin": "generated", "abbreviation": "Front", "abbreviationOrigin": "generated" }])
         );
 
         assert_eq!(held_by(&db, "Ann"), json!({ "dept": "d1", "shifts": [] }));
@@ -630,9 +620,9 @@ mod tests {
         assert_eq!(
             edited.body["attributes"][0]["options"],
             json!([
-                { "id": "r-central", "value": "Downtown", "shortForm": "Downtown", "shortFormOrigin": "generated" },
-                { "id": "r-store-a", "value": "Store A", "parentId": "r-central", "shortForm": "Store A", "shortFormOrigin": "generated" },
-                { "id": "r-dock", "value": "Loading dock", "parentId": "r-store-a", "shortForm": "Loading d…", "shortFormOrigin": "generated" }
+                { "id": "r-central", "value": "Downtown", "shortForm": "Downtown", "shortFormOrigin": "generated", "abbreviation": "Downtown", "abbreviationOrigin": "generated" },
+                { "id": "r-store-a", "value": "Store A", "parentId": "r-central", "shortForm": "Store A", "shortFormOrigin": "generated", "abbreviation": "Store A", "abbreviationOrigin": "generated" },
+                { "id": "r-dock", "value": "Loading dock", "parentId": "r-store-a", "shortForm": "Loading d…", "shortFormOrigin": "generated", "abbreviation": "Loading d…", "abbreviationOrigin": "generated" }
             ])
         );
 
@@ -696,8 +686,8 @@ mod tests {
         assert_eq!(
             dataset.body["attributes"][1]["options"],
             json!([
-                { "id": "l-central", "value": "Central", "shortForm": "Central", "shortFormOrigin": "generated" },
-                { "id": "l-store-a", "value": "Store A", "parentId": "l-central", "shortForm": "Store A", "shortFormOrigin": "generated" }
+                { "id": "l-central", "value": "Central", "shortForm": "Central", "shortFormOrigin": "generated", "abbreviation": "Central", "abbreviationOrigin": "generated" },
+                { "id": "l-store-a", "value": "Store A", "parentId": "l-central", "shortForm": "Store A", "shortFormOrigin": "generated", "abbreviation": "Store A", "abbreviationOrigin": "generated" }
             ])
         );
         assert_eq!(

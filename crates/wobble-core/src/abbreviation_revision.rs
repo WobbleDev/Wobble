@@ -21,6 +21,12 @@ use crate::error::Result;
 /// The `app_settings` key tracking `worksite_id`\u{2019}s lists revision. Public so
 /// request-boundary tests can simulate a revision change with plain SQL.
 pub fn revision_key(worksite_id: &str) -> String {
+    format!("abbreviationListsRevision::{worksite_id}")
+}
+
+/// The old key for the same setting. It is still written beside the new one and read when the
+/// new one is absent, until the contract step removes it.
+pub fn legacy_revision_key(worksite_id: &str) -> String {
     format!("shortFormListsRevision::{worksite_id}")
 }
 
@@ -29,27 +35,32 @@ pub fn revision_key(worksite_id: &str) -> String {
 /// cleared by a Settings reset) is never current, so its next resolution regenerates every
 /// generated Short form once.
 pub(crate) fn lists_current(conn: &Connection, worksite_id: &str) -> Result<bool> {
-    let stored: Option<String> = conn
-        .query_row(
-            "SELECT value FROM app_settings WHERE key = ?1",
-            params![revision_key(worksite_id)],
-            |row| row.get(0),
-        )
-        .optional()?;
+    let read = |key: String| -> Result<Option<String>> {
+        Ok(conn
+            .query_row(
+                "SELECT value FROM app_settings WHERE key = ?1",
+                params![key],
+                |row| row.get(0),
+            )
+            .optional()?)
+    };
+    let stored = match read(revision_key(worksite_id))? {
+        Some(value) => Some(value),
+        None => read(legacy_revision_key(worksite_id))?,
+    };
     Ok(stored.as_deref() == Some(crate::abbreviation_lists::REVISION))
 }
 
 /// Records that `worksite_id`'s generated Short forms now match the bundled lists' current
 /// revision.
 pub(crate) fn mark_lists_current(conn: &Connection, worksite_id: &str) -> Result<()> {
-    conn.execute(
-        "INSERT INTO app_settings (key, value) VALUES (?1, ?2) \
-         ON CONFLICT(key) DO UPDATE SET value = excluded.value",
-        params![
-            revision_key(worksite_id),
-            crate::abbreviation_lists::REVISION
-        ],
-    )?;
+    for key in [revision_key(worksite_id), legacy_revision_key(worksite_id)] {
+        conn.execute(
+            "INSERT INTO app_settings (key, value) VALUES (?1, ?2) \
+             ON CONFLICT(key) DO UPDATE SET value = excluded.value",
+            params![key, crate::abbreviation_lists::REVISION],
+        )?;
+    }
     Ok(())
 }
 

@@ -47,4 +47,8 @@ export type ConfigurationPreview = {
 	 * frontend never generates one.
 	 */
 	shortForms: Array<ConfigurationPreviewAbbreviation>;
+	/**
+	 * The same suggestions under their new name; `short_forms` is removed in the contract step.
+	 */
+	abbreviations: Array<ConfigurationPreviewAbbreviation>;
 };

@@ -27,13 +27,17 @@
 							{
 								"id": "23b382fb-911b-4e21-9499-a3c0854be515~Front of House",
 								"shortForm": "Front of …",
+								"abbreviation": "Front of …",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Front of House"
 							},
 							{
 								"id": "23b382fb-911b-4e21-9499-a3c0854be515~Middle of House",
 								"shortForm": "Middle of…",
+								"abbreviation": "Middle of…",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Middle of House"
 							}
 						]
@@ -46,13 +50,17 @@
 							{
 								"id": "ef26d06c-beb3-4577-8eee-7d188010be0c~Server",
 								"shortForm": "Server",
+								"abbreviation": "Server",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Server"
 							},
 							{
 								"id": "ef26d06c-beb3-4577-8eee-7d188010be0c~Service Assistant",
 								"shortForm": "Svc. Asst.",
+								"abbreviation": "Svc. Asst.",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Service Assistant"
 							}
 						]
@@ -65,13 +73,17 @@
 							{
 								"id": "3f35fc19-2f2f-40d9-9447-e08f948d088c~Dinner",
 								"shortForm": "Dinner",
+								"abbreviation": "Dinner",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Dinner"
 							},
 							{
 								"id": "3f35fc19-2f2f-40d9-9447-e08f948d088c~Brunch",
 								"shortForm": "Brunch",
+								"abbreviation": "Brunch",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Brunch"
 							}
 						]
@@ -1732,13 +1744,17 @@
 							{
 								"id": "23b382fb-911b-4e21-9499-a3c0854be515~Front of House",
 								"shortForm": "Front of …",
+								"abbreviation": "Front of …",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Front of House"
 							},
 							{
 								"id": "23b382fb-911b-4e21-9499-a3c0854be515~Middle of House",
 								"shortForm": "Middle of…",
+								"abbreviation": "Middle of…",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Middle of House"
 							}
 						]
@@ -1751,13 +1767,17 @@
 							{
 								"id": "ef26d06c-beb3-4577-8eee-7d188010be0c~Server",
 								"shortForm": "Server",
+								"abbreviation": "Server",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Server"
 							},
 							{
 								"id": "ef26d06c-beb3-4577-8eee-7d188010be0c~Service Assistant",
 								"shortForm": "Svc. Asst.",
+								"abbreviation": "Svc. Asst.",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Service Assistant"
 							}
 						]
@@ -1770,13 +1790,17 @@
 							{
 								"id": "3f35fc19-2f2f-40d9-9447-e08f948d088c~Dinner",
 								"shortForm": "Dinner",
+								"abbreviation": "Dinner",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Dinner"
 							},
 							{
 								"id": "3f35fc19-2f2f-40d9-9447-e08f948d088c~Brunch",
 								"shortForm": "Brunch",
+								"abbreviation": "Brunch",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Brunch"
 							}
 						]

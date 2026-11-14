@@ -27,241 +27,321 @@
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 1",
 								"shortForm": "Dept. 1",
+								"abbreviation": "Dept. 1",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 1"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 2",
 								"shortForm": "Dept. 2",
+								"abbreviation": "Dept. 2",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 2"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 3",
 								"shortForm": "Dept. 3",
+								"abbreviation": "Dept. 3",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 3"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 4",
 								"shortForm": "Dept. 4",
+								"abbreviation": "Dept. 4",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 4"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 5",
 								"shortForm": "Dept. 5",
+								"abbreviation": "Dept. 5",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 5"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 6",
 								"shortForm": "Dept. 6",
+								"abbreviation": "Dept. 6",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 6"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 7",
 								"shortForm": "Dept. 7",
+								"abbreviation": "Dept. 7",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 7"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 8",
 								"shortForm": "Dept. 8",
+								"abbreviation": "Dept. 8",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 8"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 9",
 								"shortForm": "Dept. 9",
+								"abbreviation": "Dept. 9",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 9"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 10",
 								"shortForm": "Dept. 10",
+								"abbreviation": "Dept. 10",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 10"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 11",
 								"shortForm": "Dept. 11",
+								"abbreviation": "Dept. 11",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 11"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 12",
 								"shortForm": "Dept. 12",
+								"abbreviation": "Dept. 12",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 12"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 13",
 								"shortForm": "Dept. 13",
+								"abbreviation": "Dept. 13",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 13"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 14",
 								"shortForm": "Dept. 14",
+								"abbreviation": "Dept. 14",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 14"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 15",
 								"shortForm": "Dept. 15",
+								"abbreviation": "Dept. 15",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 15"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 16",
 								"shortForm": "Dept. 16",
+								"abbreviation": "Dept. 16",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 16"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 17",
 								"shortForm": "Dept. 17",
+								"abbreviation": "Dept. 17",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 17"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 18",
 								"shortForm": "Dept. 18",
+								"abbreviation": "Dept. 18",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 18"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 19",
 								"shortForm": "Dept. 19",
+								"abbreviation": "Dept. 19",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 19"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 20",
 								"shortForm": "Dept. 20",
+								"abbreviation": "Dept. 20",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 20"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 21",
 								"shortForm": "Dept. 21",
+								"abbreviation": "Dept. 21",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 21"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 22",
 								"shortForm": "Dept. 22",
+								"abbreviation": "Dept. 22",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 22"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 23",
 								"shortForm": "Dept. 23",
+								"abbreviation": "Dept. 23",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 23"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 24",
 								"shortForm": "Dept. 24",
+								"abbreviation": "Dept. 24",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 24"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 25",
 								"shortForm": "Dept. 25",
+								"abbreviation": "Dept. 25",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 25"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 26",
 								"shortForm": "Dept. 26",
+								"abbreviation": "Dept. 26",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 26"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 27",
 								"shortForm": "Dept. 27",
+								"abbreviation": "Dept. 27",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 27"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 28",
 								"shortForm": "Dept. 28",
+								"abbreviation": "Dept. 28",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 28"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 29",
 								"shortForm": "Dept. 29",
+								"abbreviation": "Dept. 29",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 29"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 30",
 								"shortForm": "Dept. 30",
+								"abbreviation": "Dept. 30",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 30"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 31",
 								"shortForm": "Dept. 31",
+								"abbreviation": "Dept. 31",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 31"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 32",
 								"shortForm": "Dept. 32",
+								"abbreviation": "Dept. 32",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 32"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 33",
 								"shortForm": "Dept. 33",
+								"abbreviation": "Dept. 33",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 33"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 34",
 								"shortForm": "Dept. 34",
+								"abbreviation": "Dept. 34",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 34"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 35",
 								"shortForm": "Dept. 35",
+								"abbreviation": "Dept. 35",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 35"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 36",
 								"shortForm": "Dept. 36",
+								"abbreviation": "Dept. 36",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 36"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 37",
 								"shortForm": "Dept. 37",
+								"abbreviation": "Dept. 37",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 37"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 38",
 								"shortForm": "Dept. 38",
+								"abbreviation": "Dept. 38",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 38"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 39",
 								"shortForm": "Dept. 39",
+								"abbreviation": "Dept. 39",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 39"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 40",
 								"shortForm": "Dept. 40",
+								"abbreviation": "Dept. 40",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 40"
 							}
 						]
@@ -1705,241 +1785,321 @@
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 1",
 								"shortForm": "Dept. 1",
+								"abbreviation": "Dept. 1",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 1"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 2",
 								"shortForm": "Dept. 2",
+								"abbreviation": "Dept. 2",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 2"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 3",
 								"shortForm": "Dept. 3",
+								"abbreviation": "Dept. 3",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 3"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 4",
 								"shortForm": "Dept. 4",
+								"abbreviation": "Dept. 4",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 4"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 5",
 								"shortForm": "Dept. 5",
+								"abbreviation": "Dept. 5",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 5"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 6",
 								"shortForm": "Dept. 6",
+								"abbreviation": "Dept. 6",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 6"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 7",
 								"shortForm": "Dept. 7",
+								"abbreviation": "Dept. 7",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 7"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 8",
 								"shortForm": "Dept. 8",
+								"abbreviation": "Dept. 8",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 8"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 9",
 								"shortForm": "Dept. 9",
+								"abbreviation": "Dept. 9",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 9"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 10",
 								"shortForm": "Dept. 10",
+								"abbreviation": "Dept. 10",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 10"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 11",
 								"shortForm": "Dept. 11",
+								"abbreviation": "Dept. 11",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 11"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 12",
 								"shortForm": "Dept. 12",
+								"abbreviation": "Dept. 12",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 12"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 13",
 								"shortForm": "Dept. 13",
+								"abbreviation": "Dept. 13",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 13"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 14",
 								"shortForm": "Dept. 14",
+								"abbreviation": "Dept. 14",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 14"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 15",
 								"shortForm": "Dept. 15",
+								"abbreviation": "Dept. 15",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 15"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 16",
 								"shortForm": "Dept. 16",
+								"abbreviation": "Dept. 16",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 16"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 17",
 								"shortForm": "Dept. 17",
+								"abbreviation": "Dept. 17",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 17"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 18",
 								"shortForm": "Dept. 18",
+								"abbreviation": "Dept. 18",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 18"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 19",
 								"shortForm": "Dept. 19",
+								"abbreviation": "Dept. 19",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 19"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 20",
 								"shortForm": "Dept. 20",
+								"abbreviation": "Dept. 20",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 20"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 21",
 								"shortForm": "Dept. 21",
+								"abbreviation": "Dept. 21",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 21"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 22",
 								"shortForm": "Dept. 22",
+								"abbreviation": "Dept. 22",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 22"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 23",
 								"shortForm": "Dept. 23",
+								"abbreviation": "Dept. 23",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 23"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 24",
 								"shortForm": "Dept. 24",
+								"abbreviation": "Dept. 24",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 24"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 25",
 								"shortForm": "Dept. 25",
+								"abbreviation": "Dept. 25",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 25"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 26",
 								"shortForm": "Dept. 26",
+								"abbreviation": "Dept. 26",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 26"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 27",
 								"shortForm": "Dept. 27",
+								"abbreviation": "Dept. 27",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 27"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 28",
 								"shortForm": "Dept. 28",
+								"abbreviation": "Dept. 28",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 28"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 29",
 								"shortForm": "Dept. 29",
+								"abbreviation": "Dept. 29",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 29"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 30",
 								"shortForm": "Dept. 30",
+								"abbreviation": "Dept. 30",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 30"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 31",
 								"shortForm": "Dept. 31",
+								"abbreviation": "Dept. 31",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 31"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 32",
 								"shortForm": "Dept. 32",
+								"abbreviation": "Dept. 32",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 32"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 33",
 								"shortForm": "Dept. 33",
+								"abbreviation": "Dept. 33",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 33"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 34",
 								"shortForm": "Dept. 34",
+								"abbreviation": "Dept. 34",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 34"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 35",
 								"shortForm": "Dept. 35",
+								"abbreviation": "Dept. 35",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 35"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 36",
 								"shortForm": "Dept. 36",
+								"abbreviation": "Dept. 36",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 36"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 37",
 								"shortForm": "Dept. 37",
+								"abbreviation": "Dept. 37",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 37"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 38",
 								"shortForm": "Dept. 38",
+								"abbreviation": "Dept. 38",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 38"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 39",
 								"shortForm": "Dept. 39",
+								"abbreviation": "Dept. 39",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 39"
 							},
 							{
 								"id": "ca3cc3b3-ef83-44c8-bfba-405a4b493492~Department 40",
 								"shortForm": "Dept. 40",
+								"abbreviation": "Dept. 40",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Department 40"
 							}
 						]

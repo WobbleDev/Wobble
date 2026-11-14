@@ -463,7 +463,7 @@ describe('ConfigurationDraftState five-level Attribute answers', () => {
 	});
 });
 
-describe('ConfigurationDraftState Short forms (ADR 0046)', () => {
+describe('ConfigurationDraftState Abbreviations (ADR 0046)', () => {
 	function openWith(answers: WorkerAttributeDefinition['answers']) {
 		return new ConfigurationDraftState({
 			attributes: [{ id: 'dept', name: 'Department', kind: 'category', answers }],
@@ -475,8 +475,13 @@ describe('ConfigurationDraftState Short forms (ADR 0046)', () => {
 	}
 
 	const stored = [
-		{ id: 'a', value: 'Customer Service', shortForm: 'Cust. Svc.', shortFormOrigin: 'generated' },
-		{ id: 'b', value: 'Maintenance', shortForm: 'MX', shortFormOrigin: 'edited' }
+		{
+			id: 'a',
+			value: 'Customer Service',
+			abbreviation: 'Cust. Svc.',
+			abbreviationOrigin: 'generated'
+		},
+		{ id: 'b', value: 'Maintenance', abbreviation: 'MX', abbreviationOrigin: 'edited' }
 	] as const;
 
 	it('editing a form makes the draft dirty and clearing it makes it clean again', () => {
@@ -485,13 +490,13 @@ describe('ConfigurationDraftState Short forms (ADR 0046)', () => {
 		draft.editAbbreviation('dept', 'a', 'CS');
 		expect(draft.dirtyAttributes).toBe(true);
 		expect(draft.draftAttributes[0].answers[0]).toMatchObject({
-			shortForm: 'CS',
-			shortFormOrigin: 'edited'
+			abbreviation: 'CS',
+			abbreviationOrigin: 'edited'
 		});
 
 		draft.editAbbreviation('dept', 'a', '');
 		expect(draft.dirtyAttributes).toBe(false);
-		expect(draft.draftAttributes[0].answers[0].shortFormOrigin).toBeUndefined();
+		expect(draft.draftAttributes[0].answers[0].abbreviationOrigin).toBeUndefined();
 	});
 
 	it('clearing an edited form drops the stale suggestion until the core answers again', () => {
@@ -511,7 +516,11 @@ describe('ConfigurationDraftState Short forms (ADR 0046)', () => {
 
 		const [a, b] = draft.draftAttributes[0].answers;
 		expect(a).toEqual({ id: 'a', value: 'Night Service' });
-		expect(b).toMatchObject({ value: 'Facilities', shortForm: 'MX', shortFormOrigin: 'edited' });
+		expect(b).toMatchObject({
+			value: 'Facilities',
+			abbreviation: 'MX',
+			abbreviationOrigin: 'edited'
+		});
 	});
 
 	it('shows the core suggestion for a generated value and the typed text for an edited one', () => {
@@ -551,8 +560,13 @@ describe('ConfigurationDraftState Short forms (ADR 0046)', () => {
 						name: 'Department',
 						kind: 'category',
 						options: [
-							{ id: 'a', value: 'Customer Service', shortForm: 'CS', shortFormOrigin: 'edited' },
-							{ id: 'b', value: 'Maintenance', shortForm: 'MX', shortFormOrigin: 'edited' }
+							{
+								id: 'a',
+								value: 'Customer Service',
+								abbreviation: 'CS',
+								abbreviationOrigin: 'edited'
+							},
+							{ id: 'b', value: 'Maintenance', abbreviation: 'MX', abbreviationOrigin: 'edited' }
 						]
 					}
 				]
@@ -564,16 +578,16 @@ describe('ConfigurationDraftState Short forms (ADR 0046)', () => {
 
 	it('asks the core for suggestions without touching the save path', async () => {
 		const { calls } = scriptFetch({
-			'POST /api/configuration/short-forms': () => ({
+			'POST /api/configuration/abbreviations': () => ({
 				body: {
-					shortForms: [
+					abbreviations: [
 						{
 							attributeId: 'dept',
 							answerId: 'a',
-							shortForm: 'Night Svc.',
-							shortFormOrigin: 'generated'
+							abbreviation: 'Night Svc.',
+							abbreviationOrigin: 'generated'
 						},
-						{ attributeId: 'dept', answerId: 'b', shortForm: 'MX', shortFormOrigin: 'edited' }
+						{ attributeId: 'dept', answerId: 'b', abbreviation: 'MX', abbreviationOrigin: 'edited' }
 					]
 				}
 			})
@@ -584,7 +598,7 @@ describe('ConfigurationDraftState Short forms (ADR 0046)', () => {
 		await draft.loadSuggestions();
 
 		expect(calls).toHaveLength(1);
-		expect(calls[0].path).toBe('/api/configuration/short-forms');
+		expect(calls[0].path).toBe('/api/configuration/abbreviations');
 		expect(draft.abbreviationShown(draft.draftAttributes[0].answers[0])).toBe('Night Svc.');
 		expect([...draft.suggestedAbbreviations.keys()]).toEqual(['a']);
 	});

@@ -14,7 +14,7 @@ use crate::error::{Error, Result};
 use crate::id::{random_id, IdSource};
 use crate::phone::normalize_phone;
 
-pub const CURRENT_SCHEMA_VERSION: i64 = 25;
+pub const CURRENT_SCHEMA_VERSION: i64 = 26;
 /// The versions this app upgrades from. v12 to v13 adds drafts, v13 to v14 assigns answer ids,
 /// v14 to v15 adds lookup indexes, v15 to v16 reformats stored clean phone numbers, v16
 /// to v17 replaces the single settings row with the typed key/value registry, v17 to v18
@@ -23,8 +23,10 @@ pub const CURRENT_SCHEMA_VERSION: i64 = 25;
 /// to Work Assignment scope and draft state, and v21 to v22 flattens every saved assignment
 /// answer into ordinary Worker Attribute values and removes the obsolete schema, and v22 to
 /// v23 gives every Attribute value a generated Short form (ADR 0046), and v23 to v24 adds the
-/// Worksite's saved views, and v24 to v25 adds the committee goal column beside the committee target.
-const UPGRADABLE_SCHEMA_VERSIONS: [i64; 13] = [12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24];
+/// Worksite's saved views, v24 to v25 adds the committee goal column beside the committee target,
+/// and v25 to v26 adds the abbreviation keys beside the short form keys.
+const UPGRADABLE_SCHEMA_VERSIONS: [i64; 14] =
+    [12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25];
 
 /// Whether an existing database at this version is upgraded in place. The upgrade entry point
 /// backs a file-backed database up before handing it to `apply_migrations`; adding a version
@@ -406,6 +408,8 @@ fn upgrade_answers_to_ids(conn: &Connection) -> Result<()> {
                 mode: None,
                 short_form: None,
                 short_form_origin: None,
+                abbreviation: None,
+                abbreviation_origin: None,
                 merged_into: None,
             })
             .collect();
@@ -526,6 +530,107 @@ fn add_committee_goal(conn: &Connection) -> Result<()> {
     Ok(())
 }
 
+/// The legacy and new JSON key pairs of one stored answer.
+const ABBREVIATION_KEYS: [(&str, &str); 2] = [
+    ("shortForm", "abbreviation"),
+    ("shortFormOrigin", "abbreviationOrigin"),
+];
+
+/// Copies each old key to the new one inside one answer object. A key already present on both
+/// sides must agree (never guessed): a disagreement is reported as `Err(())`. Returns whether
+/// the object changed.
+fn expand_answer_abbreviation(
+    answer: &mut serde_json::Map<String, Value>,
+) -> std::result::Result<bool, ()> {
+    let mut changed = false;
+    for (old, new) in ABBREVIATION_KEYS {
+        match (answer.get(old).cloned(), answer.get(new).cloned()) {
+            (Some(old_value), None) => {
+                answer.insert(new.to_owned(), old_value);
+                changed = true;
+            }
+            (None, Some(new_value)) => {
+                answer.insert(old.to_owned(), new_value);
+                changed = true;
+            }
+            (Some(old_value), Some(new_value)) if old_value != new_value => return Err(()),
+            _ => {}
+        }
+    }
+    Ok(changed)
+}
+
+/// The v26 step: expands every stored answer's short form into the abbreviation keys and
+/// copies each Worksite's lists-revision setting to its new key. Idempotent, and fails (rolling
+/// the whole upgrade back) when an answer or a setting already carries two different values.
+/// Runs inside the caller's transaction.
+fn add_abbreviations(conn: &Connection) -> Result<()> {
+    let attributes: Vec<(String, String)> = {
+        let mut statement = conn.prepare("SELECT id, options FROM worker_attributes")?;
+        let rows = statement.query_map([], |row| Ok((row.get(0)?, row.get(1)?)))?;
+        rows.collect::<rusqlite::Result<Vec<_>>>()?
+    };
+    for (attribute_id, options) in attributes {
+        let invalid = || {
+            Error::Message(format!(
+                "Invalid options JSON for worker attribute {attribute_id}."
+            ))
+        };
+        let mut parsed: Value = serde_json::from_str(&options).map_err(|_| invalid())?;
+        let answers = parsed.as_array_mut().ok_or_else(invalid)?;
+        let mut changed = false;
+        for answer in answers {
+            let object = answer.as_object_mut().ok_or_else(invalid)?;
+            changed |= expand_answer_abbreviation(object).map_err(|()| {
+                Error::Message(format!(
+                    "An answer of worker attribute {attribute_id} has a short form and an abbreviation that disagree; the upgrade was not applied."
+                ))
+            })?;
+        }
+        if changed {
+            conn.execute(
+                "UPDATE worker_attributes SET options = ?1 WHERE id = ?2",
+                params![parsed.to_string(), attribute_id],
+            )?;
+        }
+    }
+
+    const OLD_PREFIX: &str = "shortFormListsRevision::";
+    const NEW_PREFIX: &str = "abbreviationListsRevision::";
+    let settings: Vec<(String, String)> = {
+        let mut statement = conn.prepare(
+            "SELECT key, value FROM app_settings WHERE key LIKE 'shortFormListsRevision::%'",
+        )?;
+        let rows = statement.query_map([], |row| Ok((row.get(0)?, row.get(1)?)))?;
+        rows.collect::<rusqlite::Result<Vec<_>>>()?
+    };
+    for (key, value) in settings {
+        let new_key = format!("{NEW_PREFIX}{}", &key[OLD_PREFIX.len()..]);
+        let existing: Option<String> = conn
+            .query_row(
+                "SELECT value FROM app_settings WHERE key = ?1",
+                params![new_key],
+                |row| row.get(0),
+            )
+            .ok();
+        match existing {
+            None => {
+                conn.execute(
+                    "INSERT INTO app_settings (key, value) VALUES (?1, ?2)",
+                    params![new_key, value],
+                )?;
+            }
+            Some(existing) if existing != value => {
+                return Err(Error::Message(format!(
+                    "The lists revision settings {key} and {new_key} disagree; the upgrade was not applied."
+                )));
+            }
+            Some(_) => {}
+        }
+    }
+    Ok(())
+}
+
 /// Bootstraps an empty database, keeps an already-current one, upgrades any version listed in
 /// `UPGRADABLE_SCHEMA_VERSIONS` to `CURRENT_SCHEMA_VERSION` in one transaction, and refuses the
 /// rest. Each step runs only for the versions that still need
@@ -600,6 +705,13 @@ pub fn apply_migrations(conn: &Connection) -> Result<()> {
             add_committee_goal(&tx)?;
             record_migration(&tx, 25, "committee-goal")?;
         }
+        // v26 expands the short form: every stored answer gains `abbreviation` and
+        // `abbreviationOrigin` with the same values, and each lists-revision setting is copied
+        // to its new key. The old keys are removed in the contract step.
+        if version <= 25 {
+            add_abbreviations(&tx)?;
+            record_migration(&tx, 26, "abbreviation")?;
+        }
         tx.commit()?;
         return Ok(());
     }
@@ -612,7 +724,7 @@ pub fn apply_migrations(conn: &Connection) -> Result<()> {
             .map(|v| v.to_string())
             .unwrap_or_else(|| "unknown".to_owned());
         return Err(Error::UnsupportedSchema(format!(
-            "Worker database schema version {version_text} is unsupported. This app supports schema version {CURRENT_SCHEMA_VERSION} and upgrades version 12, version 13, version 14, version 15, version 16, version 17, version 18, version 19, version 20, version 21, version 22, version 23 and version 24 databases; migrate older versions before starting the app."
+            "Worker database schema version {version_text} is unsupported. This app supports schema version {CURRENT_SCHEMA_VERSION} and upgrades version 12, version 13, version 14, version 15, version 16, version 17, version 18, version 19, version 20, version 21, version 22, version 23, version 24 and version 25 databases; migrate older versions before starting the app."
         )));
     }
 
@@ -842,7 +954,7 @@ mod tests {
     }
 
     #[test]
-    fn upgrades_a_populated_v12_database_through_every_retained_step_to_v25() {
+    fn upgrades_a_populated_v12_database_through_every_retained_step_to_v26() {
         let conn = Connection::open_in_memory().unwrap();
         seed_populated(&conn, 12, "\"Back of House\"");
 
@@ -866,7 +978,7 @@ mod tests {
             .unwrap();
         assert_eq!(
             migrations,
-            [12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25],
+            [12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26],
             "a v12 source runs every step once"
         );
     }
@@ -972,7 +1084,10 @@ mod tests {
             .unwrap()
             .collect::<rusqlite::Result<_>>()
             .unwrap();
-        assert_eq!(migrations, [14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25]);
+        assert_eq!(
+            migrations,
+            [14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26]
+        );
         let settings: Vec<(String, String)> = conn
             .prepare("SELECT key, value FROM app_settings ORDER BY rowid")
             .unwrap()
@@ -1183,7 +1298,7 @@ mod tests {
 
         apply_migrations(&conn).unwrap();
 
-        assert_eq!(read_schema_version(&conn).unwrap(), Some(25));
+        assert_eq!(read_schema_version(&conn).unwrap(), Some(26));
         let migrations: Vec<(i64, String)> = conn
             .prepare("SELECT version, name FROM schema_migrations ORDER BY version")
             .unwrap()
@@ -1205,6 +1320,7 @@ mod tests {
                 (23, "short-forms".to_owned()),
                 (24, "saved-views".to_owned()),
                 (25, "committee-goal".to_owned()),
+                (26, "abbreviation".to_owned()),
             ]
         );
 
@@ -1267,7 +1383,7 @@ mod tests {
 
         apply_migrations(&conn).unwrap();
 
-        assert_eq!(read_schema_version(&conn).unwrap(), Some(25));
+        assert_eq!(read_schema_version(&conn).unwrap(), Some(26));
         let migrations: Vec<(i64, String)> = conn
             .prepare("SELECT version, name FROM schema_migrations ORDER BY version")
             .unwrap()
@@ -1288,6 +1404,7 @@ mod tests {
                 (23, "short-forms".to_owned()),
                 (24, "saved-views".to_owned()),
                 (25, "committee-goal".to_owned()),
+                (26, "abbreviation".to_owned()),
             ]
         );
         let rows: Vec<(String, String)> = conn
@@ -1319,10 +1436,10 @@ mod tests {
             message.contains("schema version 11 is unsupported"),
             "{message}"
         );
-        assert!(message.contains("schema version 25"), "{message}");
+        assert!(message.contains("schema version 26"), "{message}");
         assert!(
             message.contains(
-                "version 12, version 13, version 14, version 15, version 16, version 17, version 18, version 19, version 20, version 21, version 22, version 23 and version 24"
+                "version 12, version 13, version 14, version 15, version 16, version 17, version 18, version 19, version 20, version 21, version 22, version 23, version 24 and version 25"
             ),
             "{message}"
         );
@@ -1350,7 +1467,7 @@ mod tests {
 
         apply_migrations(&conn).unwrap();
 
-        assert_eq!(read_schema_version(&conn).unwrap(), Some(25));
+        assert_eq!(read_schema_version(&conn).unwrap(), Some(26));
         assert_no_assignment_schema(&conn);
         let migrations: Vec<(i64, String)> = conn
             .prepare("SELECT version, name FROM schema_migrations ORDER BY version")
@@ -1370,6 +1487,7 @@ mod tests {
                 (23, "short-forms".to_owned()),
                 (24, "saved-views".to_owned()),
                 (25, "committee-goal".to_owned()),
+                (26, "abbreviation".to_owned()),
             ]
         );
         let worker: String = conn
@@ -1432,7 +1550,7 @@ mod tests {
 
         apply_migrations(&conn).unwrap();
 
-        assert_eq!(read_schema_version(&conn).unwrap(), Some(25));
+        assert_eq!(read_schema_version(&conn).unwrap(), Some(26));
         assert_no_assignment_schema(&conn);
         let migrations: Vec<(i64, String)> = conn
             .prepare("SELECT version, name FROM schema_migrations ORDER BY version")
@@ -1451,6 +1569,7 @@ mod tests {
                 (23, "short-forms".to_owned()),
                 (24, "saved-views".to_owned()),
                 (25, "committee-goal".to_owned()),
+                (26, "abbreviation".to_owned()),
             ]
         );
         let workers = read_workers(&conn, &worksite()).unwrap();
@@ -1458,19 +1577,19 @@ mod tests {
     }
 
     #[test]
-    fn a_fresh_database_bootstraps_at_v25_with_the_final_schema() {
+    fn a_fresh_database_bootstraps_at_v26_with_the_final_schema() {
         let conn = Connection::open_in_memory().unwrap();
 
         apply_migrations(&conn).unwrap();
 
-        assert_eq!(read_schema_version(&conn).unwrap(), Some(25));
+        assert_eq!(read_schema_version(&conn).unwrap(), Some(26));
         assert_no_assignment_schema(&conn);
         let bootstrap: (i64, String) = conn
             .query_row("SELECT version, name FROM schema_migrations", [], |row| {
                 Ok((row.get(0)?, row.get(1)?))
             })
             .unwrap();
-        assert_eq!(bootstrap, (25, "current-schema-bootstrap".to_owned()));
+        assert_eq!(bootstrap, (26, "current-schema-bootstrap".to_owned()));
     }
 
     /// A fresh bootstrap and an upgraded source end with the same schema: the same objects,

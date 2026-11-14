@@ -90,9 +90,9 @@ fn a_value_that_fits_keeps_its_full_name_and_a_long_one_is_cut_with_an_ellipsis(
         assert_eq!(
             options,
             json!([
-                { "id": "a", "value": "Kitchen", "shortForm": "Kitchen", "shortFormOrigin": "generated" },
-                { "id": "b", "value": "Ten chars!!", "shortForm": "Ten chars…", "shortFormOrigin": "generated" },
-                { "id": "c", "value": "Customer Service North", "shortForm": "Customer …", "shortFormOrigin": "generated" }
+                { "id": "a", "value": "Kitchen", "shortForm": "Kitchen", "shortFormOrigin": "generated", "abbreviation": "Kitchen", "abbreviationOrigin": "generated" },
+                { "id": "b", "value": "Ten chars!!", "shortForm": "Ten chars…", "shortFormOrigin": "generated", "abbreviation": "Ten chars…", "abbreviationOrigin": "generated" },
+                { "id": "c", "value": "Customer Service North", "shortForm": "Customer …", "shortFormOrigin": "generated", "abbreviation": "Customer …", "abbreviationOrigin": "generated" }
             ])
         );
     }
@@ -234,7 +234,7 @@ fn a_change_of_locale_regenerates_nothing() {
     assert_eq!(site.forms(), ["Admón.", "Depto. Sur"]);
     // Even a stale form sent back by the client does not move a stored one.
     let stale = json!([
-        { "id": "a", "value": "Administración", "shortForm": "Administr…", "shortFormOrigin": "generated" },
+        { "id": "a", "value": "Administración", "shortForm": "Administr…", "shortFormOrigin": "generated", "abbreviation": "Administr…", "abbreviationOrigin": "generated" },
         { "id": "b", "value": "Departamento Sur" }
     ]);
     assert_eq!(site.save_in("en", stale).status, 200);
@@ -556,7 +556,7 @@ fn the_abbreviations_route_answers_only_the_suggestions() {
     assert_eq!(
         reply.body,
         json!({ "shortForms": [
-            { "attributeId": "dept", "answerId": "a", "shortForm": "Kitchen", "shortFormOrigin": "generated" }
+            { "attributeId": "dept", "answerId": "a", "shortForm": "Kitchen", "shortFormOrigin": "generated", "abbreviation": "Kitchen", "abbreviationOrigin": "generated" }
         ] })
     );
 }
@@ -850,4 +850,87 @@ fn a_preview_under_a_stale_revision_suggests_regenerated_forms_without_writing_t
         )]
     );
     assert_eq!(stored_lists_revision(&site).as_deref(), Some("sf04-seed"));
+}
+
+#[test]
+fn the_abbreviation_names_are_accepted_stored_beside_the_old_ones_and_answered_with_both() {
+    let site = Site::new();
+    let saved = site.save(json!([
+        { "id": "a", "value": "Customer Service North",
+          "abbreviation": "CS North", "abbreviationOrigin": "edited" },
+        { "id": "b", "value": "Back of House Maintenance" },
+        { "id": "c", "value": "Dock", "shortForm": "Dk", "shortFormOrigin": "edited" }
+    ]));
+    assert_eq!(saved.status, 200, "{:?}", saved.body);
+    let options = site.options();
+    for (index, form, origin) in [
+        (0, "CS North", "edited"),
+        (1, "BHM", "generated"),
+        (2, "Dk", "edited"),
+    ] {
+        assert_eq!(options[index]["abbreviation"], form, "{index}");
+        assert_eq!(options[index]["shortForm"], form, "{index}");
+        assert_eq!(options[index]["abbreviationOrigin"], origin, "{index}");
+        assert_eq!(options[index]["shortFormOrigin"], origin, "{index}");
+    }
+}
+
+#[test]
+fn an_answer_that_sends_both_names_must_agree_and_the_new_name_gets_the_new_code() {
+    let site = Site::new();
+    let conflict = site.save(json!([
+        { "id": "a", "value": "Kitchen", "abbreviation": "K", "abbreviationOrigin": "edited",
+          "shortForm": "Kit", "shortFormOrigin": "edited" }
+    ]));
+    assert_eq!(conflict.status, 400, "{:?}", conflict.body);
+
+    let agreeing = site.save(json!([
+        { "id": "a", "value": "Kitchen", "abbreviation": "K", "abbreviationOrigin": "edited",
+          "shortForm": "K", "shortFormOrigin": "edited" }
+    ]));
+    assert_eq!(agreeing.status, 200, "{:?}", agreeing.body);
+
+    let refused = site.save(json!([
+        { "id": "a", "value": "Kitchen",
+          "abbreviation": "Eleven char", "abbreviationOrigin": "edited" }
+    ]));
+    assert_eq!(refused.status, 400);
+    assert_eq!(refused.body["code"], "abbreviation_invalid");
+    assert_eq!(
+        site.options()[0]["abbreviation"],
+        "K",
+        "the refusal changed nothing"
+    );
+}
+
+#[test]
+fn the_abbreviations_route_answers_abbreviations_and_the_old_route_the_same_data_as_short_forms() {
+    let site = Site::new();
+    let body = json!({
+        "attributes": [{ "id": "dept", "name": "Dept", "kind": "category",
+            "options": [{ "id": "a", "value": "Customer Service North" }] }],
+        "agitations": [],
+        "languages": []
+    });
+    let ask = |path: &str| {
+        let reply = dispatch(
+            &site.db,
+            &request("POST", path, Some(&site.worksite), Some(body.clone())),
+            &site.ids,
+        );
+        assert_eq!(reply.status, 200, "{path}: {:?}", reply.body);
+        reply.body
+    };
+    let new = ask("/api/configuration/abbreviations");
+    let old = ask("/api/configuration/short-forms");
+    assert!(new.get("shortForms").is_none());
+    assert!(old.get("abbreviations").is_none());
+    assert_eq!(new["abbreviations"], old["shortForms"]);
+    let first = &new["abbreviations"][0];
+    assert_eq!(first["abbreviation"], first["shortForm"]);
+    assert_eq!(first["abbreviationOrigin"], first["shortFormOrigin"]);
+
+    let preview = ask("/api/configuration/preview");
+    assert_eq!(preview["abbreviations"], preview["shortForms"]);
+    assert_eq!(preview["abbreviations"], new["abbreviations"]);
 }

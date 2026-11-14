@@ -2,7 +2,7 @@
 import type { ConfigurationPreviewAbbreviation } from './ConfigurationPreviewAbbreviation';
 
 /**
- * The `POST /api/configuration/short-forms` success body: the Short form each surviving
+ * The `POST /api/configuration/abbreviations` success body: the Abbreviation each surviving
  * proposed value would be stored with.
  */
-export type AbbreviationsReply = { shortForms: Array<ConfigurationPreviewAbbreviation> };
+export type AbbreviationsReply = { abbreviations: Array<ConfigurationPreviewAbbreviation> };

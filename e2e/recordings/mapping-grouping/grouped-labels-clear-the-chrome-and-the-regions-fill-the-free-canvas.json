@@ -27,37 +27,49 @@
 							{
 								"id": "ec87cc24-a09f-41fc-8c9b-05d748ce628d~Alpha",
 								"shortForm": "Alpha",
+								"abbreviation": "Alpha",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Alpha"
 							},
 							{
 								"id": "ec87cc24-a09f-41fc-8c9b-05d748ce628d~Bravo",
 								"shortForm": "Bravo",
+								"abbreviation": "Bravo",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Bravo"
 							},
 							{
 								"id": "ec87cc24-a09f-41fc-8c9b-05d748ce628d~Charlie",
 								"shortForm": "Charlie",
+								"abbreviation": "Charlie",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Charlie"
 							},
 							{
 								"id": "ec87cc24-a09f-41fc-8c9b-05d748ce628d~Delta",
 								"shortForm": "Delta",
+								"abbreviation": "Delta",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Delta"
 							},
 							{
 								"id": "ec87cc24-a09f-41fc-8c9b-05d748ce628d~Echo",
 								"shortForm": "Echo",
+								"abbreviation": "Echo",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Echo"
 							},
 							{
 								"id": "ec87cc24-a09f-41fc-8c9b-05d748ce628d~Foxtrot",
 								"shortForm": "Foxtrot",
+								"abbreviation": "Foxtrot",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Foxtrot"
 							}
 						]
@@ -1021,37 +1033,49 @@
 							{
 								"id": "ec87cc24-a09f-41fc-8c9b-05d748ce628d~Alpha",
 								"shortForm": "Alpha",
+								"abbreviation": "Alpha",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Alpha"
 							},
 							{
 								"id": "ec87cc24-a09f-41fc-8c9b-05d748ce628d~Bravo",
 								"shortForm": "Bravo",
+								"abbreviation": "Bravo",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Bravo"
 							},
 							{
 								"id": "ec87cc24-a09f-41fc-8c9b-05d748ce628d~Charlie",
 								"shortForm": "Charlie",
+								"abbreviation": "Charlie",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Charlie"
 							},
 							{
 								"id": "ec87cc24-a09f-41fc-8c9b-05d748ce628d~Delta",
 								"shortForm": "Delta",
+								"abbreviation": "Delta",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Delta"
 							},
 							{
 								"id": "ec87cc24-a09f-41fc-8c9b-05d748ce628d~Echo",
 								"shortForm": "Echo",
+								"abbreviation": "Echo",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Echo"
 							},
 							{
 								"id": "ec87cc24-a09f-41fc-8c9b-05d748ce628d~Foxtrot",
 								"shortForm": "Foxtrot",
+								"abbreviation": "Foxtrot",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Foxtrot"
 							}
 						]

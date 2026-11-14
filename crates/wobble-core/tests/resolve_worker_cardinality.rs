@@ -51,7 +51,8 @@ fn answer(id: &str, value: &str) -> Value {
     } else {
         format!("{}…", value.chars().take(9).collect::<String>())
     };
-    json!({ "id": id, "value": value, "shortForm": short_form, "shortFormOrigin": "generated" })
+    json!({ "id": id, "value": value, "shortForm": short_form, "shortFormOrigin": "generated",
+            "abbreviation": short_form, "abbreviationOrigin": "generated" })
 }
 
 fn worker_attribute(id: &str, name: &str, kind: &str, options: Value) -> Value {

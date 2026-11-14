@@ -24,10 +24,10 @@ test('Configuration stays in the navigation rail footer on desktop and mobile', 
 	// sits that far above the viewport bottom rather than flush with it.
 	expect(footerBounds.y + footerBounds.height).toBeGreaterThanOrEqual(viewport.height - 16);
 
-	// The Configuration page asks for Short form suggestions as it opens. Waiting for that
+	// The Configuration page asks for Abbreviation suggestions as it opens. Waiting for that
 	// call makes it happen, and be recorded, in every run rather than only when the page
 	// outlives the test.
-	const suggested = page.waitForResponse('**/api/configuration/short-forms');
+	const suggested = page.waitForResponse('**/api/configuration/abbreviations');
 	await configurationLink.click();
 	await expect(page).toHaveURL('/configuration');
 	await suggested;
@@ -41,7 +41,7 @@ test('Configuration stays in the navigation rail footer on desktop and mobile', 
 		.locator('footer')
 		.getByRole('link', { name: 'Configuration', exact: true });
 	await expect(mobileConfigurationLink).toBeVisible();
-	const suggestedOnMobile = page.waitForResponse('**/api/configuration/short-forms');
+	const suggestedOnMobile = page.waitForResponse('**/api/configuration/abbreviations');
 	await mobileConfigurationLink.click();
 	await expect(page).toHaveURL('/configuration');
 	await suggestedOnMobile;

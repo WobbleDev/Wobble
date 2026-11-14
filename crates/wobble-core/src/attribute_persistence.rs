@@ -699,6 +699,8 @@ mod tests {
                     mode: None,
                     short_form: None,
                     short_form_origin: None,
+                    abbreviation: None,
+                    abbreviation_origin: None,
                     merged_into: None,
                 })
                 .collect(),

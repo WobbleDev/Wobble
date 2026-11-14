@@ -60,7 +60,7 @@ fn replays_every_ported_scenario() {
         replayed += 1;
     }
 
-    assert_eq!(replayed, 142);
+    assert_eq!(replayed, 143);
 }
 
 /// Re-records contract/fixtures/scenarios.json from the current core. Each scenario replays

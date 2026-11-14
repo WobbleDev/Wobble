@@ -40,19 +40,25 @@
 							{
 								"id": "66505e3a-deba-4a6b-87a2-bb69c18bdea7~Front of House",
 								"shortForm": "Front of …",
+								"abbreviation": "Front of …",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Front of House"
 							},
 							{
 								"id": "66505e3a-deba-4a6b-87a2-bb69c18bdea7~Back of House",
 								"shortForm": "Back of H…",
+								"abbreviation": "Back of H…",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Back of House"
 							},
 							{
 								"id": "66505e3a-deba-4a6b-87a2-bb69c18bdea7~Overnight Deep-Clean Crew",
 								"shortForm": "Overnight…",
+								"abbreviation": "Overnight…",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Overnight Deep-Clean Crew"
 							}
 						]
@@ -911,19 +917,25 @@
 							{
 								"id": "66505e3a-deba-4a6b-87a2-bb69c18bdea7~Front of House",
 								"shortForm": "Front of …",
+								"abbreviation": "Front of …",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Front of House"
 							},
 							{
 								"id": "66505e3a-deba-4a6b-87a2-bb69c18bdea7~Back of House",
 								"shortForm": "Back of H…",
+								"abbreviation": "Back of H…",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Back of House"
 							},
 							{
 								"id": "66505e3a-deba-4a6b-87a2-bb69c18bdea7~Overnight Deep-Clean Crew",
 								"shortForm": "Overnight…",
+								"abbreviation": "Overnight…",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Overnight Deep-Clean Crew"
 							}
 						]

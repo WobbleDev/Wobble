@@ -72,6 +72,8 @@ fn a_five_level_answer_tree_saves_reads_back_and_is_held_by_a_worker() {
         for option in expected.as_array_mut().expect("options") {
             option["shortForm"] = option["value"].clone();
             option["shortFormOrigin"] = json!("generated");
+            option["abbreviation"] = option["value"].clone();
+            option["abbreviationOrigin"] = json!("generated");
         }
         assert_eq!(attribute["options"], expected, "{kind}");
         assert_eq!(dataset["workers"][0]["attributes"]["deep"], held, "{kind}");

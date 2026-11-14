@@ -19,24 +19,28 @@
 			"body": {
 				"agitations": [
 					{
-						"id": "216e4811-0e35-4279-a930-a30a86a73f59",
+						"id": "3406d4de-7a94-4778-a1d0-1b884fb296b9",
 						"text": "Pay"
 					}
 				],
 				"attributes": [
 					{
-						"id": "c91f1152-e41c-4351-8d45-868c65158c72",
+						"id": "bccfcb19-0bc1-4330-868c-990e9efcfb5c",
 						"kind": "category",
 						"name": "Department",
 						"options": [
 							{
-								"id": "c91f1152-e41c-4351-8d45-868c65158c72~Customer Service North",
+								"abbreviation": "Customer …",
+								"abbreviationOrigin": "generated",
+								"id": "bccfcb19-0bc1-4330-868c-990e9efcfb5c~Customer Service North",
 								"shortForm": "Customer …",
 								"shortFormOrigin": "generated",
 								"value": "Customer Service North"
 							},
 							{
-								"id": "c91f1152-e41c-4351-8d45-868c65158c72~Back of House Maintenance",
+								"abbreviation": "BHM",
+								"abbreviationOrigin": "generated",
+								"id": "bccfcb19-0bc1-4330-868c-990e9efcfb5c~Back of House Maintenance",
 								"shortForm": "BHM",
 								"shortFormOrigin": "generated",
 								"value": "Back of House Maintenance"
@@ -60,14 +64,14 @@
 				"workers": [
 					{
 						"agitations": [
-							"216e4811-0e35-4279-a930-a30a86a73f59"
+							"3406d4de-7a94-4778-a1d0-1b884fb296b9"
 						],
 						"assessment": "Supporter",
 						"attributes": {
-							"c91f1152-e41c-4351-8d45-868c65158c72": "c91f1152-e41c-4351-8d45-868c65158c72~Customer Service North"
+							"bccfcb19-0bc1-4330-868c-990e9efcfb5c": "bccfcb19-0bc1-4330-868c-990e9efcfb5c~Customer Service North"
 						},
 						"email": "",
-						"id": "503a0250-de83-4fb2-a724-cd33a5dec2dc",
+						"id": "c0888471-d6cf-4e5b-b8fb-e58de1e08e3e",
 						"languages": [],
 						"name": "Worker Department 0",
 						"notes": [],
@@ -76,14 +80,14 @@
 					},
 					{
 						"agitations": [
-							"216e4811-0e35-4279-a930-a30a86a73f59"
+							"3406d4de-7a94-4778-a1d0-1b884fb296b9"
 						],
 						"assessment": "Supporter",
 						"attributes": {
-							"c91f1152-e41c-4351-8d45-868c65158c72": "c91f1152-e41c-4351-8d45-868c65158c72~Back of House Maintenance"
+							"bccfcb19-0bc1-4330-868c-990e9efcfb5c": "bccfcb19-0bc1-4330-868c-990e9efcfb5c~Back of House Maintenance"
 						},
 						"email": "",
-						"id": "13da9460-379e-4ebe-8771-892506362206",
+						"id": "c8457894-08a2-40e5-a11d-5cc2ef281b4b",
 						"languages": [],
 						"name": "Worker Department 1",
 						"notes": [],
@@ -92,14 +96,14 @@
 					},
 					{
 						"agitations": [
-							"216e4811-0e35-4279-a930-a30a86a73f59"
+							"3406d4de-7a94-4778-a1d0-1b884fb296b9"
 						],
 						"assessment": "Supporter",
 						"attributes": {
-							"c91f1152-e41c-4351-8d45-868c65158c72": ""
+							"bccfcb19-0bc1-4330-868c-990e9efcfb5c": ""
 						},
 						"email": "",
-						"id": "4a5ec03e-000e-4f8c-976b-ebc7dc37223e",
+						"id": "b009c947-8d35-414e-82c9-5c71d384dea5",
 						"languages": [],
 						"name": "Worker Department 2",
 						"notes": [],
@@ -110,32 +114,32 @@
 				"worksite": {
 					"committeeGoal": 5,
 					"committeeTarget": 5,
-					"id": "c6b46492-70bf-4db5-815f-5311f13c3ab8",
+					"id": "2e134793-fd92-447b-a8f9-346133141c2c",
 					"name": "My Worksite 4"
 				},
 				"worksites": [
 					{
 						"committeeGoal": 5,
 						"committeeTarget": 5,
-						"id": "01a1bafb-d2f7-4a59-a25b-7cc9dcfd5822",
+						"id": "f185edef-8a8a-456d-9d4d-acf88005698b",
 						"name": "My Worksite"
 					},
 					{
 						"committeeGoal": 5,
 						"committeeTarget": 5,
-						"id": "3f07b25e-d2e8-4e23-a67a-f7741437f946",
+						"id": "3d66a931-ed20-4a66-9d55-484a01bb8da7",
 						"name": "My Worksite 2"
 					},
 					{
 						"committeeGoal": 5,
 						"committeeTarget": 5,
-						"id": "f2106d38-bfb0-44d8-9ad7-0ed09f424cae",
+						"id": "e66eef25-ddd9-4134-a2cf-10bc1ee7901f",
 						"name": "My Worksite 3"
 					},
 					{
 						"committeeGoal": 5,
 						"committeeTarget": 5,
-						"id": "c6b46492-70bf-4db5-815f-5311f13c3ab8",
+						"id": "2e134793-fd92-447b-a8f9-346133141c2c",
 						"name": "My Worksite 4"
 					}
 				]
@@ -170,7 +174,7 @@
 				"worksite": {
 					"committeeGoal": 5,
 					"committeeTarget": 5,
-					"id": "c6b46492-70bf-4db5-815f-5311f13c3ab8",
+					"id": "2e134793-fd92-447b-a8f9-346133141c2c",
 					"name": "My Worksite 4"
 				}
 			}
@@ -180,16 +184,16 @@
 			"path": "/api/attributes",
 			"requestBody": [
 				{
-					"id": "c91f1152-e41c-4351-8d45-868c65158c72",
+					"id": "bccfcb19-0bc1-4330-868c-990e9efcfb5c",
 					"name": "Department",
 					"kind": "category",
 					"options": [
 						{
-							"id": "c91f1152-e41c-4351-8d45-868c65158c72~Customer Service North",
+							"id": "bccfcb19-0bc1-4330-868c-990e9efcfb5c~Customer Service North",
 							"value": "Customer Service North"
 						},
 						{
-							"id": "c91f1152-e41c-4351-8d45-868c65158c72~Back of House Maintenance",
+							"id": "bccfcb19-0bc1-4330-868c-990e9efcfb5c~Back of House Maintenance",
 							"value": "Back of House Maintenance"
 						}
 					]
@@ -199,18 +203,22 @@
 			"body": {
 				"attributes": [
 					{
-						"id": "c91f1152-e41c-4351-8d45-868c65158c72",
+						"id": "bccfcb19-0bc1-4330-868c-990e9efcfb5c",
 						"kind": "category",
 						"name": "Department",
 						"options": [
 							{
-								"id": "c91f1152-e41c-4351-8d45-868c65158c72~Customer Service North",
+								"abbreviation": "Customer …",
+								"abbreviationOrigin": "generated",
+								"id": "bccfcb19-0bc1-4330-868c-990e9efcfb5c~Customer Service North",
 								"shortForm": "Customer …",
 								"shortFormOrigin": "generated",
 								"value": "Customer Service North"
 							},
 							{
-								"id": "c91f1152-e41c-4351-8d45-868c65158c72~Back of House Maintenance",
+								"abbreviation": "BHM",
+								"abbreviationOrigin": "generated",
+								"id": "bccfcb19-0bc1-4330-868c-990e9efcfb5c~Back of House Maintenance",
 								"shortForm": "BHM",
 								"shortFormOrigin": "generated",
 								"value": "Back of House Maintenance"
@@ -229,7 +237,7 @@
 			"status": 200,
 			"body": {
 				"agitation": {
-					"id": "216e4811-0e35-4279-a930-a30a86a73f59",
+					"id": "3406d4de-7a94-4778-a1d0-1b884fb296b9",
 					"text": "Pay"
 				},
 				"created": true
@@ -244,10 +252,10 @@
 				"phone": "",
 				"assessment": "Supporter",
 				"attributes": {
-					"c91f1152-e41c-4351-8d45-868c65158c72": "c91f1152-e41c-4351-8d45-868c65158c72~Customer Service North"
+					"bccfcb19-0bc1-4330-868c-990e9efcfb5c": "bccfcb19-0bc1-4330-868c-990e9efcfb5c~Customer Service North"
 				},
 				"agitations": [
-					"216e4811-0e35-4279-a930-a30a86a73f59"
+					"3406d4de-7a94-4778-a1d0-1b884fb296b9"
 				],
 				"languages": [],
 				"relationships": [],
@@ -257,14 +265,14 @@
 			"body": {
 				"worker": {
 					"agitations": [
-						"216e4811-0e35-4279-a930-a30a86a73f59"
+						"3406d4de-7a94-4778-a1d0-1b884fb296b9"
 					],
 					"assessment": "Supporter",
 					"attributes": {
-						"c91f1152-e41c-4351-8d45-868c65158c72": "c91f1152-e41c-4351-8d45-868c65158c72~Customer Service North"
+						"bccfcb19-0bc1-4330-868c-990e9efcfb5c": "bccfcb19-0bc1-4330-868c-990e9efcfb5c~Customer Service North"
 					},
 					"email": "",
-					"id": "503a0250-de83-4fb2-a724-cd33a5dec2dc",
+					"id": "c0888471-d6cf-4e5b-b8fb-e58de1e08e3e",
 					"languages": [],
 					"name": "Worker Department 0",
 					"notes": [],
@@ -282,10 +290,10 @@
 				"phone": "",
 				"assessment": "Supporter",
 				"attributes": {
-					"c91f1152-e41c-4351-8d45-868c65158c72": "c91f1152-e41c-4351-8d45-868c65158c72~Back of House Maintenance"
+					"bccfcb19-0bc1-4330-868c-990e9efcfb5c": "bccfcb19-0bc1-4330-868c-990e9efcfb5c~Back of House Maintenance"
 				},
 				"agitations": [
-					"216e4811-0e35-4279-a930-a30a86a73f59"
+					"3406d4de-7a94-4778-a1d0-1b884fb296b9"
 				],
 				"languages": [],
 				"relationships": [],
@@ -295,14 +303,14 @@
 			"body": {
 				"worker": {
 					"agitations": [
-						"216e4811-0e35-4279-a930-a30a86a73f59"
+						"3406d4de-7a94-4778-a1d0-1b884fb296b9"
 					],
 					"assessment": "Supporter",
 					"attributes": {
-						"c91f1152-e41c-4351-8d45-868c65158c72": "c91f1152-e41c-4351-8d45-868c65158c72~Back of House Maintenance"
+						"bccfcb19-0bc1-4330-868c-990e9efcfb5c": "bccfcb19-0bc1-4330-868c-990e9efcfb5c~Back of House Maintenance"
 					},
 					"email": "",
-					"id": "13da9460-379e-4ebe-8771-892506362206",
+					"id": "c8457894-08a2-40e5-a11d-5cc2ef281b4b",
 					"languages": [],
 					"name": "Worker Department 1",
 					"notes": [],
@@ -320,10 +328,10 @@
 				"phone": "",
 				"assessment": "Supporter",
 				"attributes": {
-					"c91f1152-e41c-4351-8d45-868c65158c72": ""
+					"bccfcb19-0bc1-4330-868c-990e9efcfb5c": ""
 				},
 				"agitations": [
-					"216e4811-0e35-4279-a930-a30a86a73f59"
+					"3406d4de-7a94-4778-a1d0-1b884fb296b9"
 				],
 				"languages": [],
 				"relationships": [],
@@ -333,14 +341,14 @@
 			"body": {
 				"worker": {
 					"agitations": [
-						"216e4811-0e35-4279-a930-a30a86a73f59"
+						"3406d4de-7a94-4778-a1d0-1b884fb296b9"
 					],
 					"assessment": "Supporter",
 					"attributes": {
-						"c91f1152-e41c-4351-8d45-868c65158c72": ""
+						"bccfcb19-0bc1-4330-868c-990e9efcfb5c": ""
 					},
 					"email": "",
-					"id": "4a5ec03e-000e-4f8c-976b-ebc7dc37223e",
+					"id": "b009c947-8d35-414e-82c9-5c71d384dea5",
 					"languages": [],
 					"name": "Worker Department 2",
 					"notes": [],
@@ -353,7 +361,7 @@
 	"worksite": {
 		"committeeGoal": 5,
 		"committeeTarget": 5,
-		"id": "c6b46492-70bf-4db5-815f-5311f13c3ab8",
+		"id": "2e134793-fd92-447b-a8f9-346133141c2c",
 		"name": "My Worksite 4"
 	}
 }

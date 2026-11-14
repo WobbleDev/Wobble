@@ -45,7 +45,8 @@ const preview = {
 	moves: [],
 	attributeMoves: [],
 	modeChanges: [],
-	shortForms: []
+	shortForms: [],
+	abbreviations: []
 } as unknown as ConfigurationPreview;
 
 const draft = fromWorkerAttributeDefinitions([{ ...department, answers: [department.answers[1]] }]);

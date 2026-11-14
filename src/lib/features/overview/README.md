@@ -16,9 +16,9 @@ shade and tone, shade-key steps, segment order, the hide-count-below-5% rule, fl
 placement). Every figure and matrix cell opens its Workers through
 `summary-links.ts` plus `group-drilldown.ts`.
 
-Agitations headers show each Attribute value's stored Short form (ADR 0046, generated in
+Agitations headers show each Attribute value's stored Abbreviation (ADR 0046, generated in
 the core) through the shared display rule in `#lib/shared/abbreviation-label.ts`: the full
-name when it fits the column budget, otherwise the Short form; values that would show the
+name when it fits the column budget, otherwise the Abbreviation; values that would show the
 same text gain the fewest nearest ancestors ("Kitchen › Days"), and the No value reading
 is always full. `agitations-headers.svelte.ts` measures the uppercase mono voice and
 reserves the Worker count. Columns per page are counted at the ten-digit minimum budget;

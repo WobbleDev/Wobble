@@ -40,13 +40,17 @@
 							{
 								"id": "8f3e297c-a94f-45f5-8730-a7a33cd60919~North",
 								"shortForm": "North",
+								"abbreviation": "North",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "North"
 							},
 							{
 								"id": "8f3e297c-a94f-45f5-8730-a7a33cd60919~South",
 								"shortForm": "South",
+								"abbreviation": "South",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "South"
 							}
 						]
@@ -1125,13 +1129,17 @@
 							{
 								"id": "8f3e297c-a94f-45f5-8730-a7a33cd60919~North",
 								"shortForm": "North",
+								"abbreviation": "North",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "North"
 							},
 							{
 								"id": "8f3e297c-a94f-45f5-8730-a7a33cd60919~South",
 								"shortForm": "South",
+								"abbreviation": "South",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "South"
 							}
 						]

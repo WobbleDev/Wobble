@@ -32,13 +32,17 @@
 							{
 								"id": "aa18360c-b61b-42dc-84e1-dcddf0b5b198~North",
 								"shortForm": "North",
+								"abbreviation": "North",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "North"
 							},
 							{
 								"id": "aa18360c-b61b-42dc-84e1-dcddf0b5b198~South",
 								"shortForm": "South",
+								"abbreviation": "South",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "South"
 							}
 						]
@@ -892,13 +896,17 @@
 							{
 								"id": "aa18360c-b61b-42dc-84e1-dcddf0b5b198~North",
 								"shortForm": "North",
+								"abbreviation": "North",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "North"
 							},
 							{
 								"id": "aa18360c-b61b-42dc-84e1-dcddf0b5b198~South",
 								"shortForm": "South",
+								"abbreviation": "South",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "South"
 							}
 						]

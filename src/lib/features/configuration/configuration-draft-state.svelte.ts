@@ -145,7 +145,7 @@ export class ConfigurationDraftState {
 	saveAnnouncement = $state('');
 
 	/**
-	 * The core's suggested Short form for each value that has no edited one, by answer id.
+	 * The core's suggested Abbreviation for each value that has no edited one, by answer id.
 	 * The frontend never generates a form: it shows what the preview answered.
 	 */
 	readonly suggestedAbbreviations = new SvelteMap<string, string>();
@@ -279,7 +279,7 @@ export class ConfigurationDraftState {
 			}
 		});
 
-		// A new, renamed or edited value asks the core for its Short form once typing settles.
+		// A new, renamed or edited value asks the core for its Abbreviation once typing settles.
 		$effect(() => {
 			const key = previewRequestKey(suggestionRequest(this.draftInput));
 			const timer = setTimeout(() => untrack(() => void this.loadSuggestions(key)), 250);
@@ -423,7 +423,7 @@ export class ConfigurationDraftState {
 		return { status: 'ok' };
 	}
 
-	/** Typing a Short form edits it; clearing it returns the value to a generated form. */
+	/** Typing a Abbreviation edits it; clearing it returns the value to a generated form. */
 	editAbbreviation(attributeId: string, answerId: string, text: string) {
 		if (this.saving) return;
 		const attribute = this.draftAttributes.find((candidate) => candidate.id === attributeId);
@@ -435,13 +435,13 @@ export class ConfigurationDraftState {
 		if (!text.trim()) this.suggestedAbbreviations.delete(answerId);
 	}
 
-	/** The text a value's Short form field shows. */
+	/** The text a value's Abbreviation field shows. */
 	abbreviationShown(answer: AttributeAnswerDraft): string {
 		return shownAbbreviation(answer, this.suggestedAbbreviations);
 	}
 
 	/**
-	 * Asks the core for the Short form of every value of the draft. A draft the core would
+	 * Asks the core for the Abbreviation of every value of the draft. A draft the core would
 	 * refuse (an over-long form, a blank name) keeps the suggestions it has; the Save bar
 	 * explains why it cannot save.
 	 */
@@ -457,8 +457,8 @@ export class ConfigurationDraftState {
 			if (token !== this.suggestionToken) return;
 			this.suggestedAbbreviations.clear();
 			for (const form of forms) {
-				if (form.shortFormOrigin === 'generated') {
-					this.suggestedAbbreviations.set(form.answerId, form.shortForm);
+				if (form.abbreviationOrigin === 'generated') {
+					this.suggestedAbbreviations.set(form.answerId, form.abbreviation);
 				}
 			}
 		} catch {
@@ -851,13 +851,13 @@ export class ConfigurationDraftState {
 						this.savedConfiguration = nextConfiguration.map((attribute) => ({
 							...attribute,
 							answers: visibleValues(attribute.answers).map(
-								({ id, value, parentId, mode, shortForm, shortFormOrigin }) => ({
+								({ id, value, parentId, mode, abbreviation, abbreviationOrigin }) => ({
 									id,
 									value,
 									...(parentId ? { parentId } : {}),
 									...(mode ? { mode } : {}),
-									...(shortFormOrigin === 'edited' && shortForm
-										? { shortForm, shortFormOrigin }
+									...(abbreviationOrigin === 'edited' && abbreviation
+										? { abbreviation, abbreviationOrigin }
 										: {})
 								})
 							)

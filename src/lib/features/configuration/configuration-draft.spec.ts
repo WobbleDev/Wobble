@@ -775,10 +775,15 @@ describe('attribute answer edits', () => {
 	});
 });
 
-describe('Short forms through the Configuration draft (ADR 0046)', () => {
+describe('Abbreviations through the Configuration draft (ADR 0046)', () => {
 	const stored = [
-		{ id: 'a', value: 'Customer Service', shortForm: 'Cust. Svc.', shortFormOrigin: 'generated' },
-		{ id: 'b', value: 'Maintenance', shortForm: 'MX', shortFormOrigin: 'edited' }
+		{
+			id: 'a',
+			value: 'Customer Service',
+			abbreviation: 'Cust. Svc.',
+			abbreviationOrigin: 'generated'
+		},
+		{ id: 'b', value: 'Maintenance', abbreviation: 'MX', abbreviationOrigin: 'edited' }
 	] as const;
 
 	it('leaves a generated form to the core and sends an edited one with its origin', () => {
@@ -786,7 +791,7 @@ describe('Short forms through the Configuration draft (ADR 0046)', () => {
 
 		expect(toWorkerAttributeDefinitions(draft)[0].answers).toEqual([
 			{ id: 'a', value: 'Customer Service' },
-			{ id: 'b', value: 'Maintenance', shortForm: 'MX', shortFormOrigin: 'edited' }
+			{ id: 'b', value: 'Maintenance', abbreviation: 'MX', abbreviationOrigin: 'edited' }
 		]);
 	});
 
@@ -797,9 +802,9 @@ describe('Short forms through the Configuration draft (ADR 0046)', () => {
 
 		expect(sent[0].options).toEqual([
 			{ id: 'a', value: 'Customer Service' },
-			{ id: 'b', value: 'Maintenance', shortForm: 'MX', shortFormOrigin: 'edited' }
+			{ id: 'b', value: 'Maintenance', abbreviation: 'MX', abbreviationOrigin: 'edited' }
 		]);
-		// The core answers the same Short forms on reload, so the reloaded draft is still clean.
+		// The core answers the same Abbreviations on reload, so the reloaded draft is still clean.
 		const reloaded = fromWorkerAttributeDefinitions([saved]);
 		expect(
 			getDirtyState(
@@ -818,7 +823,7 @@ describe('Short forms through the Configuration draft (ADR 0046)', () => {
 			...attr,
 			answers: attr.answers.map((answer) =>
 				answer.id === 'a'
-					? { ...answer, shortForm: 'CS', shortFormOrigin: 'edited' as const }
+					? { ...answer, abbreviation: 'CS', abbreviationOrigin: 'edited' as const }
 					: answer
 			)
 		}));
@@ -834,17 +839,19 @@ describe('Short forms through the Configuration draft (ADR 0046)', () => {
 	it('trims an edited form it sends', () => {
 		const draft = [
 			attribute({
-				answers: [{ id: 'a', value: 'Server', shortForm: '  SV ', shortFormOrigin: 'edited' }]
+				answers: [{ id: 'a', value: 'Server', abbreviation: '  SV ', abbreviationOrigin: 'edited' }]
 			})
 		];
 
-		expect(toWorkerAttributeDefinitions(draft)[0].answers[0].shortForm).toBe('SV');
+		expect(toWorkerAttributeDefinitions(draft)[0].answers[0].abbreviation).toBe('SV');
 	});
 
 	it('blocks Save while an edited form is beyond ten graphemes', () => {
 		const long = [
 			attribute({
-				answers: [{ id: 'a', value: 'Server', shortForm: 'Eleven char', shortFormOrigin: 'edited' }]
+				answers: [
+					{ id: 'a', value: 'Server', abbreviation: 'Eleven char', abbreviationOrigin: 'edited' }
+				]
 			})
 		];
 

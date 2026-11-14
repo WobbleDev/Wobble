@@ -178,7 +178,7 @@ fn a_conversion_failure_after_staging_leaves_the_live_database_untouched() {
 
     // The live database is exactly the pre-restore state, not the backup's partial content.
     let live = current_db(&target).expect("the live database still opens");
-    assert_eq!(raw_version(live.conn()), Some(25));
+    assert_eq!(raw_version(live.conn()), Some(26));
     assert_eq!(count(live.conn(), "worksites"), 1);
     assert_eq!(count(live.conn(), "workers"), 1);
     let name: String = live
@@ -201,7 +201,7 @@ fn a_conversion_failure_after_staging_leaves_the_live_database_untouched() {
 
     // The safety copy is the pre-restore database and opens on its own.
     let copy = current_db(&safety).expect("the safety copy opens");
-    assert_eq!(raw_version(copy.conn()), Some(25));
+    assert_eq!(raw_version(copy.conn()), Some(26));
     let copied: String = copy
         .conn()
         .query_row(
@@ -544,7 +544,7 @@ fn every_supported_source_version_restores_through_the_same_migration() {
 
         // The supplied safety copy is the pre-restore database.
         let copy = current_db(&safety).expect("the safety copy opens");
-        assert_eq!(raw_version(copy.conn()), Some(25));
+        assert_eq!(raw_version(copy.conn()), Some(26));
         assert_eq!(count(copy.conn(), "workers"), 1);
         assert_eq!(theme(copy.conn()), "dark");
         drop(copy);
@@ -557,11 +557,11 @@ fn every_supported_source_version_restores_through_the_same_migration() {
             let rows = migration_rows(db.conn());
             assert_eq!(
                 rows.len() as i64,
-                26 - version,
+                27 - version,
                 "v{version} runs every remaining step once"
             );
             assert_eq!(rows[0].0, version);
-            assert_eq!(rows.last().unwrap().0, 25);
+            assert_eq!(rows.last().unwrap().0, 26);
             assert_eq!(
                 db.path().map(Path::to_path_buf),
                 Some(std::fs::canonicalize(&target).unwrap())
@@ -582,7 +582,7 @@ fn every_supported_source_version_restores_through_the_same_migration() {
             dump_state(db.conn()).expect("dumps the reopened database")
         };
         assert_eq!(second, first, "v{version} reopening writes nothing");
-        assert_eq!(second["schema_migrations"].len() as i64, 26 - version);
+        assert_eq!(second["schema_migrations"].len() as i64, 27 - version);
         assert!(
             !second.contains_key("work_assignments"),
             "v{version} leaves no assignment table behind"
@@ -901,7 +901,7 @@ fn restore_refuses_versions_outside_the_supported_chain_without_touching_the_liv
     let target = populated_target("unsupported");
     let app = current_app(&target);
 
-    for version in [11_i64, 26] {
+    for version in [11_i64, 27] {
         let path = temp_db_path(&format!("restore-migration-unsupported-{version}.sqlite"));
         remove_database(&path);
         // LEGACY-PLAINTEXT-FIXTURE: temp-constructed legacy-schema source for upgrade-read test (intentional plaintext, never production).
@@ -953,7 +953,7 @@ fn restore_refuses_versions_outside_the_supported_chain_without_touching_the_liv
 
     drop(app);
     let live = current_db(&target).expect("the live database still opens");
-    assert_eq!(raw_version(live.conn()), Some(25));
+    assert_eq!(raw_version(live.conn()), Some(26));
     assert_eq!(count(live.conn(), "workers"), 1);
     assert_eq!(theme(live.conn()), "dark");
     drop(live);

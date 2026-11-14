@@ -116,7 +116,7 @@ test('relocation preserves child identities and resolves a direct parent holder'
 
 	const after = await worksiteDataset(request);
 	const job = after.attributes.find((attribute: { id: string }) => attribute.id === ids.job)!;
-	// Each value also carries its generated Short form (ADR 0046), which this check ignores.
+	// Each value also carries its generated Abbreviation (ADR 0046), which this check ignores.
 	const withoutAbbreviations = job.options.map(
 		({ id, value, parentId }: { id: string; value: string; parentId?: string }) => ({
 			id,
