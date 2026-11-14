@@ -870,18 +870,26 @@ test('Free draws the same names at the same places with motion allowed as with r
 	expect([...animated.keys()].sort(), 'the same names are drawn').toEqual(
 		[...reduced.keys()].sort()
 	);
+	const moved: string[] = [];
 	for (const [id, box] of reduced) {
 		const now = animated.get(id)!;
-		// DOM text boxes are measured in map units; compare their visible CSS-pixel difference.
-		expect(
-			Math.abs(now.left - box.left) * animatedDrawing.scale,
-			`name ${id} holds its place`
-		).toBeLessThanOrEqual(1);
-		expect(
-			Math.abs(now.top - box.top) * animatedDrawing.scale,
-			`name ${id} holds its place`
-		).toBeLessThanOrEqual(1);
+		const dl = Math.abs(now.left - box.left) * animatedDrawing.scale;
+		const dt = Math.abs(now.top - box.top) * animatedDrawing.scale;
+		if (dl > 1 || dt > 1) moved.push(`${id.slice(0, 6)} dl=${dl.toFixed(2)} dt=${dt.toFixed(2)}`);
 	}
+	const diag = JSON.stringify({
+		scales: [reducedDrawing.scale, animatedDrawing.scale],
+		framed: [reducedDrawing.packetScale, animatedDrawing.packetScale],
+		canvas: [reducedDrawing.layoutCanvas, animatedDrawing.layoutCanvas],
+		free: [reducedDrawing.free, animatedDrawing.free],
+		chrome: [reducedDrawing.chrome, animatedDrawing.chrome],
+		dots: reducedDrawing.dots.some((d, i) => {
+			const o = animatedDrawing.dots[i];
+			return Math.abs(d.x - o.x) > 0.01 || Math.abs(d.y - o.y) > 0.01 || d.r !== o.r;
+		}),
+		moved
+	});
+	expect(moved, `names hold their place: ${diag}`).toEqual([]);
 });
 
 test('reaches the same final drawing with motion allowed as with reduced motion', async ({
