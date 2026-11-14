@@ -3,7 +3,7 @@ import { resolve } from 'node:path';
 import type { Browser, BrowserContext, Page } from '@playwright/test';
 import { expect, test } from './fixtures.ts';
 import { activateWorksite, followActiveWorksite } from './api.ts';
-import { settled, waitForMapReady } from './map.ts';
+import { settled, waitForMapReady, waitForSceneReady } from './map.ts';
 import { selectOnMap } from './person.ts';
 import {
 	populateWorksite,
@@ -229,7 +229,17 @@ async function openMapping(
 		'data-map-settled',
 		'true'
 	);
+	// Ready means arranged, framed, landed, names frozen and the camera at rest; two equal
+	// samples 100 ms apart can still pass on a loaded runner while a frame is pending.
+	await waitForSceneReady(page);
 	await page.evaluate(() => document.fonts.ready.then(() => undefined));
+}
+
+/** The camera's revision counter: it moves on every camera change, so a test can wait for one. */
+async function cameraRevision(page: Page): Promise<number> {
+	return Number(
+		await page.getByTestId('relationship-map-surface').getAttribute('data-camera-revision')
+	);
 }
 
 /** The Worksite on the comparison build, populated identically. */
@@ -619,10 +629,15 @@ for (const { slug, worksite } of nearFixtures) {
 
 		const zoomIn = page.getByRole('button', { name: 'Zoom in' });
 		await zoomIn.focus();
+		const beforeZoom = await cameraRevision(page);
 		for (let step = 0; step < 2; step += 1) await page.keyboard.press('Enter');
+		await waitForSceneReady(page, { cameraAfter: beforeZoom });
 		await settled(() => readDrawing(page));
 		await page.getByRole('button', { name: 'Reset zoom' }).focus();
+		const beforeReset = await cameraRevision(page);
 		await page.keyboard.press('Enter');
+		// The reset glides back; read only once the camera has landed, not after two equal frames.
+		await waitForSceneReady(page, { cameraAfter: beforeReset });
 		const after = await settled(() => readDrawing(page));
 
 		// The refit lands on the same framing; a name only moves if its kept spot is
@@ -835,7 +850,9 @@ test('Free places names anew when a filter changes the map', async ({ page, requ
 	await clearFilters(page);
 	await settled(() => readDrawing(page));
 	await page.getByRole('button', { name: 'Zoom in' }).focus();
+	const beforeZoom = await cameraRevision(page);
 	for (let step = 0; step < 3; step += 1) await page.keyboard.press('Enter');
+	await waitForSceneReady(page, { cameraAfter: beforeZoom });
 	const zoomed = await settled(() => readDrawing(page));
 	await hideFilterValue(page, /^Department/, 'D1');
 	const after = await settled(() => readDrawing(page));
