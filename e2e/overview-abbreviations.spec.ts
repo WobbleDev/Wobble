@@ -122,7 +122,7 @@ test('narrow headers show Short forms and wide headers show full names', async (
 		...longNames,
 		'No Department': 'No Department'
 	});
-	await card(page).screenshot({ path: test.info().outputPath('short-forms-390.png') });
+	await card(page).screenshot({ path: test.info().outputPath('abbreviations-390.png') });
 
 	await page.setViewportSize({ width: 1800, height: 874 });
 	await page.goto('/overview?by=' + zones);

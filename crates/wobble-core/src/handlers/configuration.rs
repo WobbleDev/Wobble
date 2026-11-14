@@ -4,8 +4,8 @@ use serde::Serialize;
 use serde_json::Value;
 
 use crate::configuration_preview::{
-    preview_configuration, suggest_short_forms, ConfigurationPreviewProposal, ProposedSharedValue,
-    SuggestedShortForm,
+    preview_configuration, suggest_abbreviations, ConfigurationPreviewProposal,
+    ProposedSharedValue, SuggestedAbbreviation,
 };
 use crate::db::Db;
 use crate::error::Result;
@@ -54,23 +54,24 @@ pub(crate) fn post_configuration_preview(db: &Db, request: &Request) -> Result<R
 #[derive(Serialize)]
 #[serde(rename_all = "camelCase")]
 #[cfg_attr(feature = "ts", derive(ts_rs::TS), ts(export))]
-struct ShortFormsReply {
-    short_forms: Vec<SuggestedShortForm>,
+struct AbbreviationsReply {
+    short_forms: Vec<SuggestedAbbreviation>,
 }
 
 /// `POST /api/configuration/short-forms`: the same proposed Save as the preview, answered
 /// with only the Short form each surviving value would be stored with (ADR 0046). It is the
 /// light read behind the Short form fields, so editing never computes impacts. Writes nothing.
-pub(crate) fn post_configuration_short_forms(db: &Db, request: &Request) -> Result<Response> {
+pub(crate) fn post_configuration_abbreviations(db: &Db, request: &Request) -> Result<Response> {
     let (active, proposal) = match read_proposal(db, request)? {
         Ok(read) => read,
         Err(response) => return Ok(response),
     };
 
-    let short_forms = suggest_short_forms(request_locale(request), db.conn(), &active, &proposal)?;
+    let short_forms =
+        suggest_abbreviations(request_locale(request), db.conn(), &active, &proposal)?;
     Ok(json_response(
         200,
-        serde_json::to_value(ShortFormsReply { short_forms })?,
+        serde_json::to_value(AbbreviationsReply { short_forms })?,
     ))
 }
 

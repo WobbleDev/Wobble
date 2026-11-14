@@ -12,7 +12,11 @@ import type {
 	Worksite
 } from '#lib/domain-vocabulary.ts';
 import { isAppSettings, type AppSettings } from '#lib/shared/app-settings.ts';
-import { isShortForm, isShortFormOrigin, type ShortFormOrigin } from '#lib/shared/short-form.ts';
+import {
+	isAbbreviation,
+	isAbbreviationOrigin,
+	type AbbreviationOrigin
+} from '#lib/shared/abbreviation.ts';
 import { decodeAgitation, decodeLanguage, decodeWorker, isRecord } from './api-decode.ts';
 import { requestJson } from './request-json.ts';
 
@@ -77,7 +81,8 @@ function decodeAnswers(value: unknown): AttributeAnswer[] {
 		const hasForm = answer.shortForm !== undefined;
 		if (
 			hasForm !== (answer.shortFormOrigin !== undefined) ||
-			(hasForm && (!isShortForm(answer.shortForm) || !isShortFormOrigin(answer.shortFormOrigin)))
+			(hasForm &&
+				(!isAbbreviation(answer.shortForm) || !isAbbreviationOrigin(answer.shortFormOrigin)))
 		) {
 			throw new Error('Server returned an invalid attribute.');
 		}
@@ -90,7 +95,7 @@ function decodeAnswers(value: unknown): AttributeAnswer[] {
 			...(hasForm
 				? {
 						shortForm: answer.shortForm as string,
-						shortFormOrigin: answer.shortFormOrigin as ShortFormOrigin
+						shortFormOrigin: answer.shortFormOrigin as AbbreviationOrigin
 					}
 				: {})
 		};

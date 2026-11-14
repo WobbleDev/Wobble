@@ -6,7 +6,7 @@
 import { m } from '#lib/paraglide/messages.js';
 import { normalizeForMatch } from '#lib/shared/text.ts';
 import type { AttributeAnswerDraft, AttributeDraft } from './attribute-draft.ts';
-import { shortFormTooLong } from './short-form-draft.ts';
+import { abbreviationTooLong } from './abbreviation-draft.ts';
 
 export function getAttributeNameError(
 	name: string,
@@ -94,7 +94,7 @@ export function isAttributeValid(attribute: AttributeDraft, attributes: readonly
 		attribute.answers.every(
 			(option) =>
 				option.mergedInto ||
-				(!getAttributeOptionError(attribute, option) && !shortFormTooLong(option))
+				(!getAttributeOptionError(attribute, option) && !abbreviationTooLong(option))
 		) &&
 		!attribute.newOption.trim() &&
 		!attribute.newOptionError

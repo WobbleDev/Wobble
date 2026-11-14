@@ -93,7 +93,10 @@ pub struct StoredAnswer {
     )]
     #[cfg_attr(
         feature = "ts",
-        ts(optional, as = "Option<crate::attribute_migration::ShortFormOriginTs>")
+        ts(
+            optional,
+            as = "Option<crate::attribute_migration::AbbreviationOriginTs>"
+        )
     )]
     pub short_form_origin: Option<String>,
     #[serde(
@@ -105,14 +108,14 @@ pub struct StoredAnswer {
     pub merged_into: Option<String>,
 }
 
-/// TS-only mirror of `ShortFormOrigin` (`generated` | `edited`).
+/// TS-only mirror of `AbbreviationOrigin` (`generated` | `edited`).
 ///
 /// The runtime field stays `Option<String>`; this narrows only the generated TS type.
 #[cfg(feature = "ts")]
 #[derive(ts_rs::TS)]
-#[ts(export, rename = "ShortFormOrigin")]
+#[ts(export, rename = "AbbreviationOrigin")]
 #[allow(dead_code)]
-pub(crate) enum ShortFormOriginTs {
+pub(crate) enum AbbreviationOriginTs {
     #[ts(rename = "generated")]
     Generated,
     #[ts(rename = "edited")]
@@ -260,16 +263,16 @@ fn convert_attribute_value(
 /// whether this Worksite's generated Short forms already match the bundled lists' revision
 /// (ticket 05): when it does not, every generated value regenerates once and an edited one
 /// stays untouched.
-fn resolved_short_forms(
+fn resolved_abbreviations(
     locale: &str,
     previous: Option<&PositionedWorkerAttributeDefinition>,
     kept: &[&StoredAnswer],
     worksite_values: &[&str],
     lists_current: bool,
 ) -> Vec<(String, String)> {
-    let entries: Vec<crate::short_form::Entry> = kept
+    let entries: Vec<crate::abbreviation::Entry> = kept
         .iter()
-        .map(|answer| crate::short_form::Entry {
+        .map(|answer| crate::abbreviation::Entry {
             name: answer.value.trim(),
             form: answer.short_form.as_deref(),
             origin: answer.short_form_origin.as_deref(),
@@ -284,7 +287,7 @@ fn resolved_short_forms(
                 }),
         })
         .collect();
-    crate::short_form::resolve_attribute(locale, &entries, worksite_values, lists_current)
+    crate::abbreviation::resolve_attribute(locale, &entries, worksite_values, lists_current)
 }
 
 /// Every surviving value's trimmed name across every Attribute of `proposed`: the worksite
@@ -303,7 +306,7 @@ fn worksite_value_names(proposed: &[WorkerAttributeDefinition]) -> Vec<&str> {
 /// as `(attribute id, answer id, form, origin)`. A preview reports these so the frontend
 /// never generates a form itself. `lists_current` is whether this Worksite's generated
 /// Short forms already match the bundled lists' revision (ticket 05).
-pub fn proposed_short_forms(
+pub fn proposed_abbreviations(
     locale: &str,
     stored: &[PositionedWorkerAttributeDefinition],
     proposed: &[WorkerAttributeDefinition],
@@ -318,7 +321,7 @@ pub fn proposed_short_forms(
             .iter()
             .filter(|answer| answer.merged_into.is_none())
             .collect();
-        for (answer, (form, origin)) in kept.iter().zip(resolved_short_forms(
+        for (answer, (form, origin)) in kept.iter().zip(resolved_abbreviations(
             locale,
             previous,
             &kept,
@@ -417,7 +420,8 @@ pub fn compute_attribute_migration_plan_in(
             .filter(|answer| answer.merged_into.is_none())
             .collect();
         // Edited forms and unchanged generated ones stay put; only the rest is generated.
-        let forms = resolved_short_forms(locale, previous, &kept, &worksite_values, lists_current);
+        let forms =
+            resolved_abbreviations(locale, previous, &kept, &worksite_values, lists_current);
         let survivors: Vec<StoredAnswer> = kept
             .iter()
             .zip(forms)
@@ -544,8 +548,8 @@ mod tests {
                 value: (*text).to_owned(),
                 parent_id: None,
                 mode: None,
-                short_form: Some(crate::short_form::generate("en", text, &[], &[])),
-                short_form_origin: Some(crate::short_form::ORIGIN_GENERATED.to_owned()),
+                short_form: Some(crate::abbreviation::generate("en", text, &[], &[])),
+                short_form_origin: Some(crate::abbreviation::ORIGIN_GENERATED.to_owned()),
                 merged_into: None,
             })
             .collect()
@@ -845,8 +849,8 @@ mod tests {
                     value: (*answer).to_owned(),
                     parent_id: parent.map(str::to_owned),
                     mode: None,
-                    short_form: Some(crate::short_form::generate("en", answer, &[], &[])),
-                    short_form_origin: Some(crate::short_form::ORIGIN_GENERATED.to_owned()),
+                    short_form: Some(crate::abbreviation::generate("en", answer, &[], &[])),
+                    short_form_origin: Some(crate::abbreviation::ORIGIN_GENERATED.to_owned()),
                     merged_into: None,
                 })
                 .collect(),
@@ -1020,9 +1024,9 @@ mod tests {
 
     /// A stored Attribute with one stale generated Short form ("Cust Serv" is not what the
     /// current lists would themselves produce for "Customer Service": ticket 05's lists
-    /// still shorten it to "Cust. Svc.", as `short_form::generate` already proves) and one
+    /// still shorten it to "Cust. Svc.", as `abbreviation::generate` already proves) and one
     /// edited Short form, with neither value renamed or otherwise changed.
-    fn stale_short_form_attribute() -> PositionedWorkerAttributeDefinition {
+    fn stale_abbreviation_attribute() -> PositionedWorkerAttributeDefinition {
         PositionedWorkerAttributeDefinition {
             id: "a".to_owned(),
             name: "a".to_owned(),
@@ -1034,7 +1038,7 @@ mod tests {
                     parent_id: None,
                     mode: None,
                     short_form: Some("Cust Serv".to_owned()),
-                    short_form_origin: Some(crate::short_form::ORIGIN_GENERATED.to_owned()),
+                    short_form_origin: Some(crate::abbreviation::ORIGIN_GENERATED.to_owned()),
                     merged_into: None,
                 },
                 StoredAnswer {
@@ -1043,7 +1047,7 @@ mod tests {
                     parent_id: None,
                     mode: None,
                     short_form: Some("My Choice".to_owned()),
-                    short_form_origin: Some(crate::short_form::ORIGIN_EDITED.to_owned()),
+                    short_form_origin: Some(crate::abbreviation::ORIGIN_EDITED.to_owned()),
                     merged_into: None,
                 },
             ],
@@ -1062,7 +1066,7 @@ mod tests {
 
     #[test]
     fn a_list_revision_change_writes_nothing_while_the_stored_lists_are_current() {
-        let stored = stale_short_form_attribute();
+        let stored = stale_abbreviation_attribute();
         let proposed = as_proposed(&stored);
 
         let plan = compute_attribute_migration_plan_in(
@@ -1080,7 +1084,7 @@ mod tests {
 
     #[test]
     fn a_list_revision_change_regenerates_a_stale_form_but_leaves_an_edited_one_at_the_boundary() {
-        let stored = stale_short_form_attribute();
+        let stored = stale_abbreviation_attribute();
         let proposed = as_proposed(&stored);
 
         let plan = compute_attribute_migration_plan_in(

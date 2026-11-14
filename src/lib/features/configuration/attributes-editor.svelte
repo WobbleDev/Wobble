@@ -32,8 +32,8 @@
 		onRemoveOption: (attributeId: string, optionId: string, removeBranch?: boolean) => void;
 		onRenameOption: (attributeId: string, optionId: string, text: string) => ValueTextCheck;
 		onMergeOption: (attributeId: string, foldedId: string, survivorId: string) => void;
-		shortFormShown: (answer: AttributeAnswerDraft) => string;
-		onEditShortForm: (attributeId: string, answerId: string, text: string) => void;
+		abbreviationShown: (answer: AttributeAnswerDraft) => string;
+		onEditAbbreviation: (attributeId: string, answerId: string, text: string) => void;
 		onMoveAnswer: (attributeId: string, optionId: string, parentId: string) => void;
 		/** Moves an answer branch under a row of another Attribute (or its top level). */
 		onMoveAnswerToAttribute: (source: MoveSource, target: MoveTarget) => boolean;
@@ -73,8 +73,8 @@
 		onRemoveOption,
 		onRenameOption,
 		onMergeOption,
-		shortFormShown,
-		onEditShortForm,
+		abbreviationShown,
+		onEditAbbreviation,
 		onMoveAnswer,
 		onMoveAnswerToAttribute,
 		onPromoteAnswer,
@@ -253,8 +253,8 @@
 				{onAddOption}
 				{onRemoveOption}
 				{onRenameOption}
-				{shortFormShown}
-				{onEditShortForm}
+				{abbreviationShown}
+				{onEditAbbreviation}
 				onDuplicateOption={(attributeId, optionId, foldingText, survivorId) => {
 					pendingMerge = { attributeId, foldedId: optionId, foldingText, survivorId };
 				}}

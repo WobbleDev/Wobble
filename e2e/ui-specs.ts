@@ -27,7 +27,7 @@ export const uiSpecs = [
 	'**/overview-dashboard-links.spec.ts',
 	'**/overview-default.spec.ts',
 	'**/overview-focus.spec.ts',
-	'**/overview-short-forms.spec.ts',
+	'**/overview-abbreviations.spec.ts',
 	'**/overview-support-bars.spec.ts',
 	'**/overview-support-groups.spec.ts',
 	'**/semantics-long-content.spec.ts',

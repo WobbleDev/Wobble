@@ -223,7 +223,7 @@ describe('activation', () => {
 		const { outline, host } = setup();
 		const event = key('F2', onRow('a1'), { shiftKey: true });
 		await outline.keydown(event);
-		expect(host.activate).toHaveBeenCalledWith('a1', 'short-form');
+		expect(host.activate).toHaveBeenCalledWith('a1', 'abbreviation');
 		expect(host.activate).not.toHaveBeenCalledWith('a1', 'edit');
 		expect(event.preventDefault).toHaveBeenCalledOnce();
 	});

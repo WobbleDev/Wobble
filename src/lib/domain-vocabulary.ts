@@ -4,7 +4,7 @@ import type { WorkerAttributeKind } from '#lib/client/generated/WorkerAttributeK
 import type { RemovedAnswerHolder } from '#lib/client/generated/RemovedAnswerHolder.ts';
 import type { CardinalitySurface } from '#lib/client/generated/CardinalitySurface.ts';
 
-import type { ShortFormOrigin } from '#lib/shared/short-form.ts';
+import type { AbbreviationOrigin } from '#lib/shared/abbreviation.ts';
 
 /** A Worker's answer to one Attribute, as the answer id(s) it holds (ADR 0030). */
 export type WorkerAttributeValue = string | string[];
@@ -27,7 +27,7 @@ export type AttributeAnswer = {
 	 * every saved value; a value not yet saved has neither.
 	 */
 	shortForm?: string;
-	shortFormOrigin?: ShortFormOrigin;
+	shortFormOrigin?: AbbreviationOrigin;
 };
 
 export const assessmentOptions = [
@@ -187,7 +187,7 @@ export type ModeChangeResolution = {
 
 export type { ConfigurationPreview } from '#lib/client/generated/ConfigurationPreview.ts';
 
-export type { ConfigurationPreviewShortForm } from '#lib/client/generated/ConfigurationPreviewShortForm.ts';
+export type { ConfigurationPreviewAbbreviation } from '#lib/client/generated/ConfigurationPreviewAbbreviation.ts';
 
 /** One holder's explicit resolution in a Configuration Save. */
 export type RemovedAnswerHolderResolution = {

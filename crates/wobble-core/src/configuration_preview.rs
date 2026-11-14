@@ -16,7 +16,7 @@ use crate::agitation_persistence::{
     AgitationMerge,
 };
 use crate::attribute_migration::{
-    answers_to_json, compute_attribute_migration_plan_in, proposed_short_forms,
+    answers_to_json, compute_attribute_migration_plan_in, proposed_abbreviations,
     PositionedWorkerAttributeDefinition, WorkerAttributeDefinition,
 };
 use crate::attribute_persistence::{
@@ -161,7 +161,7 @@ pub struct ConfigurationPreview {
     pub mode_changes: Vec<ModeImpact>,
     /// The Short form each surviving proposed value would be stored with (ADR 0046), so the
     /// frontend never generates one.
-    pub short_forms: Vec<SuggestedShortForm>,
+    pub short_forms: Vec<SuggestedAbbreviation>,
 }
 
 /// One proposed value's Short form and its origin.
@@ -170,30 +170,30 @@ pub struct ConfigurationPreview {
 #[cfg_attr(
     feature = "ts",
     derive(ts_rs::TS),
-    ts(export, rename = "ConfigurationPreviewShortForm")
+    ts(export, rename = "ConfigurationPreviewAbbreviation")
 )]
-pub struct SuggestedShortForm {
+pub struct SuggestedAbbreviation {
     pub attribute_id: String,
     pub answer_id: String,
     pub short_form: String,
     #[cfg_attr(
         feature = "ts",
-        ts(as = "crate::attribute_migration::ShortFormOriginTs")
+        ts(as = "crate::attribute_migration::AbbreviationOriginTs")
     )]
     pub short_form_origin: String,
 }
 
 /// The Short form each surviving value of the proposed Attributes would be stored with:
 /// the light read behind the Configuration's Short form fields. Writes nothing.
-pub fn suggest_short_forms(
+pub fn suggest_abbreviations(
     locale: &str,
     conn: &Connection,
     worksite: &Worksite,
     proposal: &ConfigurationPreviewProposal,
-) -> Result<Vec<SuggestedShortForm>> {
+) -> Result<Vec<SuggestedAbbreviation>> {
     reject_foreign_attribute_ids(conn, worksite, &proposal.attributes)?;
     let stored = get_stored_worker_attributes(conn, &Some(worksite.clone()))?;
-    let lists_current = crate::short_form_revision::lists_current(conn, &worksite.id)?;
+    let lists_current = crate::abbreviation_revision::lists_current(conn, &worksite.id)?;
     Ok(suggested_forms(
         locale,
         &stored,
@@ -207,11 +207,11 @@ fn suggested_forms(
     stored: &[PositionedWorkerAttributeDefinition],
     proposed: &[WorkerAttributeDefinition],
     lists_current: bool,
-) -> Vec<SuggestedShortForm> {
-    proposed_short_forms(locale, stored, proposed, lists_current)
+) -> Vec<SuggestedAbbreviation> {
+    proposed_abbreviations(locale, stored, proposed, lists_current)
         .into_iter()
         .map(
-            |(attribute_id, answer_id, short_form, short_form_origin)| SuggestedShortForm {
+            |(attribute_id, answer_id, short_form, short_form_origin)| SuggestedAbbreviation {
                 attribute_id,
                 answer_id,
                 short_form,
@@ -253,7 +253,7 @@ pub fn preview_configuration(
         AllowedEdits::RESOLVED,
     )?;
     let cardinality = compute_cardinality_impacts(conn, worksite, &stored, &proposal.attributes)?;
-    let lists_current = crate::short_form_revision::lists_current(conn, &worksite.id)?;
+    let lists_current = crate::abbreviation_revision::lists_current(conn, &worksite.id)?;
     let mut accumulator = PreviewAccumulator::default();
     push_attribute_changes(
         locale,

@@ -3,7 +3,7 @@ import { defaultAppSettings } from '#lib/shared/app-settings.ts';
 import {
 	decodeAgitation,
 	decodeConfigurationPreview,
-	decodeShortFormSuggestions,
+	decodeAbbreviationSuggestions,
 	decodeImportResult,
 	decodeLanguage,
 	decodeSettings,
@@ -192,6 +192,6 @@ describe('decoding Short form suggestions (ADR 0046)', () => {
 	};
 
 	it('decodes the listed forms', () => {
-		expect(decodeShortFormSuggestions({ shortForms: [suggestion] })).toEqual([suggestion]);
+		expect(decodeAbbreviationSuggestions({ shortForms: [suggestion] })).toEqual([suggestion]);
 	});
 });

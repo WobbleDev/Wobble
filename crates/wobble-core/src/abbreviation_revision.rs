@@ -1,7 +1,7 @@
 //! Tracks, per Worksite, which bundled Short form lists revision (ADR 0046, ticket 05) its
 //! generated Short forms were last resolved against. The lists are versioned by one
-//! snapshot-wide revision (`short_form_lists::REVISION`, written by
-//! `scripts/short-form-lists/build.mjs`). An app update that bundles a new snapshot changes
+//! snapshot-wide revision (`abbreviation_lists::REVISION`, written by
+//! `scripts/abbreviation-lists/build.mjs`). An app update that bundles a new snapshot changes
 //! that constant; the next Save or preview for a Worksite whose stored revision disagrees
 //! regenerates every still-generated Short form once and never touches an edited one, and
 //! a Save then records the new revision.
@@ -36,7 +36,7 @@ pub(crate) fn lists_current(conn: &Connection, worksite_id: &str) -> Result<bool
             |row| row.get(0),
         )
         .optional()?;
-    Ok(stored.as_deref() == Some(crate::short_form_lists::REVISION))
+    Ok(stored.as_deref() == Some(crate::abbreviation_lists::REVISION))
 }
 
 /// Records that `worksite_id`'s generated Short forms now match the bundled lists' current
@@ -45,7 +45,10 @@ pub(crate) fn mark_lists_current(conn: &Connection, worksite_id: &str) -> Result
     conn.execute(
         "INSERT INTO app_settings (key, value) VALUES (?1, ?2) \
          ON CONFLICT(key) DO UPDATE SET value = excluded.value",
-        params![revision_key(worksite_id), crate::short_form_lists::REVISION],
+        params![
+            revision_key(worksite_id),
+            crate::abbreviation_lists::REVISION
+        ],
     )?;
     Ok(())
 }

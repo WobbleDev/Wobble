@@ -1,11 +1,11 @@
 //! The bundled lists a generated Short form draws on (ADR 0046), one set per language. Only
 //! the lists of the request locale's language apply. The `words` and `acronyms` arrays come
-//! from `short_form_lists_generated` (ticket 05): the versioned snapshot a developer-run
-//! script under `scripts/short-form-lists/` writes from pinned, checksummed source inputs,
+//! from `abbreviation_lists_generated` (ticket 05): the versioned snapshot a developer-run
+//! script under `scripts/abbreviation-lists/` writes from pinned, checksummed source inputs,
 //! never from a network call the app itself makes. `connectors` and `qualifiers` are closed,
 //! hand-authored function-word lists with no source to fetch, so they stay here.
 
-pub use crate::short_form_lists_generated::REVISION;
+pub use crate::abbreviation_lists_generated::REVISION;
 
 /// The lists of one language. Words are lowercase; a shortening is stored lowercase and
 /// takes the case of the word it replaces.
@@ -25,7 +25,7 @@ pub struct Lists {
 
 pub static ENGLISH: Lists = Lists {
     language: "en",
-    words: crate::short_form_lists_generated::ENGLISH_WORDS,
+    words: crate::abbreviation_lists_generated::ENGLISH_WORDS,
     connectors: &["of", "the", "and", "for", "to", "in", "at", "on", "&"],
     qualifiers: &[
         "no",
@@ -52,12 +52,12 @@ pub static ENGLISH: Lists = Lists {
         "permanent",
         "assistant",
     ],
-    acronyms: crate::short_form_lists_generated::ENGLISH_ACRONYMS,
+    acronyms: crate::abbreviation_lists_generated::ENGLISH_ACRONYMS,
 };
 
 pub static SPANISH: Lists = Lists {
     language: "es",
-    words: crate::short_form_lists_generated::SPANISH_WORDS,
+    words: crate::abbreviation_lists_generated::SPANISH_WORDS,
     connectors: &[
         "de", "del", "la", "las", "el", "los", "y", "e", "para", "en", "&",
     ],
@@ -74,7 +74,7 @@ pub static SPANISH: Lists = Lists {
         "permanente",
         "asistente",
     ],
-    acronyms: crate::short_form_lists_generated::SPANISH_ACRONYMS,
+    acronyms: crate::abbreviation_lists_generated::SPANISH_ACRONYMS,
 };
 
 /// The lists for a locale tag such as "es", "es-MX" or "en-GB": its language's lists, or

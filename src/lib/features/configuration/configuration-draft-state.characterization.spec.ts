@@ -238,7 +238,7 @@ describe('the saving lock', () => {
 		const draft = open();
 		draft.saving = true;
 		draft.removeAttributeOption('dept', 'tills');
-		draft.editShortForm('dept', 'front', 'F');
+		draft.editAbbreviation('dept', 'front', 'F');
 		expect(draft.moveAnswerSibling('dept', 'front', 1)).toBeNull();
 		expect(draft.moveAnswerBeside('dept', 'back', 'front', false)).toBe(false);
 		expect(draft.moveAttribute('dept', 1)).toBe(false);

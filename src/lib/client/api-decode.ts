@@ -2,7 +2,7 @@ import { isAppSettings, type AppSettings } from '#lib/shared/app-settings.ts';
 import type {
 	Agitation,
 	ConfigurationPreview,
-	ConfigurationPreviewShortForm,
+	ConfigurationPreviewAbbreviation,
 	Language,
 	Worker,
 	WorkerUpdate
@@ -11,7 +11,7 @@ import type { AgitationCreatedReply } from '#lib/client/generated/AgitationCreat
 import type { ImportReply } from '#lib/client/generated/ImportReply.ts';
 import type { LanguageCreatedReply } from '#lib/client/generated/LanguageCreatedReply.ts';
 import type { RuntimeReply } from '#lib/client/generated/RuntimeReply.ts';
-import type { ShortFormsReply } from '#lib/client/generated/ShortFormsReply.ts';
+import type { AbbreviationsReply } from '#lib/client/generated/AbbreviationsReply.ts';
 import type { WorksiteReply } from '#lib/client/generated/WorksiteReply.ts';
 
 export function isRecord(value: unknown): value is Record<string, unknown> {
@@ -49,8 +49,8 @@ export function decodeLanguage(value: unknown): Language {
 }
 
 /** Narrows an untrusted Short form suggestions reply to the forms it lists. */
-export function decodeShortFormSuggestions(value: unknown): ConfigurationPreviewShortForm[] {
-	const reply = value as ShortFormsReply;
+export function decodeAbbreviationSuggestions(value: unknown): ConfigurationPreviewAbbreviation[] {
+	const reply = value as AbbreviationsReply;
 
 	return reply.shortForms;
 }

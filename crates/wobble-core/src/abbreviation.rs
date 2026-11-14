@@ -4,10 +4,10 @@
 use unicode_normalization::UnicodeNormalization;
 use unicode_segmentation::UnicodeSegmentation;
 
-use crate::short_form_lists::{lists_for, Lists};
+use crate::abbreviation_lists::{lists_for, Lists};
 
 /// The most graphemes a Short form may hold.
-pub const SHORT_FORM_LIMIT: usize = 10;
+pub const ABBREVIATION_LIMIT: usize = 10;
 /// The origin of a form the core produced from the value's name.
 pub const ORIGIN_GENERATED: &str = "generated";
 /// The origin of a form the organizer wrote; it never changes by itself.
@@ -32,11 +32,11 @@ pub fn normalise(text: &str) -> String {
 /// Whether `form`, once normalised and trimmed, is an acceptable Short form: 1 to 10
 /// graphemes.
 pub fn is_valid(form: &str) -> bool {
-    (1..=SHORT_FORM_LIMIT).contains(&grapheme_count(&normalise(form)))
+    (1..=ABBREVIATION_LIMIT).contains(&grapheme_count(&normalise(form)))
 }
 
 fn fits(text: &str) -> bool {
-    grapheme_count(text) <= SHORT_FORM_LIMIT
+    grapheme_count(text) <= ABBREVIATION_LIMIT
 }
 
 fn is_apostrophe(grapheme: &str) -> bool {
@@ -360,7 +360,7 @@ fn candidates(lists: &Lists, name: &str, worksite_values: &[&str]) -> Vec<String
     // ninth grapheme is a space ("Rotating …"). Trimming the cut broke the reviewed
     // Agitations header expectation, so the space stays.
     if !fits(name) {
-        let cut: String = name.graphemes(true).take(SHORT_FORM_LIMIT - 1).collect();
+        let cut: String = name.graphemes(true).take(ABBREVIATION_LIMIT - 1).collect();
         out.push(format!("{cut}…"));
     }
     out
@@ -497,7 +497,7 @@ pub fn resolve(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::short_form_lists::Lists;
+    use crate::abbreviation_lists::Lists;
 
     static FIXTURE: Lists = Lists {
         language: "xx",
@@ -548,7 +548,7 @@ mod tests {
     }
 
     #[test]
-    fn a_short_form_stated_in_the_name_is_taken_only_when_its_letters_are_the_initials() {
+    fn a_abbreviation_stated_in_the_name_is_taken_only_when_its_letters_are_the_initials() {
         assert_eq!(gen("Technical Advisory Board (TAB)"), "TAB");
         assert_eq!(gen("Ward 12 (W12)"), "W12");
         assert_eq!(gen("Department of Human Resources (DHR)"), "DHR");

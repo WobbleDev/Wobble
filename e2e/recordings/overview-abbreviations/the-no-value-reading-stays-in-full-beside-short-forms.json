@@ -1,0 +1,359 @@
+{
+	"pages": [
+		{
+			"method": "GET",
+			"path": "/api/boot-status",
+			"status": 200,
+			"body": {
+				"encrypted": true,
+				"firstRun": false,
+				"legacyPlaintext": false,
+				"markerPending": false,
+				"state": "open"
+			}
+		},
+		{
+			"method": "GET",
+			"path": "/api/dataset",
+			"status": 200,
+			"body": {
+				"agitations": [
+					{
+						"id": "216e4811-0e35-4279-a930-a30a86a73f59",
+						"text": "Pay"
+					}
+				],
+				"attributes": [
+					{
+						"id": "c91f1152-e41c-4351-8d45-868c65158c72",
+						"kind": "category",
+						"name": "Department",
+						"options": [
+							{
+								"id": "c91f1152-e41c-4351-8d45-868c65158c72~Customer Service North",
+								"shortForm": "Customer …",
+								"shortFormOrigin": "generated",
+								"value": "Customer Service North"
+							},
+							{
+								"id": "c91f1152-e41c-4351-8d45-868c65158c72~Back of House Maintenance",
+								"shortForm": "BHM",
+								"shortFormOrigin": "generated",
+								"value": "Back of House Maintenance"
+							}
+						]
+					}
+				],
+				"languages": [],
+				"settings": {
+					"colorBlindAssessments": false,
+					"dateFormat": "system",
+					"density": "standard",
+					"increaseContrast": false,
+					"language": "system",
+					"reduceMotion": "system",
+					"rememberWindow": true,
+					"textSize": "100",
+					"theme": "system",
+					"timeFormat": "system"
+				},
+				"workers": [
+					{
+						"agitations": [
+							"216e4811-0e35-4279-a930-a30a86a73f59"
+						],
+						"assessment": "Supporter",
+						"attributes": {
+							"c91f1152-e41c-4351-8d45-868c65158c72": "c91f1152-e41c-4351-8d45-868c65158c72~Customer Service North"
+						},
+						"email": "",
+						"id": "503a0250-de83-4fb2-a724-cd33a5dec2dc",
+						"languages": [],
+						"name": "Worker Department 0",
+						"notes": [],
+						"phone": "",
+						"relationships": []
+					},
+					{
+						"agitations": [
+							"216e4811-0e35-4279-a930-a30a86a73f59"
+						],
+						"assessment": "Supporter",
+						"attributes": {
+							"c91f1152-e41c-4351-8d45-868c65158c72": "c91f1152-e41c-4351-8d45-868c65158c72~Back of House Maintenance"
+						},
+						"email": "",
+						"id": "13da9460-379e-4ebe-8771-892506362206",
+						"languages": [],
+						"name": "Worker Department 1",
+						"notes": [],
+						"phone": "",
+						"relationships": []
+					},
+					{
+						"agitations": [
+							"216e4811-0e35-4279-a930-a30a86a73f59"
+						],
+						"assessment": "Supporter",
+						"attributes": {
+							"c91f1152-e41c-4351-8d45-868c65158c72": ""
+						},
+						"email": "",
+						"id": "4a5ec03e-000e-4f8c-976b-ebc7dc37223e",
+						"languages": [],
+						"name": "Worker Department 2",
+						"notes": [],
+						"phone": "",
+						"relationships": []
+					}
+				],
+				"worksite": {
+					"committeeGoal": 5,
+					"committeeTarget": 5,
+					"id": "c6b46492-70bf-4db5-815f-5311f13c3ab8",
+					"name": "My Worksite 4"
+				},
+				"worksites": [
+					{
+						"committeeGoal": 5,
+						"committeeTarget": 5,
+						"id": "01a1bafb-d2f7-4a59-a25b-7cc9dcfd5822",
+						"name": "My Worksite"
+					},
+					{
+						"committeeGoal": 5,
+						"committeeTarget": 5,
+						"id": "3f07b25e-d2e8-4e23-a67a-f7741437f946",
+						"name": "My Worksite 2"
+					},
+					{
+						"committeeGoal": 5,
+						"committeeTarget": 5,
+						"id": "f2106d38-bfb0-44d8-9ad7-0ed09f424cae",
+						"name": "My Worksite 3"
+					},
+					{
+						"committeeGoal": 5,
+						"committeeTarget": 5,
+						"id": "c6b46492-70bf-4db5-815f-5311f13c3ab8",
+						"name": "My Worksite 4"
+					}
+				]
+			}
+		},
+		{
+			"method": "GET",
+			"path": "/api/settings",
+			"status": 200,
+			"body": {
+				"settings": {
+					"colorBlindAssessments": false,
+					"dateFormat": "system",
+					"density": "standard",
+					"increaseContrast": false,
+					"language": "system",
+					"reduceMotion": "system",
+					"rememberWindow": true,
+					"textSize": "100",
+					"theme": "system",
+					"timeFormat": "system"
+				}
+			}
+		}
+	],
+	"seed": [
+		{
+			"method": "GET",
+			"path": "/api/worksite",
+			"status": 200,
+			"body": {
+				"worksite": {
+					"committeeGoal": 5,
+					"committeeTarget": 5,
+					"id": "c6b46492-70bf-4db5-815f-5311f13c3ab8",
+					"name": "My Worksite 4"
+				}
+			}
+		},
+		{
+			"method": "PUT",
+			"path": "/api/attributes",
+			"requestBody": [
+				{
+					"id": "c91f1152-e41c-4351-8d45-868c65158c72",
+					"name": "Department",
+					"kind": "category",
+					"options": [
+						{
+							"id": "c91f1152-e41c-4351-8d45-868c65158c72~Customer Service North",
+							"value": "Customer Service North"
+						},
+						{
+							"id": "c91f1152-e41c-4351-8d45-868c65158c72~Back of House Maintenance",
+							"value": "Back of House Maintenance"
+						}
+					]
+				}
+			],
+			"status": 200,
+			"body": {
+				"attributes": [
+					{
+						"id": "c91f1152-e41c-4351-8d45-868c65158c72",
+						"kind": "category",
+						"name": "Department",
+						"options": [
+							{
+								"id": "c91f1152-e41c-4351-8d45-868c65158c72~Customer Service North",
+								"shortForm": "Customer …",
+								"shortFormOrigin": "generated",
+								"value": "Customer Service North"
+							},
+							{
+								"id": "c91f1152-e41c-4351-8d45-868c65158c72~Back of House Maintenance",
+								"shortForm": "BHM",
+								"shortFormOrigin": "generated",
+								"value": "Back of House Maintenance"
+							}
+						]
+					}
+				]
+			}
+		},
+		{
+			"method": "POST",
+			"path": "/api/agitations",
+			"requestBody": {
+				"text": "Pay"
+			},
+			"status": 200,
+			"body": {
+				"agitation": {
+					"id": "216e4811-0e35-4279-a930-a30a86a73f59",
+					"text": "Pay"
+				},
+				"created": true
+			}
+		},
+		{
+			"method": "POST",
+			"path": "/api/workers",
+			"requestBody": {
+				"name": "Worker Department 0",
+				"email": "",
+				"phone": "",
+				"assessment": "Supporter",
+				"attributes": {
+					"c91f1152-e41c-4351-8d45-868c65158c72": "c91f1152-e41c-4351-8d45-868c65158c72~Customer Service North"
+				},
+				"agitations": [
+					"216e4811-0e35-4279-a930-a30a86a73f59"
+				],
+				"languages": [],
+				"relationships": [],
+				"notes": []
+			},
+			"status": 201,
+			"body": {
+				"worker": {
+					"agitations": [
+						"216e4811-0e35-4279-a930-a30a86a73f59"
+					],
+					"assessment": "Supporter",
+					"attributes": {
+						"c91f1152-e41c-4351-8d45-868c65158c72": "c91f1152-e41c-4351-8d45-868c65158c72~Customer Service North"
+					},
+					"email": "",
+					"id": "503a0250-de83-4fb2-a724-cd33a5dec2dc",
+					"languages": [],
+					"name": "Worker Department 0",
+					"notes": [],
+					"phone": "",
+					"relationships": []
+				}
+			}
+		},
+		{
+			"method": "POST",
+			"path": "/api/workers",
+			"requestBody": {
+				"name": "Worker Department 1",
+				"email": "",
+				"phone": "",
+				"assessment": "Supporter",
+				"attributes": {
+					"c91f1152-e41c-4351-8d45-868c65158c72": "c91f1152-e41c-4351-8d45-868c65158c72~Back of House Maintenance"
+				},
+				"agitations": [
+					"216e4811-0e35-4279-a930-a30a86a73f59"
+				],
+				"languages": [],
+				"relationships": [],
+				"notes": []
+			},
+			"status": 201,
+			"body": {
+				"worker": {
+					"agitations": [
+						"216e4811-0e35-4279-a930-a30a86a73f59"
+					],
+					"assessment": "Supporter",
+					"attributes": {
+						"c91f1152-e41c-4351-8d45-868c65158c72": "c91f1152-e41c-4351-8d45-868c65158c72~Back of House Maintenance"
+					},
+					"email": "",
+					"id": "13da9460-379e-4ebe-8771-892506362206",
+					"languages": [],
+					"name": "Worker Department 1",
+					"notes": [],
+					"phone": "",
+					"relationships": []
+				}
+			}
+		},
+		{
+			"method": "POST",
+			"path": "/api/workers",
+			"requestBody": {
+				"name": "Worker Department 2",
+				"email": "",
+				"phone": "",
+				"assessment": "Supporter",
+				"attributes": {
+					"c91f1152-e41c-4351-8d45-868c65158c72": ""
+				},
+				"agitations": [
+					"216e4811-0e35-4279-a930-a30a86a73f59"
+				],
+				"languages": [],
+				"relationships": [],
+				"notes": []
+			},
+			"status": 201,
+			"body": {
+				"worker": {
+					"agitations": [
+						"216e4811-0e35-4279-a930-a30a86a73f59"
+					],
+					"assessment": "Supporter",
+					"attributes": {
+						"c91f1152-e41c-4351-8d45-868c65158c72": ""
+					},
+					"email": "",
+					"id": "4a5ec03e-000e-4f8c-976b-ebc7dc37223e",
+					"languages": [],
+					"name": "Worker Department 2",
+					"notes": [],
+					"phone": "",
+					"relationships": []
+				}
+			}
+		}
+	],
+	"worksite": {
+		"committeeGoal": 5,
+		"committeeTarget": 5,
+		"id": "c6b46492-70bf-4db5-815f-5311f13c3ab8",
+		"name": "My Worksite 4"
+	}
+}

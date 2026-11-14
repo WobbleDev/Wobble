@@ -230,9 +230,9 @@
 					draftState.removeAttributeOption(attributeId, optionId, removeBranch)}
 				onRenameOption={(attributeId, optionId, text) =>
 					draftState.renameAttributeAnswer(attributeId, optionId, text)}
-				shortFormShown={(answer) => draftState.shortFormShown(answer)}
-				onEditShortForm={(attributeId, answerId, text) =>
-					draftState.editShortForm(attributeId, answerId, text)}
+				abbreviationShown={(answer) => draftState.abbreviationShown(answer)}
+				onEditAbbreviation={(attributeId, answerId, text) =>
+					draftState.editAbbreviation(attributeId, answerId, text)}
 				onMergeOption={(attributeId, foldedId, survivorId) =>
 					draftState.mergeAttributeAnswer(attributeId, foldedId, survivorId)}
 				onMoveAnswer={(attributeId, optionId, parentId) =>

@@ -1,0 +1,643 @@
+{
+	"pages": [
+		{
+			"method": "GET",
+			"path": "/api/boot-status",
+			"status": 200,
+			"body": {
+				"encrypted": true,
+				"firstRun": false,
+				"legacyPlaintext": false,
+				"markerPending": false,
+				"state": "open"
+			}
+		},
+		{
+			"method": "GET",
+			"path": "/api/dataset",
+			"status": 200,
+			"body": {
+				"agitations": [
+					{
+						"id": "79968e04-f687-4daa-8730-8b98bb383afe",
+						"text": "Pay"
+					}
+				],
+				"attributes": [
+					{
+						"id": "c02e9bfb-739c-42ff-8e70-37e2c15e9b42",
+						"kind": "category",
+						"name": "Department",
+						"options": [
+							{
+								"id": "c02e9bfb-739c-42ff-8e70-37e2c15e9b42~Front of House Cleaning",
+								"shortForm": "FHC",
+								"shortFormOrigin": "generated",
+								"value": "Front of House Cleaning"
+							},
+							{
+								"id": "c02e9bfb-739c-42ff-8e70-37e2c15e9b42~Back of House Maintenance",
+								"shortForm": "BHM",
+								"shortFormOrigin": "generated",
+								"value": "Back of House Maintenance"
+							},
+							{
+								"id": "c02e9bfb-739c-42ff-8e70-37e2c15e9b42~Customer Service North",
+								"shortForm": "Customer …",
+								"shortFormOrigin": "generated",
+								"value": "Customer Service North"
+							},
+							{
+								"id": "c02e9bfb-739c-42ff-8e70-37e2c15e9b42~Community Support Team",
+								"shortForm": "CST",
+								"shortFormOrigin": "generated",
+								"value": "Community Support Team"
+							},
+							{
+								"id": "c02e9bfb-739c-42ff-8e70-37e2c15e9b42~North Warehouse Receiving",
+								"shortForm": "North War…",
+								"shortFormOrigin": "generated",
+								"value": "North Warehouse Receiving"
+							},
+							{
+								"id": "c02e9bfb-739c-42ff-8e70-37e2c15e9b42~South Warehouse Shipping",
+								"shortForm": "South War…",
+								"shortFormOrigin": "generated",
+								"value": "South Warehouse Shipping"
+							},
+							{
+								"id": "c02e9bfb-739c-42ff-8e70-37e2c15e9b42~Ward 12",
+								"shortForm": "Ward 12",
+								"shortFormOrigin": "generated",
+								"value": "Ward 12"
+							}
+						]
+					}
+				],
+				"languages": [],
+				"settings": {
+					"colorBlindAssessments": false,
+					"dateFormat": "system",
+					"density": "standard",
+					"increaseContrast": false,
+					"language": "system",
+					"reduceMotion": "system",
+					"rememberWindow": true,
+					"textSize": "100",
+					"theme": "system",
+					"timeFormat": "system"
+				},
+				"workers": [
+					{
+						"agitations": [
+							"79968e04-f687-4daa-8730-8b98bb383afe"
+						],
+						"assessment": "Supporter",
+						"attributes": {
+							"c02e9bfb-739c-42ff-8e70-37e2c15e9b42": "c02e9bfb-739c-42ff-8e70-37e2c15e9b42~Front of House Cleaning"
+						},
+						"email": "",
+						"id": "6bad42de-f787-4fea-9301-5bff5b20aa84",
+						"languages": [],
+						"name": "Worker Department 0",
+						"notes": [],
+						"phone": "",
+						"relationships": []
+					},
+					{
+						"agitations": [
+							"79968e04-f687-4daa-8730-8b98bb383afe"
+						],
+						"assessment": "Supporter",
+						"attributes": {
+							"c02e9bfb-739c-42ff-8e70-37e2c15e9b42": "c02e9bfb-739c-42ff-8e70-37e2c15e9b42~Back of House Maintenance"
+						},
+						"email": "",
+						"id": "4c2a76ac-bb63-47f6-8d65-1a2752e0524b",
+						"languages": [],
+						"name": "Worker Department 1",
+						"notes": [],
+						"phone": "",
+						"relationships": []
+					},
+					{
+						"agitations": [
+							"79968e04-f687-4daa-8730-8b98bb383afe"
+						],
+						"assessment": "Supporter",
+						"attributes": {
+							"c02e9bfb-739c-42ff-8e70-37e2c15e9b42": "c02e9bfb-739c-42ff-8e70-37e2c15e9b42~Customer Service North"
+						},
+						"email": "",
+						"id": "7dbd5970-572b-4f09-b611-6d44bb9efb95",
+						"languages": [],
+						"name": "Worker Department 2",
+						"notes": [],
+						"phone": "",
+						"relationships": []
+					},
+					{
+						"agitations": [
+							"79968e04-f687-4daa-8730-8b98bb383afe"
+						],
+						"assessment": "Supporter",
+						"attributes": {
+							"c02e9bfb-739c-42ff-8e70-37e2c15e9b42": "c02e9bfb-739c-42ff-8e70-37e2c15e9b42~Community Support Team"
+						},
+						"email": "",
+						"id": "cf6d7efb-70e8-4756-b6a4-ed1bb29f44b4",
+						"languages": [],
+						"name": "Worker Department 3",
+						"notes": [],
+						"phone": "",
+						"relationships": []
+					},
+					{
+						"agitations": [
+							"79968e04-f687-4daa-8730-8b98bb383afe"
+						],
+						"assessment": "Supporter",
+						"attributes": {
+							"c02e9bfb-739c-42ff-8e70-37e2c15e9b42": "c02e9bfb-739c-42ff-8e70-37e2c15e9b42~North Warehouse Receiving"
+						},
+						"email": "",
+						"id": "c1068f47-8193-46d8-949e-de39503703fb",
+						"languages": [],
+						"name": "Worker Department 4",
+						"notes": [],
+						"phone": "",
+						"relationships": []
+					},
+					{
+						"agitations": [
+							"79968e04-f687-4daa-8730-8b98bb383afe"
+						],
+						"assessment": "Supporter",
+						"attributes": {
+							"c02e9bfb-739c-42ff-8e70-37e2c15e9b42": "c02e9bfb-739c-42ff-8e70-37e2c15e9b42~South Warehouse Shipping"
+						},
+						"email": "",
+						"id": "dab50720-93f5-4c5b-ba94-9fe99ebec875",
+						"languages": [],
+						"name": "Worker Department 5",
+						"notes": [],
+						"phone": "",
+						"relationships": []
+					},
+					{
+						"agitations": [
+							"79968e04-f687-4daa-8730-8b98bb383afe"
+						],
+						"assessment": "Supporter",
+						"attributes": {
+							"c02e9bfb-739c-42ff-8e70-37e2c15e9b42": "c02e9bfb-739c-42ff-8e70-37e2c15e9b42~Ward 12"
+						},
+						"email": "",
+						"id": "d3523270-f305-44ea-9de8-fae485838321",
+						"languages": [],
+						"name": "Worker Department 6",
+						"notes": [],
+						"phone": "",
+						"relationships": []
+					}
+				],
+				"worksite": {
+					"committeeGoal": 5,
+					"committeeTarget": 5,
+					"id": "3f07b25e-d2e8-4e23-a67a-f7741437f946",
+					"name": "My Worksite 2"
+				},
+				"worksites": [
+					{
+						"committeeGoal": 5,
+						"committeeTarget": 5,
+						"id": "01a1bafb-d2f7-4a59-a25b-7cc9dcfd5822",
+						"name": "My Worksite"
+					},
+					{
+						"committeeGoal": 5,
+						"committeeTarget": 5,
+						"id": "3f07b25e-d2e8-4e23-a67a-f7741437f946",
+						"name": "My Worksite 2"
+					}
+				]
+			}
+		},
+		{
+			"method": "GET",
+			"path": "/api/settings",
+			"status": 200,
+			"body": {
+				"settings": {
+					"colorBlindAssessments": false,
+					"dateFormat": "system",
+					"density": "standard",
+					"increaseContrast": false,
+					"language": "system",
+					"reduceMotion": "system",
+					"rememberWindow": true,
+					"textSize": "100",
+					"theme": "system",
+					"timeFormat": "system"
+				}
+			}
+		}
+	],
+	"seed": [
+		{
+			"method": "GET",
+			"path": "/api/worksite",
+			"status": 200,
+			"body": {
+				"worksite": {
+					"committeeGoal": 5,
+					"committeeTarget": 5,
+					"id": "3f07b25e-d2e8-4e23-a67a-f7741437f946",
+					"name": "My Worksite 2"
+				}
+			}
+		},
+		{
+			"method": "PUT",
+			"path": "/api/attributes",
+			"requestBody": [
+				{
+					"id": "c02e9bfb-739c-42ff-8e70-37e2c15e9b42",
+					"name": "Department",
+					"kind": "category",
+					"options": [
+						{
+							"id": "c02e9bfb-739c-42ff-8e70-37e2c15e9b42~Front of House Cleaning",
+							"value": "Front of House Cleaning"
+						},
+						{
+							"id": "c02e9bfb-739c-42ff-8e70-37e2c15e9b42~Back of House Maintenance",
+							"value": "Back of House Maintenance"
+						},
+						{
+							"id": "c02e9bfb-739c-42ff-8e70-37e2c15e9b42~Customer Service North",
+							"value": "Customer Service North"
+						},
+						{
+							"id": "c02e9bfb-739c-42ff-8e70-37e2c15e9b42~Community Support Team",
+							"value": "Community Support Team"
+						},
+						{
+							"id": "c02e9bfb-739c-42ff-8e70-37e2c15e9b42~North Warehouse Receiving",
+							"value": "North Warehouse Receiving"
+						},
+						{
+							"id": "c02e9bfb-739c-42ff-8e70-37e2c15e9b42~South Warehouse Shipping",
+							"value": "South Warehouse Shipping"
+						},
+						{
+							"id": "c02e9bfb-739c-42ff-8e70-37e2c15e9b42~Ward 12",
+							"value": "Ward 12"
+						}
+					]
+				}
+			],
+			"status": 200,
+			"body": {
+				"attributes": [
+					{
+						"id": "c02e9bfb-739c-42ff-8e70-37e2c15e9b42",
+						"kind": "category",
+						"name": "Department",
+						"options": [
+							{
+								"id": "c02e9bfb-739c-42ff-8e70-37e2c15e9b42~Front of House Cleaning",
+								"shortForm": "FHC",
+								"shortFormOrigin": "generated",
+								"value": "Front of House Cleaning"
+							},
+							{
+								"id": "c02e9bfb-739c-42ff-8e70-37e2c15e9b42~Back of House Maintenance",
+								"shortForm": "BHM",
+								"shortFormOrigin": "generated",
+								"value": "Back of House Maintenance"
+							},
+							{
+								"id": "c02e9bfb-739c-42ff-8e70-37e2c15e9b42~Customer Service North",
+								"shortForm": "Customer …",
+								"shortFormOrigin": "generated",
+								"value": "Customer Service North"
+							},
+							{
+								"id": "c02e9bfb-739c-42ff-8e70-37e2c15e9b42~Community Support Team",
+								"shortForm": "CST",
+								"shortFormOrigin": "generated",
+								"value": "Community Support Team"
+							},
+							{
+								"id": "c02e9bfb-739c-42ff-8e70-37e2c15e9b42~North Warehouse Receiving",
+								"shortForm": "North War…",
+								"shortFormOrigin": "generated",
+								"value": "North Warehouse Receiving"
+							},
+							{
+								"id": "c02e9bfb-739c-42ff-8e70-37e2c15e9b42~South Warehouse Shipping",
+								"shortForm": "South War…",
+								"shortFormOrigin": "generated",
+								"value": "South Warehouse Shipping"
+							},
+							{
+								"id": "c02e9bfb-739c-42ff-8e70-37e2c15e9b42~Ward 12",
+								"shortForm": "Ward 12",
+								"shortFormOrigin": "generated",
+								"value": "Ward 12"
+							}
+						]
+					}
+				]
+			}
+		},
+		{
+			"method": "POST",
+			"path": "/api/agitations",
+			"requestBody": {
+				"text": "Pay"
+			},
+			"status": 200,
+			"body": {
+				"agitation": {
+					"id": "79968e04-f687-4daa-8730-8b98bb383afe",
+					"text": "Pay"
+				},
+				"created": true
+			}
+		},
+		{
+			"method": "POST",
+			"path": "/api/workers",
+			"requestBody": {
+				"name": "Worker Department 0",
+				"email": "",
+				"phone": "",
+				"assessment": "Supporter",
+				"attributes": {
+					"c02e9bfb-739c-42ff-8e70-37e2c15e9b42": "c02e9bfb-739c-42ff-8e70-37e2c15e9b42~Front of House Cleaning"
+				},
+				"agitations": [
+					"79968e04-f687-4daa-8730-8b98bb383afe"
+				],
+				"languages": [],
+				"relationships": [],
+				"notes": []
+			},
+			"status": 201,
+			"body": {
+				"worker": {
+					"agitations": [
+						"79968e04-f687-4daa-8730-8b98bb383afe"
+					],
+					"assessment": "Supporter",
+					"attributes": {
+						"c02e9bfb-739c-42ff-8e70-37e2c15e9b42": "c02e9bfb-739c-42ff-8e70-37e2c15e9b42~Front of House Cleaning"
+					},
+					"email": "",
+					"id": "6bad42de-f787-4fea-9301-5bff5b20aa84",
+					"languages": [],
+					"name": "Worker Department 0",
+					"notes": [],
+					"phone": "",
+					"relationships": []
+				}
+			}
+		},
+		{
+			"method": "POST",
+			"path": "/api/workers",
+			"requestBody": {
+				"name": "Worker Department 1",
+				"email": "",
+				"phone": "",
+				"assessment": "Supporter",
+				"attributes": {
+					"c02e9bfb-739c-42ff-8e70-37e2c15e9b42": "c02e9bfb-739c-42ff-8e70-37e2c15e9b42~Back of House Maintenance"
+				},
+				"agitations": [
+					"79968e04-f687-4daa-8730-8b98bb383afe"
+				],
+				"languages": [],
+				"relationships": [],
+				"notes": []
+			},
+			"status": 201,
+			"body": {
+				"worker": {
+					"agitations": [
+						"79968e04-f687-4daa-8730-8b98bb383afe"
+					],
+					"assessment": "Supporter",
+					"attributes": {
+						"c02e9bfb-739c-42ff-8e70-37e2c15e9b42": "c02e9bfb-739c-42ff-8e70-37e2c15e9b42~Back of House Maintenance"
+					},
+					"email": "",
+					"id": "4c2a76ac-bb63-47f6-8d65-1a2752e0524b",
+					"languages": [],
+					"name": "Worker Department 1",
+					"notes": [],
+					"phone": "",
+					"relationships": []
+				}
+			}
+		},
+		{
+			"method": "POST",
+			"path": "/api/workers",
+			"requestBody": {
+				"name": "Worker Department 2",
+				"email": "",
+				"phone": "",
+				"assessment": "Supporter",
+				"attributes": {
+					"c02e9bfb-739c-42ff-8e70-37e2c15e9b42": "c02e9bfb-739c-42ff-8e70-37e2c15e9b42~Customer Service North"
+				},
+				"agitations": [
+					"79968e04-f687-4daa-8730-8b98bb383afe"
+				],
+				"languages": [],
+				"relationships": [],
+				"notes": []
+			},
+			"status": 201,
+			"body": {
+				"worker": {
+					"agitations": [
+						"79968e04-f687-4daa-8730-8b98bb383afe"
+					],
+					"assessment": "Supporter",
+					"attributes": {
+						"c02e9bfb-739c-42ff-8e70-37e2c15e9b42": "c02e9bfb-739c-42ff-8e70-37e2c15e9b42~Customer Service North"
+					},
+					"email": "",
+					"id": "7dbd5970-572b-4f09-b611-6d44bb9efb95",
+					"languages": [],
+					"name": "Worker Department 2",
+					"notes": [],
+					"phone": "",
+					"relationships": []
+				}
+			}
+		},
+		{
+			"method": "POST",
+			"path": "/api/workers",
+			"requestBody": {
+				"name": "Worker Department 3",
+				"email": "",
+				"phone": "",
+				"assessment": "Supporter",
+				"attributes": {
+					"c02e9bfb-739c-42ff-8e70-37e2c15e9b42": "c02e9bfb-739c-42ff-8e70-37e2c15e9b42~Community Support Team"
+				},
+				"agitations": [
+					"79968e04-f687-4daa-8730-8b98bb383afe"
+				],
+				"languages": [],
+				"relationships": [],
+				"notes": []
+			},
+			"status": 201,
+			"body": {
+				"worker": {
+					"agitations": [
+						"79968e04-f687-4daa-8730-8b98bb383afe"
+					],
+					"assessment": "Supporter",
+					"attributes": {
+						"c02e9bfb-739c-42ff-8e70-37e2c15e9b42": "c02e9bfb-739c-42ff-8e70-37e2c15e9b42~Community Support Team"
+					},
+					"email": "",
+					"id": "cf6d7efb-70e8-4756-b6a4-ed1bb29f44b4",
+					"languages": [],
+					"name": "Worker Department 3",
+					"notes": [],
+					"phone": "",
+					"relationships": []
+				}
+			}
+		},
+		{
+			"method": "POST",
+			"path": "/api/workers",
+			"requestBody": {
+				"name": "Worker Department 4",
+				"email": "",
+				"phone": "",
+				"assessment": "Supporter",
+				"attributes": {
+					"c02e9bfb-739c-42ff-8e70-37e2c15e9b42": "c02e9bfb-739c-42ff-8e70-37e2c15e9b42~North Warehouse Receiving"
+				},
+				"agitations": [
+					"79968e04-f687-4daa-8730-8b98bb383afe"
+				],
+				"languages": [],
+				"relationships": [],
+				"notes": []
+			},
+			"status": 201,
+			"body": {
+				"worker": {
+					"agitations": [
+						"79968e04-f687-4daa-8730-8b98bb383afe"
+					],
+					"assessment": "Supporter",
+					"attributes": {
+						"c02e9bfb-739c-42ff-8e70-37e2c15e9b42": "c02e9bfb-739c-42ff-8e70-37e2c15e9b42~North Warehouse Receiving"
+					},
+					"email": "",
+					"id": "c1068f47-8193-46d8-949e-de39503703fb",
+					"languages": [],
+					"name": "Worker Department 4",
+					"notes": [],
+					"phone": "",
+					"relationships": []
+				}
+			}
+		},
+		{
+			"method": "POST",
+			"path": "/api/workers",
+			"requestBody": {
+				"name": "Worker Department 5",
+				"email": "",
+				"phone": "",
+				"assessment": "Supporter",
+				"attributes": {
+					"c02e9bfb-739c-42ff-8e70-37e2c15e9b42": "c02e9bfb-739c-42ff-8e70-37e2c15e9b42~South Warehouse Shipping"
+				},
+				"agitations": [
+					"79968e04-f687-4daa-8730-8b98bb383afe"
+				],
+				"languages": [],
+				"relationships": [],
+				"notes": []
+			},
+			"status": 201,
+			"body": {
+				"worker": {
+					"agitations": [
+						"79968e04-f687-4daa-8730-8b98bb383afe"
+					],
+					"assessment": "Supporter",
+					"attributes": {
+						"c02e9bfb-739c-42ff-8e70-37e2c15e9b42": "c02e9bfb-739c-42ff-8e70-37e2c15e9b42~South Warehouse Shipping"
+					},
+					"email": "",
+					"id": "dab50720-93f5-4c5b-ba94-9fe99ebec875",
+					"languages": [],
+					"name": "Worker Department 5",
+					"notes": [],
+					"phone": "",
+					"relationships": []
+				}
+			}
+		},
+		{
+			"method": "POST",
+			"path": "/api/workers",
+			"requestBody": {
+				"name": "Worker Department 6",
+				"email": "",
+				"phone": "",
+				"assessment": "Supporter",
+				"attributes": {
+					"c02e9bfb-739c-42ff-8e70-37e2c15e9b42": "c02e9bfb-739c-42ff-8e70-37e2c15e9b42~Ward 12"
+				},
+				"agitations": [
+					"79968e04-f687-4daa-8730-8b98bb383afe"
+				],
+				"languages": [],
+				"relationships": [],
+				"notes": []
+			},
+			"status": 201,
+			"body": {
+				"worker": {
+					"agitations": [
+						"79968e04-f687-4daa-8730-8b98bb383afe"
+					],
+					"assessment": "Supporter",
+					"attributes": {
+						"c02e9bfb-739c-42ff-8e70-37e2c15e9b42": "c02e9bfb-739c-42ff-8e70-37e2c15e9b42~Ward 12"
+					},
+					"email": "",
+					"id": "d3523270-f305-44ea-9de8-fae485838321",
+					"languages": [],
+					"name": "Worker Department 6",
+					"notes": [],
+					"phone": "",
+					"relationships": []
+				}
+			}
+		}
+	],
+	"worksite": {
+		"committeeGoal": 5,
+		"committeeTarget": 5,
+		"id": "3f07b25e-d2e8-4e23-a67a-f7741437f946",
+		"name": "My Worksite 2"
+	}
+}

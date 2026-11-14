@@ -52,8 +52,8 @@
 		onFocusRow: (id: string) => void;
 		onRemoveOption: (attributeId: string, optionId: string, removeBranch?: boolean) => void;
 		onRenameOption: (attributeId: string, optionId: string, text: string) => ValueTextCheck;
-		shortFormShown: (answer: AttributeAnswerDraft) => string;
-		onEditShortForm: (attributeId: string, answerId: string, text: string) => void;
+		abbreviationShown: (answer: AttributeAnswerDraft) => string;
+		onEditAbbreviation: (attributeId: string, answerId: string, text: string) => void;
 		onDuplicateOption: (
 			attributeId: string,
 			optionId: string,
@@ -83,8 +83,8 @@
 		onFocusRow,
 		onRemoveOption,
 		onRenameOption,
-		shortFormShown,
-		onEditShortForm,
+		abbreviationShown,
+		onEditAbbreviation,
 		onDuplicateOption,
 		onMoveAnswer,
 		reorder,
@@ -179,8 +179,8 @@
 		},
 		hasError: (answer) => Boolean(getAttributeOptionError(attribute, answer)),
 		onRename: (answerId, text) => onRenameOption(attribute.id, answerId, text),
-		shortFormShown: (answer) => shortFormShown(answer),
-		onShortForm: (answerId, text) => onEditShortForm(attribute.id, answerId, text),
+		abbreviationShown: (answer) => abbreviationShown(answer),
+		onAbbreviation: (answerId, text) => onEditAbbreviation(attribute.id, answerId, text),
 		onDuplicate: (answerId, text, survivorId) =>
 			onDuplicateOption(attribute.id, answerId, text, survivorId),
 		onRequestRemove: requestRemove,

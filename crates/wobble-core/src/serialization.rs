@@ -343,7 +343,7 @@ fn answer_fields(value: &Value) -> Option<AnswerFields<'_>> {
     };
 
     // A Short form travels with its origin (ADR 0046), and an edited one must be valid.
-    if short_form_problem(answer).is_some() {
+    if abbreviation_problem(answer).is_some() {
         return None;
     }
 
@@ -359,7 +359,7 @@ fn answer_fields(value: &Value) -> Option<AnswerFields<'_>> {
 /// are absent or acceptable: both are given or neither, the origin is `generated` or
 /// `edited`, and an edited form is 1 to 10 graphemes after trimming. A generated form is
 /// produced by the core, so only its shape is checked.
-fn short_form_problem(answer: &serde_json::Map<String, Value>) -> Option<&'static str> {
+fn abbreviation_problem(answer: &serde_json::Map<String, Value>) -> Option<&'static str> {
     let (form, origin) = (answer.get("shortForm"), answer.get("shortFormOrigin"));
     let (form, origin) = match (form, origin) {
         (None, None) => return None,
@@ -369,10 +369,10 @@ fn short_form_problem(answer: &serde_json::Map<String, Value>) -> Option<&'stati
     let (Some(form), Some(origin)) = (form.as_str(), origin.as_str()) else {
         return Some("malformed");
     };
-    if !crate::short_form::is_origin(origin) {
+    if !crate::abbreviation::is_origin(origin) {
         return Some("malformed");
     }
-    if origin == crate::short_form::ORIGIN_EDITED && !crate::short_form::is_valid(form) {
+    if origin == crate::abbreviation::ORIGIN_EDITED && !crate::abbreviation::is_valid(form) {
         return Some("invalid");
     }
     None
@@ -409,12 +409,12 @@ pub fn diagnose_attribute_hierarchy(value: &Value) -> Option<AttributeHierarchyD
         for option in options {
             let option = option.as_object()?;
             let id = option.get("id")?.as_str()?;
-            if short_form_problem(option) == Some("invalid") {
+            if abbreviation_problem(option) == Some("invalid") {
                 return Some(AttributeHierarchyDiagnosis {
                     code: "short_form_invalid",
                     message: format!(
                         "Answer \"{id}\" has a Short form that is not 1 to {} characters.",
-                        crate::short_form::SHORT_FORM_LIMIT
+                        crate::abbreviation::ABBREVIATION_LIMIT
                     ),
                 });
             }

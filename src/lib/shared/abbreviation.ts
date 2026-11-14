@@ -1,11 +1,11 @@
 /** A Short form is at most this many graphemes (ADR 0046); the core enforces it on save. */
-export const SHORT_FORM_LIMIT = 10;
+export const ABBREVIATION_LIMIT = 10;
 
-import type { ShortFormOrigin } from '#lib/client/generated/ShortFormOrigin.ts';
+import type { AbbreviationOrigin } from '#lib/client/generated/AbbreviationOrigin.ts';
 
-export type { ShortFormOrigin };
+export type { AbbreviationOrigin };
 
-export function isShortFormOrigin(value: unknown): value is ShortFormOrigin {
+export function isAbbreviationOrigin(value: unknown): value is AbbreviationOrigin {
 	return value === 'generated' || value === 'edited';
 }
 
@@ -17,6 +17,8 @@ export function graphemeCount(text: string): number {
 }
 
 /** Whether `value` is a stored Short form: 1 to 10 graphemes. */
-export function isShortForm(value: unknown): value is string {
-	return typeof value === 'string' && value.length > 0 && graphemeCount(value) <= SHORT_FORM_LIMIT;
+export function isAbbreviation(value: unknown): value is string {
+	return (
+		typeof value === 'string' && value.length > 0 && graphemeCount(value) <= ABBREVIATION_LIMIT
+	);
 }

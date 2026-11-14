@@ -3,6 +3,10 @@
 //! D8: rusqlite (bundled-sqlcipher-vendored-openssl), serde, serde_json, uuid (v4), zeroize; one error enum;
 //! no unsafe; no async; no macros beyond derive.
 
+pub mod abbreviation;
+pub mod abbreviation_lists;
+pub mod abbreviation_lists_generated;
+pub mod abbreviation_revision;
 pub mod agitation_persistence;
 pub mod app_settings;
 pub mod assembly;
@@ -33,10 +37,6 @@ pub mod schema;
 pub mod select_mode;
 pub mod serialization;
 pub mod service;
-pub mod short_form;
-pub mod short_form_lists;
-pub mod short_form_lists_generated;
-pub mod short_form_revision;
 pub(crate) mod store_validation;
 #[cfg(test)]
 mod test_support;
