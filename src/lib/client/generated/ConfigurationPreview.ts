@@ -43,12 +43,8 @@ export type ConfigurationPreview = {
 	 */
 	modeChanges: Array<ConfigurationPreviewModeChange>;
 	/**
-	 * The Short form each surviving proposed value would be stored with (ADR 0046), so the
+	 * The Abbreviation each surviving proposed value would be stored with (ADR 0046), so the
 	 * frontend never generates one.
-	 */
-	shortForms: Array<ConfigurationPreviewAbbreviation>;
-	/**
-	 * The same suggestions under their new name; `short_forms` is removed in the contract step.
 	 */
 	abbreviations: Array<ConfigurationPreviewAbbreviation>;
 };

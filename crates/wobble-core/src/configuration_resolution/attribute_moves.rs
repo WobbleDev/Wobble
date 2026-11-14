@@ -493,8 +493,6 @@ mod tests {
             value: id.to_owned(),
             parent_id: parent.map(str::to_owned),
             mode: None,
-            short_form: None,
-            short_form_origin: None,
             abbreviation: None,
             abbreviation_origin: None,
             merged_into: None,

@@ -63,7 +63,7 @@ impl Site {
             .as_array()
             .expect("options")
             .iter()
-            .map(|option| option["shortForm"].as_str().expect("form").to_owned())
+            .map(|option| option["abbreviation"].as_str().expect("form").to_owned())
             .collect()
     }
 
@@ -90,9 +90,9 @@ fn a_value_that_fits_keeps_its_full_name_and_a_long_one_is_cut_with_an_ellipsis(
         assert_eq!(
             options,
             json!([
-                { "id": "a", "value": "Kitchen", "shortForm": "Kitchen", "shortFormOrigin": "generated", "abbreviation": "Kitchen", "abbreviationOrigin": "generated" },
-                { "id": "b", "value": "Ten chars!!", "shortForm": "Ten chars…", "shortFormOrigin": "generated", "abbreviation": "Ten chars…", "abbreviationOrigin": "generated" },
-                { "id": "c", "value": "Customer Service North", "shortForm": "Customer …", "shortFormOrigin": "generated", "abbreviation": "Customer …", "abbreviationOrigin": "generated" }
+                { "id": "a", "value": "Kitchen", "abbreviation": "Kitchen", "abbreviationOrigin": "generated" },
+                { "id": "b", "value": "Ten chars!!", "abbreviation": "Ten chars…", "abbreviationOrigin": "generated" },
+                { "id": "c", "value": "Customer Service North", "abbreviation": "Customer …", "abbreviationOrigin": "generated" }
             ])
         );
     }
@@ -110,9 +110,9 @@ fn the_limit_counts_graphemes_not_bytes_or_code_points() {
     ]));
     assert_eq!(saved.status, 200, "{:?}", saved.body);
     let options = site.options();
-    assert_eq!(options[0]["shortForm"], family);
+    assert_eq!(options[0]["abbreviation"], family);
     // Judged and stored in NFC: ten decomposed accents are ten composed ones.
-    assert_eq!(options[1]["shortForm"], "\u{e9}".repeat(10));
+    assert_eq!(options[1]["abbreviation"], "\u{e9}".repeat(10));
 }
 
 #[test]
@@ -120,58 +120,58 @@ fn an_edited_abbreviation_round_trips_and_survives_a_rename() {
     let site = Site::new();
     let saved = site.save(json!([
         { "id": "a", "value": "Customer Service North",
-          "shortForm": "CS North", "shortFormOrigin": "edited" },
+          "abbreviation": "CS North", "abbreviationOrigin": "edited" },
         { "id": "b", "value": "Back of House Maintenance" }
     ]));
     assert_eq!(saved.status, 200, "{:?}", saved.body);
     let options = site.options();
-    assert_eq!(options[0]["shortForm"], "CS North");
-    assert_eq!(options[0]["shortFormOrigin"], "edited");
+    assert_eq!(options[0]["abbreviation"], "CS North");
+    assert_eq!(options[0]["abbreviationOrigin"], "edited");
 
     // Renaming leaves the edited form alone and makes a generated one follow the name.
     let renamed = site.save(json!([
         { "id": "a", "value": "Customer Service South",
-          "shortForm": "CS North", "shortFormOrigin": "edited" },
+          "abbreviation": "CS North", "abbreviationOrigin": "edited" },
         { "id": "b", "value": "Front of House Cleaning",
-          "shortForm": "Back of Ho…", "shortFormOrigin": "generated" }
+          "abbreviation": "Back of Ho…", "abbreviationOrigin": "generated" }
     ]));
     assert_eq!(renamed.status, 200, "{:?}", renamed.body);
     let options = site.options();
-    assert_eq!(options[0]["shortForm"], "CS North");
-    assert_eq!(options[0]["shortFormOrigin"], "edited");
-    assert_eq!(options[1]["shortForm"], "FHC");
-    assert_eq!(options[1]["shortFormOrigin"], "generated");
+    assert_eq!(options[0]["abbreviation"], "CS North");
+    assert_eq!(options[0]["abbreviationOrigin"], "edited");
+    assert_eq!(options[1]["abbreviation"], "FHC");
+    assert_eq!(options[1]["abbreviationOrigin"], "generated");
 }
 
 #[test]
 fn an_edited_abbreviation_is_trimmed_and_limited_to_ten_graphemes_with_a_coded_error() {
     let site = Site::new();
     let trimmed = site.save(json!([
-        { "id": "a", "value": "Kitchen staff", "shortForm": "  KS  ", "shortFormOrigin": "edited" }
+        { "id": "a", "value": "Kitchen staff", "abbreviation": "  KS  ", "abbreviationOrigin": "edited" }
     ]));
     assert_eq!(trimmed.status, 200, "{:?}", trimmed.body);
-    assert_eq!(site.options()[0]["shortForm"], "KS");
+    assert_eq!(site.options()[0]["abbreviation"], "KS");
 
     for too_long in ["Eleven char", "", "   "] {
         let refused = site.save(json!([
             { "id": "a", "value": "Kitchen staff",
-              "shortForm": too_long, "shortFormOrigin": "edited" }
+              "abbreviation": too_long, "abbreviationOrigin": "edited" }
         ]));
         assert_eq!(refused.status, 400, "{too_long:?}");
-        assert_eq!(refused.body["code"], "short_form_invalid", "{too_long:?}");
+        assert_eq!(refused.body["code"], "abbreviation_invalid", "{too_long:?}");
     }
     // The refused saves changed nothing.
-    assert_eq!(site.options()[0]["shortForm"], "KS");
+    assert_eq!(site.options()[0]["abbreviation"], "KS");
 }
 
 #[test]
 fn a_malformed_origin_or_a_form_without_an_origin_is_refused() {
     let site = Site::new();
     for answer in [
-        json!({ "id": "a", "value": "Kitchen", "shortForm": "K", "shortFormOrigin": "typed" }),
-        json!({ "id": "a", "value": "Kitchen", "shortForm": "K" }),
-        json!({ "id": "a", "value": "Kitchen", "shortFormOrigin": "edited" }),
-        json!({ "id": "a", "value": "Kitchen", "shortForm": 5, "shortFormOrigin": "edited" }),
+        json!({ "id": "a", "value": "Kitchen", "abbreviation": "K", "abbreviationOrigin": "typed" }),
+        json!({ "id": "a", "value": "Kitchen", "abbreviation": "K" }),
+        json!({ "id": "a", "value": "Kitchen", "abbreviationOrigin": "edited" }),
+        json!({ "id": "a", "value": "Kitchen", "abbreviation": 5, "abbreviationOrigin": "edited" }),
     ] {
         let refused = site.save(json!([answer]));
         assert_eq!(refused.status, 400, "{answer}");
@@ -234,7 +234,7 @@ fn a_change_of_locale_regenerates_nothing() {
     assert_eq!(site.forms(), ["Admón.", "Depto. Sur"]);
     // Even a stale form sent back by the client does not move a stored one.
     let stale = json!([
-        { "id": "a", "value": "Administración", "shortForm": "Administr…", "shortFormOrigin": "generated", "abbreviation": "Administr…", "abbreviationOrigin": "generated" },
+        { "id": "a", "value": "Administración", "abbreviation": "Administr…", "abbreviationOrigin": "generated" },
         { "id": "b", "value": "Departamento Sur" }
     ]);
     assert_eq!(site.save_in("en", stale).status, 200);
@@ -316,7 +316,7 @@ fn a_generated_form_gives_way_to_an_edited_one_which_is_never_moved() {
     let site = Site::new();
     let saved = site.save(json!([
         { "id": "a", "value": "Customer Service" },
-        { "id": "b", "value": "Customer Support", "shortForm": "Cust. Svc.", "shortFormOrigin": "edited" }
+        { "id": "b", "value": "Customer Support", "abbreviation": "Cust. Svc.", "abbreviationOrigin": "edited" }
     ]));
     assert_eq!(saved.status, 200, "{:?}", saved.body);
     assert_eq!(site.forms(), ["Customer …", "Cust. Svc."]);
@@ -326,7 +326,7 @@ fn a_generated_form_gives_way_to_an_edited_one_which_is_never_moved() {
 fn a_decomposed_edited_form_is_stored_normalised() {
     let site = Site::new();
     let saved = site.save(json!([
-        { "id": "a", "value": "Kitchen", "shortForm": " Cafe\u{301} ", "shortFormOrigin": "edited" }
+        { "id": "a", "value": "Kitchen", "abbreviation": " Cafe\u{301} ", "abbreviationOrigin": "edited" }
     ]));
     assert_eq!(saved.status, 200, "{:?}", saved.body);
     assert_eq!(site.forms(), ["Caf\u{e9}"]);
@@ -336,7 +336,7 @@ impl Site {
     /// The suggested forms a preview of `options` reports for the `dept` Attribute, as
     /// `(answer id, form, origin)`, under the given locale header.
     fn suggestions(&self, locale: Option<&str>, options: Value) -> Vec<(String, String, String)> {
-        self.suggestions_from("/api/configuration/short-forms", locale, options)
+        self.suggestions_from("/api/configuration/abbreviations", locale, options)
     }
 
     fn suggestions_from(
@@ -362,16 +362,16 @@ impl Site {
         }
         let reply = dispatch(&self.db, &preview, &self.ids);
         assert_eq!(reply.status, 200, "{:?}", reply.body);
-        reply.body["shortForms"]
+        reply.body["abbreviations"]
             .as_array()
-            .expect("shortForms")
+            .expect("abbreviations")
             .iter()
             .map(|entry| {
                 assert_eq!(entry["attributeId"], "dept");
                 (
                     entry["answerId"].as_str().unwrap().to_owned(),
-                    entry["shortForm"].as_str().unwrap().to_owned(),
-                    entry["shortFormOrigin"].as_str().unwrap().to_owned(),
+                    entry["abbreviation"].as_str().unwrap().to_owned(),
+                    entry["abbreviationOrigin"].as_str().unwrap().to_owned(),
                 )
             })
             .collect()
@@ -416,13 +416,13 @@ fn a_preview_leaves_an_edited_form_alone_through_a_rename_and_a_merge() {
     let site = Site::new();
     site.save(json!([
         { "id": "a", "value": "Customer Service",
-          "shortForm": "CS", "shortFormOrigin": "edited" },
+          "abbreviation": "CS", "abbreviationOrigin": "edited" },
         { "id": "b", "value": "Maintenance Hub" }
     ]));
     let renamed = site.suggestions(
         None,
         json!([
-            { "id": "a", "value": "Night Service", "shortForm": "CS", "shortFormOrigin": "edited" },
+            { "id": "a", "value": "Night Service", "abbreviation": "CS", "abbreviationOrigin": "edited" },
             { "id": "b", "value": "Maintenance Hub" }
         ]),
     );
@@ -437,14 +437,14 @@ fn a_preview_leaves_an_edited_form_alone_through_a_rename_and_a_merge() {
     let merged = site.suggestions(
         None,
         json!([
-            { "id": "a", "value": "Customer Service", "shortForm": "CS", "shortFormOrigin": "edited" },
+            { "id": "a", "value": "Customer Service", "abbreviation": "CS", "abbreviationOrigin": "edited" },
             { "id": "b", "value": "Maintenance Hub", "mergedInto": "a" }
         ]),
     );
     assert_eq!(merged, [suggested("a", "CS", "edited")]);
     // The same merge saved keeps it too.
     let saved = site.save(json!([
-        { "id": "a", "value": "Customer Service", "shortForm": "CS", "shortFormOrigin": "edited" },
+        { "id": "a", "value": "Customer Service", "abbreviation": "CS", "abbreviationOrigin": "edited" },
         { "id": "b", "value": "Maintenance Hub", "mergedInto": "a" }
     ]));
     assert_eq!(saved.status, 200, "{:?}", saved.body);
@@ -456,7 +456,7 @@ fn clearing_an_edited_form_makes_the_next_preview_suggest_a_fresh_generated_one(
     let site = Site::new();
     site.save(json!([
         { "id": "a", "value": "Customer Service",
-          "shortForm": "CS", "shortFormOrigin": "edited" }
+          "abbreviation": "CS", "abbreviationOrigin": "edited" }
     ]));
     // The draft sends neither field once the edit is cleared.
     let cleared = site.suggestions(None, json!([{ "id": "a", "value": "Customer Service" }]));
@@ -489,7 +489,7 @@ fn a_preview_suggestion_is_what_saving_the_same_draft_stores() {
     let draft = json!([
         { "id": "a", "value": "Customer Service" },
         { "id": "b", "value": "Customer Svc." },
-        { "id": "c", "value": "Cust. Svc. East", "shortForm": "Cust. Svc.", "shortFormOrigin": "edited" }
+        { "id": "c", "value": "Cust. Svc. East", "abbreviation": "Cust. Svc.", "abbreviationOrigin": "edited" }
     ]);
     let suggestions = site.suggestions(None, draft.clone());
     assert_eq!(site.save(draft).status, 200);
@@ -501,8 +501,8 @@ fn a_preview_suggestion_is_what_saving_the_same_draft_stores() {
         .map(|option| {
             suggested(
                 option["id"].as_str().unwrap(),
-                option["shortForm"].as_str().unwrap(),
-                option["shortFormOrigin"].as_str().unwrap(),
+                option["abbreviation"].as_str().unwrap(),
+                option["abbreviationOrigin"].as_str().unwrap(),
             )
         })
         .collect();
@@ -515,7 +515,7 @@ fn the_configuration_preview_reports_the_same_suggestions_as_the_abbreviations_r
     site.save(json!([{ "id": "a", "value": "Customer Service" }]));
     let draft = json!([
         { "id": "a", "value": "Night Service" },
-        { "id": "b", "value": "Maintenance Hub", "shortForm": "MX", "shortFormOrigin": "edited" }
+        { "id": "b", "value": "Maintenance Hub", "abbreviation": "MX", "abbreviationOrigin": "edited" }
     ]);
     assert_eq!(
         site.suggestions_from("/api/configuration/preview", None, draft.clone()),
@@ -529,13 +529,13 @@ fn the_abbreviations_route_refuses_an_invalid_draft_and_writes_nothing() {
     site.save(json!([{ "id": "a", "value": "Customer Service" }]));
     let refused = site.send(
         "POST",
-        "/api/configuration/short-forms",
+        "/api/configuration/abbreviations",
         Some(json!({ "attributes": [{ "id": "dept", "name": "Dept", "kind": "category",
-            "options": [{ "id": "a", "value": "X", "shortForm": "Eleven char", "shortFormOrigin": "edited" }] }],
+            "options": [{ "id": "a", "value": "X", "abbreviation": "Eleven char", "abbreviationOrigin": "edited" }] }],
             "agitations": [], "languages": [] })),
     );
     assert_eq!(refused.status, 400);
-    let missing = site.send("POST", "/api/configuration/short-forms", Some(json!({})));
+    let missing = site.send("POST", "/api/configuration/abbreviations", Some(json!({})));
     assert_eq!(missing.status, 400);
     assert_eq!(site.forms(), ["Cust. Svc."]);
 }
@@ -545,7 +545,7 @@ fn the_abbreviations_route_answers_only_the_suggestions() {
     let site = Site::new();
     let reply = site.send(
         "POST",
-        "/api/configuration/short-forms",
+        "/api/configuration/abbreviations",
         Some(
             json!({ "attributes": [{ "id": "dept", "name": "Dept", "kind": "category",
             "options": [{ "id": "a", "value": "Kitchen" }] }],
@@ -555,8 +555,8 @@ fn the_abbreviations_route_answers_only_the_suggestions() {
     assert_eq!(reply.status, 200, "{:?}", reply.body);
     assert_eq!(
         reply.body,
-        json!({ "shortForms": [
-            { "attributeId": "dept", "answerId": "a", "shortForm": "Kitchen", "shortFormOrigin": "generated", "abbreviation": "Kitchen", "abbreviationOrigin": "generated" }
+        json!({ "abbreviations": [
+            { "attributeId": "dept", "answerId": "a", "abbreviation": "Kitchen", "abbreviationOrigin": "generated" }
         ] })
     );
 }
@@ -577,8 +577,11 @@ impl Site {
             .map(|option| {
                 (
                     option["value"].as_str().unwrap_or_default().to_owned(),
-                    option["shortForm"].as_str().unwrap_or_default().to_owned(),
-                    option["shortFormOrigin"]
+                    option["abbreviation"]
+                        .as_str()
+                        .unwrap_or_default()
+                        .to_owned(),
+                    option["abbreviationOrigin"]
                         .as_str()
                         .unwrap_or_default()
                         .to_owned(),
@@ -641,7 +644,7 @@ fn an_edited_acronym_is_never_regenerated_by_a_worksite_conflict() {
         Some(json!([
             { "id": "dept", "name": "Dept", "kind": "category",
               "options": [{ "id": "pr", "value": "Public Relations",
-                  "shortForm": "PR", "shortFormOrigin": "edited" }] }
+                  "abbreviation": "PR", "abbreviationOrigin": "edited" }] }
         ])),
     );
     let added = site.send(
@@ -650,7 +653,7 @@ fn an_edited_acronym_is_never_regenerated_by_a_worksite_conflict() {
         Some(json!([
             { "id": "dept", "name": "Dept", "kind": "category",
               "options": [{ "id": "pr", "value": "Public Relations",
-                  "shortForm": "PR", "shortFormOrigin": "edited" }] },
+                  "abbreviation": "PR", "abbreviationOrigin": "edited" }] },
             { "id": "other", "name": "Other", "kind": "category",
               "options": [{ "id": "payroll", "value": "Payroll" }] }
         ])),
@@ -769,7 +772,7 @@ fn a_list_revision_change_regenerates_a_stale_generated_form_and_leaves_an_edite
     let saved = site.save(json!([
         { "id": "pr", "value": "Public Relations" },
         { "id": "maint", "value": "Maintenance",
-          "shortForm": "My Maint", "shortFormOrigin": "edited" }
+          "abbreviation": "My Maint", "abbreviationOrigin": "edited" }
     ]));
     assert_eq!(saved.status, 200, "{:?}", saved.body);
 
@@ -779,9 +782,9 @@ fn a_list_revision_change_regenerates_a_stale_generated_form_and_leaves_an_edite
         &site,
         json!([
             { "id": "pr", "value": "Public Relations",
-              "shortForm": "Public Rel.", "shortFormOrigin": "generated" },
+              "abbreviation": "Public Rel.", "abbreviationOrigin": "generated" },
             { "id": "maint", "value": "Maintenance",
-              "shortForm": "My Maint", "shortFormOrigin": "edited" }
+              "abbreviation": "My Maint", "abbreviationOrigin": "edited" }
         ]),
     );
     forge_lists_revision(&site, "sf04-seed");
@@ -792,9 +795,9 @@ fn a_list_revision_change_regenerates_a_stale_generated_form_and_leaves_an_edite
         Some(json!([
             { "id": "dept", "name": "Dept", "kind": "category", "options": [
                 { "id": "pr", "value": "Public Relations",
-                  "shortForm": "Public Rel.", "shortFormOrigin": "generated" },
+                  "abbreviation": "Public Rel.", "abbreviationOrigin": "generated" },
                 { "id": "maint", "value": "Maintenance",
-                  "shortForm": "My Maint", "shortFormOrigin": "edited" }
+                  "abbreviation": "My Maint", "abbreviationOrigin": "edited" }
             ] }
         ])),
     );
@@ -827,7 +830,7 @@ fn a_preview_under_a_stale_revision_suggests_regenerated_forms_without_writing_t
         &site,
         json!([
             { "id": "pr", "value": "Public Relations",
-              "shortForm": "Public Rel.", "shortFormOrigin": "generated" }
+              "abbreviation": "Public Rel.", "abbreviationOrigin": "generated" }
         ]),
     );
     forge_lists_revision(&site, "sf04-seed");
@@ -836,7 +839,7 @@ fn a_preview_under_a_stale_revision_suggests_regenerated_forms_without_writing_t
         None,
         json!([
             { "id": "pr", "value": "Public Relations",
-              "shortForm": "Public Rel.", "shortFormOrigin": "generated" }
+              "abbreviation": "Public Rel.", "abbreviationOrigin": "generated" }
         ]),
     );
     assert_eq!(reply, [suggested("pr", "PR", "generated")]);
@@ -853,43 +856,37 @@ fn a_preview_under_a_stale_revision_suggests_regenerated_forms_without_writing_t
 }
 
 #[test]
-fn the_abbreviation_names_are_accepted_stored_beside_the_old_ones_and_answered_with_both() {
+fn the_old_wire_names_are_refused_without_writing() {
     let site = Site::new();
     let saved = site.save(json!([
-        { "id": "a", "value": "Customer Service North",
-          "abbreviation": "CS North", "abbreviationOrigin": "edited" },
-        { "id": "b", "value": "Back of House Maintenance" },
-        { "id": "c", "value": "Dock", "shortForm": "Dk", "shortFormOrigin": "edited" }
+        { "id": "a", "value": "Kitchen", "abbreviation": "K", "abbreviationOrigin": "edited" }
     ]));
     assert_eq!(saved.status, 200, "{:?}", saved.body);
-    let options = site.options();
-    for (index, form, origin) in [
-        (0, "CS North", "edited"),
-        (1, "BHM", "generated"),
-        (2, "Dk", "edited"),
+
+    for answer in [
+        json!({ "id": "a", "value": "Kitchen", "shortForm": "Kit", "shortFormOrigin": "edited" }),
+        json!({ "id": "a", "value": "Kitchen", "abbreviation": "K", "abbreviationOrigin": "edited",
+                "shortForm": "K", "shortFormOrigin": "edited" }),
+        json!({ "id": "a", "value": "Kitchen", "shortForm": "Kit" }),
     ] {
-        assert_eq!(options[index]["abbreviation"], form, "{index}");
-        assert_eq!(options[index]["shortForm"], form, "{index}");
-        assert_eq!(options[index]["abbreviationOrigin"], origin, "{index}");
-        assert_eq!(options[index]["shortFormOrigin"], origin, "{index}");
+        let refused = site.save(json!([answer.clone()]));
+        assert_eq!(refused.status, 400, "{answer}: {:?}", refused.body);
     }
+    let options = site.options();
+    assert_eq!(
+        options[0]["abbreviation"], "K",
+        "the refusals changed nothing"
+    );
+    assert!(options[0].get("shortForm").is_none());
+    assert!(options[0].get("shortFormOrigin").is_none());
 }
 
 #[test]
-fn an_answer_that_sends_both_names_must_agree_and_the_new_name_gets_the_new_code() {
+fn an_edited_abbreviation_of_eleven_characters_is_refused_with_the_abbreviation_code() {
     let site = Site::new();
-    let conflict = site.save(json!([
-        { "id": "a", "value": "Kitchen", "abbreviation": "K", "abbreviationOrigin": "edited",
-          "shortForm": "Kit", "shortFormOrigin": "edited" }
+    site.save(json!([
+        { "id": "a", "value": "Kitchen", "abbreviation": "K", "abbreviationOrigin": "edited" }
     ]));
-    assert_eq!(conflict.status, 400, "{:?}", conflict.body);
-
-    let agreeing = site.save(json!([
-        { "id": "a", "value": "Kitchen", "abbreviation": "K", "abbreviationOrigin": "edited",
-          "shortForm": "K", "shortFormOrigin": "edited" }
-    ]));
-    assert_eq!(agreeing.status, 200, "{:?}", agreeing.body);
-
     let refused = site.save(json!([
         { "id": "a", "value": "Kitchen",
           "abbreviation": "Eleven char", "abbreviationOrigin": "edited" }
@@ -904,7 +901,7 @@ fn an_answer_that_sends_both_names_must_agree_and_the_new_name_gets_the_new_code
 }
 
 #[test]
-fn the_abbreviations_route_answers_abbreviations_and_the_old_route_the_same_data_as_short_forms() {
+fn the_old_short_forms_route_is_gone_and_the_answers_carry_no_old_names() {
     let site = Site::new();
     let body = json!({
         "attributes": [{ "id": "dept", "name": "Dept", "kind": "category",
@@ -913,24 +910,24 @@ fn the_abbreviations_route_answers_abbreviations_and_the_old_route_the_same_data
         "languages": []
     });
     let ask = |path: &str| {
-        let reply = dispatch(
+        dispatch(
             &site.db,
             &request("POST", path, Some(&site.worksite), Some(body.clone())),
             &site.ids,
-        );
-        assert_eq!(reply.status, 200, "{path}: {:?}", reply.body);
-        reply.body
+        )
     };
-    let new = ask("/api/configuration/abbreviations");
     let old = ask("/api/configuration/short-forms");
-    assert!(new.get("shortForms").is_none());
-    assert!(old.get("abbreviations").is_none());
-    assert_eq!(new["abbreviations"], old["shortForms"]);
-    let first = &new["abbreviations"][0];
-    assert_eq!(first["abbreviation"], first["shortForm"]);
-    assert_eq!(first["abbreviationOrigin"], first["shortFormOrigin"]);
+    assert_eq!(old.status, 501, "{:?}", old.body);
+
+    let new = ask("/api/configuration/abbreviations");
+    assert_eq!(new.status, 200, "{:?}", new.body);
+    assert!(new.body.get("shortForms").is_none());
+    let first = &new.body["abbreviations"][0];
+    assert!(first.get("shortForm").is_none());
+    assert!(first.get("shortFormOrigin").is_none());
 
     let preview = ask("/api/configuration/preview");
-    assert_eq!(preview["abbreviations"], preview["shortForms"]);
-    assert_eq!(preview["abbreviations"], new["abbreviations"]);
+    assert_eq!(preview.status, 200, "{:?}", preview.body);
+    assert!(preview.body.get("shortForms").is_none());
+    assert_eq!(preview.body["abbreviations"], new.body["abbreviations"]);
 }

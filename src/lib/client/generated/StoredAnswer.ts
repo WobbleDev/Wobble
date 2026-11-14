@@ -17,21 +17,12 @@ export type StoredAnswer = {
 	 */
 	mode?: SelectMode;
 	/**
-	 * The Short form of this value (ADR 0046): at most 10 graphemes. Every stored value has
+	 * The Abbreviation of this value (ADR 0046): at most 10 graphemes. Every stored value has
 	 * one; a Save request may omit it, and the core then generates it.
-	 */
-	shortForm?: string;
-	/**
-	 * How `short_form` came to be: `generated` or `edited`.
-	 */
-	shortFormOrigin?: AbbreviationOrigin;
-	/**
-	 * The new wire and stored name for `short_form` (the abbreviation rename). It always equals
-	 * `short_form`: `sync_abbreviation` fills whichever side is missing, and both are written.
 	 */
 	abbreviation?: string;
 	/**
-	 * The new name for `short_form_origin`: `generated` or `edited`.
+	 * How `abbreviation` came to be: `generated` or `edited`.
 	 */
 	abbreviationOrigin?: AbbreviationOrigin;
 	mergedInto?: string;

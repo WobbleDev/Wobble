@@ -26,17 +26,13 @@
 						"options": [
 							{
 								"id": "a22e3476-a657-4109-83a4-373e3aaafd9d~Front of House",
-								"shortForm": "Front of …",
 								"abbreviation": "Front of …",
-								"shortFormOrigin": "generated",
 								"abbreviationOrigin": "generated",
 								"value": "Front of House"
 							},
 							{
 								"id": "a22e3476-a657-4109-83a4-373e3aaafd9d~Back of House",
-								"shortForm": "Back of H…",
 								"abbreviation": "Back of H…",
-								"shortFormOrigin": "generated",
 								"abbreviationOrigin": "generated",
 								"value": "Back of House"
 							}
@@ -49,17 +45,13 @@
 						"options": [
 							{
 								"id": "727cc203-a496-4c66-855f-f5d69dce15e6~Server",
-								"shortForm": "Server",
 								"abbreviation": "Server",
-								"shortFormOrigin": "generated",
 								"abbreviationOrigin": "generated",
 								"value": "Server"
 							},
 							{
 								"id": "727cc203-a496-4c66-855f-f5d69dce15e6~Cook",
-								"shortForm": "Cook",
 								"abbreviation": "Cook",
-								"shortFormOrigin": "generated",
 								"abbreviationOrigin": "generated",
 								"value": "Cook"
 							}
@@ -72,9 +64,7 @@
 						"options": [
 							{
 								"id": "a09ea8c0-cd47-4761-83d6-50609a59cd56~First Aid",
-								"shortForm": "First Aid",
 								"abbreviation": "First Aid",
-								"shortFormOrigin": "generated",
 								"abbreviationOrigin": "generated",
 								"value": "First Aid"
 							}
@@ -532,17 +522,13 @@
 						"options": [
 							{
 								"id": "a22e3476-a657-4109-83a4-373e3aaafd9d~Front of House",
-								"shortForm": "Front of …",
 								"abbreviation": "Front of …",
-								"shortFormOrigin": "generated",
 								"abbreviationOrigin": "generated",
 								"value": "Front of House"
 							},
 							{
 								"id": "a22e3476-a657-4109-83a4-373e3aaafd9d~Back of House",
-								"shortForm": "Back of H…",
 								"abbreviation": "Back of H…",
-								"shortFormOrigin": "generated",
 								"abbreviationOrigin": "generated",
 								"value": "Back of House"
 							}
@@ -555,17 +541,13 @@
 						"options": [
 							{
 								"id": "727cc203-a496-4c66-855f-f5d69dce15e6~Server",
-								"shortForm": "Server",
 								"abbreviation": "Server",
-								"shortFormOrigin": "generated",
 								"abbreviationOrigin": "generated",
 								"value": "Server"
 							},
 							{
 								"id": "727cc203-a496-4c66-855f-f5d69dce15e6~Cook",
-								"shortForm": "Cook",
 								"abbreviation": "Cook",
-								"shortFormOrigin": "generated",
 								"abbreviationOrigin": "generated",
 								"value": "Cook"
 							}
@@ -578,9 +560,7 @@
 						"options": [
 							{
 								"id": "a09ea8c0-cd47-4761-83d6-50609a59cd56~First Aid",
-								"shortForm": "First Aid",
 								"abbreviation": "First Aid",
-								"shortFormOrigin": "generated",
 								"abbreviationOrigin": "generated",
 								"value": "First Aid"
 							}

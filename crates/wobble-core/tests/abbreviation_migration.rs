@@ -50,7 +50,7 @@ fn every_upgradable_version_backfills_a_generated_abbreviation_for_every_value()
         let data = dataset(&app);
         // LEGACY-PLAINTEXT-FIXTURE: temp-constructed legacy-schema source for upgrade-read test (intentional plaintext, never production).
         let conn = Connection::open(&path).expect("opens the upgraded database");
-        assert_eq!(raw_version(&conn), Some(27), "v{version}");
+        assert_eq!(raw_version(&conn), Some(28), "v{version}");
         assert!(
             migration_rows(&conn).contains(&(26, "abbreviation".to_owned())),
             "v{version}"
@@ -66,11 +66,11 @@ fn every_upgradable_version_backfills_a_generated_abbreviation_for_every_value()
                 .clone()
         };
         let front = by_value("Front");
-        assert_eq!(front["shortForm"], "Front", "v{version}");
-        assert_eq!(front["shortFormOrigin"], "generated", "v{version}");
+        assert_eq!(front["abbreviation"], "Front", "v{version}");
+        assert_eq!(front["abbreviationOrigin"], "generated", "v{version}");
         let long = by_value("Back of House Maintenance");
-        assert_eq!(long["shortForm"], "BHM", "v{version}");
-        assert_eq!(long["shortFormOrigin"], "generated", "v{version}");
+        assert_eq!(long["abbreviation"], "BHM", "v{version}");
+        assert_eq!(long["abbreviationOrigin"], "generated", "v{version}");
         // The stored options carry the fields too, so a later read needs no backfill.
         let stored: String = conn
             .query_row(
@@ -85,7 +85,7 @@ fn every_upgradable_version_backfills_a_generated_abbreviation_for_every_value()
         first.as_object_mut().unwrap().remove("id");
         assert_eq!(
             first,
-            json!({ "value": "Front", "shortForm": "Front", "shortFormOrigin": "generated", "abbreviation": "Front", "abbreviationOrigin": "generated" }),
+            json!({ "value": "Front", "abbreviation": "Front", "abbreviationOrigin": "generated" }),
             "v{version}"
         );
         std::fs::remove_file(&path).ok();

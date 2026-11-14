@@ -35,25 +35,19 @@
 						"options": [
 							{
 								"id": "c86d8aed-02e8-44e6-84db-222c7456f994~Packing",
-								"shortForm": "Packing",
 								"abbreviation": "Packing",
-								"shortFormOrigin": "generated",
 								"abbreviationOrigin": "generated",
 								"value": "Packing"
 							},
 							{
 								"id": "c86d8aed-02e8-44e6-84db-222c7456f994~Delivery",
-								"shortForm": "Delivery",
 								"abbreviation": "Delivery",
-								"shortFormOrigin": "generated",
 								"abbreviationOrigin": "generated",
 								"value": "Delivery"
 							},
 							{
 								"id": "c86d8aed-02e8-44e6-84db-222c7456f994~No Department",
-								"shortForm": "No Dept.",
 								"abbreviation": "No Dept.",
-								"shortFormOrigin": "generated",
 								"abbreviationOrigin": "generated",
 								"value": "No Department"
 							}
@@ -833,25 +827,19 @@
 						"options": [
 							{
 								"id": "c86d8aed-02e8-44e6-84db-222c7456f994~Packing",
-								"shortForm": "Packing",
 								"abbreviation": "Packing",
-								"shortFormOrigin": "generated",
 								"abbreviationOrigin": "generated",
 								"value": "Packing"
 							},
 							{
 								"id": "c86d8aed-02e8-44e6-84db-222c7456f994~Delivery",
-								"shortForm": "Delivery",
 								"abbreviation": "Delivery",
-								"shortFormOrigin": "generated",
 								"abbreviationOrigin": "generated",
 								"value": "Delivery"
 							},
 							{
 								"id": "c86d8aed-02e8-44e6-84db-222c7456f994~No Department",
-								"shortForm": "No Dept.",
 								"abbreviation": "No Dept.",
-								"shortFormOrigin": "generated",
 								"abbreviationOrigin": "generated",
 								"value": "No Department"
 							}

@@ -51,17 +51,13 @@
 						"options": [
 							{
 								"id": "ef9e136d-92c2-4fc9-8316-fbba608ebba4~Front of House",
-								"shortForm": "Front of …",
 								"abbreviation": "Front of …",
-								"shortFormOrigin": "generated",
 								"abbreviationOrigin": "generated",
 								"value": "Front of House"
 							},
 							{
 								"id": "ef9e136d-92c2-4fc9-8316-fbba608ebba4~Back of House",
-								"shortForm": "Back of H…",
 								"abbreviation": "Back of H…",
-								"shortFormOrigin": "generated",
 								"abbreviationOrigin": "generated",
 								"value": "Back of House"
 							}
@@ -74,17 +70,13 @@
 						"options": [
 							{
 								"id": "1417de23-a512-4ef9-9dfc-d8946fef424c~Cook",
-								"shortForm": "Cook",
 								"abbreviation": "Cook",
-								"shortFormOrigin": "generated",
 								"abbreviationOrigin": "generated",
 								"value": "Cook"
 							},
 							{
 								"id": "1417de23-a512-4ef9-9dfc-d8946fef424c~Server",
-								"shortForm": "Server",
 								"abbreviation": "Server",
-								"shortFormOrigin": "generated",
 								"abbreviationOrigin": "generated",
 								"value": "Server"
 							}
@@ -1164,17 +1156,13 @@
 						"options": [
 							{
 								"id": "ef9e136d-92c2-4fc9-8316-fbba608ebba4~Front of House",
-								"shortForm": "Front of …",
 								"abbreviation": "Front of …",
-								"shortFormOrigin": "generated",
 								"abbreviationOrigin": "generated",
 								"value": "Front of House"
 							},
 							{
 								"id": "ef9e136d-92c2-4fc9-8316-fbba608ebba4~Back of House",
-								"shortForm": "Back of H…",
 								"abbreviation": "Back of H…",
-								"shortFormOrigin": "generated",
 								"abbreviationOrigin": "generated",
 								"value": "Back of House"
 							}
@@ -1187,17 +1175,13 @@
 						"options": [
 							{
 								"id": "1417de23-a512-4ef9-9dfc-d8946fef424c~Cook",
-								"shortForm": "Cook",
 								"abbreviation": "Cook",
-								"shortFormOrigin": "generated",
 								"abbreviationOrigin": "generated",
 								"value": "Cook"
 							},
 							{
 								"id": "1417de23-a512-4ef9-9dfc-d8946fef424c~Server",
-								"shortForm": "Server",
 								"abbreviation": "Server",
-								"shortFormOrigin": "generated",
 								"abbreviationOrigin": "generated",
 								"value": "Server"
 							}
@@ -2338,17 +2322,13 @@
 						"options": [
 							{
 								"id": "ef9e136d-92c2-4fc9-8316-fbba608ebba4~Front of House",
-								"shortForm": "Front of …",
 								"abbreviation": "Front of …",
-								"shortFormOrigin": "generated",
 								"abbreviationOrigin": "generated",
 								"value": "Front of House"
 							},
 							{
 								"id": "ef9e136d-92c2-4fc9-8316-fbba608ebba4~Back of House",
-								"shortForm": "Back of H…",
 								"abbreviation": "Back of H…",
-								"shortFormOrigin": "generated",
 								"abbreviationOrigin": "generated",
 								"value": "Back of House"
 							}
@@ -2361,17 +2341,13 @@
 						"options": [
 							{
 								"id": "1417de23-a512-4ef9-9dfc-d8946fef424c~Cook",
-								"shortForm": "Cook",
 								"abbreviation": "Cook",
-								"shortFormOrigin": "generated",
 								"abbreviationOrigin": "generated",
 								"value": "Cook"
 							},
 							{
 								"id": "1417de23-a512-4ef9-9dfc-d8946fef424c~Server",
-								"shortForm": "Server",
 								"abbreviation": "Server",
-								"shortFormOrigin": "generated",
 								"abbreviationOrigin": "generated",
 								"value": "Server"
 							}

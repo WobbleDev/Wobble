@@ -46,13 +46,12 @@ fn request(method: &str, path: &str, worksite: Option<&str>, body: Option<Value>
 }
 
 fn answer(id: &str, value: &str) -> Value {
-    let short_form = if value.chars().count() <= 10 {
+    let label = if value.chars().count() <= 10 {
         value.to_owned()
     } else {
         format!("{}…", value.chars().take(9).collect::<String>())
     };
-    json!({ "id": id, "value": value, "shortForm": short_form, "shortFormOrigin": "generated",
-            "abbreviation": short_form, "abbreviationOrigin": "generated" })
+    json!({ "id": id, "value": value, "abbreviation": label, "abbreviationOrigin": "generated" })
 }
 
 fn worker_attribute(id: &str, name: &str, kind: &str, options: Value) -> Value {

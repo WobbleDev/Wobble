@@ -277,7 +277,6 @@ describe('the preview-then-save flow', () => {
 		moves: [],
 		attributeMoves: [],
 		modeChanges: [],
-		shortForms: [],
 		abbreviations: []
 	};
 

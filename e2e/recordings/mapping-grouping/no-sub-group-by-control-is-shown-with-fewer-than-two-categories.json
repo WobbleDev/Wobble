@@ -26,17 +26,13 @@
 						"options": [
 							{
 								"id": "fc41cef2-3101-4118-811c-699d2b4eb15d~Front of House",
-								"shortForm": "Front of …",
 								"abbreviation": "Front of …",
-								"shortFormOrigin": "generated",
 								"abbreviationOrigin": "generated",
 								"value": "Front of House"
 							},
 							{
 								"id": "fc41cef2-3101-4118-811c-699d2b4eb15d~Back of House",
-								"shortForm": "Back of H…",
 								"abbreviation": "Back of H…",
-								"shortFormOrigin": "generated",
 								"abbreviationOrigin": "generated",
 								"value": "Back of House"
 							}
@@ -496,17 +492,13 @@
 						"options": [
 							{
 								"id": "fc41cef2-3101-4118-811c-699d2b4eb15d~Front of House",
-								"shortForm": "Front of …",
 								"abbreviation": "Front of …",
-								"shortFormOrigin": "generated",
 								"abbreviationOrigin": "generated",
 								"value": "Front of House"
 							},
 							{
 								"id": "fc41cef2-3101-4118-811c-699d2b4eb15d~Back of House",
-								"shortForm": "Back of H…",
 								"abbreviation": "Back of H…",
-								"shortFormOrigin": "generated",
 								"abbreviationOrigin": "generated",
 								"value": "Back of House"
 							}

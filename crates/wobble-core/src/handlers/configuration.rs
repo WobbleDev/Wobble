@@ -58,14 +58,6 @@ struct AbbreviationsReply {
     abbreviations: Vec<SuggestedAbbreviation>,
 }
 
-/// The old `POST /api/configuration/short-forms` body, answered until the contract step
-/// removes the route. It carries the same data under the old key.
-#[derive(Serialize)]
-#[serde(rename_all = "camelCase")]
-struct ShortFormsReply {
-    short_forms: Vec<SuggestedAbbreviation>,
-}
-
 /// `POST /api/configuration/abbreviations`: the same proposed Save as the preview, answered
 /// with only the Abbreviation each surviving value would be stored with (ADR 0046). It is the
 /// light read behind the Abbreviation fields, so editing never computes impacts. Writes nothing.
@@ -80,22 +72,6 @@ pub(crate) fn post_configuration_abbreviations(db: &Db, request: &Request) -> Re
     Ok(json_response(
         200,
         serde_json::to_value(AbbreviationsReply { abbreviations })?,
-    ))
-}
-
-/// `POST /api/configuration/short-forms`: the old route for the same read, kept during the
-/// rename's first step. It answers `{shortForms}` with the same data.
-pub(crate) fn post_configuration_short_forms(db: &Db, request: &Request) -> Result<Response> {
-    let (active, proposal) = match read_proposal(db, request)? {
-        Ok(read) => read,
-        Err(response) => return Ok(response),
-    };
-
-    let short_forms =
-        suggest_abbreviations(request_locale(request), db.conn(), &active, &proposal)?;
-    Ok(json_response(
-        200,
-        serde_json::to_value(ShortFormsReply { short_forms })?,
     ))
 }
 

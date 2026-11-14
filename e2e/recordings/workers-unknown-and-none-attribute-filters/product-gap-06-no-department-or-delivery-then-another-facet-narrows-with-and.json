@@ -35,25 +35,19 @@
 						"options": [
 							{
 								"id": "97e1b288-c8fa-4169-8048-560a2d527217~Packing",
-								"shortForm": "Packing",
 								"abbreviation": "Packing",
-								"shortFormOrigin": "generated",
 								"abbreviationOrigin": "generated",
 								"value": "Packing"
 							},
 							{
 								"id": "97e1b288-c8fa-4169-8048-560a2d527217~Delivery",
-								"shortForm": "Delivery",
 								"abbreviation": "Delivery",
-								"shortFormOrigin": "generated",
 								"abbreviationOrigin": "generated",
 								"value": "Delivery"
 							},
 							{
 								"id": "97e1b288-c8fa-4169-8048-560a2d527217~No Department",
-								"shortForm": "No Dept.",
 								"abbreviation": "No Dept.",
-								"shortFormOrigin": "generated",
 								"abbreviationOrigin": "generated",
 								"value": "No Department"
 							}
@@ -66,17 +60,13 @@
 						"options": [
 							{
 								"id": "85e85b66-cf15-463e-8981-74999e86324f~Trainer",
-								"shortForm": "Trainer",
 								"abbreviation": "Trainer",
-								"shortFormOrigin": "generated",
 								"abbreviationOrigin": "generated",
 								"value": "Trainer"
 							},
 							{
 								"id": "85e85b66-cf15-463e-8981-74999e86324f~Steward",
-								"shortForm": "Steward",
 								"abbreviation": "Steward",
-								"shortFormOrigin": "generated",
 								"abbreviationOrigin": "generated",
 								"value": "Steward"
 							}
@@ -1459,25 +1449,19 @@
 						"options": [
 							{
 								"id": "97e1b288-c8fa-4169-8048-560a2d527217~Packing",
-								"shortForm": "Packing",
 								"abbreviation": "Packing",
-								"shortFormOrigin": "generated",
 								"abbreviationOrigin": "generated",
 								"value": "Packing"
 							},
 							{
 								"id": "97e1b288-c8fa-4169-8048-560a2d527217~Delivery",
-								"shortForm": "Delivery",
 								"abbreviation": "Delivery",
-								"shortFormOrigin": "generated",
 								"abbreviationOrigin": "generated",
 								"value": "Delivery"
 							},
 							{
 								"id": "97e1b288-c8fa-4169-8048-560a2d527217~No Department",
-								"shortForm": "No Dept.",
 								"abbreviation": "No Dept.",
-								"shortFormOrigin": "generated",
 								"abbreviationOrigin": "generated",
 								"value": "No Department"
 							}
@@ -1490,17 +1474,13 @@
 						"options": [
 							{
 								"id": "85e85b66-cf15-463e-8981-74999e86324f~Trainer",
-								"shortForm": "Trainer",
 								"abbreviation": "Trainer",
-								"shortFormOrigin": "generated",
 								"abbreviationOrigin": "generated",
 								"value": "Trainer"
 							},
 							{
 								"id": "85e85b66-cf15-463e-8981-74999e86324f~Steward",
-								"shortForm": "Steward",
 								"abbreviation": "Steward",
-								"shortFormOrigin": "generated",
 								"abbreviationOrigin": "generated",
 								"value": "Steward"
 							}

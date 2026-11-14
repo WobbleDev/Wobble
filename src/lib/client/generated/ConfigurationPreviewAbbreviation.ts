@@ -7,11 +7,6 @@ import type { AbbreviationOrigin } from './AbbreviationOrigin';
 export type ConfigurationPreviewAbbreviation = {
 	attributeId: string;
 	answerId: string;
-	shortForm: string;
-	shortFormOrigin: AbbreviationOrigin;
-	/**
-	 * The new name for `short_form`; always equal to it until the contract step.
-	 */
 	abbreviation: string;
 	abbreviationOrigin: AbbreviationOrigin;
 };

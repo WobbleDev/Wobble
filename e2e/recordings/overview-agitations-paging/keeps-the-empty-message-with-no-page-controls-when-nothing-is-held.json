@@ -26,17 +26,13 @@
 						"options": [
 							{
 								"id": "3f795b04-1503-4a34-85f7-4201dcfe5730~North",
-								"shortForm": "North",
 								"abbreviation": "North",
-								"shortFormOrigin": "generated",
 								"abbreviationOrigin": "generated",
 								"value": "North"
 							},
 							{
 								"id": "3f795b04-1503-4a34-85f7-4201dcfe5730~South",
-								"shortForm": "South",
 								"abbreviation": "South",
-								"shortFormOrigin": "generated",
 								"abbreviationOrigin": "generated",
 								"value": "South"
 							}
@@ -704,17 +700,13 @@
 						"options": [
 							{
 								"id": "3f795b04-1503-4a34-85f7-4201dcfe5730~North",
-								"shortForm": "North",
 								"abbreviation": "North",
-								"shortFormOrigin": "generated",
 								"abbreviationOrigin": "generated",
 								"value": "North"
 							},
 							{
 								"id": "3f795b04-1503-4a34-85f7-4201dcfe5730~South",
-								"shortForm": "South",
 								"abbreviation": "South",
-								"shortFormOrigin": "generated",
 								"abbreviationOrigin": "generated",
 								"value": "South"
 							}

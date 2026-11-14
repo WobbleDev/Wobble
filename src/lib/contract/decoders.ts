@@ -44,8 +44,6 @@ const decoders: Record<string, Decoder> = {
 	'POST /api/languages': (body) => decodeLanguage(body),
 	'POST /api/configuration/preview': (body) => decodeConfigurationPreview(body),
 	'POST /api/configuration/abbreviations': (body) => decodeAbbreviationSuggestions(body),
-	'POST /api/configuration/short-forms': (body) =>
-		decodeAbbreviationSuggestions({ abbreviations: (body as { shortForms: unknown }).shortForms }),
 	'GET /api/data-file': (body) => decodeDataFile(body),
 	'GET /api/runtime': (body) => decodeRuntimeInfo(body),
 	'POST /api/restore': (body) => decodeSafetyCopyPath(body),

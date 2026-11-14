@@ -80,31 +80,12 @@ pub struct StoredAnswer {
         ts(optional, as = "Option<crate::attribute_migration::SelectModeTs>")
     )]
     pub mode: Option<String>,
-    /// The Short form of this value (ADR 0046): at most 10 graphemes. Every stored value has
+    /// The Abbreviation of this value (ADR 0046): at most 10 graphemes. Every stored value has
     /// one; a Save request may omit it, and the core then generates it.
-    #[serde(default, rename = "shortForm", skip_serializing_if = "Option::is_none")]
-    #[cfg_attr(feature = "ts", ts(optional))]
-    pub short_form: Option<String>,
-    /// How `short_form` came to be: `generated` or `edited`.
-    #[serde(
-        default,
-        rename = "shortFormOrigin",
-        skip_serializing_if = "Option::is_none"
-    )]
-    #[cfg_attr(
-        feature = "ts",
-        ts(
-            optional,
-            as = "Option<crate::attribute_migration::AbbreviationOriginTs>"
-        )
-    )]
-    pub short_form_origin: Option<String>,
-    /// The new wire and stored name for `short_form` (the abbreviation rename). It always equals
-    /// `short_form`: `sync_abbreviation` fills whichever side is missing, and both are written.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     #[cfg_attr(feature = "ts", ts(optional))]
     pub abbreviation: Option<String>,
-    /// The new name for `short_form_origin`: `generated` or `edited`.
+    /// How `abbreviation` came to be: `generated` or `edited`.
     #[serde(
         default,
         rename = "abbreviationOrigin",
@@ -125,32 +106,6 @@ pub struct StoredAnswer {
     )]
     #[cfg_attr(feature = "ts", ts(optional))]
     pub merged_into: Option<String>,
-}
-
-impl StoredAnswer {
-    /// Makes the abbreviation and its old name agree: a side that is missing takes the other's
-    /// value. Returns `false` (changing nothing) when both are present and differ.
-    pub fn sync_abbreviation(&mut self) -> bool {
-        if matches!((&self.abbreviation, &self.short_form), (Some(a), Some(b)) if a != b)
-            || matches!(
-                (&self.abbreviation_origin, &self.short_form_origin),
-                (Some(a), Some(b)) if a != b
-            )
-        {
-            return false;
-        }
-        if self.abbreviation.is_none() {
-            self.abbreviation = self.short_form.clone();
-        } else {
-            self.short_form = self.abbreviation.clone();
-        }
-        if self.abbreviation_origin.is_none() {
-            self.abbreviation_origin = self.short_form_origin.clone();
-        } else {
-            self.short_form_origin = self.abbreviation_origin.clone();
-        }
-        true
-    }
 }
 
 /// TS-only mirror of `AbbreviationOrigin` (`generated` | `edited`).
@@ -198,28 +153,13 @@ pub fn answers_from_json(options: &Value) -> Option<Vec<StoredAnswer>> {
     options
         .as_array()?
         .iter()
-        .map(|item| {
-            let mut answer = serde_json::from_value::<StoredAnswer>(item.clone()).ok()?;
-            answer.sync_abbreviation().then_some(answer)
-        })
+        .map(|item| serde_json::from_value::<StoredAnswer>(item.clone()).ok())
         .collect()
 }
 
 /// The answers as the stored `options` JSON array.
 pub fn answers_to_json(answers: &[StoredAnswer]) -> Value {
-    let synced: Vec<StoredAnswer> = answers
-        .iter()
-        .cloned()
-        .map(|mut answer| {
-            // Both names are always written; the new one wins if a caller left them apart.
-            if !answer.sync_abbreviation() {
-                answer.short_form = answer.abbreviation.clone();
-                answer.short_form_origin = answer.abbreviation_origin.clone();
-            }
-            answer
-        })
-        .collect();
-    serde_json::to_value(synced).unwrap_or_else(|_| Value::Array(Vec::new()))
+    serde_json::to_value(answers).unwrap_or_else(|_| Value::Array(Vec::new()))
 }
 
 /// The text to id map of one Attribute's answers. Only the v13 to v14 upgrade reads text;
@@ -334,23 +274,15 @@ fn resolved_abbreviations(
         .iter()
         .map(|answer| crate::abbreviation::Entry {
             name: answer.value.trim(),
-            form: answer
-                .abbreviation
-                .as_deref()
-                .or(answer.short_form.as_deref()),
-            origin: answer
-                .abbreviation_origin
-                .as_deref()
-                .or(answer.short_form_origin.as_deref()),
+            form: answer.abbreviation.as_deref(),
+            origin: answer.abbreviation_origin.as_deref(),
             stored: previous
                 .and_then(|previous| previous.options.iter().find(|old| old.id == answer.id))
                 .and_then(|old| {
                     Some((
                         old.value.as_str(),
-                        old.abbreviation.as_deref().or(old.short_form.as_deref())?,
-                        old.abbreviation_origin
-                            .as_deref()
-                            .or(old.short_form_origin.as_deref())?,
+                        old.abbreviation.as_deref()?,
+                        old.abbreviation_origin.as_deref()?,
                     ))
                 }),
         })
@@ -501,8 +433,6 @@ pub fn compute_attribute_migration_plan_in(
                     .mode
                     .clone()
                     .filter(|_| parents.contains(answer.id.as_str())),
-                short_form: Some(form.clone()),
-                short_form_origin: Some(origin.clone()),
                 abbreviation: Some(form),
                 abbreviation_origin: Some(origin),
                 merged_into: None,
@@ -618,8 +548,6 @@ mod tests {
                 value: (*text).to_owned(),
                 parent_id: None,
                 mode: None,
-                short_form: Some(crate::abbreviation::generate("en", text, &[], &[])),
-                short_form_origin: Some(crate::abbreviation::ORIGIN_GENERATED.to_owned()),
                 abbreviation: Some(crate::abbreviation::generate("en", text, &[], &[])),
                 abbreviation_origin: Some(crate::abbreviation::ORIGIN_GENERATED.to_owned()),
                 merged_into: None,
@@ -921,8 +849,6 @@ mod tests {
                     value: (*answer).to_owned(),
                     parent_id: parent.map(str::to_owned),
                     mode: None,
-                    short_form: Some(crate::abbreviation::generate("en", answer, &[], &[])),
-                    short_form_origin: Some(crate::abbreviation::ORIGIN_GENERATED.to_owned()),
                     abbreviation: Some(crate::abbreviation::generate("en", answer, &[], &[])),
                     abbreviation_origin: Some(crate::abbreviation::ORIGIN_GENERATED.to_owned()),
                     merged_into: None,
@@ -1111,8 +1037,6 @@ mod tests {
                     value: "Customer Service".to_owned(),
                     parent_id: None,
                     mode: None,
-                    short_form: Some("Cust Serv".to_owned()),
-                    short_form_origin: Some(crate::abbreviation::ORIGIN_GENERATED.to_owned()),
                     abbreviation: Some("Cust Serv".to_owned()),
                     abbreviation_origin: Some(crate::abbreviation::ORIGIN_GENERATED.to_owned()),
                     merged_into: None,
@@ -1122,8 +1046,6 @@ mod tests {
                     value: "Maintenance".to_owned(),
                     parent_id: None,
                     mode: None,
-                    short_form: Some("My Choice".to_owned()),
-                    short_form_origin: Some(crate::abbreviation::ORIGIN_EDITED.to_owned()),
                     abbreviation: Some("My Choice".to_owned()),
                     abbreviation_origin: Some(crate::abbreviation::ORIGIN_EDITED.to_owned()),
                     merged_into: None,
@@ -1180,12 +1102,12 @@ mod tests {
             .first()
             .expect("the stale form makes this the one changed Attribute");
         assert_eq!(
-            upserted.options[0].short_form.as_deref(),
+            upserted.options[0].abbreviation.as_deref(),
             Some("Cust. Svc."),
             "a stale generated form moves once the bundled lists' revision has moved on"
         );
         assert_eq!(
-            upserted.options[1].short_form.as_deref(),
+            upserted.options[1].abbreviation.as_deref(),
             Some("My Choice"),
             "an edited Short form is never touched by a list revision change"
         );
