@@ -922,7 +922,7 @@ mod tests {
         let (db, _ids, worksite) = seeded();
         db.conn()
             .execute(
-                "INSERT INTO worksites (id, name, committee_target) VALUES ('other', 'Other', 5)",
+                "INSERT INTO worksites (id, name, committee_goal) VALUES ('other', 'Other', 5)",
                 [],
             )
             .unwrap();

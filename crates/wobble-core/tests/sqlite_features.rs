@@ -161,10 +161,10 @@ fn fresh_create_and_seed_matches_node() {
             row.get(0)
         })
         .unwrap();
-    assert_eq!(version, 26);
+    assert_eq!(version, 27);
     let migration_name: String = conn
         .query_row(
-            "SELECT name FROM schema_migrations WHERE version = 26",
+            "SELECT name FROM schema_migrations WHERE version = 27",
             [],
             |row| row.get(0),
         )
@@ -191,7 +191,7 @@ fn fresh_create_and_seed_matches_node() {
     );
 
     let (name, target): (String, i64) = conn
-        .query_row("SELECT name, committee_target FROM worksites", [], |row| {
+        .query_row("SELECT name, committee_goal FROM worksites", [], |row| {
             Ok((row.get(0)?, row.get(1)?))
         })
         .unwrap();

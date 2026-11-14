@@ -267,7 +267,7 @@ test.describe('Spanish creation template', () => {
 		expect(dataset.ok()).toBeTruthy();
 		const body = (await dataset.json()) as {
 			attributes: { name: string; kind: string; options: unknown[] }[];
-			worksite: { name: string; committeeGoal: number; committeeTarget: number };
+			worksite: { name: string; committeeGoal: number };
 		};
 		expect(body.attributes.map((attribute) => attribute.name)).toEqual([
 			'Departamento',
@@ -283,8 +283,7 @@ test.describe('Spanish creation template', () => {
 		expect(body.worksite).toEqual({
 			id: worksite.id,
 			name: worksite.name,
-			committeeGoal: 5,
-			committeeTarget: 5
+			committeeGoal: 5
 		});
 
 		await activateWorksite(context, worksite.id);

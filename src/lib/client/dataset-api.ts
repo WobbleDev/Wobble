@@ -47,8 +47,7 @@ function decodeWorksite(value: unknown): Worksite {
 	return {
 		id: worksite.id,
 		name: worksite.name,
-		committeeGoal: worksite.committeeGoal,
-		committeeTarget: worksite.committeeTarget
+		committeeGoal: worksite.committeeGoal
 	};
 }
 

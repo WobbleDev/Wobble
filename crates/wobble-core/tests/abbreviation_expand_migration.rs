@@ -83,11 +83,8 @@ fn a_v25_database_gains_the_new_keys_beside_the_old_and_keeps_everything_else() 
     drop(App::open_legacy_fixture(&path));
     // LEGACY-PLAINTEXT-FIXTURE: temp-constructed legacy-schema source for upgrade-read test (intentional plaintext, never production).
     let conn = Connection::open(&path).unwrap();
-    assert_eq!(raw_version(&conn), Some(26));
-    assert_eq!(
-        migration_rows(&conn).last().unwrap(),
-        &(26, "abbreviation".to_owned())
-    );
+    assert_eq!(raw_version(&conn), Some(27));
+    assert!(migration_rows(&conn).contains(&(26, "abbreviation".to_owned())));
     assert_eq!(
         options_of(&conn, "dept"),
         json!([
@@ -131,7 +128,7 @@ fn every_upgradable_version_ends_with_both_key_sets_equal() {
         drop(App::open_legacy_fixture(&path));
         // LEGACY-PLAINTEXT-FIXTURE: temp-constructed legacy-schema source for upgrade-read test (intentional plaintext, never production).
         let conn = Connection::open(&path).unwrap();
-        assert_eq!(raw_version(&conn), Some(26), "v{version}");
+        assert_eq!(raw_version(&conn), Some(27), "v{version}");
         let options = options_of(&conn, "dept");
         let answers = options.as_array().unwrap();
         assert_eq!(answers.len(), 2, "v{version}");

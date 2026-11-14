@@ -1301,14 +1301,12 @@
 			}
 		],
 		"worksite": {
-			"committeeTarget": 5,
 			"committeeGoal": 5,
 			"id": "85db8f86-4064-4bd8-843b-88de069715be",
 			"name": "My Worksite"
 		},
 		"worksites": [
 			{
-				"committeeTarget": 5,
 				"committeeGoal": 5,
 				"id": "85db8f86-4064-4bd8-843b-88de069715be",
 				"name": "My Worksite"

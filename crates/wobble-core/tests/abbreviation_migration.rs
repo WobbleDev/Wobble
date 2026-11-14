@@ -50,10 +50,9 @@ fn every_upgradable_version_backfills_a_generated_abbreviation_for_every_value()
         let data = dataset(&app);
         // LEGACY-PLAINTEXT-FIXTURE: temp-constructed legacy-schema source for upgrade-read test (intentional plaintext, never production).
         let conn = Connection::open(&path).expect("opens the upgraded database");
-        assert_eq!(raw_version(&conn), Some(26), "v{version}");
-        assert_eq!(
-            migration_rows(&conn).last().unwrap(),
-            &(26, "abbreviation".to_owned()),
+        assert_eq!(raw_version(&conn), Some(27), "v{version}");
+        assert!(
+            migration_rows(&conn).contains(&(26, "abbreviation".to_owned())),
             "v{version}"
         );
         let options = &data["attributes"][0]["options"];
