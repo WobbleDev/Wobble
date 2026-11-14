@@ -1,6 +1,7 @@
 import { m } from '#lib/paraglide/messages.js';
 import { ApiError } from './api-error.ts';
 import { decodeDataFile, decodeSafetyCopyPath, isRecord, type DataFileInfo } from './api-decode.ts';
+import { storeActiveWorksiteId } from './active-worksite-storage.ts';
 import { jsonInit, requestJson } from './request-json.ts';
 
 /** What Settings shows for a data-control failure: the UI copy and the core's detail. */
@@ -100,8 +101,8 @@ export async function pickRestorePath(): Promise<string | null> {
 export type RestoreCredential =
 	{ kind: 'encrypted'; sourcePassphrase: string } | { kind: 'legacy' };
 
-export function restoreBackup(path: string, credential: RestoreCredential): Promise<string> {
-	return requestJson(
+export async function restoreBackup(path: string, credential: RestoreCredential): Promise<string> {
+	const safetyCopy = await requestJson(
 		'/api/restore',
 		jsonInit('POST', {
 			path,
@@ -112,6 +113,11 @@ export function restoreBackup(path: string, credential: RestoreCredential): Prom
 		(status) => m.settings_data_error_http_restore({ status }),
 		decodeSafetyCopyPath
 	);
+	// The restored file holds its own Worksites, so the id this browser remembered may
+	// name one that is gone; a write naming it would be refused. Forget it, as erase does,
+	// and the server falls back to the first restored Worksite.
+	storeActiveWorksiteId(null);
+	return safetyCopy;
 }
 
 /**

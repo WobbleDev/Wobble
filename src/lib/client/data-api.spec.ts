@@ -1,5 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { jsonResponse } from '#lib/testing/http.ts';
+import { jsonResponse, stubStorage } from '#lib/testing/http.ts';
+import { readStoredActiveWorksiteId, storeActiveWorksiteId } from './active-worksite-storage.ts';
 import { ApiError } from './api-error.ts';
 import { dataErrorCopy, eraseAllData, getDataFile, restoreBackup } from './data-api.ts';
 
@@ -153,6 +154,21 @@ describe('restoring a backup', () => {
 				sourcePassphrase: 'backup credential'
 			})
 		).rejects.toThrow('The chosen file is not a file.');
+	});
+
+	it('forgets the remembered Active Worksite once the restore succeeds, and only then', async () => {
+		stubStorage();
+		storeActiveWorksiteId('worksite-before-restore');
+		vi.stubGlobal('fetch', vi.fn().mockResolvedValue(jsonResponse({ message: 'refused' }, 400)));
+		await expect(restoreBackup('/tmp/legacy.sqlite', { kind: 'legacy' })).rejects.toThrow();
+		expect(readStoredActiveWorksiteId()).toBe('worksite-before-restore');
+
+		vi.stubGlobal(
+			'fetch',
+			vi.fn().mockResolvedValue(jsonResponse({ safetyCopyPath: '/tmp/pre-restore.sqlite' }))
+		);
+		await restoreBackup('/tmp/legacy.sqlite', { kind: 'legacy' });
+		expect(readStoredActiveWorksiteId()).toBeNull();
 	});
 
 	it('refuses a reply without the safety copy', async () => {

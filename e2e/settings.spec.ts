@@ -11,7 +11,7 @@ import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { DatabaseSync } from 'node:sqlite';
 import { expect, test, TEST_PASSPHRASE } from './fixtures.ts';
-import { createWorker, readStoredActiveWorksiteId } from './api.ts';
+import { activateWorksite, createWorker, readStoredActiveWorksiteId } from './api.ts';
 import { appReady } from './page-ready.ts';
 import type { APIRequestContext, Page } from '@playwright/test';
 
@@ -820,6 +820,7 @@ const workerPanel = (page: Page, name: string) =>
 	page.getByRole('complementary', { name: 'Worker details: ' + name });
 
 test('Restore upgrades a v20 backup, keeps every Attribute in its draft, and reopens ordinary edits', async ({
+	context,
 	page,
 	request
 }) => {
@@ -875,6 +876,11 @@ test('Restore upgrades a v20 backup, keeps every Attribute in its draft, and reo
 	expect(draftBody.draft.update.email).toBe('rosalind@example.test');
 	expect(draftBody.draft.pendingNote.text).toBe('half a note');
 
+	// The restore went through the API, so this browser still remembers the Worksite it was
+	// opened on, which the restored file no longer holds. The app forgets it after a Restore
+	// of its own; here the test points the browser at the restored Worksite instead, so the
+	// page's writes name a Worksite that exists.
+	await activateWorksite(context, fixture['x-wobble-worksite']);
 	await page.reload();
 	await appReady(page);
 	await page.goto('/workers');
