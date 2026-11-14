@@ -9,4 +9,9 @@ export type ConfigurationPreviewAbbreviation = {
 	answerId: string;
 	shortForm: string;
 	shortFormOrigin: AbbreviationOrigin;
+	/**
+	 * The new name for `short_form`; always equal to it until the contract step.
+	 */
+	abbreviation: string;
+	abbreviationOrigin: AbbreviationOrigin;
 };

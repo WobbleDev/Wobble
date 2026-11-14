@@ -15,12 +15,12 @@ export async function appReady(page: Page): Promise<void> {
 }
 
 /**
- * Opens Configuration and waits for the Short form suggestion it asks for once its draft has
+ * Opens Configuration and waits for the Abbreviation suggestion it asks for once its draft has
  * settled (a 250 ms debounce). Without the wait the call happens only when the test outlives
  * it, so a recording sometimes has no answer for it and replay sometimes asks for one.
  */
 export async function gotoConfiguration(page: Page): Promise<void> {
-	const suggested = page.waitForResponse('**/api/configuration/short-forms');
+	const suggested = page.waitForResponse('**/api/configuration/abbreviations');
 	await page.goto('/configuration');
 	await appReady(page);
 	await suggested;

@@ -132,7 +132,7 @@ test('group names truncate, row labels wrap fully, and long headers remain reada
 	expect(rowLayout.verticalClip, 'row label has no vertical clipping').toBe(false);
 	expect(rowLayout.wrap, 'row label can wrap').not.toBe('nowrap');
 
-	// A header too long for its column shows its Short form, keeping the mono uppercase voice;
+	// A header too long for its column shows its Abbreviation, keeping the mono uppercase voice;
 	// the full value stays in the title.
 	const visibleHeaders = agitationsCard(page).locator(
 		'table[data-agitations-headers] thead th[title]'

@@ -7,15 +7,15 @@ const options = { measure, budget: 10, reserved: ['All'] };
 const entry = (
 	id: string,
 	value: string,
-	shortForm?: string,
+	abbreviation?: string,
 	ancestors: AbbreviationLabelEntry['ancestors'] = []
-): AbbreviationLabelEntry => ({ id, value, shortForm, ancestors });
+): AbbreviationLabelEntry => ({ id, value, abbreviation, ancestors });
 
 const labelsOf = (entries: readonly AbbreviationLabelEntry[], budget = 10) =>
 	Object.fromEntries(chooseAbbreviationLabels(entries, { ...options, budget }));
 
-describe('the full name or the Short form, by the column budget', () => {
-	it('shows the full name when it fits the budget and the Short form when it does not', () => {
+describe('the full name or the Abbreviation, by the column budget', () => {
+	it('shows the full name when it fits the budget and the Abbreviation when it does not', () => {
 		const entries = [
 			entry('a', 'Kitchen', 'Kitchen'),
 			entry('b', 'Back of House Maintenance', 'BOH Maint.'),
@@ -35,23 +35,23 @@ describe('the full name or the Short form, by the column budget', () => {
 		expect(weighted.get('b')).toBe('BOH Maint.');
 	});
 
-	it('keeps the full name for a value that has no Short form yet', () => {
+	it('keeps the full name for a value that has no Abbreviation yet', () => {
 		expect(labelsOf([entry('a', 'Customer Service North')])).toEqual({
 			a: 'Customer Service North'
 		});
 	});
 
-	it('shows a system reading in full, whatever its Short form and the budget', () => {
+	it('shows a system reading in full, whatever its Abbreviation and the budget', () => {
 		const labels = labelsOf([
-			{ id: '', value: 'No Department', shortForm: 'No Dep…', system: true }
+			{ id: '', value: 'No Department', abbreviation: 'No Dep…', system: true }
 		]);
 		expect(labels).toEqual({ '': 'No Department' });
 	});
 });
 
 describe('values that would show the same text', () => {
-	const kitchen = { value: 'Kitchen', shortForm: 'Kitchen' };
-	const bar = { value: 'Bar', shortForm: 'Bar' };
+	const kitchen = { value: 'Kitchen', abbreviation: 'Kitchen' };
+	const bar = { value: 'Bar', abbreviation: 'Bar' };
 
 	it('are told apart by their nearest ancestor, shown root first', () => {
 		const entries = [
@@ -76,7 +76,7 @@ describe('values that would show the same text', () => {
 
 	it('go as far up the path as the collision needs', () => {
 		// Ancestors are listed nearest first: Days sits under Lead, which sits under the root.
-		const lead = { value: 'Lead', shortForm: 'Lead' };
+		const lead = { value: 'Lead', abbreviation: 'Lead' };
 		const entries = [
 			entry('a', 'Days', 'Days', [lead, kitchen]),
 			entry('b', 'Days', 'Days', [lead, bar])
@@ -84,10 +84,12 @@ describe('values that would show the same text', () => {
 		expect(labelsOf(entries)).toEqual({ a: 'Kitchen › Lead › Days', b: 'Bar › Lead › Days' });
 	});
 
-	it('show each ancestor by the same rule: its full name if it fits, else its Short form', () => {
+	it('show each ancestor by the same rule: its full name if it fits, else its Abbreviation', () => {
 		const entries = [
-			entry('a', 'Days', 'Days', [{ value: 'Back of House Maintenance', shortForm: 'BOH Maint.' }]),
-			entry('b', 'Days', 'Days', [{ value: 'Bar', shortForm: 'Bar' }])
+			entry('a', 'Days', 'Days', [
+				{ value: 'Back of House Maintenance', abbreviation: 'BOH Maint.' }
+			]),
+			entry('b', 'Days', 'Days', [{ value: 'Bar', abbreviation: 'Bar' }])
 		];
 		expect(labelsOf(entries)).toEqual({ a: 'BOH Maint. › Days', b: 'Bar › Days' });
 	});
@@ -100,7 +102,7 @@ describe('values that would show the same text', () => {
 		expect(labelsOf(entries, 5)).toEqual({ a: 'Kitchen › Maint.', b: 'Bar › MAINT' });
 	});
 
-	it('never add a numeric suffix: siblings that share a Short form show their full names', () => {
+	it('never add a numeric suffix: siblings that share a Abbreviation show their full names', () => {
 		const entries = [
 			entry('n', 'Customer Service North', 'Customer …'),
 			entry('s', 'Customer Service South', 'Customer …')
@@ -119,8 +121,8 @@ describe('values that would show the same text', () => {
 
 describe('the choice', () => {
 	const entries = [
-		entry('k-days', 'Days', 'Days', [{ value: 'Kitchen', shortForm: 'Kitchen' }]),
-		entry('b-days', 'Days', 'Days', [{ value: 'Bar', shortForm: 'Bar' }]),
+		entry('k-days', 'Days', 'Days', [{ value: 'Kitchen', abbreviation: 'Kitchen' }]),
+		entry('b-days', 'Days', 'Days', [{ value: 'Bar', abbreviation: 'Bar' }]),
 		entry('long', 'Back of House Maintenance', 'BOH Maint.'),
 		entry('', 'No Department', undefined, []),
 		entry('plain', 'Receiving', 'Receiving')

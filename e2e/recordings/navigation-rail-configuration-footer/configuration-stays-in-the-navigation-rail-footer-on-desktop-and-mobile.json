@@ -34,10 +34,26 @@
 		},
 		{
 			"method": "POST",
+			"path": "/api/configuration/abbreviations",
+			"status": 200,
+			"body": {
+				"abbreviations": []
+			}
+		},
+		{
+			"method": "POST",
 			"path": "/api/configuration/short-forms",
 			"status": 200,
 			"body": {
 				"shortForms": []
+			}
+		},
+		{
+			"method": "POST",
+			"path": "/api/configuration/abbreviations",
+			"status": 200,
+			"body": {
+				"abbreviations": []
 			}
 		},
 		{

@@ -2,10 +2,10 @@ import { describe, expect, it } from 'vitest';
 import { createAgitationsHeaders } from './agitations-headers.svelte.ts';
 
 const values = [
-	{ id: 'front', value: 'Front of House', shortForm: 'Front of …' },
-	{ id: 'maintenance', value: 'Maintenance', shortForm: 'Maintenan…' },
-	{ id: 'customer', value: 'Customer Service North', shortForm: 'Customer …' },
-	{ id: 'kitchen', value: 'Kitchen', shortForm: 'Kitchen' }
+	{ id: 'front', value: 'Front of House', abbreviation: 'Front of …' },
+	{ id: 'maintenance', value: 'Maintenance', abbreviation: 'Maintenan…' },
+	{ id: 'customer', value: 'Customer Service North', abbreviation: 'Customer …' },
+	{ id: 'kitchen', value: 'Kitchen', abbreviation: 'Kitchen' }
 ];
 
 function headers(options: { columnsPerPage?: number; largest?: number } = {}) {

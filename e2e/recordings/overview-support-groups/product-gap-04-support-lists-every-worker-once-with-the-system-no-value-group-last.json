@@ -27,19 +27,25 @@
 							{
 								"id": "bf4146cf-da8f-46db-99f8-4048dbf6665b~Packing",
 								"shortForm": "Packing",
+								"abbreviation": "Packing",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Packing"
 							},
 							{
 								"id": "bf4146cf-da8f-46db-99f8-4048dbf6665b~Delivery",
 								"shortForm": "Delivery",
+								"abbreviation": "Delivery",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Delivery"
 							},
 							{
 								"id": "bf4146cf-da8f-46db-99f8-4048dbf6665b~No Department",
 								"shortForm": "No Dept.",
+								"abbreviation": "No Dept.",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "No Department"
 							}
 						]
@@ -1342,19 +1348,25 @@
 							{
 								"id": "bf4146cf-da8f-46db-99f8-4048dbf6665b~Packing",
 								"shortForm": "Packing",
+								"abbreviation": "Packing",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Packing"
 							},
 							{
 								"id": "bf4146cf-da8f-46db-99f8-4048dbf6665b~Delivery",
 								"shortForm": "Delivery",
+								"abbreviation": "Delivery",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Delivery"
 							},
 							{
 								"id": "bf4146cf-da8f-46db-99f8-4048dbf6665b~No Department",
 								"shortForm": "No Dept.",
+								"abbreviation": "No Dept.",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "No Department"
 							}
 						]

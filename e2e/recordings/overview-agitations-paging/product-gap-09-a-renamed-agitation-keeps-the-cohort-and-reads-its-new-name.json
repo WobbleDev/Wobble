@@ -48,19 +48,25 @@
 							{
 								"id": "8bfd4ab3-1770-4422-850d-0379d1349fc7~Packing",
 								"shortForm": "Packing",
+								"abbreviation": "Packing",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Packing"
 							},
 							{
 								"id": "8bfd4ab3-1770-4422-850d-0379d1349fc7~Delivery",
 								"shortForm": "Delivery",
+								"abbreviation": "Delivery",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Delivery"
 							},
 							{
 								"id": "8bfd4ab3-1770-4422-850d-0379d1349fc7~No Department",
 								"shortForm": "No Dept.",
+								"abbreviation": "No Dept.",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "No Department"
 							}
 						]
@@ -933,19 +939,25 @@
 							{
 								"id": "8bfd4ab3-1770-4422-850d-0379d1349fc7~Packing",
 								"shortForm": "Packing",
+								"abbreviation": "Packing",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Packing"
 							},
 							{
 								"id": "8bfd4ab3-1770-4422-850d-0379d1349fc7~Delivery",
 								"shortForm": "Delivery",
+								"abbreviation": "Delivery",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Delivery"
 							},
 							{
 								"id": "8bfd4ab3-1770-4422-850d-0379d1349fc7~No Department",
 								"shortForm": "No Dept.",
+								"abbreviation": "No Dept.",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "No Department"
 							}
 						]
@@ -1869,19 +1881,25 @@
 							{
 								"id": "8bfd4ab3-1770-4422-850d-0379d1349fc7~Packing",
 								"shortForm": "Packing",
+								"abbreviation": "Packing",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Packing"
 							},
 							{
 								"id": "8bfd4ab3-1770-4422-850d-0379d1349fc7~Delivery",
 								"shortForm": "Delivery",
+								"abbreviation": "Delivery",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Delivery"
 							},
 							{
 								"id": "8bfd4ab3-1770-4422-850d-0379d1349fc7~No Department",
 								"shortForm": "No Dept.",
+								"abbreviation": "No Dept.",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "No Department"
 							}
 						]

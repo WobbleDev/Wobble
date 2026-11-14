@@ -77,12 +77,12 @@ function decodeAnswers(value: unknown): AttributeAnswer[] {
 			throw new Error('Server returned an invalid attribute.');
 		}
 
-		// A Short form travels with its origin, and the core never sends an over-long one.
-		const hasForm = answer.shortForm !== undefined;
+		// A Abbreviation travels with its origin, and the core never sends an over-long one.
+		const hasForm = answer.abbreviation !== undefined;
 		if (
-			hasForm !== (answer.shortFormOrigin !== undefined) ||
+			hasForm !== (answer.abbreviationOrigin !== undefined) ||
 			(hasForm &&
-				(!isAbbreviation(answer.shortForm) || !isAbbreviationOrigin(answer.shortFormOrigin)))
+				(!isAbbreviation(answer.abbreviation) || !isAbbreviationOrigin(answer.abbreviationOrigin)))
 		) {
 			throw new Error('Server returned an invalid attribute.');
 		}
@@ -94,8 +94,8 @@ function decodeAnswers(value: unknown): AttributeAnswer[] {
 			...(answer.mode === undefined ? {} : { mode: answer.mode }),
 			...(hasForm
 				? {
-						shortForm: answer.shortForm as string,
-						shortFormOrigin: answer.shortFormOrigin as AbbreviationOrigin
+						abbreviation: answer.abbreviation as string,
+						abbreviationOrigin: answer.abbreviationOrigin as AbbreviationOrigin
 					}
 				: {})
 		};

@@ -27,13 +27,17 @@
 							{
 								"id": "484d719e-4ed6-49f5-923d-266d98c285de~Front of House",
 								"shortForm": "Front of …",
+								"abbreviation": "Front of …",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Front of House"
 							},
 							{
 								"id": "484d719e-4ed6-49f5-923d-266d98c285de~Back of House",
 								"shortForm": "Back of H…",
+								"abbreviation": "Back of H…",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Back of House"
 							}
 						]
@@ -46,13 +50,17 @@
 							{
 								"id": "0fa56125-938f-494d-b216-171da3ae629a~Server",
 								"shortForm": "Server",
+								"abbreviation": "Server",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Server"
 							},
 							{
 								"id": "0fa56125-938f-494d-b216-171da3ae629a~Cook",
 								"shortForm": "Cook",
+								"abbreviation": "Cook",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Cook"
 							}
 						]
@@ -65,13 +73,17 @@
 							{
 								"id": "8ad31192-861d-4773-86a9-d18cfaeb55ce~Dinner",
 								"shortForm": "Dinner",
+								"abbreviation": "Dinner",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Dinner"
 							},
 							{
 								"id": "8ad31192-861d-4773-86a9-d18cfaeb55ce~Brunch",
 								"shortForm": "Brunch",
+								"abbreviation": "Brunch",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Brunch"
 							}
 						]
@@ -84,13 +96,17 @@
 							{
 								"id": "418959b7-a537-4ef0-a2ef-baa0288ae7ec~North",
 								"shortForm": "North",
+								"abbreviation": "North",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "North"
 							},
 							{
 								"id": "418959b7-a537-4ef0-a2ef-baa0288ae7ec~South",
 								"shortForm": "South",
+								"abbreviation": "South",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "South"
 							}
 						]
@@ -1579,13 +1595,17 @@
 							{
 								"id": "484d719e-4ed6-49f5-923d-266d98c285de~Front of House",
 								"shortForm": "Front of …",
+								"abbreviation": "Front of …",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Front of House"
 							},
 							{
 								"id": "484d719e-4ed6-49f5-923d-266d98c285de~Back of House",
 								"shortForm": "Back of H…",
+								"abbreviation": "Back of H…",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Back of House"
 							}
 						]
@@ -1598,13 +1618,17 @@
 							{
 								"id": "0fa56125-938f-494d-b216-171da3ae629a~Server",
 								"shortForm": "Server",
+								"abbreviation": "Server",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Server"
 							},
 							{
 								"id": "0fa56125-938f-494d-b216-171da3ae629a~Cook",
 								"shortForm": "Cook",
+								"abbreviation": "Cook",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Cook"
 							}
 						]
@@ -1617,13 +1641,17 @@
 							{
 								"id": "8ad31192-861d-4773-86a9-d18cfaeb55ce~Dinner",
 								"shortForm": "Dinner",
+								"abbreviation": "Dinner",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Dinner"
 							},
 							{
 								"id": "8ad31192-861d-4773-86a9-d18cfaeb55ce~Brunch",
 								"shortForm": "Brunch",
+								"abbreviation": "Brunch",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Brunch"
 							}
 						]
@@ -1877,13 +1905,17 @@
 							{
 								"id": "484d719e-4ed6-49f5-923d-266d98c285de~Front of House",
 								"shortForm": "Front of …",
+								"abbreviation": "Front of …",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Front of House"
 							},
 							{
 								"id": "484d719e-4ed6-49f5-923d-266d98c285de~Back of House",
 								"shortForm": "Back of H…",
+								"abbreviation": "Back of H…",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Back of House"
 							}
 						]
@@ -1896,13 +1928,17 @@
 							{
 								"id": "0fa56125-938f-494d-b216-171da3ae629a~Server",
 								"shortForm": "Server",
+								"abbreviation": "Server",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Server"
 							},
 							{
 								"id": "0fa56125-938f-494d-b216-171da3ae629a~Cook",
 								"shortForm": "Cook",
+								"abbreviation": "Cook",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Cook"
 							}
 						]
@@ -1915,13 +1951,17 @@
 							{
 								"id": "8ad31192-861d-4773-86a9-d18cfaeb55ce~Dinner",
 								"shortForm": "Dinner",
+								"abbreviation": "Dinner",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Dinner"
 							},
 							{
 								"id": "8ad31192-861d-4773-86a9-d18cfaeb55ce~Brunch",
 								"shortForm": "Brunch",
+								"abbreviation": "Brunch",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Brunch"
 							}
 						]
@@ -1934,13 +1974,17 @@
 							{
 								"id": "418959b7-a537-4ef0-a2ef-baa0288ae7ec~North",
 								"shortForm": "North",
+								"abbreviation": "North",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "North"
 							},
 							{
 								"id": "418959b7-a537-4ef0-a2ef-baa0288ae7ec~South",
 								"shortForm": "South",
+								"abbreviation": "South",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "South"
 							}
 						]

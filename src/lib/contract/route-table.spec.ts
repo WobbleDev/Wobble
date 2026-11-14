@@ -42,7 +42,7 @@ function isRustOnly(method: string, rowPath: string): boolean {
 
 describe('route-table coverage', () => {
 	it('parses the whole table', () => {
-		expect(rows).toHaveLength(33);
+		expect(rows).toHaveLength(34);
 	});
 
 	it('has a scenario for every route-table row', () => {

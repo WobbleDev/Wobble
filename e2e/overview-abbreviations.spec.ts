@@ -7,7 +7,7 @@ import { appReady } from './page-ready.ts';
 const card = (page: Page) => page.getByRole('region', { name: 'Agitations' });
 const headerTable = (page: Page) => card(page).locator('[data-agitations-headers]');
 
-/** Each full name and the Short form the core generates for it: initials, a shortened word, or the 9-grapheme cut. */
+/** Each full name and the Abbreviation the core generates for it: initials, a shortened word, or the 9-grapheme cut. */
 const longNames: Record<string, string> = {
 	'Front of House Cleaning': 'FHC',
 	'Back of House Maintenance': 'BHM',
@@ -95,7 +95,7 @@ async function pageCount(page: Page) {
 	return pages;
 }
 
-test('narrow headers show Short forms and wide headers show full names', async ({
+test('narrow headers show Abbreviations and wide headers show full names', async ({
 	page,
 	request,
 	browserName
@@ -195,7 +195,7 @@ test('labels never add a page: the count follows the whole columns that fit', as
 	expect(await pageCount(page)).toBe(Math.ceil(names.length / perPage));
 });
 
-test('the No value reading stays in full beside Short forms', async ({ page, request }) => {
+test('the No value reading stays in full beside Abbreviations', async ({ page, request }) => {
 	const departments = await seed(
 		request,
 		'Department',

@@ -87,7 +87,7 @@ const captures = new Map<string, SeedCapture>();
  * Read-only POSTs the page makes: the recorder saves them with the GETs, and replay answers
  * the n-th call from the n-th entry (the last repeats), like any other recorded request.
  */
-const readOnlyPosts = new Set(['/api/configuration/short-forms']);
+const readOnlyPosts = new Set(['/api/configuration/abbreviations']);
 
 const recordedMethods = ['get', 'post', 'put', 'patch', 'delete', 'head', 'fetch'] as const;
 

@@ -79,9 +79,9 @@ export function toWorkerAttributeDefinition({
 			value: answer.value.trim(),
 			...(answer.parentId ? { parentId: answer.parentId } : {}),
 			...(answer.mode && parents.has(answer.id) ? { mode: answer.mode } : {}),
-			// A generated Short form is left to the core; only an edited one is sent (ADR 0046).
-			...(answer.shortFormOrigin === 'edited' && answer.shortForm?.trim()
-				? { shortForm: answer.shortForm.trim(), shortFormOrigin: 'edited' as const }
+			// A generated Abbreviation is left to the core; only an edited one is sent (ADR 0046).
+			...(answer.abbreviationOrigin === 'edited' && answer.abbreviation?.trim()
+				? { abbreviation: answer.abbreviation.trim(), abbreviationOrigin: 'edited' as const }
 				: {}),
 			...(answer.mergedInto ? { mergedInto: answer.mergedInto } : {})
 		}))

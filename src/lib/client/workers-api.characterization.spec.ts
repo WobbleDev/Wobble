@@ -213,9 +213,9 @@ const cases: Case[] = [
 		name: 'suggestAbbreviations',
 		call: () => suggestAbbreviations({ attributes: [], agitations: [], languages: [] }),
 		method: 'POST',
-		path: '/api/configuration/short-forms',
+		path: '/api/configuration/abbreviations',
 		body: { attributes: [], agitations: [], languages: [] },
-		refused: 'Could not suggest Short forms (HTTP 500).'
+		refused: 'Could not suggest Abbreviations (HTTP 500).'
 	},
 	{
 		name: 'previewWorkerMerge',

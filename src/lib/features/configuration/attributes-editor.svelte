@@ -150,7 +150,7 @@
 				`[role="treeitem"][data-row-id="${id}"] > div:first-child [data-action="${action}"]`
 			);
 			if (!control || control.disabled) return false;
-			// The Short form is a field: activating it moves focus in rather than clicking.
+			// The Abbreviation is a field: activating it moves focus in rather than clicking.
 			if (control instanceof HTMLInputElement) control.focus();
 			else control.click();
 			return true;

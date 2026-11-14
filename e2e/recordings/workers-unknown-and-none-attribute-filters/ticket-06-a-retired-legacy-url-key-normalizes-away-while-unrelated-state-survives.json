@@ -51,34 +51,44 @@
 							{
 								"id": "location-8b06b1e3-064a-4b6d-8a48-d0d09a2c1bdf~Central",
 								"shortForm": "Central",
+								"abbreviation": "Central",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Central"
 							},
 							{
 								"id": "location-8b06b1e3-064a-4b6d-8a48-d0d09a2c1bdf~Store A",
 								"parentId": "location-8b06b1e3-064a-4b6d-8a48-d0d09a2c1bdf~Central",
 								"shortForm": "Store A",
+								"abbreviation": "Store A",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Store A"
 							},
 							{
 								"id": "location-8b06b1e3-064a-4b6d-8a48-d0d09a2c1bdf~Packing",
 								"parentId": "location-8b06b1e3-064a-4b6d-8a48-d0d09a2c1bdf~Store A",
 								"shortForm": "Packing",
+								"abbreviation": "Packing",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Packing"
 							},
 							{
 								"id": "location-8b06b1e3-064a-4b6d-8a48-d0d09a2c1bdf~Store B",
 								"parentId": "location-8b06b1e3-064a-4b6d-8a48-d0d09a2c1bdf~Central",
 								"shortForm": "Store B",
+								"abbreviation": "Store B",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Store B"
 							},
 							{
 								"id": "location-8b06b1e3-064a-4b6d-8a48-d0d09a2c1bdf~North Store",
 								"shortForm": "N. Store",
+								"abbreviation": "N. Store",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "North Store"
 							}
 						]
@@ -91,19 +101,25 @@
 							{
 								"id": "job-21628204-dbd5-4bc5-810c-a7ebbadfabea~Cashier",
 								"shortForm": "Cashier",
+								"abbreviation": "Cashier",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Cashier"
 							},
 							{
 								"id": "job-21628204-dbd5-4bc5-810c-a7ebbadfabea~Stocker",
 								"shortForm": "Stocker",
+								"abbreviation": "Stocker",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Stocker"
 							},
 							{
 								"id": "job-21628204-dbd5-4bc5-810c-a7ebbadfabea~No Job",
 								"shortForm": "No Job",
+								"abbreviation": "No Job",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "No Job"
 							}
 						]
@@ -116,13 +132,17 @@
 							{
 								"id": "shift-e64ac560-8e6f-4dc9-8a03-1a9b751cd3c7~Days",
 								"shortForm": "Days",
+								"abbreviation": "Days",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Days"
 							},
 							{
 								"id": "shift-e64ac560-8e6f-4dc9-8a03-1a9b751cd3c7~Nights",
 								"shortForm": "Nights",
+								"abbreviation": "Nights",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Nights"
 							}
 						]
@@ -135,19 +155,25 @@
 							{
 								"id": "team-74816247-3d5d-4590-88af-cafe37027436~Team A",
 								"shortForm": "Team A",
+								"abbreviation": "Team A",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Team A"
 							},
 							{
 								"id": "team-74816247-3d5d-4590-88af-cafe37027436~Team B",
 								"shortForm": "Team B",
+								"abbreviation": "Team B",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Team B"
 							},
 							{
 								"id": "team-74816247-3d5d-4590-88af-cafe37027436~No work assignments",
 								"shortForm": "No work a…",
+								"abbreviation": "No work a…",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "No work assignments"
 							}
 						]
@@ -386,34 +412,44 @@
 							{
 								"id": "location-8b06b1e3-064a-4b6d-8a48-d0d09a2c1bdf~Central",
 								"shortForm": "Central",
+								"abbreviation": "Central",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Central"
 							},
 							{
 								"id": "location-8b06b1e3-064a-4b6d-8a48-d0d09a2c1bdf~Store A",
 								"parentId": "location-8b06b1e3-064a-4b6d-8a48-d0d09a2c1bdf~Central",
 								"shortForm": "Store A",
+								"abbreviation": "Store A",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Store A"
 							},
 							{
 								"id": "location-8b06b1e3-064a-4b6d-8a48-d0d09a2c1bdf~Packing",
 								"parentId": "location-8b06b1e3-064a-4b6d-8a48-d0d09a2c1bdf~Store A",
 								"shortForm": "Packing",
+								"abbreviation": "Packing",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Packing"
 							},
 							{
 								"id": "location-8b06b1e3-064a-4b6d-8a48-d0d09a2c1bdf~Store B",
 								"parentId": "location-8b06b1e3-064a-4b6d-8a48-d0d09a2c1bdf~Central",
 								"shortForm": "Store B",
+								"abbreviation": "Store B",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Store B"
 							},
 							{
 								"id": "location-8b06b1e3-064a-4b6d-8a48-d0d09a2c1bdf~North Store",
 								"shortForm": "N. Store",
+								"abbreviation": "N. Store",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "North Store"
 							}
 						]
@@ -426,19 +462,25 @@
 							{
 								"id": "job-21628204-dbd5-4bc5-810c-a7ebbadfabea~Cashier",
 								"shortForm": "Cashier",
+								"abbreviation": "Cashier",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Cashier"
 							},
 							{
 								"id": "job-21628204-dbd5-4bc5-810c-a7ebbadfabea~Stocker",
 								"shortForm": "Stocker",
+								"abbreviation": "Stocker",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Stocker"
 							},
 							{
 								"id": "job-21628204-dbd5-4bc5-810c-a7ebbadfabea~No Job",
 								"shortForm": "No Job",
+								"abbreviation": "No Job",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "No Job"
 							}
 						]
@@ -451,13 +493,17 @@
 							{
 								"id": "shift-e64ac560-8e6f-4dc9-8a03-1a9b751cd3c7~Days",
 								"shortForm": "Days",
+								"abbreviation": "Days",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Days"
 							},
 							{
 								"id": "shift-e64ac560-8e6f-4dc9-8a03-1a9b751cd3c7~Nights",
 								"shortForm": "Nights",
+								"abbreviation": "Nights",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Nights"
 							}
 						]
@@ -470,19 +516,25 @@
 							{
 								"id": "team-74816247-3d5d-4590-88af-cafe37027436~Team A",
 								"shortForm": "Team A",
+								"abbreviation": "Team A",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Team A"
 							},
 							{
 								"id": "team-74816247-3d5d-4590-88af-cafe37027436~Team B",
 								"shortForm": "Team B",
+								"abbreviation": "Team B",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Team B"
 							},
 							{
 								"id": "team-74816247-3d5d-4590-88af-cafe37027436~No work assignments",
 								"shortForm": "No work a…",
+								"abbreviation": "No work a…",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "No work assignments"
 							}
 						]
@@ -721,34 +773,44 @@
 							{
 								"id": "location-8b06b1e3-064a-4b6d-8a48-d0d09a2c1bdf~Central",
 								"shortForm": "Central",
+								"abbreviation": "Central",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Central"
 							},
 							{
 								"id": "location-8b06b1e3-064a-4b6d-8a48-d0d09a2c1bdf~Store A",
 								"parentId": "location-8b06b1e3-064a-4b6d-8a48-d0d09a2c1bdf~Central",
 								"shortForm": "Store A",
+								"abbreviation": "Store A",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Store A"
 							},
 							{
 								"id": "location-8b06b1e3-064a-4b6d-8a48-d0d09a2c1bdf~Packing",
 								"parentId": "location-8b06b1e3-064a-4b6d-8a48-d0d09a2c1bdf~Store A",
 								"shortForm": "Packing",
+								"abbreviation": "Packing",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Packing"
 							},
 							{
 								"id": "location-8b06b1e3-064a-4b6d-8a48-d0d09a2c1bdf~Store B",
 								"parentId": "location-8b06b1e3-064a-4b6d-8a48-d0d09a2c1bdf~Central",
 								"shortForm": "Store B",
+								"abbreviation": "Store B",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Store B"
 							},
 							{
 								"id": "location-8b06b1e3-064a-4b6d-8a48-d0d09a2c1bdf~North Store",
 								"shortForm": "N. Store",
+								"abbreviation": "N. Store",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "North Store"
 							}
 						]
@@ -761,19 +823,25 @@
 							{
 								"id": "job-21628204-dbd5-4bc5-810c-a7ebbadfabea~Cashier",
 								"shortForm": "Cashier",
+								"abbreviation": "Cashier",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Cashier"
 							},
 							{
 								"id": "job-21628204-dbd5-4bc5-810c-a7ebbadfabea~Stocker",
 								"shortForm": "Stocker",
+								"abbreviation": "Stocker",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Stocker"
 							},
 							{
 								"id": "job-21628204-dbd5-4bc5-810c-a7ebbadfabea~No Job",
 								"shortForm": "No Job",
+								"abbreviation": "No Job",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "No Job"
 							}
 						]
@@ -786,13 +854,17 @@
 							{
 								"id": "shift-e64ac560-8e6f-4dc9-8a03-1a9b751cd3c7~Days",
 								"shortForm": "Days",
+								"abbreviation": "Days",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Days"
 							},
 							{
 								"id": "shift-e64ac560-8e6f-4dc9-8a03-1a9b751cd3c7~Nights",
 								"shortForm": "Nights",
+								"abbreviation": "Nights",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Nights"
 							}
 						]
@@ -805,19 +877,25 @@
 							{
 								"id": "team-74816247-3d5d-4590-88af-cafe37027436~Team A",
 								"shortForm": "Team A",
+								"abbreviation": "Team A",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Team A"
 							},
 							{
 								"id": "team-74816247-3d5d-4590-88af-cafe37027436~Team B",
 								"shortForm": "Team B",
+								"abbreviation": "Team B",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Team B"
 							},
 							{
 								"id": "team-74816247-3d5d-4590-88af-cafe37027436~No work assignments",
 								"shortForm": "No work a…",
+								"abbreviation": "No work a…",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "No work assignments"
 							}
 						]
@@ -1174,34 +1252,44 @@
 							{
 								"id": "location-8b06b1e3-064a-4b6d-8a48-d0d09a2c1bdf~Central",
 								"shortForm": "Central",
+								"abbreviation": "Central",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Central"
 							},
 							{
 								"id": "location-8b06b1e3-064a-4b6d-8a48-d0d09a2c1bdf~Store A",
 								"parentId": "location-8b06b1e3-064a-4b6d-8a48-d0d09a2c1bdf~Central",
 								"shortForm": "Store A",
+								"abbreviation": "Store A",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Store A"
 							},
 							{
 								"id": "location-8b06b1e3-064a-4b6d-8a48-d0d09a2c1bdf~Packing",
 								"parentId": "location-8b06b1e3-064a-4b6d-8a48-d0d09a2c1bdf~Store A",
 								"shortForm": "Packing",
+								"abbreviation": "Packing",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Packing"
 							},
 							{
 								"id": "location-8b06b1e3-064a-4b6d-8a48-d0d09a2c1bdf~Store B",
 								"parentId": "location-8b06b1e3-064a-4b6d-8a48-d0d09a2c1bdf~Central",
 								"shortForm": "Store B",
+								"abbreviation": "Store B",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Store B"
 							},
 							{
 								"id": "location-8b06b1e3-064a-4b6d-8a48-d0d09a2c1bdf~North Store",
 								"shortForm": "N. Store",
+								"abbreviation": "N. Store",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "North Store"
 							}
 						]
@@ -1214,19 +1302,25 @@
 							{
 								"id": "job-21628204-dbd5-4bc5-810c-a7ebbadfabea~Cashier",
 								"shortForm": "Cashier",
+								"abbreviation": "Cashier",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Cashier"
 							},
 							{
 								"id": "job-21628204-dbd5-4bc5-810c-a7ebbadfabea~Stocker",
 								"shortForm": "Stocker",
+								"abbreviation": "Stocker",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Stocker"
 							},
 							{
 								"id": "job-21628204-dbd5-4bc5-810c-a7ebbadfabea~No Job",
 								"shortForm": "No Job",
+								"abbreviation": "No Job",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "No Job"
 							}
 						]
@@ -1239,13 +1333,17 @@
 							{
 								"id": "shift-e64ac560-8e6f-4dc9-8a03-1a9b751cd3c7~Days",
 								"shortForm": "Days",
+								"abbreviation": "Days",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Days"
 							},
 							{
 								"id": "shift-e64ac560-8e6f-4dc9-8a03-1a9b751cd3c7~Nights",
 								"shortForm": "Nights",
+								"abbreviation": "Nights",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Nights"
 							}
 						]
@@ -1258,19 +1356,25 @@
 							{
 								"id": "team-74816247-3d5d-4590-88af-cafe37027436~Team A",
 								"shortForm": "Team A",
+								"abbreviation": "Team A",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Team A"
 							},
 							{
 								"id": "team-74816247-3d5d-4590-88af-cafe37027436~Team B",
 								"shortForm": "Team B",
+								"abbreviation": "Team B",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Team B"
 							},
 							{
 								"id": "team-74816247-3d5d-4590-88af-cafe37027436~No work assignments",
 								"shortForm": "No work a…",
+								"abbreviation": "No work a…",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "No work assignments"
 							}
 						]

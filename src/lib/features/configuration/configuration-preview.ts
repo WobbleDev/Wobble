@@ -50,7 +50,7 @@ export function previewRequest(draft: ConfigurationDraft): ConfigurationPreviewR
 }
 
 /**
- * The request that asks the core for the Short forms of the draft's values. It proposes the
+ * The request that asks the core for the Abbreviations of the draft's values. It proposes the
  * draft's Attributes against the saved shared values, so edits elsewhere do not repeat it.
  */
 export function suggestionRequest(draft: ConfigurationDraft): ConfigurationPreviewRequest {

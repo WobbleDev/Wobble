@@ -27,7 +27,9 @@
 							{
 								"id": "bbf51e34-0b64-4fed-94b6-b53da0829608~Front of House",
 								"shortForm": "Front of …",
+								"abbreviation": "Front of …",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Front of House"
 							}
 						]
@@ -696,7 +698,9 @@
 							{
 								"id": "bbf51e34-0b64-4fed-94b6-b53da0829608~Front of House",
 								"shortForm": "Front of …",
+								"abbreviation": "Front of …",
 								"shortFormOrigin": "generated",
+								"abbreviationOrigin": "generated",
 								"value": "Front of House"
 							}
 						]

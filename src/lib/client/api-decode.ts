@@ -48,11 +48,11 @@ export function decodeLanguage(value: unknown): Language {
 	return reply.language;
 }
 
-/** Narrows an untrusted Short form suggestions reply to the forms it lists. */
+/** Narrows an untrusted Abbreviation suggestions reply to the forms it lists. */
 export function decodeAbbreviationSuggestions(value: unknown): ConfigurationPreviewAbbreviation[] {
 	const reply = value as AbbreviationsReply;
 
-	return reply.shortForms;
+	return reply.abbreviations;
 }
 
 /** Narrows an untrusted preview reply to the report the confirmation renders. */

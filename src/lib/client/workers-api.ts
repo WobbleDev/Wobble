@@ -413,16 +413,16 @@ export function previewConfiguration(
 }
 
 /**
- * Asks the core for the Short form each value of a proposed Save would be stored with. Read
+ * Asks the core for the Abbreviation each value of a proposed Save would be stored with. Read
  * only and light: no impacts are computed, so it can follow every edit.
  */
 export function suggestAbbreviations(
 	request: ConfigurationPreviewRequest
 ): Promise<ConfigurationPreviewAbbreviation[]> {
 	return requestJson(
-		'/api/configuration/short-forms',
+		'/api/configuration/abbreviations',
 		localizedJsonInit('POST', request),
-		(status) => `Could not suggest Short forms (HTTP ${status}).`,
+		(status) => `Could not suggest Abbreviations (HTTP ${status}).`,
 		decodeAbbreviationSuggestions
 	);
 }

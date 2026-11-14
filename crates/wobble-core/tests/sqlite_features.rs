@@ -6,7 +6,7 @@ mod common;
 
 use common::temp_db_path;
 use wobble_core::abbreviation_lists::REVISION;
-use wobble_core::abbreviation_revision::revision_key;
+use wobble_core::abbreviation_revision::{legacy_revision_key, revision_key};
 use wobble_core::db::{self, Db};
 use wobble_core::handle::{App, Request};
 use wobble_core::id::{counter_id, CounterId};
@@ -161,10 +161,10 @@ fn fresh_create_and_seed_matches_node() {
             row.get(0)
         })
         .unwrap();
-    assert_eq!(version, 25);
+    assert_eq!(version, 26);
     let migration_name: String = conn
         .query_row(
-            "SELECT name FROM schema_migrations WHERE version = 25",
+            "SELECT name FROM schema_migrations WHERE version = 26",
             [],
             |row| row.get(0),
         )
@@ -184,7 +184,9 @@ fn fresh_create_and_seed_matches_node() {
             ("theme".to_owned(), "system".to_owned()),
             ("density".to_owned(), "standard".to_owned()),
             // Seeding records the bundled lists revision: a fresh Worksite has nothing to resolve.
-            (revision_key(&counter_id(1)), REVISION.to_owned())
+            (revision_key(&counter_id(1)), REVISION.to_owned()),
+            // The old key is written beside the new one until the contract step.
+            (legacy_revision_key(&counter_id(1)), REVISION.to_owned())
         ]
     );
 

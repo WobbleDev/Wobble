@@ -8,7 +8,7 @@
 		pendingRemovalId: string;
 		hasError: (answer: AttributeAnswerDraft) => boolean;
 		onRename: (answerId: string, text: string) => ValueTextCheck;
-		/** The text the answer's Short form field shows. */
+		/** The text the answer's Abbreviation field shows. */
 		abbreviationShown: (answer: AttributeAnswerDraft) => string;
 		onAbbreviation: (answerId: string, text: string) => void;
 		onDuplicate: (answerId: string, text: string, survivorId: string) => void;
@@ -207,7 +207,7 @@
 			<AbbreviationField
 				name={chipLabel}
 				shown={actions.abbreviationShown(answer)}
-				edited={answer.shortFormOrigin === 'edited'}
+				edited={answer.abbreviationOrigin === 'edited'}
 				{disabled}
 				onInput={(text) => actions.onAbbreviation(answer.id, text)}
 			/>
