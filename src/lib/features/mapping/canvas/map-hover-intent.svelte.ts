@@ -35,6 +35,14 @@ export function createHoverIntent(host: HoverIntentHost) {
 	let hoverTimer: ReturnType<typeof setTimeout> | undefined;
 	let hoverEvent: PointerEvent | undefined;
 	let tooltipShown = false;
+	/** The touch tap's delayed card. Kept apart from `cancel()`: the tap's own pointerleave
+	    calls it on the next tick and must not swallow the card this timer is about to show. */
+	let tapTimer: ReturnType<typeof setTimeout> | undefined;
+
+	function cancelTap() {
+		clearTimeout(tapTimer);
+		tapTimer = undefined;
+	}
 
 	function cancel() {
 		clearTimeout(hoverTimer);
@@ -45,7 +53,10 @@ export function createHoverIntent(host: HoverIntentHost) {
 
 	return {
 		/** Drops any pending or shown intent; also what a destroyed canvas calls. */
-		cancel,
+		cancel() {
+			cancel();
+			cancelTap();
+		},
 		/** Pointing at a Worker lifts it, whether the pointer found the dot or its target. */
 		enter(node: WorkerGraphNode) {
 			host.onHover(node.id);
@@ -83,11 +94,16 @@ export function createHoverIntent(host: HoverIntentHost) {
 			// Lifting the finger also fires the chart's own pointerleave, which clears
 			// the card on the next tick, so this lands just after it — shown
 			// immediately instead, the card flashes for a frame and goes.
-			setTimeout(() => tooltip.show(event, node), touchTapDelayMs);
+			cancelTap();
+			tapTimer = setTimeout(() => {
+				tapTimer = undefined;
+				tooltip.show(event, node);
+			}, touchTapDelayMs);
 		},
 		/** Pressing a Worker puts the card away; the caller then arms the drag. */
 		press(tooltip: NodeTooltip) {
 			cancel();
+			cancelTap();
 			tooltip.hide();
 		}
 	};

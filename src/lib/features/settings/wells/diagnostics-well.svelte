@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { onDestroy } from 'svelte';
 	import Check from '@lucide/svelte/icons/check';
 	import Copy from '@lucide/svelte/icons/copy';
 	import { Button } from '#lib/components/ui/button/index.ts';
@@ -15,6 +16,7 @@
 	const canCopy = $derived(!runtime.loading && runtime.error === null);
 
 	const copy = new CopyFeedback();
+	onDestroy(() => copy.dispose());
 </script>
 
 <SettingsWell
