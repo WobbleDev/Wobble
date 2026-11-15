@@ -2,7 +2,7 @@
 	import FileDown from '@lucide/svelte/icons/file-down';
 	import Upload from '@lucide/svelte/icons/upload';
 	import { exportBackup, pickBackupPath } from '#lib/client/backup-api.ts';
-	import { pickRestorePath, restoreBackup } from '#lib/client/data-api.ts';
+	import { dataErrorCopy, pickRestorePath, restoreBackup } from '#lib/client/data-api.ts';
 	import { isTauriTransport } from '#lib/client/transport.ts';
 	import * as AlertDialog from '#lib/components/ui/alert-dialog/index.ts';
 	import { Button } from '#lib/components/ui/button/index.ts';
@@ -37,7 +37,7 @@
 			await exportBackup(path);
 			exportSaved = path;
 		} catch (error) {
-			exportError = error instanceof Error ? error.message : m.settings_data_error_export();
+			exportError = dataErrorCopy(error, m.settings_data_error_export()).message;
 		} finally {
 			exporting = false;
 		}

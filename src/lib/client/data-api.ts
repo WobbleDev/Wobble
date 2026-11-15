@@ -38,7 +38,10 @@ const DATA_ERROR_COPY: Record<string, () => string> = {
 	restore_unsupported_schema: m.settings_data_error_restore_unsupported_schema,
 	restore_failed: m.settings_data_error_restore_failed,
 	erase_confirmation_required: m.settings_data_error_erase_confirmation_required,
-	erase_failed: m.settings_data_error_erase_failed
+	erase_failed: m.settings_data_error_erase_failed,
+	backup_destination_invalid: m.settings_data_error_backup_destination_invalid,
+	backup_same_file: m.settings_data_error_backup_same_file,
+	backup_failed: m.settings_data_error_backup_failed
 };
 
 /** The message an error carries, whether it is an Error, a Tauri command's string, or neither. */
