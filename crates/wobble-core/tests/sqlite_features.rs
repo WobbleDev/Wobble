@@ -121,7 +121,7 @@ fn same_worksite_trigger_rejects_cross_worksite_relationships() {
 }
 
 #[test]
-fn open_sets_foreign_keys_wal_and_busy_timeout() {
+fn open_sets_foreign_keys_wal_busy_timeout_and_fullfsync() {
     let path = temp_db_path("pragmas.sqlite");
     let _ = std::fs::remove_file(&path);
     {
@@ -145,6 +145,14 @@ fn open_sets_foreign_keys_wal_and_busy_timeout() {
             .query_row("PRAGMA busy_timeout", [], |row| row.get(0))
             .unwrap();
         assert_eq!(busy_timeout, 5000);
+        // macOS only flushes the drive cache (F_FULLFSYNC) when these are on.
+        for pragma in ["fullfsync", "checkpoint_fullfsync"] {
+            let value: i64 = db
+                .conn()
+                .query_row(&format!("PRAGMA {pragma}"), [], |row| row.get(0))
+                .unwrap();
+            assert_eq!(value, 1, "{pragma}");
+        }
     }
     let _ = std::fs::remove_file(&path);
     let _ = std::fs::remove_file(format!("{path}-wal"));
