@@ -2,7 +2,7 @@
 	import Check from '@lucide/svelte/icons/check';
 	import Copy from '@lucide/svelte/icons/copy';
 	import FolderOpen from '@lucide/svelte/icons/folder-open';
-	import { getContext } from 'svelte';
+	import { getContext, onDestroy } from 'svelte';
 	import {
 		dataErrorCopy,
 		getDataFile,
@@ -28,6 +28,8 @@
 	let revealError = $state<DataErrorCopy | null>(null);
 	let revealing = $state(false);
 	let copiedPath = $state(false);
+	let copiedTimer: ReturnType<typeof setTimeout> | undefined;
+	onDestroy(() => clearTimeout(copiedTimer));
 	/* "Not read yet" is not the same state as "the core could not read it". */
 	let loaded = $state(false);
 
@@ -92,7 +94,8 @@
 			await copyText(dataFilePath);
 			dataFilePathError = null;
 			copiedPath = true;
-			setTimeout(() => (copiedPath = false), 1600);
+			clearTimeout(copiedTimer);
+			copiedTimer = setTimeout(() => (copiedPath = false), 1600);
 		} catch {
 			dataFilePathError = { message: m.settings_data_error_copy_path(), detail: '' };
 		}

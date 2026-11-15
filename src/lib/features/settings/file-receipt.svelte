@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { onDestroy } from 'svelte';
 	import Check from '@lucide/svelte/icons/check';
 	import Copy from '@lucide/svelte/icons/copy';
 	import FolderOpen from '@lucide/svelte/icons/folder-open';
@@ -9,6 +10,7 @@
 	import { createFileReceipt } from './file-receipt.svelte.ts';
 	let { path }: { path: string } = $props();
 	const receipt = createFileReceipt(() => path);
+	onDestroy(() => receipt.copy.dispose());
 </script>
 
 <code
