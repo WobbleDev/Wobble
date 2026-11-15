@@ -409,7 +409,13 @@ mod tests {
         let second = create_language(db.conn(), &worksite, "Beta", &ids)
             .unwrap()
             .language;
-        save_worker_languages(db.conn(), &worksite, WORKER, &[first.id.clone()]).unwrap();
+        save_worker_languages(
+            db.conn(),
+            &worksite,
+            WORKER,
+            std::slice::from_ref(&first.id),
+        )
+        .unwrap();
         // Stands in for an I/O or disk-full error part-way through the INSERTs.
         db.conn()
             .execute_batch(
