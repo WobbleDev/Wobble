@@ -85,8 +85,10 @@ async function addUnder(
 	parent: string
 ): Promise<void> {
 	await input.fill(value);
-	await editor.getByRole('button', { name: 'Place new value ' + value, exact: true }).click();
-	await editor.getByRole('button', { name: 'Place under ' + parent, exact: true }).click();
+	await editor
+		.getByRole('button', { name: 'Place new value ' + value, exact: true })
+		.press('Enter');
+	await editor.getByRole('button', { name: 'Place under ' + parent, exact: true }).press('Enter');
 }
 
 test('Configuration builds root and child answers, rejects sibling collisions, and keeps identity through rename and reload', async ({

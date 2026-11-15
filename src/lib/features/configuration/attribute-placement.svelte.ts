@@ -59,7 +59,10 @@ function sameRefusal(a: PlacementRefusal | null, b: PlacementRefusal | null): bo
 		: a.reason === b.reason && sameTarget(a.target, b.target);
 }
 
-/** One draft placement session shared by pointer, click and keyboard input. */
+/**
+ * One draft placement session shared by pointer drag and keyboard input. A mouse or touch
+ * click does not start or finish a placement; only a keyboard-activated click (detail 0) does.
+ */
 export function createAttributePlacement(host: Host) {
 	let source = $state<Source | null>(null);
 	let destination = $state<PlacementTarget | null>(null);
@@ -433,10 +436,6 @@ export function createAttributePlacement(host: Host) {
 				else confirm(targetFrom(document.elementFromPoint(next.clientX, next.clientY)));
 			} else {
 				cleanup();
-				if (event.pointerType === 'touch') {
-					begin(current);
-					suppressNextClick();
-				}
 			}
 		};
 		const stop = () => {
@@ -454,11 +453,13 @@ export function createAttributePlacement(host: Host) {
 			handle.removeEventListener('lostpointercapture', stop);
 		};
 	}
-	function clickHandle(current: Source) {
+	/** Keyboard activation (Enter or Space) picks the value up; a mouse or touch click does not. */
+	function clickHandle(event: MouseEvent, current: Source) {
 		if (suppressClick) {
 			suppressClick = false;
 			return;
 		}
+		if (event.detail !== 0) return;
 		begin(current);
 	}
 	function click(event: MouseEvent) {
@@ -468,18 +469,11 @@ export function createAttributePlacement(host: Host) {
 			event.stopImmediatePropagation();
 			return;
 		}
+		// Only a keyboard-activated click places; a mouse or touch click on a destination is inert.
+		if (event.detail !== 0) return;
 		if (!source || dragging || (event.target as Element).closest('[data-placement-handle]')) return;
 		const target = targetFrom(event.target as Element);
 		if (!target) return;
-		event.preventDefault();
-		event.stopImmediatePropagation();
-		confirm(target);
-	}
-	function touchDestinationUp(event: PointerEvent) {
-		if (!source || armed || dragging || event.pointerType !== 'touch') return;
-		const target = targetFrom(event.target as Element);
-		if (!target || !eligible(target)) return;
-		suppressNextClick();
 		event.preventDefault();
 		event.stopImmediatePropagation();
 		confirm(target);
@@ -534,7 +528,6 @@ export function createAttributePlacement(host: Host) {
 			choose(targetFrom(own));
 		};
 		root.addEventListener('click', click, true);
-		root.addEventListener('pointerup', touchDestinationUp, true);
 		root.addEventListener('focusin', focus);
 		window.addEventListener('click', consumeSuppressedClick, true);
 		window.addEventListener('pointerdown', clearClickSuppression, true);
@@ -542,7 +535,6 @@ export function createAttributePlacement(host: Host) {
 		return () => {
 			clearTimeout(suppressionTimer);
 			root.removeEventListener('click', click, true);
-			root.removeEventListener('pointerup', touchDestinationUp, true);
 			root.removeEventListener('focusin', focus);
 			window.removeEventListener('click', consumeSuppressedClick, true);
 			window.removeEventListener('pointerdown', clearClickSuppression, true);

@@ -170,8 +170,8 @@
 					onblur={() => actions.reorder.blur(answer.id)}
 					onpointerdown={(event) =>
 						placement.pointerDown(event, { kind: 'answer', attributeId, answerId: answer.id })}
-					onclick={() =>
-						placement.clickHandle({ kind: 'answer', attributeId, answerId: answer.id })}
+					onclick={(event) =>
+						placement.clickHandle(event, { kind: 'answer', attributeId, answerId: answer.id })}
 					><GripVerticalIcon class="size-3.5" /></button
 				>
 				<div
