@@ -3,12 +3,72 @@
 use serde_json::{json, Value};
 
 use crate::db::Db;
-use crate::error::Result;
+use crate::error::{Error, Result};
 use crate::handle::{Request, Response};
-use crate::router::{json_response, message_response, read_payload};
+use crate::router::{coded_message_response, json_response, message_response, read_payload};
 
 /// `POST /api/backup` — the only route with no Node handler to port (F01).
 const BACKUP_PATH_REQUIRED_MESSAGE: &str = "A backup path is required.";
+
+const BACKUP_DESTINATION_INVALID_CODE: &str = "backup_destination_invalid";
+const BACKUP_DESTINATION_INVALID_MESSAGE: &str =
+    "The backup cannot be written there. Choose a different folder.";
+const BACKUP_SAME_FILE_CODE: &str = "backup_same_file";
+const BACKUP_SAME_FILE_MESSAGE: &str = "The backup must use a different destination.";
+const BACKUP_FAILED_CODE: &str = "backup_failed";
+const BACKUP_FAILED_MESSAGE: &str = "The backup could not be written.";
+
+/// The 400 for a destination that can never work: a folder that is missing or unwritable, a
+/// symlink or a file with SQLite sidecars beside it, or the live database itself. Checked
+/// before any write, with copy that carries no path and no OS text.
+fn refuse_destination(
+    conn: &rusqlite::Connection,
+    destination: &std::path::Path,
+) -> Option<Response> {
+    let invalid = || {
+        Some(coded_message_response(
+            400,
+            BACKUP_DESTINATION_INVALID_CODE,
+            BACKUP_DESTINATION_INVALID_MESSAGE,
+        ))
+    };
+    let parent = destination
+        .parent()
+        .filter(|parent| !parent.as_os_str().is_empty())
+        .unwrap_or(std::path::Path::new("."));
+    let Ok(parent) = std::fs::canonicalize(parent) else {
+        return invalid();
+    };
+    let Some(name) = destination.file_name() else {
+        return invalid();
+    };
+    let target = parent.join(name);
+    if target
+        .symlink_metadata()
+        .is_ok_and(|metadata| metadata.file_type().is_symlink())
+        || crate::key::sidecars_present(&target)
+    {
+        return invalid();
+    }
+    let live: String = conn
+        .query_row(
+            "SELECT file FROM pragma_database_list WHERE name = 'main'",
+            [],
+            |row| row.get(0),
+        )
+        .unwrap_or_default();
+    if !live.is_empty()
+        && target.exists()
+        && same_file::is_same_file(std::path::Path::new(&live), &target).unwrap_or(false)
+    {
+        return Some(coded_message_response(
+            400,
+            BACKUP_SAME_FILE_CODE,
+            BACKUP_SAME_FILE_MESSAGE,
+        ));
+    }
+    None
+}
 
 /// `POST /api/backup` — F01's Export backup, and the one route with no Node handler to
 /// port. Handle-to-handle copy streams from the open connection into an open handle,
@@ -32,14 +92,21 @@ pub(crate) fn post_backup_keyed(
     // non-object payload is `None`, so an array or scalar lands here too.
     match payload.get("path").and_then(Value::as_str) {
         Some(path) if !path.trim().is_empty() => {
-            crate::replacement::export_connection(
-                db.conn(),
-                std::path::Path::new(path),
-                secret,
-                true,
-            )?;
-
-            Ok(json_response(200, json!({})))
+            let destination = std::path::Path::new(path);
+            if let Some(refusal) = refuse_destination(db.conn(), destination) {
+                return Ok(refusal);
+            }
+            match crate::replacement::export_connection(db.conn(), destination, secret, true) {
+                Ok(()) => Ok(json_response(200, json!({}))),
+                // A plain message here is raw OS or SQLite text, paths included: the page gets
+                // fixed copy and a code instead.
+                Err(Error::Message(_)) => Ok(coded_message_response(
+                    500,
+                    BACKUP_FAILED_CODE,
+                    BACKUP_FAILED_MESSAGE,
+                )),
+                Err(error) => Err(error),
+            }
         }
         _ => Ok(message_response(400, BACKUP_PATH_REQUIRED_MESSAGE)),
     }
@@ -131,13 +198,11 @@ mod tests {
         );
     }
 
-    /// A copy that cannot be made is the 500 every unwrapped handler error becomes — the
-    /// route never answers 200 for a backup that did not happen.
+    /// A destination that can never work is a coded 400 with fixed copy: no path, no OS text.
     #[test]
-    fn post_backup_answers_500_when_the_copy_fails() {
+    fn post_backup_refuses_a_missing_folder_with_a_coded_400() {
         let (db, ids) = seeded();
 
-        // The destination's parent directory does not exist, so `backup()` cannot open it.
         let response = dispatch(
             &db,
             &request(
@@ -148,15 +213,43 @@ mod tests {
             &ids,
         );
 
-        assert_eq!(response.status, 500);
-        assert!(
-            response
-                .body
-                .get("message")
-                .and_then(Value::as_str)
-                .is_some_and(|message| !message.is_empty()),
-            "{}",
-            response.body
+        assert_eq!(response.status, 400);
+        assert_eq!(
+            response.body,
+            json!({
+                "message": "The backup cannot be written there. Choose a different folder.",
+                "code": "backup_destination_invalid"
+            })
         );
+    }
+
+    #[cfg(unix)]
+    #[test]
+    fn post_backup_refuses_a_symlink_destination() {
+        let (db, ids) = seeded();
+        let target = std::path::PathBuf::from(crate::test_support::temp_db_path(
+            "wobble-backup-link-target.sqlite",
+        ));
+        let link = std::path::PathBuf::from(crate::test_support::temp_db_path(
+            "wobble-backup-link.sqlite",
+        ));
+        let _ = std::fs::remove_file(&link);
+        std::fs::write(&target, b"x").unwrap();
+        std::os::unix::fs::symlink(&target, &link).unwrap();
+
+        let response = dispatch(
+            &db,
+            &request(
+                "POST",
+                "/api/backup",
+                Some(json!({ "path": link.to_str().unwrap_or_default() })),
+            ),
+            &ids,
+        );
+
+        let _ = std::fs::remove_file(&link);
+        let _ = std::fs::remove_file(&target);
+        assert_eq!(response.status, 400);
+        assert_eq!(response.body["code"], json!("backup_destination_invalid"));
     }
 }
