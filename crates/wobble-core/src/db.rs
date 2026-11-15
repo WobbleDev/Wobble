@@ -8,6 +8,17 @@ use crate::error::{Error, Result};
 use crate::id::IdSource;
 use crate::schema::{self, DEFAULT_WORKSITE_NAME};
 
+/// Pragmas applied to every connection except the WAL switch. On macOS plain `fsync()` does not
+/// flush the drive's write cache; SQLite only issues `F_FULLFSYNC` when `fullfsync` is on (and
+/// `checkpoint_fullfsync` for WAL checkpoints). The bundled SQLCipher leaves both off, so a power
+/// loss could drop recent commits. A single-user app can afford the extra write cost.
+const RUNTIME_PRAGMAS_NO_WAL: &str = "PRAGMA foreign_keys = ON; PRAGMA busy_timeout = 5000; \
+     PRAGMA fullfsync = ON; PRAGMA checkpoint_fullfsync = ON;";
+
+/// The same pragmas plus the switch to WAL journaling.
+const RUNTIME_PRAGMAS: &str = "PRAGMA foreign_keys = ON; PRAGMA journal_mode = WAL; \
+     PRAGMA busy_timeout = 5000; PRAGMA fullfsync = ON; PRAGMA checkpoint_fullfsync = ON;";
+
 /// An open database with the Node-identical pragmas applied.
 pub struct Db {
     conn: Connection,
@@ -58,7 +69,7 @@ impl Db {
             // Ephemeral unit DBs stay unkeyed by design (intentional exception).
             let conn = Connection::open(path)?;
             conn.execute_batch(
-                "PRAGMA foreign_keys = ON; PRAGMA journal_mode = WAL; PRAGMA busy_timeout = 5000;",
+                RUNTIME_PRAGMAS,
             )?;
             schema::apply_migrations(&conn)?;
             return Ok(Db {
@@ -100,7 +111,7 @@ impl Db {
             }
         }
         conn.execute_batch(
-            "PRAGMA foreign_keys = ON; PRAGMA journal_mode = WAL; PRAGMA busy_timeout = 5000;",
+            RUNTIME_PRAGMAS,
         )?;
         schema::apply_migrations(&conn)?;
         if fresh && secret.is_some() {
@@ -128,7 +139,7 @@ impl Db {
     pub(crate) fn reopen_verified(path: &str, secret: &crate::key::Secret) -> Result<Db> {
         let conn = crate::key::open_keyed(Path::new(path), Some(secret))?;
         crate::store_validation::validate(&conn)?;
-        conn.execute_batch("PRAGMA foreign_keys = ON; PRAGMA busy_timeout = 5000;")?;
+        conn.execute_batch(RUNTIME_PRAGMAS_NO_WAL)?;
         Ok(Db {
             conn,
             path: Some(std::fs::canonicalize(path).map_err(|e| Error::Message(e.to_string()))?),
