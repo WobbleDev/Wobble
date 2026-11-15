@@ -68,9 +68,7 @@ impl Db {
         if path == ":memory:" {
             // Ephemeral unit DBs stay unkeyed by design (intentional exception).
             let conn = Connection::open(path)?;
-            conn.execute_batch(
-                RUNTIME_PRAGMAS,
-            )?;
+            conn.execute_batch(RUNTIME_PRAGMAS)?;
             schema::apply_migrations(&conn)?;
             return Ok(Db {
                 conn,
@@ -110,9 +108,7 @@ impl Db {
                 crate::upgrade_backup::back_up_before_upgrade_keyed(&conn, live, secret)?;
             }
         }
-        conn.execute_batch(
-            RUNTIME_PRAGMAS,
-        )?;
+        conn.execute_batch(RUNTIME_PRAGMAS)?;
         schema::apply_migrations(&conn)?;
         if fresh && secret.is_some() {
             crate::key::probe_keyed_handle(&conn).map_err(|failure| match failure {
