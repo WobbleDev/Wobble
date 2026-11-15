@@ -42,7 +42,10 @@ export class ContactCsvError extends Error {
 export async function parseContactCsv(text: string) {
 	const { default: Papa } = await import('papaparse');
 	const result = Papa.parse<string[]>(text, { skipEmptyLines: 'greedy' });
-	const parseError = result.errors[0];
+	// papaparse also reports warnings here. Without a delimiter option it flags
+	// `UndetectableDelimiter` (and defaults to ',') for a one-column file or a short
+	// first row; the comma default parses those fine, so only real errors are fatal.
+	const parseError = result.errors.find((error) => error.code !== 'UndetectableDelimiter');
 	if (parseError) {
 		const row = (parseError.row ?? 0) + 1;
 		throw new ContactCsvError(
