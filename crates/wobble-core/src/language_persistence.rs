@@ -96,14 +96,30 @@ pub fn find_unknown_language_ids(
 }
 
 /// `saveWorkerLanguages`: the worker's assignments go, then each id is inserted through
-/// the same-Worksite `EXISTS` guards. The callers hold the transaction.
+/// the same-Worksite `EXISTS` guards. Atomic: it joins the caller's transaction or opens its own.
 pub fn save_worker_languages(
     conn: &Connection,
     worksite: &Worksite,
     worker_id: &str,
     ids: &[String],
 ) -> Result<()> {
-    conn.execute(
+    // The DELETE and the INSERTs must land together: in autocommit mode the DELETE would commit
+    // alone and a later INSERT failure would leave the Worker with only some of its rows. A caller
+    // that already holds a transaction supplies it; otherwise open one here.
+    let transaction = if conn.is_autocommit() {
+        Some(Transaction::new_unchecked(
+            conn,
+            TransactionBehavior::Deferred,
+        )?)
+    } else {
+        None
+    };
+    let write_conn: &Connection = match &transaction {
+        Some(transaction) => transaction,
+        None => conn,
+    };
+
+    write_conn.execute(
         "DELETE FROM worker_languages \
          WHERE worker_id = ?1 \
            AND worker_id IN (SELECT id FROM workers WHERE worksite_id = ?2) \
@@ -111,7 +127,7 @@ pub fn save_worker_languages(
         params![worker_id, worksite.id, worksite.id],
     )?;
 
-    let mut insert = conn.prepare(
+    let mut insert = write_conn.prepare(
         "INSERT INTO worker_languages (worker_id, language_id) \
          SELECT ?1, ?2 \
          WHERE EXISTS (SELECT 1 FROM workers WHERE id = ?3 AND worksite_id = ?4) \
@@ -128,6 +144,10 @@ pub fn save_worker_languages(
         ])?;
     }
 
+    drop(insert);
+    if let Some(transaction) = transaction {
+        transaction.commit()?;
+    }
     Ok(())
 }
 
@@ -378,6 +398,30 @@ mod tests {
             .unwrap()
             .collect::<rusqlite::Result<Vec<String>>>()
             .unwrap()
+    }
+
+    #[test]
+    fn a_failed_insert_keeps_the_workers_existing_languages() {
+        let (db, ids, worksite) = seeded();
+        let first = create_language(db.conn(), &worksite, "Alpha", &ids)
+            .unwrap()
+            .language;
+        let second = create_language(db.conn(), &worksite, "Beta", &ids)
+            .unwrap()
+            .language;
+        save_worker_languages(db.conn(), &worksite, WORKER, &[first.id.clone()]).unwrap();
+        // Stands in for an I/O or disk-full error part-way through the INSERTs.
+        db.conn()
+            .execute_batch(
+                "CREATE TRIGGER fail_insert BEFORE INSERT ON worker_languages \
+                 BEGIN SELECT RAISE(ABORT, 'disk full'); END;",
+            )
+            .unwrap();
+
+        let result = save_worker_languages(db.conn(), &worksite, WORKER, &[second.id]);
+
+        assert!(result.is_err());
+        assert_eq!(assigned_language_ids(db.conn()), vec![first.id]);
     }
 
     #[test]
