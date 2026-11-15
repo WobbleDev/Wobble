@@ -129,7 +129,7 @@ export async function addValue(page: Page, attributeName: string, value: string)
 	await expect(input).toHaveValue('');
 }
 
-/** Types a new value and places it under an existing path, using the placement controls. */
+/** Types a new value and places it under an existing path, using the placement controls from the keyboard. */
 export async function addValueUnder(
 	page: Page,
 	attributeName: string,
@@ -139,8 +139,12 @@ export async function addValueUnder(
 	const editor = await openAttributeEditor(page, attributeName);
 	const input = editor.getByRole('textbox', { name: `Add an option to ${attributeName}` });
 	await input.fill(value);
-	await editor.getByRole('button', { name: `Place new value ${value}`, exact: true }).click();
-	await editor.getByRole('button', { name: `Place under ${parentPath}`, exact: true }).click();
+	await editor
+		.getByRole('button', { name: `Place new value ${value}`, exact: true })
+		.press('Enter');
+	await editor
+		.getByRole('button', { name: `Place under ${parentPath}`, exact: true })
+		.press('Enter');
 	await expect(input).toHaveValue('');
 }
 
@@ -152,8 +156,10 @@ export async function moveValueUnder(
 	parentPath: string
 ): Promise<void> {
 	const editor = await openAttributeEditor(page, attributeName);
-	await editor.getByRole('button', { name: `Place ${path}`, exact: true }).click();
-	await editor.getByRole('button', { name: `Place under ${parentPath}`, exact: true }).click();
+	await editor.getByRole('button', { name: `Place ${path}`, exact: true }).press('Enter');
+	await editor
+		.getByRole('button', { name: `Place under ${parentPath}`, exact: true })
+		.press('Enter');
 }
 
 /** Clicks Save all, confirming a harmless preview when the core asks about a moved branch. */
