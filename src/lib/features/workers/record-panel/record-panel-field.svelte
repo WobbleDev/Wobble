@@ -244,9 +244,21 @@
 	 * Worker: the navigation decides where focus lands, and the value button is
 	 * about to be remounted for the record that replaces this one.
 	 */
-	async function commit(refocus = true): Promise<boolean> {
-		if (saving) return true;
+	/* The save in flight, if any. A second commit (for example the flush when the selection
+	   moves) waits for its real result instead of claiming success, so a refused save is
+	   not lost with the unmounted editor. */
+	let inFlight: Promise<boolean> | null = null;
 
+	function commit(refocus = true): Promise<boolean> {
+		if (inFlight) return inFlight;
+		const run = commitNow(refocus).finally(() => {
+			if (inFlight === run) inFlight = null;
+		});
+		inFlight = run;
+		return run;
+	}
+
+	async function commitNow(refocus: boolean): Promise<boolean> {
 		const next = draft.trim();
 
 		// A half-typed Phone flushed because the organizer is moving off this Worker is
