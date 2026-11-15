@@ -816,6 +816,8 @@ export class ConfigurationDraftState {
 		this.refreshErrorMessage = '';
 		this.saveAnnouncement = '';
 		const plan = planConfigurationSave(this.draftInput);
+		// The saves run in parallel, so one can land while another is refused.
+		let savedAny = false;
 
 		try {
 			const saves: Promise<unknown>[] = [];
@@ -823,6 +825,7 @@ export class ConfigurationDraftState {
 				const nextName = plan.worksiteName.snapshot;
 				saves.push(
 					saveWorksiteName(nextName).then(() => {
+						savedAny = true;
 						this.savedWorksiteName = nextName;
 					})
 				);
@@ -831,6 +834,7 @@ export class ConfigurationDraftState {
 				const nextTarget = plan.committeeGoal.snapshot;
 				saves.push(
 					saveWorksiteCommitteeGoal(nextTarget).then(() => {
+						savedAny = true;
 						this.savedCommitteeGoal = nextTarget;
 						this.draftCommitteeGoal = String(nextTarget);
 					})
@@ -848,6 +852,7 @@ export class ConfigurationDraftState {
 					: saveAttributes(nextConfiguration);
 				saves.push(
 					save.then(() => {
+						savedAny = true;
 						this.savedConfiguration = nextConfiguration.map((attribute) => ({
 							...attribute,
 							answers: visibleValues(attribute.answers).map(
@@ -874,6 +879,7 @@ export class ConfigurationDraftState {
 				const nextAgitations = plan.agitations.snapshot;
 				saves.push(
 					saveAgitations(nextAgitations).then(() => {
+						savedAny = true;
 						this.savedAgitations = visibleValues(nextAgitations).map(({ id, text }) => ({
 							id,
 							text
@@ -886,6 +892,7 @@ export class ConfigurationDraftState {
 				const nextLanguages = plan.languages.snapshot;
 				saves.push(
 					saveLanguages(nextLanguages).then(() => {
+						savedAny = true;
 						this.savedLanguages = visibleValues(nextLanguages).map(({ id, name }) => ({
 							id,
 							name
@@ -904,6 +911,18 @@ export class ConfigurationDraftState {
 			// The draft stays; a stale or refused plan must be reviewed again before retry.
 			this.pendingResolutionSave = null;
 			this.errorMessage = configurationSaveFailureMessage(error);
+			// The parts that did save are real: refresh the header, nav rail and Workers data so
+			// they stop showing the old values (for example the old Worksite name).
+			if (savedAny) {
+				this.refreshingData = true;
+				try {
+					await invalidateAll();
+				} catch {
+					this.refreshErrorMessage = m.configuration_refresh_failed();
+				} finally {
+					this.refreshingData = false;
+				}
+			}
 			this.saving = false;
 			return;
 		}
