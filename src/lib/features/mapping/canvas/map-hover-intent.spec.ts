@@ -97,6 +97,30 @@ describe('hover intent', () => {
 		expect(tooltip.show).not.toHaveBeenCalled();
 	});
 
+	it('a canvas that is destroyed right after a tap never shows the card', () => {
+		const { hover, tooltip } = setup();
+		hover.up(event('tap', 'touch'), node('a'), tooltip);
+		hover.cancel();
+		vi.advanceTimersByTime(500);
+		expect(tooltip.show).not.toHaveBeenCalled();
+	});
+
+	it("pressing another dot after a tap drops the first dot's card", () => {
+		const { hover, tooltip } = setup();
+		hover.up(event('tap', 'touch'), node('a'), tooltip);
+		hover.press(tooltip);
+		vi.advanceTimersByTime(500);
+		expect(tooltip.show).not.toHaveBeenCalled();
+	});
+
+	it("the tap's own pointerleave does not swallow its card", () => {
+		const { hover, tooltip } = setup();
+		hover.up(event('tap', 'touch'), node('a'), tooltip);
+		hover.leave(tooltip);
+		vi.advanceTimersByTime(30);
+		expect(tooltip.show).toHaveBeenCalledWith(event('tap', 'touch'), node('a'));
+	});
+
 	it('a touch tap shows the card 30ms after the release; a mouse release shows nothing', () => {
 		const { hover, tooltip } = setup();
 		hover.up(event('mouse', 'mouse'), node('a'), tooltip);

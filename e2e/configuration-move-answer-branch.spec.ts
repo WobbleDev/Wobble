@@ -129,8 +129,8 @@ const confirmMove = (page: Page) =>
 	previewDialog(page).getByRole('button', { name: 'Save changes', exact: true });
 
 async function move(page: Page, from: string, to: string): Promise<void> {
-	await page.getByRole('button', { name: 'Place ' + from, exact: true }).click();
-	await page.getByRole('button', { name: 'Place under ' + to, exact: true }).click();
+	await page.getByRole('button', { name: 'Place ' + from, exact: true }).press('Enter');
+	await page.getByRole('button', { name: 'Place under ' + to, exact: true }).press('Enter');
 }
 
 type Fixture = {
@@ -249,7 +249,7 @@ test('@ticket-11 previews and confirms moving a branch, preserving every holder 
 
 	// A branch cannot be placed beneath itself or a descendant; those destinations
 	// are absent while placement is active and Escape leaves the tree untouched.
-	await page.getByRole('button', { name: 'Place Central / Store A', exact: true }).click();
+	await page.getByRole('button', { name: 'Place Central / Store A', exact: true }).press('Enter');
 	await expect(
 		page.getByRole('button', {
 			name: 'Place under Central / Store A / Loading dock',
@@ -266,8 +266,8 @@ test('@ticket-11 previews and confirms moving a branch, preserving every holder 
 	);
 
 	// Moving the branch to North changes only its path in the draft.
-	await page.getByRole('button', { name: 'Place Central / Store A', exact: true }).click();
-	await page.getByRole('button', { name: 'Place under North', exact: true }).click();
+	await page.getByRole('button', { name: 'Place Central / Store A', exact: true }).press('Enter');
+	await page.getByRole('button', { name: 'Place under North', exact: true }).press('Enter');
 	await expect(page.getByRole('treeitem', { name: 'Store A', exact: true })).toHaveAttribute(
 		'data-parent-row-id',
 		id.north
@@ -556,10 +556,6 @@ async function beginTouchDrag(page: Page, from: { x: number; y: number }) {
 	};
 }
 
-async function touchTap(page: Page, at: { x: number; y: number }): Promise<void> {
-	await page.touchscreen.tap(at.x, at.y);
-}
-
 async function placementHitAt(page: Page, point: { x: number; y: number }) {
 	return page.evaluate(({ x, y }) => {
 		const hit = document.elementFromPoint(x, y);
@@ -628,61 +624,6 @@ async function moveTouchGradually(
 
 test.describe('touch placement in long Attribute outlines', () => {
 	test.use({ hasTouch: true, reducedMotion: 'reduce' });
-	test('phone-sized touch taps choose a handle and destination without dragging', async ({
-		page,
-		request
-	}) => {
-		const id = ids();
-		await configure(request, id);
-		await page.setViewportSize({ width: 390, height: 844 });
-		await page.goto('/configuration');
-		await appReady(page);
-		await expandAttribute(page, 'Location');
-		for (const name of ['Central', 'Store A']) {
-			const row = page.getByRole('treeitem', { name, exact: true });
-			if ((await row.getAttribute('aria-expanded')) === 'false') {
-				await row.getByRole('button').first().click();
-			}
-		}
-		const source = page.getByRole('button', {
-			name: 'Place Central / Store A',
-			exact: true
-		});
-		await source.scrollIntoViewIfNeeded();
-		const sourceBox = (await source.boundingBox())!;
-		await touchTap(page, {
-			x: sourceBox.x + sourceBox.width / 2,
-			y: sourceBox.y + sourceBox.height / 2
-		});
-		await expect(source).toHaveAttribute('aria-pressed', 'true');
-		const destination = page.getByRole('button', { name: 'Place under North', exact: true });
-		await expect(destination).toBeVisible();
-		await destination.scrollIntoViewIfNeeded();
-		const destinationBox = (await destination.boundingBox())!;
-		const destinationPoint = {
-			x: destinationBox.x + destinationBox.width / 2,
-			y: destinationBox.y + destinationBox.height / 2
-		};
-		const destinationHit = await placementHitAt(page, destinationPoint);
-		expect(destinationHit, JSON.stringify(destinationHit)).toMatchObject({
-			parentId: id.north,
-			attributeId: id.location,
-			inViewport: true
-		});
-		await touchTap(page, destinationPoint);
-		const parentId = await page
-			.locator(`[data-row-id="${id.storeA}"]`)
-			.getAttribute('data-parent-row-id');
-		expect(parentId, JSON.stringify({ destinationHit, destinationBox, destinationPoint })).toBe(
-			id.north
-		);
-		await expect(page.locator(`[data-row-id="${id.location}"]`)).toHaveAttribute(
-			'aria-expanded',
-			'true'
-		);
-		await expect(page.getByRole('button', { name: 'Save all' })).toBeVisible();
-	});
-
 	test('touch drag auto-scrolls to a collapsed deep destination and saves the held branch', async ({
 		page,
 		request,
@@ -902,8 +843,8 @@ test('keyboard placement, Escape, same-parent no-op and invalid branch destinati
 	).toHaveCount(0);
 	await page.keyboard.press('Escape');
 	await expect(source).toBeFocused();
-	await source.click();
-	await page.getByRole('button', { name: 'Place under Central', exact: true }).click();
+	await source.press('Enter');
+	await page.getByRole('button', { name: 'Place under Central', exact: true }).press('Enter');
 	await expect(saveAll(page)).toHaveCount(0);
 	expect(await dataset(request)).toEqual(before);
 	await source.focus();
@@ -960,8 +901,8 @@ test('pending value placement creates directly under its parent and saves withou
 	const before = await dataset(request);
 	const input = page.getByRole('textbox', { name: 'Add an option to Location', exact: true });
 	await input.fill('Central');
-	await page.getByRole('button', { name: 'Place new value Central', exact: true }).click();
-	await page.getByRole('button', { name: 'Place under North', exact: true }).click();
+	await page.getByRole('button', { name: 'Place new value Central', exact: true }).press('Enter');
+	await page.getByRole('button', { name: 'Place under North', exact: true }).press('Enter');
 	await expect(input).toHaveValue('');
 	await expect(
 		page.getByRole('treeitem', { name: 'North / Central', exact: true })
@@ -995,15 +936,15 @@ test('pending placement cancellation and sibling conflicts keep the typed value 
 	const input = page.getByRole('textbox', { name: 'Add an option to Location', exact: true });
 
 	await input.fill('Abandoned');
-	await page.getByRole('button', { name: 'Place new value Abandoned', exact: true }).click();
+	await page.getByRole('button', { name: 'Place new value Abandoned', exact: true }).press('Enter');
 	await page.keyboard.press('Escape');
 	await expect(input).toHaveValue('Abandoned');
 	await expect(saveAll(page)).toHaveCount(0);
 	expect(await dataset(request)).toEqual(before);
 
 	await input.fill('Packing');
-	await page.getByRole('button', { name: 'Place new value Packing', exact: true }).click();
-	await page.getByRole('button', { name: 'Place under North', exact: true }).click();
+	await page.getByRole('button', { name: 'Place new value Packing', exact: true }).press('Enter');
+	await page.getByRole('button', { name: 'Place under North', exact: true }).press('Enter');
 	await expect(input).toHaveValue('Packing');
 	await expect(page.getByTestId('attribute-tools').getByRole('alert')).toContainText(
 		'A value with this name already exists under this parent.'
@@ -1023,8 +964,10 @@ test('the add button and Enter create top-level values after a directly placed c
 	const editor = await openAttributeEditor(page, 'Location');
 	const input = editor.getByRole('textbox', { name: 'Add an option to Location', exact: true });
 	await input.fill('Child first');
-	await editor.getByRole('button', { name: 'Place new value Child first', exact: true }).click();
-	await editor.getByRole('button', { name: 'Place under North', exact: true }).click();
+	await editor
+		.getByRole('button', { name: 'Place new value Child first', exact: true })
+		.press('Enter');
+	await editor.getByRole('button', { name: 'Place under North', exact: true }).press('Enter');
 	await expect(input).toHaveValue('');
 	await expect(editor.getByRole('treeitem', { name: 'Child first', exact: true })).toHaveAttribute(
 		'data-parent-row-id',
@@ -1071,7 +1014,7 @@ test('pending values use the same placement flow for Worker Attributes and Disca
 	const editor = await openAttributeEditor(page, 'Team');
 	const input = editor.getByRole('textbox', { name: 'Add an option to Team', exact: true });
 	await input.fill('Canvass');
-	await editor.getByRole('button', { name: 'Place new value Canvass', exact: true }).click();
+	await editor.getByRole('button', { name: 'Place new value Canvass', exact: true }).press('Enter');
 	await page.keyboard.press('ArrowDown');
 	await page.keyboard.press('Enter');
 	await expect(editor.getByRole('treeitem', { name: 'Canvass', exact: true })).toHaveAttribute(

@@ -2,7 +2,7 @@
 	import Check from '@lucide/svelte/icons/check';
 	import Copy from '@lucide/svelte/icons/copy';
 	import FolderOpen from '@lucide/svelte/icons/folder-open';
-	import { getContext } from 'svelte';
+	import { getContext, onDestroy } from 'svelte';
 	import {
 		dataErrorCopy,
 		getDataFile,
@@ -28,20 +28,32 @@
 	let revealError = $state<DataErrorCopy | null>(null);
 	let revealing = $state(false);
 	let copiedPath = $state(false);
+	let copiedTimer: ReturnType<typeof setTimeout> | undefined;
+	onDestroy(() => clearTimeout(copiedTimer));
 	/* "Not read yet" is not the same state as "the core could not read it". */
 	let loaded = $state(false);
 
+	/* Only the newest read applies its reply, so a slow older one cannot overwrite it. */
+	let latestLoad = 0;
+
 	async function loadDataFile(): Promise<void> {
+		const request = ++latestLoad;
 		dataFilePathError = null;
 		try {
 			const file = await getDataFile();
+			if (request !== latestLoad) return;
 			dataFilePath = file.path;
 			dataFileSizeBytes = file.sizeBytes;
 			dataFileModifiedAt = file.modifiedAt;
 		} catch (error) {
+			if (request !== latestLoad) return;
+			/* A failed read must not leave the old path and size standing next to the error. */
+			dataFilePath = '';
+			dataFileSizeBytes = null;
+			dataFileModifiedAt = null;
 			dataFilePathError = dataErrorCopy(error, m.settings_data_error_read_path());
 		} finally {
-			loaded = true;
+			if (request === latestLoad) loaded = true;
 		}
 	}
 
@@ -82,7 +94,8 @@
 			await copyText(dataFilePath);
 			dataFilePathError = null;
 			copiedPath = true;
-			setTimeout(() => (copiedPath = false), 1600);
+			clearTimeout(copiedTimer);
+			copiedTimer = setTimeout(() => (copiedPath = false), 1600);
 		} catch {
 			dataFilePathError = { message: m.settings_data_error_copy_path(), detail: '' };
 		}

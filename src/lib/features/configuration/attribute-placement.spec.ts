@@ -106,6 +106,9 @@ function deepDepartment() {
 		{ id: 'lane', value: 'Lane', parentId: 'bay' }
 	]);
 }
+// A click from a pointer carries detail 1; one from Enter or Space on a button carries 0.
+const pointerClick = { detail: 1 } as MouseEvent;
+const keyboardClick = { detail: 0 } as MouseEvent;
 afterEach(() => {
 	vi.unstubAllGlobals();
 	vi.useRealTimers();
@@ -222,7 +225,11 @@ describe('Attribute placement gesture lifecycle', () => {
 		surface.dispatchEvent(pointer('pointermove', 8));
 		surface.dispatchEvent(pointer('pointercancel', 8));
 		vi.runAllTimers();
-		placement.clickHandle({ kind: 'answer', attributeId: 'department', answerId: 'a' });
+		placement.clickHandle(keyboardClick, {
+			kind: 'answer',
+			attributeId: 'department',
+			answerId: 'a'
+		});
 		expect(placement.source).toMatchObject({ kind: 'answer', answerId: 'a' });
 	});
 	it('expands a collapsed destination after a deliberate hover', () => {
@@ -261,44 +268,17 @@ describe('Attribute placement gesture lifecycle', () => {
 		vi.advanceTimersByTime(500);
 		expect(expand).not.toHaveBeenCalled();
 	});
-	it('uses a touch tap to choose a source and consumes its duplicate click', () => {
+	it('does not pick a value up on a mouse or touch click, only on keyboard activation', () => {
 		vi.useFakeTimers();
 		const { placement, pointer, surface } = setup();
 		const source = { kind: 'answer', attributeId: 'department', answerId: 'a' } as const;
 		placement.pointerDown(pointer('pointerdown', 0, 'touch'), source);
 		surface.dispatchEvent(pointer('pointerup', 0, 'touch'));
-		expect(placement.source).toEqual(source);
-		placement.clickHandle(source);
-		expect(placement.source).toEqual(source);
-		placement.cancel(false);
-		placement.clickHandle(source);
-		expect(placement.source).toEqual(source);
-	});
-	it('keeps touch click suppression through delayed compatibility clicks', () => {
-		vi.useFakeTimers();
-		const { placement, pointer, surface } = setup();
-		const source = { kind: 'answer', attributeId: 'department', answerId: 'a' } as const;
-		placement.pointerDown(pointer('pointerdown', 0, 'touch'), source);
-		surface.dispatchEvent(pointer('pointerup', 0, 'touch'));
-		placement.cancel(false);
-		vi.advanceTimersByTime(1);
-		placement.clickHandle(source);
 		expect(placement.source).toBeNull();
-	});
-
-	it('clears pending touch click suppression when a new pointer gesture begins', () => {
-		vi.useFakeTimers();
-		const { placement, pointer, surface } = setup();
-		const source = { kind: 'answer', attributeId: 'department', answerId: 'a' } as const;
-		const nextSource = { kind: 'answer', attributeId: 'department', answerId: 'c' } as const;
-		placement.pointerDown(pointer('pointerdown', 0, 'touch'), source);
-		surface.dispatchEvent(pointer('pointerup', 0, 'touch'));
-		placement.cancel(false);
-		vi.advanceTimersByTime(1);
-		placement.pointerDown(pointer('pointerdown', 0), nextSource);
-		surface.dispatchEvent(pointer('pointerup', 0));
-		placement.clickHandle(nextSource);
-		expect(placement.source).toEqual(nextSource);
+		placement.clickHandle(pointerClick, source);
+		expect(placement.source).toBeNull();
+		placement.clickHandle(keyboardClick, source);
+		expect(placement.source).toEqual(source);
 	});
 });
 

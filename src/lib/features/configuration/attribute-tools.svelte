@@ -84,8 +84,8 @@
 							attributeId: attribute.id,
 							value: attribute.newOption.trim()
 						})}
-					onclick={() =>
-						placement.clickHandle({
+					onclick={(event) =>
+						placement.clickHandle(event, {
 							kind: 'pending',
 							attributeId: attribute.id,
 							value: attribute.newOption.trim()

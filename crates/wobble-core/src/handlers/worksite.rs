@@ -1,6 +1,7 @@
 //! The worksite routes: read, create, delete, rename or retarget the Active Worksite, and
 //! switch which Worksite is active.
 
+use rusqlite::{Transaction, TransactionBehavior};
 use serde::Serialize;
 use serde_json::Value;
 
@@ -225,13 +226,17 @@ pub(crate) fn put_worksite(db: &Db, request: &Request) -> Result<Response> {
         None => None,
     };
 
+    // Name and goal are written together or not at all: a failure on the second must not leave
+    // the first saved behind a 500.
+    let transaction = Transaction::new_unchecked(db.conn(), TransactionBehavior::Deferred)?;
     let mut updated = active;
     if has_name {
-        updated = save_worksite_name(db.conn(), &updated, name)?;
+        updated = save_worksite_name(&transaction, &updated, name)?;
     }
     if let Some(target) = target {
-        updated = save_worksite_committee_goal(db.conn(), &updated, target)?;
+        updated = save_worksite_committee_goal(&transaction, &updated, target)?;
     }
+    transaction.commit()?;
 
     Ok(json_response(
         200,
@@ -575,6 +580,35 @@ mod tests {
             )
             .unwrap();
         assert_eq!(stored, 5);
+        assert_eq!(
+            find_worksite(db.conn(), &id).unwrap().unwrap().name,
+            "My Worksite"
+        );
+    }
+
+    #[test]
+    fn put_worksite_keeps_the_name_when_the_goal_write_fails() {
+        let (db, _ids) = seeded();
+        let id = first_worksite(&db);
+        // Stands in for an I/O error on the second write.
+        db.conn()
+            .execute_batch(
+                "CREATE TRIGGER fail_goal BEFORE UPDATE OF committee_goal ON worksites \
+                 BEGIN SELECT RAISE(ABORT, 'disk full'); END;",
+            )
+            .unwrap();
+
+        let result = put_worksite(
+            &db,
+            &request_for(
+                "PUT",
+                "/api/worksite",
+                &id,
+                Some(json!({ "name": "Renamed", "committeeGoal": 12 })),
+            ),
+        );
+
+        assert!(result.is_err());
         assert_eq!(
             find_worksite(db.conn(), &id).unwrap().unwrap().name,
             "My Worksite"

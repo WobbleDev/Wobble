@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { onDestroy } from 'svelte';
 	import Check from '@lucide/svelte/icons/check';
 	import Copy from '@lucide/svelte/icons/copy';
 	import { Button } from '#lib/components/ui/button/index.ts';
@@ -18,6 +19,7 @@
 	/* Copy reads the running identity, so it waits for the read and stays off when it failed. */
 	const canCopy = $derived(!runtime.loading && runtime.error === null);
 	const copy = new CopyFeedback();
+	onDestroy(() => copy.dispose());
 </script>
 
 <SettingsWell id="about" title={m.settings_about_title()}>

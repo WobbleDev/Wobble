@@ -224,6 +224,8 @@ export function createSettingsSync(initial: AppSettings) {
 
 		function schedulePoll() {
 			if (stopped || document.visibilityState === 'hidden') return;
+			// A poll still in flight across a hide/show cycle must not leave a second timer.
+			clearTimeout(timer);
 			timer = setTimeout(() => void pollSettings(), pollDelay(pollCount));
 		}
 
@@ -235,9 +237,13 @@ export function createSettingsSync(initial: AppSettings) {
 			try {
 				const nextSettings = await getAppSettings();
 
-				confirmedSettings = nextSettings;
-				if (!isSaving && requestRevision === localChangeRevision) appSettings = nextSettings;
-				cacheLanguage(nextSettings.language, appliedLocale());
+				// A poll that began before a local save or reset is older than it: applying it
+				// would overwrite the newer value, and a later refused save would roll back to it.
+				if (!isSaving && requestRevision === localChangeRevision) {
+					confirmedSettings = nextSettings;
+					appSettings = nextSettings;
+					cacheLanguage(nextSettings.language, appliedLocale());
+				}
 				syncError = false;
 			} catch (error) {
 				if (!syncError) console.error('Could not refresh app settings.', error);

@@ -48,13 +48,16 @@ describe('parseContactCsv', () => {
 		]);
 	});
 
-	// Pinned as found: papaparse reports a single column as an UndetectableDelimiter
-	// warning, and the parser treats any reported error as fatal, so a one-column
-	// list of names is refused. See ## Comments in the ticket.
-	it('pins the refusal of a single-column file', async () => {
-		await expect(parseContactCsv('Name\nMary\nSam\n')).rejects.toThrow(
-			"Could not parse CSV near row 1: Unable to auto-detect delimiting character; defaulted to ','"
-		);
+	it('accepts a single-column file of names', async () => {
+		const parsed = await parseContactCsv('Name\nMary\nSam\n');
+		expect(parsed.headers).toEqual(['Name']);
+		expect(parsed.rows).toEqual([['Mary'], ['Sam']]);
+	});
+
+	it('accepts a file whose first data row is shorter than the header', async () => {
+		const parsed = await parseContactCsv('Name,Email\nMary\nSam,s@x.com\n');
+		expect(parsed.headers).toEqual(['Name', 'Email']);
+		expect(parsed.rows).toEqual([['Mary'], ['Sam', 's@x.com']]);
 	});
 
 	it('keeps a quoted cell that contains a comma as one value', async () => {
@@ -68,11 +71,9 @@ describe('parseContactCsv', () => {
 		);
 	});
 
-	// Pinned as found: an empty file fails in papaparse's delimiter check before the
-	// header check runs, so it gets the parser message, not the header message.
-	it('rejects an empty file with the parser message', async () => {
+	it('rejects an empty file with the header message', async () => {
 		await expect(parseContactCsv('')).rejects.toThrow(
-			'Could not parse CSV near row 1: Unable to auto-detect delimiting character'
+			'The CSV must include a header row and at least one contact row.'
 		);
 	});
 
