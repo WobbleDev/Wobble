@@ -31,24 +31,6 @@ function toLocales(locale: FormattingLocale): string[] | undefined {
 	return typeof locale === 'string' ? [locale] : [...locale];
 }
 
-/** A count in the system's regional number format. */
-export function formatNumber(
-	value: number,
-	options: Intl.NumberFormatOptions = {},
-	locale: FormattingLocale = systemLocales()
-): string {
-	return new Intl.NumberFormat(toLocales(locale), options).format(value);
-}
-
-/** A fraction shown as a percentage in the system's regional format. */
-export function formatPercent(
-	value: number,
-	options: Intl.NumberFormatOptions = {},
-	locale: FormattingLocale = systemLocales()
-): string {
-	return new Intl.NumberFormat(toLocales(locale), { ...options, style: 'percent' }).format(value);
-}
-
 /** A human-readable list in the applied interface language: "a, b and c". */
 export function formatList(
 	items: readonly string[],

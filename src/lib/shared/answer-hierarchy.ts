@@ -232,16 +232,6 @@ export function parseRemainderIdentity(
 	return { attributeId, answerId };
 }
 
-/**
- * Whether a region identity is the system's rather than a configured answer's.
- * The empty string is the Worker-level no-answer reading; every system group
- * begins with '#'. Configured ids never begin with it (ADR 0030), so a real
- * answer cannot impersonate a system region.
- */
-export function isSystemRegionIdentity(identity: string): boolean {
-	return identity === '' || identity.startsWith('#');
-}
-
 /** The further-detail-unknown reading of one exact remainder. */
 export function remainderReading(
 	attribute: WorkerAttributeDefinition,

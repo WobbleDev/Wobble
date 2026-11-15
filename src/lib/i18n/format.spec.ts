@@ -1,13 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import {
-	compareNames,
-	formatDate,
-	formatList,
-	formatNumber,
-	formatPercent,
-	formatRelativeTime,
-	formatTime
-} from './format.ts';
+import { compareNames, formatDate, formatList, formatRelativeTime, formatTime } from './format.ts';
 
 /** A local wall-clock instant, so the expected text never depends on the machine's zone. */
 function local(day: number, hours: number, minutes: number): Date {
@@ -20,19 +12,6 @@ const now = Date.parse('2026-10-19T18:40:00.000Z');
 function ago(seconds: number): string {
 	return new Date(now - seconds * 1000).toISOString();
 }
-
-describe('regional numbers', () => {
-	it('formats a count with the system regional grouping', () => {
-		expect(formatNumber(1234.5, {}, ['en-US'])).toBe('1,234.5');
-		// Latin American Spanish groups thousands and keeps a dot for the decimal.
-		expect(formatNumber(1234.5, {}, ['es-419'])).toBe('1,234.5');
-	});
-
-	it('formats a fraction as a percentage', () => {
-		expect(formatPercent(0.25, {}, ['en-US'])).toBe('25%');
-		expect(formatPercent(0.25, {}, ['es-419'])).toContain('25');
-	});
-});
 
 describe('list conjunctions', () => {
 	it('uses the applied interface language, not the system region', () => {

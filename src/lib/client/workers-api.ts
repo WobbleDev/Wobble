@@ -28,7 +28,6 @@ import {
 	decodeAbbreviationSuggestions,
 	decodeImportResult,
 	type ImportResult,
-	decodeLanguage,
 	decodeWorker,
 	decodeWorkerUpdate,
 	isRecord
@@ -474,16 +473,6 @@ export function createAgitation(text: string): Promise<Agitation> {
 		jsonInit('POST', { text }),
 		(status) => `Could not add the Agitation (HTTP ${status}).`,
 		decodeAgitation
-	);
-}
-
-/** Creates the language, or returns the worksite's existing language with the same name. */
-export function createLanguage(name: string): Promise<Language> {
-	return requestJson(
-		'/api/languages',
-		jsonInit('POST', { name }),
-		(status) => `Could not add the language (HTTP ${status}).`,
-		decodeLanguage
 	);
 }
 

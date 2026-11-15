@@ -5,7 +5,6 @@ import {
 	addWorkerRelationship,
 	assignWorkerAgitation,
 	createAgitation,
-	createLanguage,
 	createWorker,
 	deleteWorkerNote,
 	importContacts,
@@ -148,21 +147,6 @@ describe('creating an agitation', () => {
 		vi.stubGlobal('fetch', vi.fn().mockResolvedValue(jsonResponse({ message: 'Nope.' }, 400)));
 
 		await expect(createAgitation('Closed on Sundays')).rejects.toThrow('Nope.');
-	});
-});
-
-describe('creating a language', () => {
-	it('posts the name and returns the language', async () => {
-		const fetchMock = vi
-			.fn()
-			.mockResolvedValue(jsonResponse({ language: { id: 'la1', name: 'Spanish' } }));
-		vi.stubGlobal('fetch', fetchMock);
-
-		await expect(createLanguage('Spanish')).resolves.toEqual({ id: 'la1', name: 'Spanish' });
-		expect(fetchMock).toHaveBeenCalledWith(
-			'/api/languages',
-			expect.objectContaining({ method: 'POST' })
-		);
 	});
 });
 
