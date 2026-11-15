@@ -47,6 +47,10 @@ export function createMapDrag(host: MapDragHost) {
 		{ id: string; clientX: number; clientY: number; press: Point | undefined } | undefined;
 	/** Set once a press has become a drag, so the release is not a click. */
 	let workerDragMoved = false;
+	/* The deferred resets below: a drag that starts before one fires must cancel it, or it
+	   clears the new gesture's moved-flag mid-drag. */
+	let groupResetTimer: ReturnType<typeof setTimeout> | undefined;
+	let workerResetTimer: ReturnType<typeof setTimeout> | undefined;
 	/** Where the pointer went down on the surface, so a release can tell the two apart. */
 	let surfacePress: { x: number; y: number } | undefined;
 
@@ -63,6 +67,7 @@ export function createMapDrag(host: MapDragHost) {
 			clientY: event.clientY,
 			press: host.panZoom().toMapPoint(event)
 		};
+		clearTimeout(workerResetTimer);
 		workerDragMoved = false;
 	}
 
@@ -76,6 +81,7 @@ export function createMapDrag(host: MapDragHost) {
 		if (!centre || !press) return;
 		event.stopPropagation();
 		pendingGroup = { key, clientX: event.clientX, clientY: event.clientY, press };
+		clearTimeout(groupResetTimer);
 		groupDragMoved = false;
 	}
 
@@ -104,7 +110,7 @@ export function createMapDrag(host: MapDragHost) {
 		if (!draggedGroup) return;
 		host.commitGroup(draggedGroup.key, draggedGroup.delta);
 		draggedGroup = undefined;
-		setTimeout(() => (groupDragMoved = false), 0);
+		groupResetTimer = setTimeout(() => (groupDragMoved = false), 0);
 	}
 
 	function moveWorker(event: PointerEvent) {
@@ -130,7 +136,7 @@ export function createMapDrag(host: MapDragHost) {
 		draggedWorker = undefined;
 		// A release off the dot fires no click on it, so clear the flag after the
 		// click that might still follow this release would have read it.
-		setTimeout(() => (workerDragMoved = false), 0);
+		workerResetTimer = setTimeout(() => (workerDragMoved = false), 0);
 	}
 
 	return {

@@ -107,8 +107,8 @@ const saveAll = (page: Page) => page.getByRole('button', { name: 'Save all', exa
 const previewDialog = (page: Page) => page.getByTestId('configuration-preview-dialog');
 /** Opens Location's attribute editor; every edit below is scoped to the returned row. */
 async function move(editor: Locator, from: string, to: string): Promise<void> {
-	await editor.getByRole('button', { name: 'Place ' + from, exact: true }).click();
-	await editor.getByRole('button', { name: 'Place under ' + to, exact: true }).click();
+	await editor.getByRole('button', { name: 'Place ' + from, exact: true }).press('Enter');
+	await editor.getByRole('button', { name: 'Place under ' + to, exact: true }).press('Enter');
 }
 
 type Fixture = {

@@ -35,7 +35,10 @@ fn remembered_window_flags() -> StateFlags {
 /// `rusqlite::Connection` is `Send` but not `Sync`, so `App` is not `Sync`; the `Mutex`
 /// is what lets `tauri::State` hold it, and it is also the serialization point every
 /// request goes through — the same single-connection model the Node handlers had.
-#[tauri::command]
+///
+/// `async` makes Tauri run this on its blocking thread pool instead of the main thread, so a
+/// slow request (restore, passphrase rotation, backup, import) cannot freeze the window.
+#[tauri::command(async)]
 fn api_request(
     app: tauri::State<'_, Mutex<App>>,
     window: tauri::WebviewWindow,
