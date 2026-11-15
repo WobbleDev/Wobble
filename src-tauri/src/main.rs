@@ -182,14 +182,16 @@ fn quit_ack(gate: tauri::State<'_, Gate>) {
 #[tauri::command]
 fn reveal_data_file(path: String) -> Result<(), String> {
     let target = PathBuf::from(&path);
-    if !target.is_file() {
+    // The page only ever passes an absolute path it got from the core. Requiring one also means
+    // the value can never start with `-` and be read as an option by the platform command.
+    if !target.is_absolute() || !target.is_file() {
         return Err(format!("{path} is not a file."));
     }
 
     #[cfg(target_os = "macos")]
     let mut command = {
         let mut command = std::process::Command::new("open");
-        command.arg("-R").arg(&target);
+        command.arg("-R").arg("--").arg(&target);
         command
     };
     #[cfg(target_os = "windows")]
