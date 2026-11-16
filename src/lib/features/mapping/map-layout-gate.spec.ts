@@ -1,6 +1,7 @@
 // @module-tag mapping
 import { describe, expect, it } from 'vitest';
 import { createLayoutGate, densityScales, expectedRootFontPx } from './map-layout-gate.ts';
+import { readLayoutCss } from '#lib/testing/layout-css.ts';
 
 const steps = (
 	gate: ReturnType<typeof createLayoutGate>,
@@ -59,8 +60,7 @@ describe('expectedRootFontPx', () => {
 
 describe('densityScales', () => {
 	it('matches the stylesheet', async () => {
-		const { readFileSync } = await import('node:fs');
-		const css = readFileSync('src/routes/layout.css', 'utf8');
+		const css = readLayoutCss();
 		for (const [density, scale] of Object.entries(densityScales))
 			expect(css).toMatch(
 				new RegExp(`html\\[data-density='${density}'\\] \\{\\s*--density-scale: ${scale};`)

@@ -1,0 +1,21 @@
+/* =====================================================================
+   The rail card's shape
+   ---------------------------------------------------------------------
+   The floating card ships from the vendored primitive with an 8px
+   item radius, the shared small shadow and a hairline ring. The rail is
+   chrome a step out from the page, so it takes the surface radius (14px)
+   and the deeper rail shadow, which is what carries it as a floating
+   card on a 1.03:1 fallback fill. Both are set here, unlayered, so they
+   outrank the primitive's own layered utilities. The background is not
+   repeated: the glass utility below owns it.
+   The ring is painted here rather than left to the primitive's `ring-1`,
+   because in Tailwind 4 `ring-1` and `shadow-sm` both write `box-shadow`:
+   replacing that property drops the ring layer with it. Composing it into
+   the one shadow keeps the documented navigation hairline.
+   ===================================================================== */
+[data-slot='sidebar-inner'] {
+	border-radius: 0.875rem;
+	box-shadow:
+		0 0 0 1px var(--sidebar-border),
+		var(--rail-shadow);
+}

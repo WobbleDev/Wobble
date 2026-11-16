@@ -1,0 +1,72 @@
+/* =====================================================================
+   No-scroll surfaces
+   ---------------------------------------------------------------------
+   At or above the viewport floor — 1024×640 — a no-scroll surface may not
+   scroll: the shared tab container stops scrolling and the content wrapper
+   takes a definite height so its panels can page against it. Below the
+   floor the guarantee lapses and the container scrolls again. rem in media
+   queries resolves against the initial font size, so density never moves
+   the floor. The 64rem width is the shared 1024px threshold (--breakpoint-lg,
+   DEFAULT_MOBILE_BREAKPOINT); CSS cannot read a custom property inside a
+   media condition, so it is spelled here.
+
+   The height floor is the 40rem in the query below, and the e2e matrix's
+   smallest viewport. It is a fit point, not a hope: raising it without
+   re-measuring lets a real browser window scroll again, and lowering it
+   past what the composition can compress to makes the container clip
+   instead. Move both together, or neither.
+   ===================================================================== */
+/* Below the desktop floor the shell wrapper only has a minimum height, so every
+   `h-full` under it resolves to auto and the Mapping canvas settles past the fold.
+   Giving the Mapping wrapper the scroller's height keeps the canvas inside the
+   first screen; the options panel below it scrolls. Overview stays out of this:
+   its contract below the floor is to scroll, and a fixed wrapper would clip it. */
+@media (max-width: 63.999rem) or (max-height: 39.999rem) {
+	/* INTERIM: mobile floor just below desktop minHeight/minWidth */
+	.mapping-fill {
+		height: 100%;
+		min-height: 0;
+	}
+}
+
+@media (min-width: 64rem) and (min-height: 40rem) {
+	.no-scroll-enforced {
+		overflow: hidden;
+	}
+	/* The floor is a fit point only if the frame above the panels gives its own
+	   height back. The panels keep their own padding — that separates, it does
+	   not spend height. */
+	.surface-no-scroll {
+		--page-header-lead: 0.5rem;
+	}
+	.surface-no-scroll [data-testid='tab-scroll-viewport'] > :first-child {
+		padding: 0;
+	}
+	.surface-no-scroll [data-slot='card'] {
+		--card-spacing: 0px;
+		padding-block: 0;
+	}
+	.surface-no-scroll [data-slot='card'] > :first-child {
+		padding-block: 0.5rem;
+	}
+	.surface-no-scroll [data-slot='card'] > :last-child {
+		padding: 0;
+	}
+	.no-scroll-fill {
+		height: 100%;
+		min-height: 0;
+	}
+	.no-scroll-rows {
+		grid-template-rows: minmax(0, max-content) minmax(0, 1fr);
+	}
+	.no-scroll-chart {
+		display: flex;
+		/* Shrink-wrapped, so the chart tracks the column rather than the viewport. */
+		align-self: start;
+		min-width: 0;
+		min-height: 0;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+	}
+}

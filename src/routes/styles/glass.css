@@ -1,0 +1,61 @@
+/* =====================================================================
+   Glass material
+   ---------------------------------------------------------------------
+   One utility for chrome and inspectors — the navigation rail, Mapping's
+   options rail and floating toolbar, the Worker inspector. The app header
+   paints nothing. The opaque solid paints first so an unsupporting browser
+   keeps a legible surface; the translucent glass lands only inside
+   @supports; and a reduced-transparency or forced-colors reader gets the
+   solid back with no blur. Reading surfaces never take this material.
+   ===================================================================== */
+[data-material='glass'],
+[data-slot='sidebar-inner'] {
+	background-color: var(--surface-glass-solid);
+	-webkit-backdrop-filter: blur(var(--surface-blur));
+	backdrop-filter: blur(var(--surface-blur));
+}
+@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+	[data-material='glass'],
+	[data-slot='sidebar-inner'] {
+		background-color: var(--surface-glass);
+	}
+}
+@media (prefers-reduced-transparency: reduce), (forced-colors: active) {
+	[data-material='glass'],
+	[data-slot='sidebar-inner'] {
+		background-color: var(--surface-glass-solid);
+		-webkit-backdrop-filter: none;
+		backdrop-filter: none;
+	}
+}
+/* A glass control still answers the pointer: its fill is set here, so the
+   button's own hover and open tones would otherwise never show. */
+button[data-material='glass']:not(:disabled):is(:hover, [aria-expanded='true']) {
+	background-color: var(--hover);
+}
+/* Forced-colors agents remove box shadows, including our hairline ring. Keep
+   a system-colour edge when that happens without changing the rail's box. */
+@media (forced-colors: active) {
+	[data-material='glass'][data-rail],
+	[data-slot='sidebar-inner'] {
+		outline: 1px solid CanvasText;
+		outline-offset: -1px;
+	}
+}
+
+/* =====================================================================
+   Glass rails
+   ---------------------------------------------------------------------
+   Chrome that floats beside the surface it shares a row with — the Mapping
+   options rail beside the map, the Worker inspector beside the Workers table. Its
+   fill is the glass fallback and the panel behind it is --panel, so the two
+   sit within about 1.03:1 and tone alone cannot separate them. The rail
+   shadow and the --rule hairline ring are what lift it, exactly as they
+   carry the navigation rail. Composed into one box-shadow because in
+   Tailwind 4 a ring utility and a shadow utility both write box-shadow.
+   ===================================================================== */
+[data-material='glass'][data-rail] {
+	box-shadow:
+		0 0 0 1px var(--rule),
+		var(--rail-shadow);
+}

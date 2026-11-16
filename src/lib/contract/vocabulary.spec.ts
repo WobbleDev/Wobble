@@ -12,6 +12,7 @@ import {
 	themePreferences,
 	timeFormatPreferences
 } from '#lib/shared/app/app-settings.ts';
+import { readLayoutCss } from '#lib/testing/layout-css.ts';
 
 const golden = JSON.parse(
 	readFileSync(fileURLToPath(new URL('../../../contract/vocabulary.json', import.meta.url)), 'utf8')
@@ -27,10 +28,7 @@ const golden = JSON.parse(
 	defaults: Record<string, string | boolean>;
 };
 
-const css = readFileSync(
-	fileURLToPath(new URL('../../routes/layout.css', import.meta.url)),
-	'utf8'
-);
+const css = readLayoutCss();
 
 describe('golden vocabulary', () => {
 	it('matches the assessment list', () => {
