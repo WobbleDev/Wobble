@@ -76,7 +76,10 @@ export default defineConfig({
 	workers: Number(
 		process.env.WOBBLE_E2E_WORKERS ?? (isUi ? (process.env.CI ? 2 : 3) : isRegular ? 2 : 1)
 	),
-	retries: 0,
+	// One retry on CI only: the macOS runner has 3 vCPUs and a heavy map spec fails at random under
+	// load (#136) while `main` stays green. A test that passes on retry is reported as flaky in the
+	// JSON results, so it stays visible; locally a failure is a failure.
+	retries: process.env.CI ? 1 : 0,
 	forbidOnly: true,
 	...(suiteDir ? { outputDir: join(suiteDir, 'test-results') } : {}),
 	reporter: suiteDir
