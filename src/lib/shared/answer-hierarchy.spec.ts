@@ -6,7 +6,6 @@ import {
 	expandBranch,
 	frontier,
 	isRemainderIdentity,
-	isSystemRegionIdentity,
 	normalizeExpansion,
 	parseRemainderIdentity,
 	remainderIdentity,
@@ -146,9 +145,6 @@ describe('remainder identity', () => {
 		expect(identity).toBe('#self:location:central');
 		expect(isRemainderIdentity(identity)).toBe(true);
 		expect(isRemainderIdentity('central')).toBe(false);
-		expect(isSystemRegionIdentity(identity)).toBe(true);
-		expect(isSystemRegionIdentity('central')).toBe(false);
-		expect(isSystemRegionIdentity('')).toBe(true);
 	});
 
 	it('round-trips the Attribute and answer', () => {

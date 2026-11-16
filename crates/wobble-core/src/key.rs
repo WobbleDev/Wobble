@@ -97,12 +97,6 @@ pub enum ProbeFailure {
 }
 
 impl ProbeFailure {
-    pub fn http_status(&self) -> u16 {
-        match self {
-            ProbeFailure::WrongKey(_) => 401,
-            ProbeFailure::Io(_) => 500,
-        }
-    }
     pub fn code(&self) -> &'static str {
         match self {
             ProbeFailure::WrongKey(_) => WRONG_KEY_CODE,

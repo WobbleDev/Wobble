@@ -300,19 +300,6 @@ pub fn remember_window_from_db_file(path: &std::path::Path) -> bool {
     .unwrap_or(true)
 }
 
-/// Remember-window read through an already-unlocked keyed handle (05 path).
-/// Answers only after unlock; never touches bytes before the key.
-pub fn remember_window_via_db(db: &crate::db::Db) -> bool {
-    db.conn()
-        .query_row(
-            "SELECT value FROM app_settings WHERE key = 'rememberWindow'",
-            [],
-            |row| row.get::<_, String>(0),
-        )
-        .map(|value| value != "false")
-        .unwrap_or(true)
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
