@@ -9,13 +9,8 @@ import type {
 import { normalizeExpansion, remainderIdentity } from '#lib/shared/workers/answer-hierarchy.ts';
 import { worker as baseWorker } from '#lib/testing/builders.ts';
 import { selectWorkerPopulation } from '#lib/shared/workers/worker-population.ts';
-import {
-	attemptExpansion,
-	projectLayoutInput,
-	readGrouping,
-	type GroupingInput,
-	type GroupingReading
-} from './map-grouping.ts';
+import { type GroupingInput, type GroupingReading } from './grouping-types.ts';
+import { attemptExpansion, projectLayoutInput, readGrouping } from './map-grouping.ts';
 import type { WorkerGraphNode } from '../canvas/worker-relationship-map-model.ts';
 import { answerIdOf, answerIdsFixture } from '#lib/testing/mapping/answer-fixtures.ts';
 

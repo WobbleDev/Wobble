@@ -2,7 +2,7 @@
 import type { Language, WorkerAttributeDefinition } from '#lib/domain-vocabulary.ts';
 import { noValueReading } from '#lib/shared/text/no-value-reading.ts';
 import { bucketLabel, groupValue, linkEndId } from './layout/graph-analysis.ts';
-import type { GroupingReading } from './grouping/map-grouping.ts';
+import type { GroupingReading } from './grouping/grouping-types.ts';
 import type { WorkerGraphLink, WorkerGraphNode } from './canvas/worker-relationship-map-model.ts';
 
 export type MapTableRow = {

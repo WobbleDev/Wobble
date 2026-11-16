@@ -18,13 +18,13 @@
 	import { hasContextualFilters } from '#lib/shared/workers/contextual-filters.ts';
 	import { answerDisplayLabel } from '#lib/shared/workers/answer-path.ts';
 	import { noValueReading } from '#lib/shared/text/no-value-reading.ts';
+	import { regionReading } from '../grouping/grouping-cells.ts';
 	import {
-		regionReading,
 		type ExpansionBranch,
 		type ExpansionRefusal,
 		type GroupingReading,
 		type SubGroupingReading
-	} from '../grouping/map-grouping.ts';
+	} from '../grouping/grouping-types.ts';
 	import {
 		contextFilterChips,
 		contextFilterGroupCount,
