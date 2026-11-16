@@ -1,6 +1,6 @@
 //! The bundled lists a generated Short form draws on (ADR 0046), one set per language. Only
 //! the lists of the request locale's language apply. The `words` and `acronyms` arrays come
-//! from `abbreviation_lists_generated` (ticket 05): the versioned snapshot a developer-run
+//! from `lists_generated` (ticket 05): the versioned snapshot a developer-run
 //! script under `scripts/abbreviation-lists/` writes from pinned, checksummed source inputs,
 //! never from a network call the app itself makes. `connectors` and `qualifiers` are closed,
 //! hand-authored function-word lists with no source to fetch, so they stay here.

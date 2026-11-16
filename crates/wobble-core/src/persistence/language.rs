@@ -1,6 +1,6 @@
 //! Worksite Languages: list, create, replace, and assign them to workers.
 //!
-//! ADR-0015 keeps this deliberately parallel to agitation_persistence.rs: two tables,
+//! ADR-0015 keeps this deliberately parallel to agitation.rs: two tables,
 //! two modules, no shared code.
 
 use std::collections::HashSet;

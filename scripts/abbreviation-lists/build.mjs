@@ -254,7 +254,7 @@ async function main() {
 	if (inputDir === undefined) throw new Error('--in needs a directory');
 	const summary = await build({
 		inputDir,
-		snapshotPath: join(repoRoot, 'crates/wobble-core/src/abbreviation_lists_generated.rs'),
+		snapshotPath: join(repoRoot, 'crates/wobble-core/src/abbreviation/lists_generated.rs'),
 		reportPath: join(here, 'build-report.json'),
 		noticePath: join(repoRoot, 'NOTICE')
 	});
