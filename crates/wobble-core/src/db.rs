@@ -110,6 +110,7 @@ impl Db {
         }
         conn.execute_batch(RUNTIME_PRAGMAS)?;
         schema::apply_migrations(&conn)?;
+        crate::safety_copies::prune(live);
         if fresh && secret.is_some() {
             crate::key::probe_keyed_handle(&conn).map_err(|failure| match failure {
                 crate::key::ProbeFailure::WrongKey(message) => Error::Coded {
