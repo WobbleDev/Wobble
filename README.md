@@ -65,6 +65,31 @@ image uses the standard layout. This is the bundler's
 
 If `npm run dev` serves a blank page with a hydration error (`Cannot read properties of undefined (reading 'call')`), the Vite optimized-deps cache has gone stale. Clear it with `rm -rf node_modules/.vite` and restart, or start once with `vite dev --force`.
 
+## Where do I find X
+
+| I want to change or find...                            | Look in                                                                     |
+| ------------------------------------------------------ | --------------------------------------------------------------------------- |
+| A page's route and its layout                          | `src/routes/<view>/` (global styles in `src/routes/layout.css`)             |
+| One view's code (Overview, Workers, Mapping, ...)      | `src/lib/features/<view>/` (each has a README; the biggest have subfolders) |
+| The Workers table (columns, filters, bulk actions)     | `src/lib/features/workers/data-table/`                                      |
+| The Relationship map (layout, routing, labels, canvas) | `src/lib/features/mapping/` subfolders                                      |
+| Overview card paging                                   | `src/lib/features/overview/paging/`                                         |
+| Code two or more views use                             | `src/lib/shared/` (`text/`, `workers/`, `app/`, `ui/`)                      |
+| The sidebar, header and boot sequence                  | `src/lib/shell/`                                                            |
+| Every call to the backend                              | `src/lib/client/` (generated types in `client/generated/`)                  |
+| Test builders and fixtures used by unit specs          | `src/lib/testing/`                                                          |
+| Translated text                                        | `messages/` (see its README) and `src/lib/i18n/`                            |
+| The backend (database, requests, migrations)           | `crates/wobble-core/src/` (`crates/wobble-dev-shim` serves it over HTTP)    |
+| The desktop shell                                      | `src-tauri/`                                                                |
+| The contract between the app and the core              | `contract/` (see its README)                                                |
+| Browser end-to-end tests and their recordings          | `e2e/` (replay recordings in `e2e/recordings/`)                             |
+| Repo checks and helper scripts                         | `scripts/`                                                                  |
+| How to add a field, a column, a setting                | `docs/MAINTAINING.md` (step-by-step recipes)                                |
+
+Layering rule: `shared/` imports nothing above it, a feature never imports another feature,
+and `shell/` may use both. See `src/lib/README.md`. Keep a folder's README current when you move
+or rename files in it.
+
 ## Data storage
 
 The desktop app stores its data in
