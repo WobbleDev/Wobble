@@ -1,7 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import type { Worker } from '#lib/domain-vocabulary.ts';
 import { worker as baseWorker } from '#lib/testing/builders.ts';
-import { bandLayout, CHART_CENTER, DOT_FOOTPRINT, reachTree } from './bullseye-geometry.ts';
+import { bandLayout } from './bullseye-bands.ts';
+import { CHART_CENTER, DOT_FOOTPRINT } from './bullseye-shared.ts';
+import { reachTree } from './bullseye-ties.ts';
 import { bullseyeLayout, type BullseyeLayout, type RoutedTie } from './bullseye-lanes.ts';
 import { assessmentCounts } from './reach.ts';
 

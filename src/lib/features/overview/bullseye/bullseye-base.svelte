@@ -10,7 +10,7 @@
 	import type { Worker, WorkerAttributeDefinition } from '#lib/domain-vocabulary.ts';
 	import { cn } from '#lib/utils.ts';
 	import BullseyeChart from './bullseye-chart.svelte';
-	import { DOT_FOOTPRINT } from './bullseye-geometry.ts';
+	import { DOT_FOOTPRINT } from './bullseye-shared.ts';
 	import { bullseyeView } from './bullseye-view.ts';
 	import { overviewFocus } from '../overview-focus.svelte.ts';
 	import { zoomAfterWheel } from './pan-mappings.ts';

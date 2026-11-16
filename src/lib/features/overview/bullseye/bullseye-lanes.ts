@@ -11,20 +11,18 @@
  * that still finds no lane is left to appear only while one of its ends is active.
  */
 import { assessedOptions, type AssessmentOption, type Worker } from '#lib/domain-vocabulary.ts';
+import { bandLayout, hostileTrackRadius } from './bullseye-bands.ts';
+import { plotWorkerGroups } from './bullseye-geometry.ts';
 import {
-	bandLayout,
 	CHART_CENTER,
 	DOT_FOOTPRINT,
-	hostileTrackRadius,
-	plotWorkerGroups,
-	reachTree,
-	tiePath,
 	type BandLayout,
 	type PlacedDot,
 	type PlotGroup,
 	type RelationshipTie,
 	type RingNames
-} from './bullseye-geometry.ts';
+} from './bullseye-shared.ts';
+import { reachTree, tiePath } from './bullseye-ties.ts';
 
 export interface RoutedTie extends RelationshipTie {
 	/** Drawn only while one of its ends is hovered or focused. */

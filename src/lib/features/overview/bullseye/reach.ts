@@ -9,7 +9,7 @@
 import { assessmentOptions, type AssessmentOption, type Worker } from '#lib/domain-vocabulary.ts';
 import { assessmentGroupLabel, assessmentLabel } from '#lib/i18n/assessment.ts';
 import { m } from '#lib/paraglide/messages.js';
-import { DRAWN_ASSESSMENTS } from './bullseye-geometry.ts';
+import { DRAWN_ASSESSMENTS } from './bullseye-shared.ts';
 
 /** How many workers hold each Assessment. */
 export function assessmentCounts(workers: readonly Worker[]): Record<AssessmentOption, number> {

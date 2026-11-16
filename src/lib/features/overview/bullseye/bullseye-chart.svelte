@@ -6,14 +6,14 @@
 	import { assessmentGroupLabel, assessmentLabel } from '#lib/i18n/assessment.ts';
 	import { m } from '#lib/paraglide/messages.js';
 	import { cn } from '#lib/utils.ts';
+	import { labelArcPath } from './bullseye-bands.ts';
 	import {
 		CHART_CENTER,
 		DOT_FOOTPRINT,
 		DOT_RADIUS,
 		DOT_STROKE_WIDTH,
-		DRAWN_ASSESSMENTS,
-		labelArcPath
-	} from './bullseye-geometry.ts';
+		DRAWN_ASSESSMENTS
+	} from './bullseye-shared.ts';
 	import { bullseyeLayout } from './bullseye-lanes.ts';
 	import { nearestTarget } from './dot-hit.ts';
 
