@@ -67,7 +67,7 @@ TypeScript side:
 
 Rust side, in `crates/wobble-core/src/`:
 
-5. `schema.rs` and `attribute_migration.rs` — the database column. Follow the supported
+5. `schema.rs` and `migration/attribute.rs` — the database column. Follow the supported
    schema versions, migration behavior and backup requirements in [README.md](../README.md#data-storage); a schema change needs a compatible migration.
 6. `serialization.rs` and `assembly.rs` — reading it out of the database and assembling a Worker.
 7. `worker_request.rs` and `service.rs` — decoding and validating the request, and saving it.

@@ -1,10 +1,14 @@
 //! Short forms (ADR 0046): the stored compact name of an Attribute value, at most 10
 //! graphemes, with its origin. This is the only place a Short form is produced or judged.
 
+pub mod lists;
+pub mod lists_generated;
+pub mod revision;
+
 use unicode_normalization::UnicodeNormalization;
 use unicode_segmentation::UnicodeSegmentation;
 
-use crate::abbreviation_lists::{lists_for, Lists};
+use lists::{lists_for, Lists};
 
 /// The most graphemes a Short form may hold.
 pub const ABBREVIATION_LIMIT: usize = 10;

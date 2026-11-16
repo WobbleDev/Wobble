@@ -1,7 +1,7 @@
 # Short form list pipeline (ticket 05, ADR 0046)
 
 A developer-run pipeline that builds the versioned Short form snapshot bundled in
-`crates/wobble-core/src/abbreviation_lists_generated.rs` from pinned, checksummed
+`crates/wobble-core/src/abbreviation/lists_generated.rs` from pinned, checksummed
 source inputs. It never runs as part of the app build, and neither `src/` nor
 `crates/` contains networking code.
 

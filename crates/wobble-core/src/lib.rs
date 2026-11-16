@@ -4,14 +4,8 @@
 //! no unsafe; no async; no macros beyond derive.
 
 pub mod abbreviation;
-pub mod abbreviation_lists;
-pub mod abbreviation_lists_generated;
-pub mod abbreviation_revision;
-pub mod agitation_persistence;
 pub mod app_settings;
 pub mod assembly;
-pub mod attribute_migration;
-pub mod attribute_persistence;
 pub mod configuration_preview;
 pub mod configuration_resolution;
 pub mod db;
@@ -22,18 +16,17 @@ pub mod id;
 #[cfg(feature = "replay")]
 pub mod json;
 pub mod key;
-pub mod language_persistence;
+pub mod migration;
 pub mod open_database;
+pub mod persistence;
 pub mod phone;
 pub mod read_json_request;
-pub mod relationship_persistence;
 pub mod replacement;
 #[cfg(feature = "replay")]
 pub mod replay;
 pub mod request_worksite;
 pub mod router;
 pub mod safety_copies;
-pub mod saved_view_persistence;
 pub mod schema;
 pub mod select_mode;
 pub mod serialization;
@@ -43,12 +36,22 @@ pub(crate) mod store_validation;
 mod test_support;
 pub mod upgrade_backup;
 pub mod utils;
-mod work_assignment_flattening;
-pub(crate) mod work_assignment_migration;
-pub mod worker_draft_persistence;
 pub mod worker_merge;
-pub mod worker_persistence;
 pub mod worker_request;
-pub mod worksite_persistence;
+
+// Stable crate-root paths for the grouped modules.
+pub use abbreviation::{
+    lists as abbreviation_lists, lists_generated as abbreviation_lists_generated,
+    revision as abbreviation_revision,
+};
+pub use migration::attribute as attribute_migration;
+pub(crate) use migration::work_assignment as work_assignment_migration;
+pub(crate) use migration::work_assignment_flattening;
+pub use persistence::{
+    agitation as agitation_persistence, attribute as attribute_persistence,
+    language as language_persistence, relationship as relationship_persistence,
+    saved_view as saved_view_persistence, worker as worker_persistence,
+    worker_draft as worker_draft_persistence, worksite as worksite_persistence,
+};
 
 pub use error::{Error, Result};
