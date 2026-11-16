@@ -322,6 +322,9 @@ impl PreparedReplacement {
         cleanup_plaintext_original_with(&self.marker, unlink)?;
         cleanup_stage(&self.marker)?;
         key::clear_marker(Path::new(&self.marker.live_path))?;
+        // The marker no longer protects this operation's copy, which is the newest of its
+        // kind and so always survives; only older copies go.
+        crate::safety_copies::prune(Path::new(&self.marker.live_path));
         Ok(PathBuf::from(
             if self.marker.phase == MarkerPhase::RolledBack {
                 &self.marker.live_path

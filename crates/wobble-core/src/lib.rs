@@ -32,6 +32,7 @@ pub mod replacement;
 pub mod replay;
 pub mod request_worksite;
 pub mod router;
+pub mod safety_copies;
 pub mod saved_view_persistence;
 pub mod schema;
 pub mod select_mode;
