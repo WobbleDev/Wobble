@@ -6,7 +6,7 @@ import { appReady } from './page-ready.ts';
 import { createWorker } from './api.ts';
 import { wireDefinitions } from './answer-wire.ts';
 import { addValue, answerRow, openAttributeEditor, saveAll } from './configuration-outline.ts';
-import { ABBREVIATION_LIMIT } from '../src/lib/shared/abbreviation.ts';
+import { ABBREVIATION_LIMIT } from '../src/lib/shared/text/abbreviation.ts';
 
 /**
  * Abbreviations in the Configuration outline (ADR 0046): the core suggests one for every

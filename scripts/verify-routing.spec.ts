@@ -28,7 +28,7 @@ describe('e2e area assignment', () => {
 
 describe('routeChanges', () => {
 	it('adds nothing for documentation, scratch files and unit specs', () => {
-		const selection = route('AGENTS.md', '.scratch/x/y.md', 'src/lib/shared/text.spec.ts');
+		const selection = route('AGENTS.md', '.scratch/x/y.md', 'src/lib/shared/text/text.spec.ts');
 		expect(selection).toMatchObject({ rust: false, areas: [], isolatedSuites: [], ui: false });
 	});
 
@@ -108,7 +108,7 @@ describe('routeChanges', () => {
 		expect(selection.ui).toBe(true);
 		expect(selection.reasons).toContain('area owns ui specs: mapping');
 		expect(route('src/lib/features/workers/x.ts')).toMatchObject({ areas: ['workers'], ui: false });
-		expect(route('src/lib/shared/text.ts').ui).toBe(false);
+		expect(route('src/lib/shared/text/text.ts').ui).toBe(false);
 	});
 
 	it('does not repeat the ui reason when its inputs changed', () => {
@@ -120,7 +120,7 @@ describe('routeChanges', () => {
 	it.each([
 		['src/lib/domain-vocabulary.ts'],
 		['src/lib/components/ui/button/button.svelte'],
-		['src/lib/shared/text.ts'],
+		['src/lib/shared/text/text.ts'],
 		['src/app.html'],
 		['src/app.css']
 	])('selects the smoke subset for shared code %s', (path) => {
@@ -130,8 +130,10 @@ describe('routeChanges', () => {
 	});
 
 	it('skips smoke when an area runs, or for a unit spec or other paths', () => {
-		expect(route('src/lib/shared/text.ts', 'src/lib/features/overview/x.ts').smoke).toBe(false);
-		expect(route('src/lib/shared/text.spec.ts').smoke).toBe(false);
+		expect(route('src/lib/shared/text/text.ts', 'src/lib/features/overview/x.ts').smoke).toBe(
+			false
+		);
+		expect(route('src/lib/shared/text/text.spec.ts').smoke).toBe(false);
 		expect(route('src/lib/i18n/index.ts').smoke).toBe(false);
 	});
 
@@ -185,7 +187,7 @@ describe('planChecks', () => {
 	});
 
 	it('runs the @smoke subset of the regular suite for shared code', () => {
-		const plan = planChecks(route('src/lib/shared/text.ts'), '1234');
+		const plan = planChecks(route('src/lib/shared/text/text.ts'), '1234');
 		expect(plan[plan.length - 1]).toMatchObject({
 			name: 'e2e:smoke',
 			command: 'scripts/e2e-all.sh',

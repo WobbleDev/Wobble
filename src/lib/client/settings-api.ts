@@ -1,4 +1,4 @@
-import type { AppSettings, AppSettingsUpdate } from '#lib/shared/app-settings.ts';
+import type { AppSettings, AppSettingsUpdate } from '#lib/shared/app/app-settings.ts';
 import { decodeSettings } from './api-decode.ts';
 import { jsonInit, requestJson } from './request-json.ts';
 

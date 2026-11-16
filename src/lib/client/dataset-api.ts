@@ -11,12 +11,12 @@ import type {
 	WorkerAttributeDefinition,
 	Worksite
 } from '#lib/domain-vocabulary.ts';
-import { isAppSettings, type AppSettings } from '#lib/shared/app-settings.ts';
+import { isAppSettings, type AppSettings } from '#lib/shared/app/app-settings.ts';
 import {
 	isAbbreviation,
 	isAbbreviationOrigin,
 	type AbbreviationOrigin
-} from '#lib/shared/abbreviation.ts';
+} from '#lib/shared/text/abbreviation.ts';
 import { decodeAgitation, decodeLanguage, decodeWorker, isRecord } from './api-decode.ts';
 import { requestJson } from './request-json.ts';
 

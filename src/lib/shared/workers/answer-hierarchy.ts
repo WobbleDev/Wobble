@@ -18,7 +18,7 @@
  * '#self:<attributeId>:<answerId>' is unambiguous.
  */
 import type { AttributeAnswer, WorkerAttributeDefinition } from '#lib/domain-vocabulary.ts';
-import { answerDisplayLabel } from '#lib/shared/answer-path.ts';
+import { answerDisplayLabel } from '#lib/shared/workers/answer-path.ts';
 import { m } from '#lib/paraglide/messages.js';
 
 /** The prefix that makes a direct-parent remainder a system identity. */

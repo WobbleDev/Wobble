@@ -91,7 +91,7 @@
 	/* Assessment — functional data colour, never chrome: Apple's system colours
 	   (Green, Blue, Teal, Orange, Red, Gray), with their dark-appearance variants
 	   in .dark. Readable as a dot beside its label. These tokens
-	   are what src/lib/shared/assessment.ts references, so SVG and CSS cannot drift. */
+	   are what src/lib/shared/workers/assessment.ts references, so SVG and CSS cannot drift. */
 	--assess-unassessed: #868686;
 	--assess-leader: #00a461;
 	--assess-activist: #337aef;

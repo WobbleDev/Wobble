@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Button } from '#lib/components/ui/button/index.ts';
 	import * as DropdownMenu from '#lib/components/ui/dropdown-menu/index.ts';
-	import SwatchDot from '#lib/shared/swatch-dot.svelte';
+	import SwatchDot from '#lib/shared/ui/swatch-dot.svelte';
 	import { cn } from '#lib/utils.ts';
 	import { createDataTableActionState } from '../bulk-actions/action-state.svelte.ts';
 	import type { DataTableEditReport } from '../features.ts';

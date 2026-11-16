@@ -22,7 +22,7 @@ import type {
 	WorkerAttributeDefinition,
 	WorkerAttributeValue
 } from '#lib/domain-vocabulary.ts';
-import { pickAnswer } from '#lib/shared/select-mode.ts';
+import { pickAnswer } from '#lib/shared/workers/select-mode.ts';
 import { heldCategoryAnswerId, heldTagAnswerIds } from '../../answers.ts';
 import { ApiError } from '#lib/client/api-error.ts';
 import type { DataTableEditReport, DataTableUndoResult } from '../features.ts';

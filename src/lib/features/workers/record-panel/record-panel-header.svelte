@@ -3,7 +3,7 @@
 	 * The panel header: the Worker's Name as the region's h2, made editable where it
 	 * is shown, and the Assessment under it as the same dropdown the table cell uses.
 	 */
-	import { assessmentColorFor } from '#lib/shared/assessment.ts';
+	import { assessmentColorFor } from '#lib/shared/workers/assessment.ts';
 	import { assessmentOptions, type AssessmentOption } from '#lib/domain-vocabulary.ts';
 	import type { Snippet } from 'svelte';
 	import type { Worker, WorkerTextField } from '#lib/domain-vocabulary.ts';

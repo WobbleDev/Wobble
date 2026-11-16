@@ -80,7 +80,7 @@ the database dump.
 
 The six Assessment colours are set in two places that must stay in step:
 
-- `src/lib/shared/assessment.ts` — the hex values the drawing code uses.
+- `src/lib/shared/workers/assessment.ts` — the hex values the drawing code uses.
 - `src/routes/layout.css` — the `--assess-*` tokens, near the top of the file.
 
 The `--assessment-*` tokens further down point at those, so they follow automatically. Change a

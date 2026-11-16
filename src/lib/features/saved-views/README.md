@@ -11,7 +11,7 @@ Named Workers and Mapping questions kept per Worksite. The Rust core owns the `s
 
 Workers: filters (answers, exact answers, no-answer readings, Agitations, Languages by id, Assessments), sort, hidden columns, column order. Mapping: grouping and sub-grouping, branch detail, layout, population filter, what is hidden, the Highlight query (`hq` is question state).
 
-Never: the Name search or toolbar search, selection, Isolate, camera, manual positions. These are person state (`#lib/shared/person-state.svelte.ts`); the core refuses a snapshot that carries any unknown field.
+Never: the Name search or toolbar search, selection, Isolate, camera, manual positions. These are person state (`#lib/shared/workers/person-state.svelte.ts`); the core refuses a snapshot that carries any unknown field.
 
 ## Transport per field
 

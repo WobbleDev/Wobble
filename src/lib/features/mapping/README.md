@@ -3,7 +3,7 @@
 The Mapping view: the Relationship map with its floating control strip (search, Group by, Filter),
 the Assessment key that also filters, the zoom cluster, and the worker card.
 
-The drawn population is the shared projection's selection (`#lib/shared/worker-population.ts`):
+The drawn population is the shared projection's selection (`#lib/shared/workers/worker-population.ts`):
 the Filter panel's Narrow to controls write ordinary Attribute conditions (`f`/`missing`) through
 the same shared toggles the Workers view reads, so identical conditions select identical Worker
 ids. The panel's other dropdowns only hide drawn answers, and the address's own `f`/`missing`
@@ -14,7 +14,7 @@ The Grouping reads each displayed Worker's own answers (`grouping/map-grouping.t
 Worker, at the detail those answers can agree on. Either Attribute kind may group; several held
 answers inside one displayed region stay one cell, and a Worker holding answers in two regions is
 ambiguous rather than assigned a first value. An ordinary answer, an exact direct-parent remainder
-and a Worker's no-answer reading carry distinct typed keys (`#lib/shared/region-identity.ts`), so a
+and a Worker's no-answer reading carry distinct typed keys (`#lib/shared/workers/region-identity.ts`), so a
 real answer that reads like the system reading keeps its own identity. A choice is available only
 when every displayed Worker occupies exactly one region; otherwise the Group by and Sub-group by lists do not offer it. An active choice that stopped
 partitioning stays listed: the control names the conflicting Workers and regions, offers narrowing filters that were
@@ -23,7 +23,7 @@ The solver never sees the real definitions for that partition: a view-only synth
 carries the displayed region keys, so one graph node per Worker, the Relationships and the Region
 identities are unchanged.
 
-Branch detail is the same shared hierarchy frontier Overview reads (`#lib/shared/answer-hierarchy.ts`: `normalizeExpansion`, the exact `#self:<attribute>:<answer>` remainder identity and the remainder wording). The Group popover opens one displayed branch at a time: the branch is replaced by its direct child regions and its occupied remainder, and an attempted expansion is refused before any state or address write when it would put a displayed Worker in two regions. The chosen detail is persisted by identity as repeated `x` (primary) and `xs` (secondary) entries; it is normalized against the Attribute it names when restored, and an active detail that no longer partitions keeps its ids, falls back to Free with the explanation, and can still be collapsed from the control. Primary and secondary detail are independent, one graph node and one Map table row remain per Worker, and a rename moves no identity, count, configured order or Relationship.
+Branch detail is the same shared hierarchy frontier Overview reads (`#lib/shared/workers/answer-hierarchy.ts`: `normalizeExpansion`, the exact `#self:<attribute>:<answer>` remainder identity and the remainder wording). The Group popover opens one displayed branch at a time: the branch is replaced by its direct child regions and its occupied remainder, and an attempted expansion is refused before any state or address write when it would put a displayed Worker in two regions. The chosen detail is persisted by identity as repeated `x` (primary) and `xs` (secondary) entries; it is normalized against the Attribute it names when restored, and an active detail that no longer partitions keeps its ids, falls back to Free with the explanation, and can still be collapsed from the control. Primary and secondary detail are independent, one graph node and one Map table row remain per Worker, and a rename moves no identity, count, configured order or Relationship.
 
 The view's files are named `map-*`; the `graph-*` files are the algorithms over the graph of Workers and Relationships and keep their names.
 The arrangement, physics, stress, manual-geometry and layout-quality files (and `isolate-separation`) live in `layout/`.

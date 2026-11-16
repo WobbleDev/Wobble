@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { WorkerAttributeDefinition } from '#lib/domain-vocabulary.ts';
-	import { answerValueReading } from '#lib/shared/no-value-reading.ts';
+	import { answerValueReading } from '#lib/shared/text/no-value-reading.ts';
 	import { answerLabels } from '../support-summary.ts';
 	import { workerLabel } from './worker-label.ts';
 	import type { ActiveTooltip } from './tooltip.svelte.ts';

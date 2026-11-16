@@ -7,14 +7,14 @@
  * overall reading and the breakdown can share one reading.
  */
 
-import { isSupportAssessment } from '#lib/shared/assessment.ts';
-import { frontier } from '#lib/shared/answer-hierarchy.ts';
-import { noValueReading } from '#lib/shared/no-value-reading.ts';
+import { isSupportAssessment } from '#lib/shared/workers/assessment.ts';
+import { frontier } from '#lib/shared/workers/answer-hierarchy.ts';
+import { noValueReading } from '#lib/shared/text/no-value-reading.ts';
 import {
 	answerIsInSubtree,
 	heldAnswerIds,
 	type PopulationProjection
-} from '#lib/shared/worker-population.ts';
+} from '#lib/shared/workers/worker-population.ts';
 import {
 	assessmentOptions,
 	emptyValue,

@@ -5,7 +5,7 @@ import type {
 	Worker,
 	WorkerAttributeDefinition
 } from '../../domain-vocabulary.ts';
-import { selectWorkerPopulation } from '../../shared/worker-population.ts';
+import { selectWorkerPopulation } from '../../shared/workers/worker-population.ts';
 import { worker as baseWorker } from '../../testing/builders.ts';
 import { agitationGroupMatrix, agitationSplits, topAgitationHeadline } from './support-summary.ts';
 

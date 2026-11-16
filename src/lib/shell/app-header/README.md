@@ -4,4 +4,4 @@ The bar across the top of every page and what sits inside it: the breadcrumbs an
 theme switcher.
 
 `src/routes/+layout.svelte` places it. The breadcrumbs follow the current route, and the
-theme switcher writes the installation-wide Theme setting through `shared/app-settings.ts`.
+theme switcher writes the installation-wide Theme setting through `shared/app/app-settings.ts`.

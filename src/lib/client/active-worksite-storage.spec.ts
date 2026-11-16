@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { activeWorksiteHeaderName } from '#lib/shared/active-worksite-header.ts';
+import { activeWorksiteHeaderName } from '#lib/shared/app/active-worksite-header.ts';
 import { jsonResponse, stubStorage } from '#lib/testing/http.ts';
 import { readStoredActiveWorksiteId, storeActiveWorksiteId } from './active-worksite-storage.ts';
 import { requestVoid } from './request-json.ts';

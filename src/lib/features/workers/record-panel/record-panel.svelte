@@ -12,7 +12,7 @@
 	import ChevronRightIcon from '@lucide/svelte/icons/chevron-right';
 	import * as Sheet from '#lib/components/ui/sheet/index.ts';
 	import { Button } from '#lib/components/ui/button/index.ts';
-	import IconTip from '#lib/shared/icon-tip.svelte';
+	import IconTip from '#lib/shared/ui/icon-tip.svelte';
 	import type {
 		Agitation,
 		Language,
@@ -38,7 +38,7 @@
 	import RecordPanelField from './record-panel-field.svelte';
 	import type { DataTableEditReport } from '../data-table/features.ts';
 	import { deleteWorkerDraft, saveWorkerDraft } from '#lib/client/workers-api.ts';
-	import { relativeTime } from '#lib/shared/format.ts';
+	import { relativeTime } from '#lib/shared/text/format.ts';
 	import { buildPanelDraft, hasUnsavedInput } from './panel-draft.ts';
 	import { panelMode } from './panel-mode.ts';
 	import { PanelDraftState, setPanelDraft } from './panel-draft-state.svelte.ts';

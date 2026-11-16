@@ -2,14 +2,14 @@
 	import XIcon from '@lucide/svelte/icons/x';
 	import CheckIcon from '@lucide/svelte/icons/check';
 	import { Button } from '#lib/components/ui/button/index.ts';
-	import SwatchDot from '#lib/shared/swatch-dot.svelte';
-	import { assessmentColorFor } from '#lib/shared/assessment.ts';
+	import SwatchDot from '#lib/shared/ui/swatch-dot.svelte';
+	import { assessmentColorFor } from '#lib/shared/workers/assessment.ts';
 	import { assessmentLabel } from '#lib/i18n/assessment.ts';
 	import { m } from '#lib/paraglide/messages.js';
 	import { resolve } from '$app/paths';
 	import type { Language, Worker, WorkerAttributeDefinition } from '#lib/domain-vocabulary.ts';
 	import { answerDisplay } from './layout/graph-analysis.ts';
-	import { answerValueReading } from '#lib/shared/no-value-reading.ts';
+	import { answerValueReading } from '#lib/shared/text/no-value-reading.ts';
 
 	type Neighbour = {
 		id: string;

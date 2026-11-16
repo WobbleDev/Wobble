@@ -1,5 +1,5 @@
 import { assessedOptions, type AssessmentOption } from '#lib/domain-vocabulary.ts';
-import { assessmentColorFor } from '#lib/shared/assessment.ts';
+import { assessmentColorFor } from '#lib/shared/workers/assessment.ts';
 
 /**
  * The Overview dashboard's presentation rules: how a matrix cell's holder count

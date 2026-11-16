@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount, setContext, untrack } from 'svelte';
-	import { appSettingsContextKey } from '#lib/shared/app-settings.ts';
+	import { appSettingsContextKey } from '#lib/shared/app/app-settings.ts';
 	import {
 		destroyWindow,
 		exitApp,
@@ -16,8 +16,11 @@
 		type ConfigurationDraftContext
 	} from '#lib/features/configuration/configuration-draft-state.svelte.ts';
 	import AppHeaderBar from '#lib/shell/app-header/app-header-bar.svelte';
-	import UnsavedChangesDialog from '#lib/shared/unsaved-changes-dialog.svelte';
-	import { UnsavedChanges, unsavedChangesContextKey } from '#lib/shared/unsaved-changes.svelte.ts';
+	import UnsavedChangesDialog from '#lib/shared/ui/unsaved-changes-dialog.svelte';
+	import {
+		UnsavedChanges,
+		unsavedChangesContextKey
+	} from '#lib/shared/app/unsaved-changes.svelte.ts';
 	import BullseyeBase from '#lib/features/overview/bullseye/bullseye-base.svelte';
 	import ChartHelp from '#lib/features/overview/chart-help.svelte';
 	import { createBullseyeChartBackdrop } from '#lib/features/overview/bullseye-chart-backdrop.svelte.ts';
@@ -40,7 +43,7 @@
 	import * as Tooltip from '#lib/components/ui/tooltip/index.ts';
 	import * as Card from '#lib/components/ui/card/index.ts';
 	import type { Attachment } from 'svelte/attachments';
-	import { scrollFade } from '#lib/shared/scroll-fade.ts';
+	import { scrollFade } from '#lib/shared/app/scroll-fade.ts';
 	import PageHeader from '#lib/shell/page-header.svelte';
 	import { m } from '#lib/paraglide/messages.js';
 	import { initializeNativeLocale } from '#lib/client/native-shell.ts';

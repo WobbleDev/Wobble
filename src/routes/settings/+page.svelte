@@ -13,7 +13,7 @@
 	import { dataErrorCopy, type DataErrorCopy } from '#lib/client/data-api.ts';
 	import type { RuntimeInfo } from '#lib/client/api-decode.ts';
 	import { getRuntimeInfo } from '#lib/client/runtime-api.ts';
-	import { appSettingsContextKey, type AppSettingsContext } from '#lib/shared/app-settings.ts';
+	import { appSettingsContextKey, type AppSettingsContext } from '#lib/shared/app/app-settings.ts';
 	import { Input } from '#lib/components/ui/input/index.ts';
 	import { m } from '#lib/paraglide/messages.js';
 	import type { RuntimeReading } from '#lib/features/settings/runtime-details.ts';

@@ -5,7 +5,7 @@
 	import { resetWindow } from '#lib/client/tauri-window.ts';
 	import { isTauriTransport } from '#lib/client/transport.ts';
 	import { Button } from '#lib/components/ui/button/index.ts';
-	import { appSettingsContextKey, type AppSettingsContext } from '#lib/shared/app-settings.ts';
+	import { appSettingsContextKey, type AppSettingsContext } from '#lib/shared/app/app-settings.ts';
 	import { m } from '#lib/paraglide/messages.js';
 	import DataErrorNotice from '../data-error-notice.svelte';
 	import SettingsRow from '../settings-row.svelte';

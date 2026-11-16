@@ -26,9 +26,9 @@
 	import ChevronDownIcon from '@lucide/svelte/icons/chevron-down';
 	import Trash2Icon from '@lucide/svelte/icons/trash-2';
 	import { m } from '#lib/paraglide/messages.js';
-	import { answerDisplayLabel, answerPathLabel } from '#lib/shared/answer-path.ts';
-	import { kindMode } from '#lib/shared/select-mode.ts';
-	import type { AnswerPopulationCounts } from '#lib/shared/worker-population.ts';
+	import { answerDisplayLabel, answerPathLabel } from '#lib/shared/workers/answer-path.ts';
+	import { kindMode } from '#lib/shared/workers/select-mode.ts';
+	import type { AnswerPopulationCounts } from '#lib/shared/workers/worker-population.ts';
 	import EditableChip from './editable-chip.svelte';
 	import OutlineCount from './outline-count.svelte';
 	import AbbreviationField from './abbreviation-field.svelte';

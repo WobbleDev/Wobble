@@ -9,7 +9,7 @@
 	import * as Chart from '#lib/components/ui/chart/index.ts';
 	import { MediaQuery, SvelteMap } from 'svelte/reactivity';
 	import { getContext, onDestroy, untrack, type Snippet } from 'svelte';
-	import { appSettingsContextKey, type AppSettingsContext } from '#lib/shared/app-settings.ts';
+	import { appSettingsContextKey, type AppSettingsContext } from '#lib/shared/app/app-settings.ts';
 	import { createLayoutGate, expectedRootFontPx } from '../map-layout-gate.ts';
 	import { reducedMotion as motionIsReduced } from '#lib/shell/motion.svelte.ts';
 	import { NARROW_BREAKPOINT } from '#lib/hooks/is-mobile.svelte.ts';

@@ -6,7 +6,7 @@
  * `graph-arrangement.ts` (per-group stress bodies placed by the group physics),
  * so this module holds only the hull/region drawing helpers.
  */
-import { isSystemRegion } from '#lib/shared/region-identity.ts';
+import { isSystemRegion } from '#lib/shared/workers/region-identity.ts';
 
 export type Point = { x: number; y: number };
 

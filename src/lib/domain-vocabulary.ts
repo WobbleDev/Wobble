@@ -4,7 +4,7 @@ import type { WorkerAttributeKind } from '#lib/client/generated/WorkerAttributeK
 import type { RemovedAnswerHolder } from '#lib/client/generated/RemovedAnswerHolder.ts';
 import type { CardinalitySurface } from '#lib/client/generated/CardinalitySurface.ts';
 
-import type { AbbreviationOrigin } from '#lib/shared/abbreviation.ts';
+import type { AbbreviationOrigin } from '#lib/shared/text/abbreviation.ts';
 
 /** A Worker's answer to one Attribute, as the answer id(s) it holds (ADR 0030). */
 export type WorkerAttributeValue = string | string[];

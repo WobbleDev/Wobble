@@ -4,7 +4,7 @@
 	import GripVerticalIcon from '@lucide/svelte/icons/grip-vertical';
 	import { createAttributePlacement } from './attribute-placement.svelte.ts';
 	import { createAnswerReorder } from './answer-reorder.svelte.ts';
-	import { answerPathLabel } from '#lib/shared/answer-path.ts';
+	import { answerPathLabel } from '#lib/shared/workers/answer-path.ts';
 	import { visibleValues } from './configuration-draft.ts';
 	import { createOutlineTree } from './outline-tree.svelte.ts';
 	import type { Worker } from '#lib/domain-vocabulary.ts';

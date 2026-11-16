@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { activeWorksiteHeaderName } from '#lib/shared/active-worksite-header.ts';
+import { activeWorksiteHeaderName } from '#lib/shared/app/active-worksite-header.ts';
 import { jsonResponse } from '#lib/testing/http.ts';
-import { appLocaleHeaderName } from '#lib/shared/app-locale-header.ts';
+import { appLocaleHeaderName } from '#lib/shared/app/app-locale-header.ts';
 import { jsonInit, localizedJsonInit, requestVoid } from './request-json.ts';
 
 const appliedLocale = vi.hoisted(() => vi.fn(() => 'en'));

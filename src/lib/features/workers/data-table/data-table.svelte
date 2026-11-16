@@ -15,7 +15,7 @@
 	import { features, type DataTableEditReport, type DataTableFeatures } from './features.ts';
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
-	import type { PersonPartition } from '#lib/shared/person-state.svelte.ts';
+	import type { PersonPartition } from '#lib/shared/workers/person-state.svelte.ts';
 	import { cohortExhausted, cohortPosition } from './filters/worker-cohort.ts';
 	import { filterParamsKey } from './filters/url-filters.svelte.ts';
 	import DataTableRow from './rows/row.svelte';

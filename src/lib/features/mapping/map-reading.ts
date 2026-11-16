@@ -2,7 +2,7 @@
  * What the map reads from the Workers table: Assessment and Support counts, and how many
  * Workers each region holds.
  */
-import { isSupportAssessment } from '#lib/shared/assessment.ts';
+import { isSupportAssessment } from '#lib/shared/workers/assessment.ts';
 import type { Worker, WorkerAttributeDefinition } from '#lib/domain-vocabulary.ts';
 import { buildBucketTree } from './layout/graph-analysis.ts';
 import { regionKey, subRegionKey } from './layout/graph-layout.ts';

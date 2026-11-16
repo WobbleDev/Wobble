@@ -1,5 +1,5 @@
 import { MediaQuery } from 'svelte/reactivity';
-import type { ReduceMotionPreference } from '#lib/shared/app-settings.ts';
+import type { ReduceMotionPreference } from '#lib/shared/app/app-settings.ts';
 
 /**
  * Whether motion should be reduced, from the saved Reduce motion preference and the

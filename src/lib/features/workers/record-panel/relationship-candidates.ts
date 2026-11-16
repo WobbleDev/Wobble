@@ -1,7 +1,7 @@
 import type { Worker, WorkerAttributeDefinition } from '#lib/domain-vocabulary.ts';
-import { normalizeForMatch } from '#lib/shared/text.ts';
+import { normalizeForMatch } from '#lib/shared/text/text.ts';
 import { compareNames } from '#lib/i18n/format.ts';
-import { heldIds } from '#lib/shared/select-mode.ts';
+import { heldIds } from '#lib/shared/workers/select-mode.ts';
 
 /** The most candidates the add list renders; a worksite can hold thousands. */
 export const RELATIONSHIP_CANDIDATE_LIMIT = 50;

@@ -1,4 +1,4 @@
-import type { AppSettings } from '#lib/shared/app-settings.ts';
+import type { AppSettings } from '#lib/shared/app/app-settings.ts';
 
 /** The slice of the document root the appearance mapping writes to. */
 export type AppearanceRoot = { dataset: Record<string, string | undefined> };

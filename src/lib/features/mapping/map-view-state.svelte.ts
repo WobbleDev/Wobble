@@ -1,8 +1,11 @@
 /**
  * The map's hover, selection and ghosting state, kept apart from what is drawn.
  */
-import { replaceCurrentUrl } from '#lib/shared/navigation.ts';
-import { stripPersonParams, type PersonPartition } from '#lib/shared/person-state.svelte.ts';
+import { replaceCurrentUrl } from '#lib/shared/app/navigation.ts';
+import {
+	stripPersonParams,
+	type PersonPartition
+} from '#lib/shared/workers/person-state.svelte.ts';
 import { untrack } from 'svelte';
 import type { Agitation, Language, WorkerAttributeDefinition } from '#lib/domain-vocabulary.ts';
 import {
@@ -13,8 +16,8 @@ import {
 	withoutContextAnswer,
 	withoutContextMissing,
 	type ContextualFilters
-} from '#lib/shared/contextual-filters.ts';
-import { normalizeExpansion } from '#lib/shared/answer-hierarchy.ts';
+} from '#lib/shared/workers/contextual-filters.ts';
+import { normalizeExpansion } from '#lib/shared/workers/answer-hierarchy.ts';
 import { isIsolateInEffect, type MapLayoutMode } from './map-view-model.ts';
 import { groupGapDefault } from './layout/graph-group-physics.ts';
 import {

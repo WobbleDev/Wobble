@@ -13,7 +13,7 @@
 	import { onMount, tick } from 'svelte';
 	import { Button } from '#lib/components/ui/button/index.ts';
 	import { cn } from '#lib/utils.ts';
-	import { pickAnswer, storesList } from '#lib/shared/select-mode.ts';
+	import { pickAnswer, storesList } from '#lib/shared/workers/select-mode.ts';
 	import type {
 		Worker,
 		WorkerAttributeDefinition,

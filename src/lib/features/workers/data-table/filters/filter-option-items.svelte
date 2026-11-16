@@ -5,8 +5,8 @@
 	 * while the reader ticks several options.
 	 */
 	import * as DropdownMenu from '#lib/components/ui/dropdown-menu/index.ts';
-	import SwatchDot from '#lib/shared/swatch-dot.svelte';
-	import { assessmentColorFor, isAssessment } from '#lib/shared/assessment.ts';
+	import SwatchDot from '#lib/shared/ui/swatch-dot.svelte';
+	import { assessmentColorFor, isAssessment } from '#lib/shared/workers/assessment.ts';
 	import { workerCount } from '../../copy.ts';
 	import type { OptionChoice } from '../../answers.ts';
 

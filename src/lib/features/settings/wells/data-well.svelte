@@ -11,7 +11,7 @@
 	} from '#lib/client/data-api.ts';
 	import { isTauriTransport } from '#lib/client/transport.ts';
 	import { Button } from '#lib/components/ui/button/index.ts';
-	import { appSettingsContextKey, type AppSettingsContext } from '#lib/shared/app-settings.ts';
+	import { appSettingsContextKey, type AppSettingsContext } from '#lib/shared/app/app-settings.ts';
 	import { m } from '#lib/paraglide/messages.js';
 	import { copyText } from '../copy-text.ts';
 	import DataErrorNotice from '../data-error-notice.svelte';

@@ -4,7 +4,7 @@
  * transient cohort in renderer memory (the record's Previous and Next walk it); it is
  * never saved, and never written to the address.
  */
-import { personState } from '#lib/shared/person-state.svelte.ts';
+import { personState } from '#lib/shared/workers/person-state.svelte.ts';
 
 export function openCreatedWorkers(
 	worksiteId: string | null,

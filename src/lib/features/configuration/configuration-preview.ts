@@ -4,8 +4,8 @@
  * confirmation, and resolves the current labels for the report's ids.
  */
 import { m } from '#lib/paraglide/messages.js';
-import { answerDisplayLabel } from '#lib/shared/answer-path.ts';
-import { kindMode } from '#lib/shared/select-mode.ts';
+import { answerDisplayLabel } from '#lib/shared/workers/answer-path.ts';
+import { kindMode } from '#lib/shared/workers/select-mode.ts';
 import { ApiError } from '#lib/client/api-error.ts';
 import type {
 	Agitation,

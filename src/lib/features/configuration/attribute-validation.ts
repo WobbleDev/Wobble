@@ -4,7 +4,7 @@
  * different paths and both stay valid.
  */
 import { m } from '#lib/paraglide/messages.js';
-import { normalizeForMatch } from '#lib/shared/text.ts';
+import { normalizeForMatch } from '#lib/shared/text/text.ts';
 import type { AttributeAnswerDraft, AttributeDraft } from './attribute-draft.ts';
 import { abbreviationTooLong } from './abbreviation-draft.ts';
 

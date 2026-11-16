@@ -30,8 +30,8 @@
 		WorkerTextField
 	} from '#lib/domain-vocabulary.ts';
 	import { page } from '$app/state';
-	import { personState } from '#lib/shared/person-state.svelte.ts';
-	import { parseWorkerFilters, toColumnFilters } from '#lib/shared/worker-filters.ts';
+	import { personState } from '#lib/shared/workers/person-state.svelte.ts';
+	import { parseWorkerFilters, toColumnFilters } from '#lib/shared/workers/worker-filters.ts';
 	import type { PageProps } from './$types';
 
 	let { data }: PageProps = $props();

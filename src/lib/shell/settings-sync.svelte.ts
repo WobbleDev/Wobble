@@ -9,7 +9,7 @@ import type {
 	AppSettings,
 	AppSettingsContext,
 	AppSettingsUpdate
-} from '#lib/shared/app-settings.ts';
+} from '#lib/shared/app/app-settings.ts';
 
 /** Gaps between settings refreshes: soon once, then a slow watch. */
 export const POLL_DELAYS = [5000, 15000, 30000];

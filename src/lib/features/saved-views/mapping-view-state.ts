@@ -5,7 +5,7 @@
  * organizer's own and never enter it.
  */
 import type { SavedViewMapping } from '#lib/domain-vocabulary.ts';
-import { copyContextualFilters } from '#lib/shared/contextual-filters.ts';
+import { copyContextualFilters } from '#lib/shared/workers/contextual-filters.ts';
 import {
 	readExpansionIds,
 	writeExpansionEntries,

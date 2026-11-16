@@ -3,8 +3,8 @@
  * the degrees of an isolated neighbourhood, and which end of a tie an id is.
  */
 import type { WorkerAttributeDefinition, WorkerAttributeValues } from '#lib/domain-vocabulary.ts';
-import { answerDisplayLabel } from '#lib/shared/answer-path.ts';
-import { heldIds, heldIdsOf, storesList } from '#lib/shared/select-mode.ts';
+import { answerDisplayLabel } from '#lib/shared/workers/answer-path.ts';
+import { heldIds, heldIdsOf, storesList } from '#lib/shared/workers/select-mode.ts';
 import { m } from '#lib/paraglide/messages.js';
 import type { WorkerGraphLink, WorkerGraphNode } from '../canvas/worker-relationship-map-model.ts';
 

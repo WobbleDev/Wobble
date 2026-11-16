@@ -28,7 +28,7 @@
 	import ConfigurationPreviewDialog from './configuration-preview-dialog.svelte';
 	import ConfigurationSaveBar from './configuration-save-bar.svelte';
 	import LanguagesEditor from './languages-editor.svelte';
-	import SectionCard from '#lib/shared/section-card.svelte';
+	import SectionCard from '#lib/shared/ui/section-card.svelte';
 	import WorksiteCard from './worksite-card.svelte';
 	import WorksiteDangerZone from './worksite-danger-zone.svelte';
 

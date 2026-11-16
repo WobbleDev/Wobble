@@ -17,7 +17,7 @@ placement). Every figure and matrix cell opens its Workers through
 `summary-links.ts` plus `group-drilldown.ts`.
 
 Agitations headers show each Attribute value's stored Abbreviation (ADR 0046, generated in
-the core) through the shared display rule in `#lib/shared/abbreviation-label.ts`: the full
+the core) through the shared display rule in `#lib/shared/text/abbreviation-label.ts`: the full
 name when it fits the column budget, otherwise the Abbreviation; values that would show the
 same text gain the fewest nearest ancestors ("Kitchen › Days"), and the No value reading
 is always full. `agitations-headers.svelte.ts` measures the uppercase mono voice and

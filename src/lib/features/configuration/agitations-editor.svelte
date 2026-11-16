@@ -4,7 +4,7 @@
 	import { Input } from '#lib/components/ui/input/index.ts';
 	import { m } from '#lib/paraglide/messages.js';
 	import type { Agitation, Worker } from '#lib/domain-vocabulary.ts';
-	import { countValueHolders } from '#lib/shared/worker-population.ts';
+	import { countValueHolders } from '#lib/shared/workers/worker-population.ts';
 	import ListFoldHeading from './list-fold-heading.svelte';
 	import OutlineCount from './outline-count.svelte';
 	import EditableChip from './editable-chip.svelte';

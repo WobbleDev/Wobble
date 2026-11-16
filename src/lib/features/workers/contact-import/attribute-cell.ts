@@ -16,7 +16,7 @@
  * error refuses the cell and imports nothing from it; a blank cell is no answers.
  */
 import type { WorkerAttributeDefinition } from '#lib/domain-vocabulary.ts';
-import { resolveIds, shapeValue } from '#lib/shared/select-mode.ts';
+import { resolveIds, shapeValue } from '#lib/shared/workers/select-mode.ts';
 
 /** One token: its one-based position in the cell, and its path steps (none when empty). */
 export type CellToken = { position: number; segments: string[] };

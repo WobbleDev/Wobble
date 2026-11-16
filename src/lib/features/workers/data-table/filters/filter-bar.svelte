@@ -16,10 +16,10 @@
 		readAnswerFilter,
 		toggleAnswerFilter,
 		withoutExactAnswerFilter
-	} from '#lib/shared/worker-filters.ts';
-	import { answerDisplayLabel } from '#lib/shared/answer-path.ts';
-	import { remainderReading } from '#lib/shared/answer-hierarchy.ts';
-	import { noValueReading } from '#lib/shared/no-value-reading.ts';
+	} from '#lib/shared/workers/worker-filters.ts';
+	import { answerDisplayLabel } from '#lib/shared/workers/answer-path.ts';
+	import { remainderReading } from '#lib/shared/workers/answer-hierarchy.ts';
+	import { noValueReading } from '#lib/shared/text/no-value-reading.ts';
 	import { Button } from '#lib/components/ui/button/index.ts';
 	import { Input } from '#lib/components/ui/input/index.ts';
 	import { getEditModel } from '#lib/features/workers/edit-model.svelte.ts';

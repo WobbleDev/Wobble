@@ -11,10 +11,10 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type { Agitation, Language } from '#lib/domain-vocabulary.ts';
 import { attributeDefinition } from '#lib/testing/builders.ts';
-import { emptyContextualFilters } from '#lib/shared/contextual-filters.ts';
+import { emptyContextualFilters } from '#lib/shared/workers/contextual-filters.ts';
 import { answerIdOf, attributeFixture } from '#lib/testing/mapping/answer-fixtures.ts';
 import { groupGapDefault } from './layout/graph-group-physics.ts';
-import { PersonPartition } from '#lib/shared/person-state.svelte.ts';
+import { PersonPartition } from '#lib/shared/workers/person-state.svelte.ts';
 import { emptyHighlightQuery, encodeHighlightQuery } from './map-highlight-query-codec.ts';
 import { MapViewState, type MapViewCapture } from './map-view-state.svelte.ts';
 import { snapshotToSearchParams, type MapViewSnapshot } from './map-view-snapshot.ts';
@@ -34,7 +34,9 @@ const navigation = vi.hoisted(() => {
 	});
 	return { state, replaceCurrentUrl };
 });
-vi.mock('#lib/shared/navigation.ts', () => ({ replaceCurrentUrl: navigation.replaceCurrentUrl }));
+vi.mock('#lib/shared/app/navigation.ts', () => ({
+	replaceCurrentUrl: navigation.replaceCurrentUrl
+}));
 
 const department = attributeDefinition({
 	id: 'department',

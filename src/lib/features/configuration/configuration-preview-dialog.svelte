@@ -1,7 +1,7 @@
 <script lang="ts">
 	import * as AlertDialog from '#lib/components/ui/alert-dialog/index.ts';
 	import { m } from '#lib/paraglide/messages.js';
-	import ChoiceSelect from '#lib/shared/choice-select.svelte';
+	import ChoiceSelect from '#lib/shared/ui/choice-select.svelte';
 	import { createFocusReturn } from './focus-return.svelte.ts';
 	import { workerImpact, type WorkerImpactState } from './worker-impact.ts';
 	import type {

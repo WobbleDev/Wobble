@@ -8,7 +8,7 @@
 <script lang="ts">
 	import * as AlertDialog from '#lib/components/ui/alert-dialog/index.ts';
 	import { m } from '#lib/paraglide/messages.js';
-	import type { UnsavedChanges } from '#lib/shared/unsaved-changes.svelte.ts';
+	import type { UnsavedChanges } from '#lib/shared/app/unsaved-changes.svelte.ts';
 
 	let { guard }: { guard: UnsavedChanges } = $props();
 </script>

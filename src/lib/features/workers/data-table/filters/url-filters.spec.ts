@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { WorkerAttributeDefinition } from '#lib/domain-vocabulary.ts';
-import { writeWorkerFilters } from '#lib/shared/worker-filters.ts';
+import { writeWorkerFilters } from '#lib/shared/workers/worker-filters.ts';
 import {
 	activeFilterNamesFrom,
 	collectWorkerFiltersFrom,

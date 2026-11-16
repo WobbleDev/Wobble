@@ -7,7 +7,7 @@
  * interface language decides relative-time prose and day-period text. Callers that
  * format a bare date or time use `#lib/i18n/format.ts` directly.
  */
-import type { DateFormatPreference, TimeFormatPreference } from '#lib/shared/app-settings.ts';
+import type { DateFormatPreference, TimeFormatPreference } from '#lib/shared/app/app-settings.ts';
 import {
 	formatDate as formatDateAtLocale,
 	formatRelativeTime,

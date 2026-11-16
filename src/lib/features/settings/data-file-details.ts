@@ -3,7 +3,7 @@
  * A value the core could not read shows the injected "Unavailable" copy rather than a
  * plausible default, so the label is localized at the call site that knows the locale.
  */
-import { formatTimestamp, type TimestampFormats } from '#lib/shared/format.ts';
+import { formatTimestamp, type TimestampFormats } from '#lib/shared/text/format.ts';
 
 const units = ['KB', 'MB', 'GB', 'TB'] as const;
 

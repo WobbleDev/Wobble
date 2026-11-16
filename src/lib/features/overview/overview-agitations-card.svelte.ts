@@ -1,5 +1,5 @@
 import type { AttributeAnswer } from '#lib/domain-vocabulary.ts';
-import { answerPath } from '#lib/shared/answer-path.ts';
+import { answerPath } from '#lib/shared/workers/answer-path.ts';
 import { clampPageIndex, groupPageRange, paginateGroups } from './agitations-paging.ts';
 import { createAgitationsHeaders } from './agitations-headers.svelte.ts';
 import { createAgitationsPaging } from './agitations-paging.svelte.ts';

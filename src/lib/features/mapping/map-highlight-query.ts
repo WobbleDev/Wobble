@@ -1,6 +1,6 @@
 import type { Worker, WorkerAttributeDefinition } from '#lib/domain-vocabulary.ts';
-import { canHoldSeveral } from '#lib/shared/select-mode.ts';
-import { answerIsInSubtree, heldAnswerIds } from '#lib/shared/worker-population.ts';
+import { canHoldSeveral } from '#lib/shared/workers/select-mode.ts';
+import { answerIsInSubtree, heldAnswerIds } from '#lib/shared/workers/worker-population.ts';
 
 export type HighlightField =
 	| { kind: 'attribute'; attributeId: string }

@@ -9,9 +9,9 @@
  * vocabulary cannot express.
  */
 import type { WorkerAttributeDefinition } from '#lib/domain-vocabulary.ts';
-import { parseRemainderIdentity, remainderIdentity } from '#lib/shared/answer-hierarchy.ts';
-import { parseColonPair } from '#lib/shared/colon-pair.ts';
-import type { PopulationFilters } from '#lib/shared/worker-population.ts';
+import { parseRemainderIdentity, remainderIdentity } from '#lib/shared/workers/answer-hierarchy.ts';
+import { parseColonPair } from '#lib/shared/text/colon-pair.ts';
+import type { PopulationFilters } from '#lib/shared/workers/worker-population.ts';
 
 /**
  * The filters that select a population, in the address's own serializable shape so a

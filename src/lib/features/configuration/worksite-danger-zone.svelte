@@ -9,7 +9,7 @@
 	dangerous, rather than as a warning pasted over it.
 -->
 <script lang="ts">
-	import SectionCard from '#lib/shared/section-card.svelte';
+	import SectionCard from '#lib/shared/ui/section-card.svelte';
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import { getContext } from 'svelte';

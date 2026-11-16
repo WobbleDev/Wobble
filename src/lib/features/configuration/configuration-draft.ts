@@ -6,7 +6,7 @@ import { committeeGoalMaximum, committeeGoalMinimum } from '#lib/domain-vocabula
 import type { Agitation, Language, WorkerAttributeDefinition } from '#lib/domain-vocabulary.ts';
 import { toWorkerAttributeDefinitions, type AttributeDraft } from './attribute-draft.ts';
 import { m } from '#lib/paraglide/messages.js';
-import { normalizeForMatch } from '#lib/shared/text.ts';
+import { normalizeForMatch } from '#lib/shared/text/text.ts';
 import { isAttributeValid } from './attribute-validation.ts';
 
 /** The label field of a value list: Agitations use `text`, Languages use `name`, Attribute answers `value`. */

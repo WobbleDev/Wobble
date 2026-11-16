@@ -12,7 +12,7 @@ vi.mock('$app/navigation', () => ({ invalidateAll: vi.fn(async () => {}) }));
 
 import type { WorkerAttributeDefinition } from '#lib/domain-vocabulary.ts';
 import { m } from '#lib/paraglide/messages.js';
-import { UnsavedChanges } from '#lib/shared/unsaved-changes.svelte.ts';
+import { UnsavedChanges } from '#lib/shared/app/unsaved-changes.svelte.ts';
 import { scriptFetch } from '#lib/testing/http.ts';
 import { ConfigurationDraftState } from './configuration-draft-state.svelte.ts';
 

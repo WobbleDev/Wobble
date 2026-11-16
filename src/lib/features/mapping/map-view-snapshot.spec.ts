@@ -1,8 +1,11 @@
 // @module-tag mapping
 import { describe, expect, it } from 'vitest';
-import { normalizeExpansion } from '#lib/shared/answer-hierarchy.ts';
-import { encodeColonPair } from '#lib/shared/colon-pair.ts';
-import { emptyContextualFilters, type ContextualFilters } from '#lib/shared/contextual-filters.ts';
+import { normalizeExpansion } from '#lib/shared/workers/answer-hierarchy.ts';
+import { encodeColonPair } from '#lib/shared/text/colon-pair.ts';
+import {
+	emptyContextualFilters,
+	type ContextualFilters
+} from '#lib/shared/workers/contextual-filters.ts';
 import {
 	dropObsoleteViewParams,
 	knownHiddenLanguages,
