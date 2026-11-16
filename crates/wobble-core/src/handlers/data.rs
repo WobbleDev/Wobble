@@ -353,6 +353,7 @@ fn write_safety_copy(
             &format!("The safety copy could not be written: {error}."),
         )
     })?;
+    crate::safety_copies::prune(target);
     Ok(path)
 }
 
