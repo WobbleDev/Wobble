@@ -1,5 +1,5 @@
-import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
+import { readLayoutCss } from '#lib/testing/layout-css.ts';
 
 // The eleven named grayscale stops still carry --data-other and every direct
 // stop reference, and this file still pins the ramp's shape. What changed at
@@ -8,7 +8,7 @@ import { describe, expect, it } from 'vitest';
 // that now matter are that every role exists in both themes and the theme
 // still moves it, that the risk-axis pairs keep their measured contrast, and
 // that the six material roles and the glass utility ship as specified.
-const css = readFileSync(new URL('./layout.css', import.meta.url), 'utf8');
+const css = readLayoutCss();
 
 // A role name can be declared twice, once in :root and once in the dark
 // override, and the dark declaration is the one that holds there, so the block

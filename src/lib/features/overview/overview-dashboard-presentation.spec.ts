@@ -1,4 +1,3 @@
-import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { assessmentColorFor } from '#lib/shared/workers/assessment.ts';
 import type { AssessmentOption } from '#lib/domain-vocabulary.ts';
@@ -16,6 +15,7 @@ import {
 	showsSegmentCount,
 	SHADE_KEY_STEPS
 } from './overview-dashboard-presentation.ts';
+import { readLayoutCss } from '#lib/testing/layout-css.ts';
 
 /**
  * The dashboard's presentation rules live in one plain module, so the page
@@ -136,7 +136,7 @@ describe('heatRatio', () => {
 describe('segmentLabelTone', () => {
 	const assessed: AssessmentOption[] = ['Leader', 'Activist', 'Supporter', 'Disengaged', 'Hostile'];
 	it('meets4.5:1 on every shipped theme and Assessment palette fill', () => {
-		const css = readFileSync(new URL('../../../routes/layout.css', import.meta.url), 'utf8');
+		const css = readLayoutCss();
 		const luminance = (hex: string) => {
 			const channels = [1, 3, 5]
 				.map((start) => parseInt(hex.slice(start, start + 2), 16) / 255)

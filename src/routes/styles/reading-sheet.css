@@ -1,0 +1,29 @@
+/* =====================================================================
+   Reading-sheet material
+   ---------------------------------------------------------------------
+   A transparent, borderless panel, so the bullseye shows through the sheet. Tables, forms, menus and dialogs stay
+   opaque without the shadow — blur stays on chrome.
+   ===================================================================== */
+/* A scroller's edge fades only while rows lie beyond it (see scroll-fade.ts). */
+.scroll-fade {
+	--fade-top: 0px;
+	--fade-bottom: 0px;
+	mask-image: linear-gradient(
+		to bottom,
+		transparent,
+		#000 var(--fade-top),
+		#000 calc(100% - var(--fade-bottom)),
+		transparent
+	);
+}
+.scroll-fade[data-fade-top] {
+	--fade-top: 1.25rem;
+}
+.scroll-fade[data-fade-bottom] {
+	--fade-bottom: 1.25rem;
+}
+
+[data-material='reading-sheet'] {
+	background-color: transparent;
+	border-radius: var(--radius-surface);
+}

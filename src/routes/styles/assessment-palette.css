@@ -1,0 +1,277 @@
+/* =====================================================================
+   The color-blind Assessment palette
+   ---------------------------------------------------------------------
+   An opt-in swap for the six Assessment tokens. All three chains are
+   re-declared together: --assess-* feeds assessment.ts and the CSS marks,
+   --assessment-* is the compatibility alias, and --color-assessment-*
+   is the Tailwind utility chain that @theme inline builds from it. The
+   blocks sit after @theme inline so every chain resolves to the swap.
+   The light set is the diverging scale from the mapping dataviz study.
+   The dark set is the validated variant from the palette validation.
+   ===================================================================== */
+html[data-assessment-palette='colorblind'] {
+	--assess-unassessed: #6e7178;
+	--assess-leader: #104281;
+	--assess-activist: #2a78d6;
+	--assess-supporter: #86b6ef;
+	--assess-disengaged: #8a877e;
+	--assess-hostile: #e34948;
+
+	--assessment-unassessed: var(--assess-unassessed);
+	--assessment-leader: var(--assess-leader);
+	--assessment-activist: var(--assess-activist);
+	--assessment-supporter: var(--assess-supporter);
+	--assessment-disengaged: var(--assess-disengaged);
+	--assessment-hostile: var(--assess-hostile);
+
+	--color-assessment-unassessed: var(--assessment-unassessed);
+	--color-assessment-leader: var(--assessment-leader);
+	--color-assessment-activist: var(--assessment-activist);
+	--color-assessment-supporter: var(--assessment-supporter);
+	--color-assessment-disengaged: var(--assessment-disengaged);
+	--color-assessment-hostile: var(--assessment-hostile);
+}
+
+.dark[data-assessment-palette='colorblind'] {
+	--assess-unassessed: #9aa3b0;
+	--assess-leader: #9ec5f4;
+	--assess-activist: #5d9fe6;
+	--assess-supporter: #2f6fc0;
+	--assess-disengaged: #b0a294;
+	--assess-hostile: #ef6b6a;
+
+	--assessment-unassessed: var(--assess-unassessed);
+	--assessment-leader: var(--assess-leader);
+	--assessment-activist: var(--assess-activist);
+	--assessment-supporter: var(--assess-supporter);
+	--assessment-disengaged: var(--assess-disengaged);
+	--assessment-hostile: var(--assess-hostile);
+
+	--color-assessment-unassessed: var(--assessment-unassessed);
+	--color-assessment-leader: var(--assessment-leader);
+	--color-assessment-activist: var(--assessment-activist);
+	--color-assessment-supporter: var(--assessment-supporter);
+	--color-assessment-disengaged: var(--assessment-disengaged);
+	--color-assessment-hostile: var(--assessment-hostile);
+}
+
+@layer utilities {
+	/* Figures that line up in a column. */
+	.num,
+	.tabular {
+		font-variant-numeric: tabular-nums;
+	}
+	/* The label role: every column header, field key, section eyebrow, count and
+	   time. Mono, opened as it shrinks, and the one role that is always upper
+	   case — which is what tells a label apart from a sentence at a glance. */
+	.label {
+		font-family: var(--font-mono);
+		font-size: var(--text-xs);
+		line-height: var(--text-xs--line-height);
+		font-weight: 500;
+		letter-spacing: var(--tracking-key);
+		text-transform: uppercase;
+		color: var(--ink-2);
+	}
+	/* A card or section heading: sentence-case sans at the Title step, where a
+	   .label eyebrow would read as machine labelling. The heading voice for
+	   Configuration and Settings cards — .label stays untouched as the eyebrow
+	   voice. At 16px it stands one role step above the 14px body its card holds,
+	   so a card reads as a titled section rather than a body paragraph whose
+	   first line happens to be bold. */
+	.section-title {
+		font-family: var(--font-sans);
+		font-size: var(--text-lg);
+		line-height: var(--text-lg--line-height);
+		font-weight: 600;
+		letter-spacing: var(--tracking-title);
+		color: var(--ink);
+	}
+	/* A key inside an open record reads one step down from a column label. */
+	.key {
+		font-family: var(--font-mono);
+		font-size: var(--text-2xs);
+		line-height: var(--text-2xs--line-height);
+		font-weight: 500;
+		letter-spacing: var(--tracking-key);
+		text-transform: uppercase;
+		color: var(--ink-3);
+	}
+	/* A key standing on the toolbar fill steps up one ink stop: ink-3 measures
+	   4.19:1 there and clears nothing, while ink-2 clears 4.5:1 in both themes.
+	   Scoped to the fill rather than redefining the role, because a key on a
+	   panel or an inset is fine where it is. */
+	.bg-toolbar .key {
+		color: var(--ink-2);
+	}
+	/* An essential field label: the label on a form control or a long
+	   interactive menu, set sentence-case in the sans at the 12px floor.
+	   Eyebrows, keys, counts and times stay mono uppercase in .label and .key —
+	   this role is only for text the reader must read as language. */
+	.field-label {
+		font-family: var(--font-sans);
+		font-size: max(0.75rem, 12px);
+		line-height: max(1.125rem, 18px);
+		font-weight: 500;
+		color: var(--ink-2);
+		/* The vendored Label this role composes onto carries `uppercase`, and
+		   `text-transform` inherits, so the role has to state the reset itself or
+		   a field label silently keeps the eyebrow's casing. */
+		text-transform: none;
+	}
+	/* A value the reader supplied: a Name, an address, a Note, an Attribute answer.
+	   Its length is the reader's business, not the layout's, so it breaks inside a
+	   word rather than pushing the page wider than the window or being clipped.
+	   `break-words` alone only helps where a break opportunity already exists. */
+	.prose-value {
+		overflow-wrap: anywhere;
+		word-break: normal;
+		min-width: 0;
+	}
+}
+
+@layer base {
+	* {
+		/* The ring is the focus indicator, so it is the one outline that cannot
+		   ride at an alpha: 30% measures well under the 3:1 that WCAG 1.4.11 asks
+		   for. The action ink clears it in light, and white clears it in dark. */
+		@apply border-border outline-ring;
+	}
+	body {
+		@apply bg-background text-base text-foreground;
+		/* Native feel: the page is chrome, not a document. The arrow stays on
+		   everything but text fields and pannable surfaces, and chrome text is not
+		   selectable — see the opt-ins below. */
+		cursor: default;
+		-webkit-user-select: none;
+		user-select: none;
+		/* The fixed wash: a radial bloom of the theme's wash tone at the
+	   leading corner, so glass chrome has something to filter while it blurs.
+	   Fixed, so it stays put under the floating surfaces. */
+		background-color: var(--page);
+		background-image: radial-gradient(
+			80rem 60rem at 0% 0%,
+			color-mix(in srgb, var(--wash) 55%, transparent),
+			transparent 60%
+		);
+		background-attachment: fixed;
+	}
+	html {
+		@apply font-sans;
+		/* The shell owns its scrollers; the document itself never rubber-bands. */
+		overscroll-behavior: none;
+		/* The caret and the native check are browser surfaces the palette still
+		   has to own; `color-scheme` alone leaves both at the UA default. */
+		caret-color: var(--action);
+		accent-color: var(--action);
+	}
+
+	/* Browser typographic surfaces. A selection is the reader's own mark on the
+	   text, so it takes the ramp's own extreme at a wash, not a system blue. */
+	::selection {
+		background-color: color-mix(in oklch, var(--ink) 22%, transparent);
+		color: var(--ink);
+	}
+
+	/* Text a reader may want to copy, and fields they type into. */
+	input,
+	textarea,
+	[contenteditable],
+	[data-selectable],
+	.prose-value,
+	[role='alert'] {
+		-webkit-user-select: text;
+		user-select: text;
+	}
+	input,
+	textarea {
+		cursor: text;
+	}
+	/* The arrow is the default, but whatever answers a click says so: the
+	   checkbox, and the Worker name that opens the record panel. */
+	input[type='checkbox'],
+	[data-name-cell] {
+		cursor: pointer;
+	}
+	a,
+	img,
+	svg {
+		-webkit-user-drag: none;
+	}
+	/* One scrollbar for every scroller, in the palette; inner scrollers keep
+	   their leftover scroll rather than handing it to the shell. */
+	* {
+		scrollbar-width: thin;
+		scrollbar-color: var(--rule-strong) transparent;
+	}
+	[data-scroll-region],
+	.overflow-auto,
+	.overflow-y-auto,
+	.overflow-x-auto {
+		overscroll-behavior: contain;
+	}
+	/* Scrollers whose content must not shift when a bar appears. */
+	[data-scrollbar-stable] {
+		scrollbar-gutter: stable;
+	}
+	/* Low specificity so components that draw their own ring or outline win. */
+	:where(:focus-visible) {
+		outline: 2px solid var(--ring);
+		outline-offset: 2px;
+	}
+	/* The themed field draws its own affordances; WebKit's would double them. */
+	input[type='search']::-webkit-search-cancel-button,
+	input[type='search']::-webkit-search-decoration {
+		-webkit-appearance: none;
+		appearance: none;
+	}
+
+	h1,
+	h2,
+	h3,
+	h4 {
+		text-wrap: balance;
+	}
+	p,
+	li,
+	dd,
+	figcaption {
+		text-wrap: pretty;
+	}
+
+	/* Density scales the rem base, so spacing and type move together. Text size
+	   multiplies that same base, so the two compose rather than overwrite each other. */
+	html {
+		--density-scale: 1;
+		--text-scale: 1;
+		font-size: calc(100% * var(--density-scale) * var(--text-scale));
+	}
+	html[data-density='compact'] {
+		--density-scale: 0.9375;
+	}
+	html[data-density='standard'] {
+		--density-scale: 1;
+	}
+	html[data-density='comfortable'] {
+		--density-scale: 1.0625;
+	}
+	html[data-text-size='110'] {
+		--text-scale: 1.1;
+	}
+	html[data-text-size='125'] {
+		--text-scale: 1.25;
+	}
+	html[data-text-size='150'] {
+		--text-scale: 1.5;
+	}
+
+	/* iOS Safari zooms the page when a focused field's own text is under 16px,
+	   which breaks the form it was trying to help. Coarse pointers only. */
+	@media (pointer: coarse) {
+		input,
+		select,
+		textarea {
+			font-size: max(1rem, 16px);
+		}
+	}
+}

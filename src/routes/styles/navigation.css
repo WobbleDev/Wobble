@@ -1,0 +1,55 @@
+/* =====================================================================
+   The navigation
+   ---------------------------------------------------------------------
+   The navigation is the outermost stop in the ramp — z8 in light, z0 in dark
+   — so it sits outside the page rather than on it, and it flips with the
+   theme because the stop it reads flips.
+
+   The three item states are tints of the one ink, so they step in a single
+   direction and flip with the theme with no per-theme values. The panel
+   stop cannot carry them: it reads about 1.03:1 against the navigation, so
+   a panel-coloured fill is nearly invisible, and it left hover and active
+   looking the same. Hover is the faintest tint, pressed one step stronger,
+   and the active item the strongest at rest.
+
+   With no rule or marker, the active tint is the only fill cue, so it sits
+   clearly above hover and press, and the item also takes medium weight and
+   aria-current="page" so the state is not tone alone.
+   ===================================================================== */
+[data-slot='sidebar-menu-button'] {
+	transition: background-color 120ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+[data-slot='sidebar-menu-button']:not([data-active='true']):hover {
+	background-color: color-mix(in srgb, var(--ink) 5%, transparent);
+	color: var(--ink);
+}
+[data-slot='sidebar-menu-button']:not([data-active='true']):active {
+	background-color: color-mix(in srgb, var(--ink) 9%, transparent);
+}
+[data-slot='sidebar-menu-button'][data-active='true'],
+[data-slot='sidebar-menu-button'][data-active='true']:hover {
+	background-color: color-mix(in srgb, var(--ink) 11%, transparent);
+	color: var(--ink);
+}
+@media (prefers-reduced-motion: reduce) {
+	html:not([data-motion='full']) [data-slot='sidebar-menu-button'] {
+		transition: none;
+	}
+}
+html[data-motion='reduce'] [data-slot='sidebar-menu-button'] {
+	transition: none;
+}
+
+/* The mobile navigation carries a close control in its header, so the header
+   keeps clear of it. */
+[data-slot='sidebar'][data-mobile='true'] [data-slot='sidebar-header'] {
+	padding-inline-end: 3.25rem;
+}
+[data-slot='sidebar'][data-mobile='true'] [data-slot='sheet-close'] {
+	background-color: transparent;
+	color: var(--ink);
+}
+[data-slot='sidebar'][data-mobile='true'] [data-slot='sheet-close']:hover {
+	background-color: var(--panel);
+	color: var(--ink);
+}

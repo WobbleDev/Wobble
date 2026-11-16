@@ -1,0 +1,140 @@
+/* =====================================================================
+   Increase contrast
+   ---------------------------------------------------------------------
+   A plain on/off override: it never reads prefers-contrast. Both themes
+   step the rule and ink roles one stop stronger, so borders and text
+   separate further without swapping the palette. Focus moves with them.
+   ===================================================================== */
+html[data-contrast='on'] {
+	--rule: #b0b0b0;
+	--rule-strong: #5a5a5a;
+	--ink-2: #1f1f1f;
+	--ink-3: #3d3d3d;
+	--focus: #111111;
+}
+
+.dark[data-contrast='on'] {
+	--rule: #4d4d4d;
+	--rule-strong: #a0a0a0;
+	--ink-2: #eeeeee;
+	--ink-3: #cccccc;
+	--focus: #ffffff;
+}
+
+@theme inline {
+	/* Two roles, one family each. The sans carries names, prose and the values
+	   an organizer reads; the mono carries every label, key, count and time. */
+	/* System-first, with Public Sans as a local fallback: the reference's stack.
+	   The @font-face fallback blocks above still hold the line box at every size. */
+	--font-sans:
+		ui-sans-serif, system-ui, -apple-system, 'Segoe UI', 'Public Sans Variable',
+		'Public Sans Fallback', sans-serif;
+	--font-mono:
+		'Roboto Mono Variable', 'Mono Fallback', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+	/* Documented type scale. Body is 14px: a Workers table read between shifts is read
+	   comfortably or it is read wrong. The two smallest steps hold a legibility
+	   floor, so Compact stops shrinking them where mono labels start to lose
+	   their counters — the same reasoning as the touch floor, applied to type. */
+	--text-2xs: max(0.65625rem, 10.5px);
+	--text-2xs--line-height: max(0.9375rem, 15px);
+	--text-xs: max(0.6875rem, 11px);
+	--text-xs--line-height: max(1rem, 16px);
+	--text-sm: 0.875rem;
+	--text-sm--line-height: 1.3125rem;
+	--text-base: 0.875rem;
+	--text-base--line-height: 1.3125rem;
+	--text-lg: 1rem;
+	--text-lg--line-height: 1.5rem;
+	--text-xl: 1.25rem;
+	--text-xl--line-height: 1.75rem;
+	--text-2xl: 1.625rem;
+	--text-2xl--line-height: 2rem;
+	--text-3xl: 2rem;
+	--text-3xl--line-height: 2.25rem;
+
+	/* Tracking belongs to a role, not a size: a heading tightens as it grows, a
+	   mono label opens as it shrinks. The label needs the opening more than the
+	   heading needs the tightening — at 11px its counters close without it. */
+	--tracking-display: -0.022em;
+	--tracking-headline: -0.018em;
+	--tracking-title: -0.01em;
+	--tracking-key: 0.08em;
+
+	--radius-base: 0.125rem;
+	--radius-sm: var(--radius-base);
+	--radius-md: calc(var(--radius-base) * 1.5);
+	--radius-item: calc(var(--radius-base) * 4);
+	--radius-control: calc(var(--radius-base) * 2);
+	--radius-lg: calc(var(--radius-base) * 2);
+	--radius-xl: calc(var(--radius-base) * 3);
+	--radius-2xl: calc(var(--radius-base) * 4);
+	--radius-surface: calc(var(--radius-base) * 4);
+	--radius-3xl: calc(var(--radius-base) * 5);
+	--radius-4xl: calc(var(--radius-base) * 6);
+
+	/* Semantic surfaces, ink, rule, action, state */
+	--color-page: var(--page);
+	--color-panel: var(--panel);
+	--color-inset: var(--inset);
+	--color-chip: var(--chip);
+	--color-nav: var(--nav);
+	--color-hover: var(--hover);
+	--color-toolbar: var(--toolbar);
+	--color-ink: var(--ink);
+	--color-ink-2: var(--ink-2);
+	--color-ink-3: var(--ink-3);
+	--color-ink-inverse: var(--ink-inverse);
+	--color-rule: var(--rule);
+	--color-rule-strong: var(--rule-strong);
+	--color-action: var(--action);
+	--color-action-hover: var(--action-hover);
+	--color-on-action: var(--on-action);
+	--shadow-tooltip: var(--tooltip-shadow);
+	--color-state-success: var(--state-success);
+	--color-state-warning: var(--state-warning);
+	--color-state-error: var(--state-error);
+
+	/* Aggregate data roles */
+	--color-data-support: var(--data-support);
+	--color-data-other: var(--data-other);
+
+	/* Physical touch floor */
+	--spacing-tap: var(--tap-target);
+
+	/* Assessment roles */
+	--color-assessment-unassessed: var(--assessment-unassessed);
+	--color-assessment-leader: var(--assessment-leader);
+	--color-assessment-activist: var(--assessment-activist);
+	--color-assessment-supporter: var(--assessment-supporter);
+	--color-assessment-disengaged: var(--assessment-disengaged);
+	--color-assessment-hostile: var(--assessment-hostile);
+
+	/* shadcn role utilities */
+	--color-sidebar-ring: var(--sidebar-ring);
+	--color-sidebar-border: var(--sidebar-border);
+	--color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+	--color-sidebar-accent: var(--sidebar-accent);
+	--color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+	--color-sidebar-primary: var(--sidebar-primary);
+	--color-sidebar-foreground: var(--sidebar-foreground);
+	--color-sidebar: var(--sidebar);
+	--color-ring: var(--ring);
+	--color-input: var(--input);
+	--color-border: var(--border);
+	--color-destructive: var(--destructive);
+	--color-accent-foreground: var(--accent-foreground);
+	--color-accent: var(--accent);
+	--color-muted-foreground: var(--muted-foreground);
+	--color-muted: var(--muted);
+	--color-secondary-foreground: var(--secondary-foreground);
+	--color-secondary: var(--secondary);
+	--color-primary-foreground: var(--primary-foreground);
+	--color-primary: var(--primary);
+	--color-popover-foreground: var(--popover-foreground);
+	--color-popover: var(--popover);
+	--color-card-foreground: var(--card-foreground);
+	--color-card: var(--card);
+	--color-foreground: var(--foreground);
+	--color-background: var(--background);
+}

@@ -1,9 +1,9 @@
-import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { COMPACT_BREAKPOINT, NARROW_BREAKPOINT, SHELL_BREAKPOINT } from './is-mobile.svelte.ts';
+import { readLayoutCss } from '#lib/testing/layout-css.ts';
 
 describe('the responsive tier breakpoints', () => {
-	const css = readFileSync(new URL('../../routes/layout.css', import.meta.url), 'utf8');
+	const css = readLayoutCss();
 
 	function cssBreakpoint(name: string): number {
 		const token = css.match(new RegExp(`--breakpoint-${name}:\\s*([\\d.]+)rem`));

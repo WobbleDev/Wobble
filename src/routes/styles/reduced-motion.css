@@ -1,0 +1,39 @@
+/* =====================================================================
+   Reduced motion
+   ---------------------------------------------------------------------
+   One general rule: nothing travels and nothing eases. State still changes
+   at once, so the control answers; it just does not animate there.
+
+   The setting is the root's data-motion attribute: 'system' follows the OS
+   media query, 'reduce' always freezes, and 'full' opts out even on an OS
+   that asks for less. Every prefers-reduced-motion rule below is gated the
+   same way, so the three values stay one decision.
+   ===================================================================== */
+@media (prefers-reduced-motion: reduce) {
+	/* The root is its own element: without the bare selector its transition and
+	   scroll-behavior stay live even though everything under it freezes. */
+	html:not([data-motion='full']),
+	html:not([data-motion='full']) *,
+	html:not([data-motion='full'])::before,
+	html:not([data-motion='full'])::after,
+	html:not([data-motion='full']) ::before,
+	html:not([data-motion='full']) ::after {
+		animation-duration: 0.01ms !important;
+		animation-delay: 0ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+		transition-delay: 0ms !important;
+		scroll-behavior: auto !important;
+	}
+}
+html[data-motion='reduce'],
+html[data-motion='reduce'] *,
+html[data-motion='reduce'] ::before,
+html[data-motion='reduce'] ::after {
+	animation-duration: 0.01ms !important;
+	animation-delay: 0ms !important;
+	animation-iteration-count: 1 !important;
+	transition-duration: 0.01ms !important;
+	transition-delay: 0ms !important;
+	scroll-behavior: auto !important;
+}

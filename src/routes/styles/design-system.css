@@ -1,0 +1,244 @@
+/* =====================================================================
+   Wobble design system
+   ---------------------------------------------------------------------
+   Tier 1  primitives        the eleven-step grayscale ramp, named by stop
+   Tier 2  semantic roles    what components consume
+   Tier 3  component tokens  per-component decisions
+   Components never read Tier 1. Move a stop and every role moves with it.
+   ===================================================================== */
+
+:root {
+	/* --- Tier 1 · the eleven-step ramp ------------------------------- */
+	/* One achromatic ramp from the darkest stop (z0) to white (z10). Every
+	   surface in the app is one of these eleven stops: there is no second neutral
+	   family and no surface is drawn from an alpha, so a panel resting on the
+	   page always differs from it by a known number of stops, in either theme. */
+	--z0: oklch(0.275 0 0);
+	--z1: oklch(0.351 0 0);
+	--z2: oklch(0.427 0 0);
+	--z3: oklch(0.503 0 0);
+	--z4: oklch(0.579 0 0);
+	--z5: oklch(0.656 0 0);
+	--z6: oklch(0.732 0 0);
+	--z7: oklch(0.808 0 0);
+	--z8: oklch(0.884 0 0);
+	--z9: oklch(0.96 0 0);
+	--z10: oklch(1 0 0);
+
+	/* Assessment — functional data colour, never chrome: Apple's system colours
+	   (Green, Blue, Teal, Orange, Red, Gray), with their dark-appearance variants
+	   in .dark. Readable as a dot beside its label. These tokens
+	   are what src/lib/shared/workers/assessment.ts references, so SVG and CSS cannot drift. */
+	--assess-unassessed: #868686;
+	--assess-leader: #00a461;
+	--assess-activist: #337aef;
+	--assess-supporter: #b865cb;
+	--assess-disengaged: #c17000;
+	--assess-hostile: #e23248;
+
+	/* Functional state. The error role is text as well as border, so it clears
+	   4.5:1 on the panel and on the wash it draws under itself. */
+	--ok-600: oklch(0.52 0.09 152);
+	--warn-600: oklch(0.6 0.1 75);
+	--err-600: oklch(0.47 0.13 27);
+	--err-300: oklch(0.76 0.11 25);
+
+	/* Aggregate data roles — the Support / Other split. A data cohort never
+	   borrows the action role, and a chart never reads a token we did not set. */
+	--data-support-600: oklch(0.5 0.09 155);
+	--data-support-300: oklch(0.74 0.08 155);
+
+	/* --- Tier 2 · semantic roles ------------------------------------- */
+	/* Neutral roles: literals declared once per theme — light here, dark in
+	   .dark below — from the approved token contract. The eleven-stop
+	   ramp above is untouched and still read wherever a named stop is wanted
+	   (--data-other, the direct stop references), but the chrome roles no longer
+	   alias it: they carry the approved neutral values, so a role moves only when
+	   the reference moves it.
+
+	   Three nested surfaces, with the navigation and the toolbar outside them —
+	   the same nesting as before, in neutral tones. */
+	--page: #f7f7f7;
+	--panel: #ffffff;
+	--inset: #f0f0f0;
+	--nav: #ffffff;
+	--hover: #ebebeb;
+	/* A chip fill that stays distinct on hovered and selected Workers table rows, which
+	   tint toward the action colour; --inset is the hover colour there. */
+	--chip: color-mix(in oklab, var(--ink) 18%, var(--panel));
+	/* The toolbar fill. Configuration's save bar is the one surface that paints
+	   with it: a bar holding a commit while the form it belongs to scrolls. */
+	--toolbar: #f3f3f3;
+
+	--ink: #1f1f1f;
+	--ink-2: #3d3d3d;
+	/* The AA-safe floor for the smallest type: nothing smaller than body may go
+	   lighter than this, and it must clear 4.5:1 wherever it paints — the panel,
+	   the page, the inset and the toolbar. #66748a only cleared the first two. */
+	--ink-3: #555555;
+	--ink-inverse: #ffffff;
+
+	/* Rules are hairlines drawn from a gray rule tone, not from an alpha, so
+	   one rule holds on the panel, the page and the navigation alike. The strong
+	   step is not a hairline: it is the boundary of a control, held to 3:1 by
+	   WCAG 1.4.11. #808080 measures 3.95:1 on the panel and 3.69:1 on the page:
+	   accessibility outranks the visual. */
+	--rule: #e5e5e5;
+	--rule-strong: #808080;
+
+	/* Action is the near-black extreme, still not an accent hue: a neutral scheme
+	   that spends an accent has stopped being neutral. White is its label in
+	   light; dark inverts the pair. */
+	--action: #1f1f1f;
+	--action-hover: #3a3a3a;
+	--on-action: #ffffff;
+	--focus: #1f1f1f;
+
+	/* --- Tier 2 · material roles ------------------------------------- */
+	/* The six shared materials. Blur is allowed only on chrome and
+	   inspectors; surfaces that carry reading stay opaque. The wash gives blur
+	   something to filter. */
+	--surface-glass: color-mix(in srgb, #ffffff 68%, transparent);
+	--surface-glass-solid: #f3f3f3;
+	--surface-blur: 24px;
+	--surface-shadow: 0 5px 20px #3957780a, 0 1px 3px #39577805;
+	--rail-shadow: 0 8px 26px #3957780d;
+	--wash: #eeeeee;
+
+	--state-success: var(--ok-600);
+	--state-warning: var(--warn-600);
+	--state-error: var(--err-600);
+
+	--assessment-unassessed: var(--assess-unassessed);
+	--assessment-leader: var(--assess-leader);
+	--assessment-activist: var(--assess-activist);
+	--assessment-supporter: var(--assess-supporter);
+	--assessment-disengaged: var(--assess-disengaged);
+	--assessment-hostile: var(--assess-hostile);
+
+	--data-support: var(--assess-leader);
+	--data-other: var(--z4);
+
+	/* --- Tier 3 · component tokens ----------------------------------- */
+	/* Comfortable is the default, not an option: a control is 36px and a Workers table
+	   row 44px at Standard density, and the density setting moves both together
+	   with the rem base. */
+	--control-h: 2.25rem;
+	--control-h-sm: 1.875rem;
+	--control-h-lg: 2.625rem;
+	--row-h: 2.75rem;
+	/* --row-h-compact was declared but never read (a recorded divergence): the
+	   Compact density scales the Workers table row with the rem base and no rule asked
+	   for a fixed 36px row, so the unused token is deleted rather than wired. */
+	--panel-padding: 1.5rem;
+	--panel-padding-sm: 1rem;
+	/* The touch floor is physical, not typographic: it must not shrink when
+	   density scales the rem base, or Compact quietly breaks the 44px rule. */
+	--tap-target: max(2.75rem, 44px);
+
+	--radius-base: 0.125rem;
+	--radius-sm: var(--radius-base);
+	--radius-md: calc(var(--radius-base) * 1.5);
+	--radius-item: calc(var(--radius-base) * 4);
+	--radius-control: calc(var(--radius-base) * 2);
+	--radius-lg: calc(var(--radius-base) * 2);
+	--radius-xl: calc(var(--radius-base) * 3);
+	--radius-2xl: calc(var(--radius-base) * 4);
+	--radius-surface: calc(var(--radius-base) * 4);
+	--radius-3xl: calc(var(--radius-base) * 5);
+	--radius-4xl: calc(var(--radius-base) * 6);
+
+	/* How far the bullseye chart backdrop runs left of the content frame, under
+	   the glass rail: more than the rail and its gutter, clipped at the viewport. */
+	--overview-rail-reach: 20rem;
+
+	/* The map-tooltip shadow. The hover card on a graph node and the bullseye's
+	   name callout ride further above the page than a lifted control does but stay
+	   short of a menu or a dialog. */
+	--tooltip-shadow:
+		0 4px 6px -1px color-mix(in oklch, var(--z0) 10%, transparent),
+		0 2px 4px -2px color-mix(in oklch, var(--z0) 10%, transparent);
+
+	/* --- shadcn role compatibility ----------------------------------- */
+	--background: var(--page);
+	--foreground: var(--ink);
+	--card: var(--panel);
+	--card-foreground: var(--ink);
+	--popover: var(--panel);
+	--popover-foreground: var(--ink);
+	--primary: var(--action);
+	--primary-foreground: var(--on-action);
+	--secondary: var(--inset);
+	--secondary-foreground: var(--ink);
+	--muted: var(--inset);
+	--muted-foreground: var(--ink-3);
+	--accent: var(--hover);
+	--accent-foreground: var(--ink);
+	--destructive: var(--state-error);
+	--border: var(--rule);
+	--input: var(--rule-strong);
+	--ring: var(--focus);
+	--radius: var(--radius-control);
+	--sidebar: var(--nav);
+	--sidebar-foreground: var(--ink);
+	--sidebar-primary: var(--action);
+	--sidebar-primary-foreground: var(--on-action);
+	--sidebar-accent: var(--panel);
+	--sidebar-accent-foreground: var(--ink);
+	--sidebar-border: var(--rule);
+	--sidebar-ring: var(--focus);
+
+	color-scheme: light;
+}
+
+/* Dark overrides the semantic layer only, at the reference's dark material
+   table. The ramp keeps its order and stays declared once in :root, so a stop
+   number is the same tone in either theme and only the roles move. */
+.dark {
+	--page: #0f0f0f;
+	--panel: #181818;
+	--inset: #090909;
+	--nav: #181818;
+	--hover: #252525;
+	/* A touch stronger than light: on a hovered row (--hover) 9% ink is ~0.04 lighter. */
+	--chip: color-mix(in oklab, var(--ink) 24%, var(--panel));
+	--toolbar: #0f0f0f;
+
+	--ink: #eeeeee;
+	--ink-2: #cacaca;
+	--ink-3: #a4a4a4;
+	--ink-inverse: #101419;
+
+	--rule: #2e2e2e;
+	/* Dark: #717171 measures 3.64:1 on the dark panel and 3.14:1 on the
+	   hover/selected-row fills the boundary also paints on. */
+	--rule-strong: #717171;
+
+	--action: #eeeeee;
+	--action-hover: #cecece;
+	--on-action: #0f0f0f;
+	--focus: #eeeeee;
+
+	/* --- Tier 2 · material roles ------------------------------------- */
+	--surface-glass: color-mix(in srgb, #181818 74%, transparent);
+	--surface-glass-solid: #181818;
+	--surface-blur: 24px;
+	--surface-shadow: 0 5px 20px #0000004d, 0 1px 3px #00000033;
+	--rail-shadow: 0 8px 26px #00000059;
+	--wash: #090909;
+
+	--state-error: var(--err-300);
+	--data-support: var(--assess-leader);
+	--data-other: var(--z5);
+
+	/* A worker's colour means the same thing in either theme, so the six hues
+	   lift together rather than swapping families. */
+	--assess-unassessed: #9e9e9e;
+	--assess-leader: #3be59d;
+	--assess-activist: #71aaff;
+	--assess-supporter: #db90ec;
+	--assess-disengaged: #ffbb49;
+	--assess-hostile: #ff646f;
+
+	color-scheme: dark;
+}

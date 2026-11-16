@@ -1,0 +1,55 @@
+/* Public Sans, from the US Web Design System. It was drawn for exactly the
+   material this app is made of — public records, notices and forms — and its own
+   brief was to be strong, neutral and simple, which is the brief here. It is also
+   not the face every generated interface reaches for, and a plain scheme with no
+   accent has nothing else to hide behind. */
+@import '@fontsource-variable/public-sans';
+/* The label voice. A monospace is a monospace everywhere, so the system stack
+   would have made the app's own labels differ between a Mac and a Windows
+   machine — and in this system the label is a whole role, not a fallback. */
+@import '@fontsource-variable/roboto-mono';
+
+@custom-variant dark (&:is(.dark *));
+/* The physical touch floor: a coarse pointer gets the tap size even where a fine
+   pointer keeps the dense desktop row. */
+@custom-variant coarse (@media (pointer: coarse));
+
+@theme {
+	/* The responsive tiers in CSS. The runtime constants in is-mobile.svelte.ts
+	   must match these three; a spec test pins all of them.
+	   Narrow  40rem = 640px: content reflows.
+	   Compact 48rem = 768px: forms, dialogs, and option panels release the floor.
+	   Shell   64rem = 1024px: the sidebar and Workers table threshold. */
+	--breakpoint-sm: 40rem;
+	--breakpoint-md: 48rem;
+	--breakpoint-lg: 64rem;
+}
+
+/* The swap from the local fallback to Public Sans holds the line box at every
+   size, so a slow font file cannot reflow the Workers table. Public Sans sets about 4%
+   narrower than Arial, so the fallback is scaled to match it: measured, not
+   guessed — a sample sentence is 3309px in Public Sans and 3174px in Arial at
+   100px, and 3174 / 3309 is the 95.9% below. */
+@font-face {
+	font-family: 'Public Sans Fallback';
+	src: local('Arial'), local('Helvetica'), local('Liberation Sans');
+	size-adjust: 95.9%;
+	ascent-override: 95%;
+	descent-override: 25%;
+	line-gap-override: 0%;
+}
+
+/* Roboto Mono and Menlo both advance 0.6em, but Menlo's line box is shorter
+   (measured at 16px: 21px against 19px, and 201.6px against 202.3px across a
+   sample string). The scale and vertical metrics below are Roboto Mono's own,
+   so the swap moves neither a legend sideways nor a count down a pixel. */
+@font-face {
+	font-family: 'Mono Fallback';
+	src:
+		local('Menlo Regular'), local('Menlo-Regular'), local('Menlo'), local('Consolas'),
+		local('DejaVu Sans Mono');
+	size-adjust: 99.7%;
+	ascent-override: 105.1%;
+	descent-override: 27.2%;
+	line-gap-override: 0%;
+}

@@ -1,0 +1,29 @@
+/* =====================================================================
+   The bullseye base layer's pointer pass-through
+   ---------------------------------------------------------------------
+   The bullseye is drawn behind the header, the page title and the panel, so
+   those layers win the pointer over the whole page and no dot can be
+   hovered. While the base layer is shown, the shell's own children stop
+   taking the pointer; the real controls re-enable it where they sit, and the
+   worker dots already do. The marker is scoped to the route and mode that
+   draw the base layer, so the surfaces that can still scroll below the floor
+   keep ordinary hit-testing.
+   ===================================================================== */
+[data-bullseye-base-surface] > * {
+	pointer-events: none;
+}
+
+/* The dashboard sits over the inert floor and takes the pointer back for its
+   whole subtree; the chart backdrop beneath it is inert and catches nothing. While the
+   bullseye is focused the dashboard is inert instead, so it gives the pointer
+   up and the chart backdrop answers where it lies. */
+[data-bullseye-base-surface] [data-dashboard-root]:not([data-focused='true']) {
+	pointer-events: auto;
+}
+
+/* The focus tab and the focused chart backdrop's reset sit above both layers and answer
+   in either state, so they take the pointer back where they sit. */
+[data-bullseye-base-surface] [data-focus-edge],
+[data-bullseye-base-surface] [data-focus-reset] {
+	pointer-events: auto;
+}
