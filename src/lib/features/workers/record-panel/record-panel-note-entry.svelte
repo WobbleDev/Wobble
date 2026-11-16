@@ -18,8 +18,8 @@
 	import { Textarea } from '#lib/components/ui/textarea/index.ts';
 	import WorkerNoteItem from '../worker-note-item.svelte';
 	import { getEditModel } from '../edit-model.svelte.ts';
-	import { runSingleEdit } from '../data-table/data-table-bulk-actions.ts';
-	import type { DataTableEditReport } from '../data-table/data-table-features.ts';
+	import { runSingleEdit } from '../data-table/bulk-actions/bulk-actions.ts';
+	import type { DataTableEditReport } from '../data-table/features.ts';
 	import type { Worker, WorkerNote, WorkerNoteEdit } from '#lib/domain-vocabulary.ts';
 	import { getPanelDraft } from './panel-draft-state.svelte.ts';
 	import { m } from '#lib/paraglide/messages.js';

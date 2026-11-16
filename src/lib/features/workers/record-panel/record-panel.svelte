@@ -36,7 +36,7 @@
 	import RecordPanelAgitations from './record-panel-agitations.svelte';
 	import RecordPanelDelete from './record-panel-delete.svelte';
 	import RecordPanelField from './record-panel-field.svelte';
-	import type { DataTableEditReport } from '../data-table/data-table-features.ts';
+	import type { DataTableEditReport } from '../data-table/features.ts';
 	import { deleteWorkerDraft, saveWorkerDraft } from '#lib/client/workers-api.ts';
 	import { relativeTime } from '#lib/shared/format.ts';
 	import { buildPanelDraft, hasUnsavedInput } from './panel-draft.ts';

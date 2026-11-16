@@ -16,7 +16,7 @@ import type {
 	MergeUndone
 } from '#lib/client/workers-api.ts';
 import type { Worker } from '#lib/domain-vocabulary.ts';
-import type { DataTableUndoResult } from '../data-table/data-table-features.ts';
+import type { DataTableUndoResult } from '../data-table/features.ts';
 
 export type MergeHost = {
 	preview: (survivorId: string, absorbedId: string) => Promise<MergePreview>;

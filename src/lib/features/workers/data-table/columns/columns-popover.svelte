@@ -8,7 +8,7 @@
 	import { Button } from '#lib/components/ui/button/index.ts';
 	import * as DropdownMenu from '#lib/components/ui/dropdown-menu/index.ts';
 	import type { Worker } from '#lib/domain-vocabulary.ts';
-	import type { DataTableFeatures } from './data-table-features.ts';
+	import type { DataTableFeatures } from '../features.ts';
 	import { m } from '#lib/paraglide/messages.js';
 
 	type Props = {

@@ -10,7 +10,7 @@ import {
 } from './workers-table-grid.ts';
 import { openWorkers } from './pages.ts';
 import { addAgitations, addAttributes, addLanguages, addWorkers } from './worksite-builder.ts';
-import { ASSESSMENT_MIN_REM } from '../src/lib/features/workers/data-table/workers-table-width.ts';
+import { ASSESSMENT_MIN_REM } from '../src/lib/features/workers/data-table/columns/workers-table-width.ts';
 
 test('the Workers table hides no value and holds its readable minima from 1280px up', async ({
 	page,

@@ -1,9 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import {
-	columnWidthsPx,
-	namePxFrom,
-	workersTableStyleFor
-} from './data-table-column-fit.svelte.ts';
+import { columnWidthsPx, namePxFrom, workersTableStyleFor } from './column-fit.svelte.ts';
 
 describe('columnWidthsPx', () => {
 	it('sums rem widths and counts Name by its own pixel width', () => {

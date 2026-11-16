@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { MAX_FOCUS_ATTEMPTS, moveTargetIndex, rangeRowIds } from './data-table-keyboard.svelte.ts';
+import { MAX_FOCUS_ATTEMPTS, moveTargetIndex, rangeRowIds } from './keyboard.svelte.ts';
 
 describe('moveTargetIndex', () => {
 	it('steps one row up or down', () => {

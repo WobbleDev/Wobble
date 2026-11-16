@@ -4,7 +4,7 @@
  * directions.
  */
 import { assessedOptions, type AssessmentOption } from '#lib/domain-vocabulary.ts';
-import type { OptionChoice } from '../answers.ts';
+import type { OptionChoice } from '../../answers.ts';
 
 /**
  * Orders two sort keys: present values by `compareValues`, empty values after them.

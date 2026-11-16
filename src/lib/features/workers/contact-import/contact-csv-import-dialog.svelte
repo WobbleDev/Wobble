@@ -6,7 +6,7 @@
 	import { getWorksiteDataset } from '#lib/client/dataset-api.ts';
 	import { importContacts } from '#lib/client/workers-api.ts';
 	import { m } from '#lib/paraglide/messages.js';
-	import { filterParamsKey } from '../data-table/data-table-url-filters.svelte.ts';
+	import { filterParamsKey } from '../data-table/filters/url-filters.svelte.ts';
 	import {
 		blankPhoneSummary,
 		contactImportAction,

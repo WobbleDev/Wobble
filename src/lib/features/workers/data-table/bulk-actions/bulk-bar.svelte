@@ -28,8 +28,8 @@
 		heldCategoryAnswerId,
 		heldTagAnswerIds,
 		holdsAnswer
-	} from '../answers.ts';
-	import { bulkCopy, selectedCount } from '../copy.ts';
+	} from '../../answers.ts';
+	import { bulkCopy, selectedCount } from '../../copy.ts';
 	import { m } from '#lib/paraglide/messages.js';
 	import type { WorkerAttributeDefinition } from '#lib/domain-vocabulary.ts';
 	import {
@@ -38,13 +38,13 @@
 		updateWorkerAttribute,
 		updateWorkerLanguages
 	} from '#lib/client/workers-api.ts';
-	import MergeDialog from '../merge/merge-dialog.svelte';
+	import MergeDialog from '../../merge/merge-dialog.svelte';
 	import DeleteConfirmDialog from './delete-confirm-dialog.svelte';
-	import MenuSearch from './menu-search.svelte';
-	import { createDataTableActionState } from './data-table-action-state.svelte.ts';
-	import { bulkValueState, createBulkActions } from './data-table-bulk-actions.ts';
-	import type { DataTableEditReport } from './data-table-features.ts';
-	import type { WorkersSelection } from './data-table-selection.svelte.ts';
+	import MenuSearch from '../filters/menu-search.svelte';
+	import { createDataTableActionState } from './action-state.svelte.ts';
+	import { bulkValueState, createBulkActions } from './bulk-actions.ts';
+	import type { DataTableEditReport } from '../features.ts';
+	import type { WorkersSelection } from '../selection/selection.svelte.ts';
 
 	type Props = {
 		selection: WorkersSelection;

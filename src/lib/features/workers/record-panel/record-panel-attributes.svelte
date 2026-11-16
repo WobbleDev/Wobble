@@ -13,7 +13,7 @@
 		WorkerAttributeDefinition,
 		WorkerAttributeValue
 	} from '#lib/domain-vocabulary.ts';
-	import type { DataTableEditReport } from '../data-table/data-table-features.ts';
+	import type { DataTableEditReport } from '../data-table/features.ts';
 	import RecordPanelAttribute from './record-panel-attribute.svelte';
 	import { m } from '#lib/paraglide/messages.js';
 

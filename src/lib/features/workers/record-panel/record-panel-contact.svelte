@@ -1,7 +1,7 @@
 <script lang="ts">
 	/** Contact: Email and Phone, each edited where it is shown. */
 	import RecordPanelField from './record-panel-field.svelte';
-	import type { DataTableEditReport } from '../data-table/data-table-features.ts';
+	import type { DataTableEditReport } from '../data-table/features.ts';
 	import { restoreWorkerField } from '#lib/client/workers-api.ts';
 	import type { Worker, WorkerTextField } from '#lib/domain-vocabulary.ts';
 	import { m } from '#lib/paraglide/messages.js';

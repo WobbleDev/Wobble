@@ -1,11 +1,11 @@
 /**
  * The Workers table's keyboard movement: the active cell moves with the
  * arrows, Shift extends a checked range, and focus follows the cell into the DOM.
- * It sits beside data-table-selection.svelte.ts, which owns what is checked; the table
+ * It sits beside ../selection/selection.svelte.ts, which owns what is checked; the table
  * component renders the rows and wires these moves into them.
  */
 import { tick } from 'svelte';
-import type { WorkersSelection } from './data-table-selection.svelte.ts';
+import type { WorkersSelection } from '../selection/selection.svelte.ts';
 
 /**
  * Focus can only land on a row the virtualizer has mounted. After `scrollToIndex` the

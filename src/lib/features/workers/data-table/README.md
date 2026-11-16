@@ -1,7 +1,7 @@
 # features/workers/data-table
 
 The Workers table grid. TanStack Table runs headless here: `columns.ts` defines the columns and
-their cell components, `data-table-features.ts` registers only the table APIs this grid
+their cell components, `features.ts` registers only the table APIs this grid
 needs, and `data-table.svelte` renders it.
 
 Each configured Attribute has its own column in Configuration order after Assessment and Languages.
@@ -16,4 +16,14 @@ value, a Multi-Select choice adds or removes one answer, and each batch reports 
 A status report that carries actions stays until dismissed or replaced; others clear after a few seconds.
 
 Rows are virtualized; summary fitting measures only mounted cells. Register a new
-TanStack feature in `data-table-features.ts` rather than importing it ad hoc.
+TanStack feature in `features.ts` rather than importing it ad hoc.
+
+## Folders
+
+- `columns/`: column definitions, order, fitting, header, width and sorting.
+- `filters/`: filter bar, menus, URL filters and the cohort filter.
+- `selection/`: checked rows and the select-all cell.
+- `keyboard/`: keyboard navigation across the grid.
+- `bulk-actions/`: the bulk bar, bulk action rules, action reports and the delete dialog.
+- `rows/`: the row, the virtualizer and its spacer.
+- `data-table.svelte` renders the grid; `features.ts` registers the TanStack features.

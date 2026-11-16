@@ -12,8 +12,8 @@
 	import SwatchDot from '#lib/shared/swatch-dot.svelte';
 	import { assessmentColorFor, isAssessment } from '#lib/shared/assessment.ts';
 	import type { Worker } from '#lib/domain-vocabulary.ts';
-	import type { DataTableFeatures } from './data-table-features.ts';
-	import type { OptionChoice } from '../answers.ts';
+	import type { DataTableFeatures } from '../features.ts';
+	import type { OptionChoice } from '../../answers.ts';
 	import { m } from '#lib/paraglide/messages.js';
 
 	type Props = {

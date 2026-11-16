@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { compareNames } from '#lib/i18n/format.ts';
-import type { OptionChoice } from '../answers.ts';
+import type { OptionChoice } from '../../answers.ts';
 import {
 	compareAssessmentScale,
 	compareWithEmptiesLast,

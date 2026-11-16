@@ -1,7 +1,7 @@
 <script lang="ts">
 	/**
 	 * The checkbox every worker row leads with, and the select-all checkbox in
-	 * its header. Selection state lives in `data-table-selection.svelte.ts`,
+	 * its header. Selection state lives in `selection.svelte.ts`,
 	 * not in the table's own state, so it survives filtering, sorting and
 	 * virtualization.
 	 *
@@ -11,7 +11,7 @@
 	 * hand-picked selection is neither claimed nor dropped.
 	 */
 	import type { Worker } from '#lib/domain-vocabulary.ts';
-	import type { WorkersSelection } from './data-table-selection.svelte.ts';
+	import type { WorkersSelection } from './selection.svelte.ts';
 	import { m } from '#lib/paraglide/messages.js';
 
 	let { worker, selection }: { worker?: Worker; selection?: WorkersSelection } = $props();

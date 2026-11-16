@@ -15,8 +15,8 @@
 	import { Input } from '#lib/components/ui/input/index.ts';
 	import { cn } from '#lib/utils.ts';
 	import { getEditModel } from '#lib/features/workers/edit-model.svelte.ts';
-	import { runSingleEdit } from '../data-table/data-table-bulk-actions.ts';
-	import type { DataTableEditReport } from '../data-table/data-table-features.ts';
+	import { runSingleEdit } from '../data-table/bulk-actions/bulk-actions.ts';
+	import type { DataTableEditReport } from '../data-table/features.ts';
 	import { getPanelDraft } from './panel-draft-state.svelte.ts';
 	import type { PanelTextField } from './panel-draft.ts';
 	import { m } from '#lib/paraglide/messages.js';

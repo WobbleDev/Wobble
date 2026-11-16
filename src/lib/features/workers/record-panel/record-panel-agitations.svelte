@@ -15,8 +15,8 @@
 	import { Button } from '#lib/components/ui/button/index.ts';
 	import { Input } from '#lib/components/ui/input/index.ts';
 	import { getEditModel } from '#lib/features/workers/edit-model.svelte.ts';
-	import { runSingleEdit } from '../data-table/data-table-bulk-actions.ts';
-	import type { DataTableEditReport } from '../data-table/data-table-features.ts';
+	import { runSingleEdit } from '../data-table/bulk-actions/bulk-actions.ts';
+	import type { DataTableEditReport } from '../data-table/features.ts';
 	import { agitationCandidates } from './agitation-candidates.ts';
 	import type { Agitation, Worker } from '#lib/domain-vocabulary.ts';
 	import { m } from '#lib/paraglide/messages.js';

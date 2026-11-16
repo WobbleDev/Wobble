@@ -13,7 +13,7 @@ import {
 	tableFeatures
 } from '@tanstack/svelte-table';
 import type { AssessmentOption, WorkerAttributeValue } from '#lib/domain-vocabulary.ts';
-import type { WorkersSelection } from './data-table-selection.svelte.ts';
+import type { WorkersSelection } from './selection/selection.svelte.ts';
 
 /**
  * What an Undo managed to put back. A sequential batch can stop part-way, so the

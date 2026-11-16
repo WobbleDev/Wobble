@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { Button } from '#lib/components/ui/button/index.ts';
 	import type { Worker } from '#lib/domain-vocabulary.ts';
-	import DeleteConfirmDialog from '../data-table/delete-confirm-dialog.svelte';
-	import { createDataTableActionState } from '../data-table/data-table-action-state.svelte.ts';
-	import { runSingleEdit } from '../data-table/data-table-bulk-actions.ts';
-	import type { DataTableEditReport } from '../data-table/data-table-features.ts';
+	import DeleteConfirmDialog from '../data-table/bulk-actions/delete-confirm-dialog.svelte';
+	import { createDataTableActionState } from '../data-table/bulk-actions/action-state.svelte.ts';
+	import { runSingleEdit } from '../data-table/bulk-actions/bulk-actions.ts';
+	import type { DataTableEditReport } from '../data-table/features.ts';
 	import { m } from '#lib/paraglide/messages.js';
 
 	type Props = {

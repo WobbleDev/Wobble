@@ -3,9 +3,9 @@
 	import { SvelteMap } from 'svelte/reactivity';
 	import * as Table from '#lib/components/ui/table/index.ts';
 	import { cn } from '#lib/utils.ts';
-	import { columnStyle, pinClass, workersRowClass } from './columns.ts';
+	import { columnStyle, pinClass, workersRowClass } from '../columns/columns.ts';
 	import type { Worker } from '#lib/domain-vocabulary.ts';
-	import type { DataTableFeatures } from './data-table-features.ts';
+	import type { DataTableFeatures } from '../features.ts';
 	import { m } from '#lib/paraglide/messages.js';
 	import { formatList } from '#lib/i18n/format.ts';
 
