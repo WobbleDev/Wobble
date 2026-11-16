@@ -4,7 +4,7 @@
  * carries, and the two downloads. The downloads are built from row numbers, field roles
  * and problem codes only: no cell value can reach them.
  */
-import type { ImportRowContact } from '#lib/client/workers-api.ts';
+import type { ImportRowContact } from '#lib/client/worker-import-api.ts';
 import type { WorkerAttributeDefinition, WorkerAttributeValues } from '#lib/domain-vocabulary.ts';
 import {
 	attributeValue,

@@ -20,7 +20,10 @@ import type {
 	WorkerAttributeDefinition,
 	WorkerAttributeKind
 } from '#lib/domain-vocabulary.ts';
-import { attributeWrites, type ConfigurationPreviewRequest } from '#lib/client/workers-api.ts';
+import {
+	attributeWrites,
+	type ConfigurationPreviewRequest
+} from '#lib/client/configuration-api.ts';
 import { attributeTypeLabel, toWorkerAttributeDefinitions } from './attribute-draft.ts';
 import {
 	planConfigurationSave,

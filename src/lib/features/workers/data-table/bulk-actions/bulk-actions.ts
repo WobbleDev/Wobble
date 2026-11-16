@@ -5,7 +5,7 @@
  *
  * The endpoints are injected rather than imported so this module can be tested
  * without a browser or a running core; `bulk-bar.svelte` wires them
- * to `#lib/client/workers-api.ts` and `refreshWorkers`.
+ * to `#lib/client/worker-writes-api.ts` and `refreshWorkers`.
  *
  * Every previous value is read before the first call is made, because the
  * Workers table reloads once the batch lands and the Worker objects handed in are

@@ -12,7 +12,7 @@ import {
 	deleteWorkerDraft,
 	getWorkerDraft,
 	type PendingNoteDraft
-} from '#lib/client/workers-api.ts';
+} from '#lib/client/worker-drafts-api.ts';
 import {
 	draftBaseChanged,
 	draftDifferences,

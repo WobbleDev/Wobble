@@ -8,28 +8,30 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { scriptFetch } from '#lib/testing/http.ts';
 import {
 	attributeWrites,
-	createWorker,
-	decodeDraft,
-	deleteWorker,
-	deleteWorkerDraft,
 	deleteWorksite,
-	editWorkerNote,
-	getWorkerDraft,
-	mergeWorkers,
 	previewConfiguration,
-	previewWorkerMerge,
-	restoreWorkerField,
 	saveAgitations,
 	saveAttributes,
 	saveLanguages,
-	saveWorkerDraft,
 	saveWorksiteName,
-	suggestAbbreviations,
-	undoWorkerMerge,
+	suggestAbbreviations
+} from './configuration-api.ts';
+import {
+	decodeDraft,
+	deleteWorkerDraft,
+	getWorkerDraft,
+	saveWorkerDraft
+} from './worker-drafts-api.ts';
+import { mergeWorkers, previewWorkerMerge, undoWorkerMerge } from './worker-merge-api.ts';
+import {
+	createWorker,
+	deleteWorker,
+	editWorkerNote,
+	restoreWorkerField,
 	updateWorkerAssessment,
 	updateWorkerAttribute,
 	updateWorkerLanguages
-} from './workers-api.ts';
+} from './worker-writes-api.ts';
 
 afterEach(() => vi.unstubAllGlobals());
 

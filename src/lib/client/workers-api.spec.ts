@@ -1,20 +1,22 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { jsonResponse } from '#lib/testing/http.ts';
 import {
+	createAgitation,
+	saveConfigurationAttributes,
+	saveWorksiteCommitteeGoal
+} from './configuration-api.ts';
+import { importContacts } from './worker-import-api.ts';
+import {
 	addWorkerNote,
 	addWorkerRelationship,
 	assignWorkerAgitation,
-	createAgitation,
 	createWorker,
 	deleteWorkerNote,
-	importContacts,
 	removeWorkerRelationship,
 	restoreWorkerNote,
-	saveConfigurationAttributes,
-	saveWorksiteCommitteeGoal,
 	unassignWorkerAgitation,
 	updateWorkerField
-} from './workers-api.ts';
+} from './worker-writes-api.ts';
 
 afterEach(() => {
 	vi.unstubAllGlobals();

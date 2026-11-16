@@ -4,7 +4,7 @@
 	 *
 	 * It is pinned under the table and only exists while the
 	 * selection is non-empty. Every action commits through the same
-	 * `#lib/client/workers-api.ts` endpoints the Workers table cells call, one call per
+	 * `#lib/client/worker-writes-api.ts` endpoints the Workers table cells call, one call per
 	 * selected Worker, and reports the batch once so a single Undo puts all of
 	 * it back.
 	 */
@@ -37,7 +37,7 @@
 		updateWorkerAssessment,
 		updateWorkerAttribute,
 		updateWorkerLanguages
-	} from '#lib/client/workers-api.ts';
+	} from '#lib/client/worker-writes-api.ts';
 	import MergeDialog from '../../merge/merge-dialog.svelte';
 	import DeleteConfirmDialog from './delete-confirm-dialog.svelte';
 	import MenuSearch from '../filters/menu-search.svelte';

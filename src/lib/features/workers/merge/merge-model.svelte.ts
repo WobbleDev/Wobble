@@ -14,7 +14,7 @@ import type {
 	MergeDecisions,
 	MergePreview,
 	MergeUndone
-} from '#lib/client/workers-api.ts';
+} from '#lib/client/worker-merge-api.ts';
 import type { Worker } from '#lib/domain-vocabulary.ts';
 import type { DataTableUndoResult } from '../data-table/features.ts';
 

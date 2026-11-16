@@ -11,7 +11,7 @@
 	import * as Dialog from '#lib/components/ui/dialog/index.ts';
 	import * as Field from '#lib/components/ui/field/index.ts';
 	import { Input } from '#lib/components/ui/input/index.ts';
-	import { saveWorksiteName } from '#lib/client/workers-api.ts';
+	import { saveWorksiteName } from '#lib/client/configuration-api.ts';
 	import type { Worksite } from '#lib/domain-vocabulary.ts';
 	import { replaceCurrentUrl } from '#lib/shared/app/navigation.ts';
 	import ContactCsvImportDialog from '../workers/contact-import/contact-csv-import-dialog.svelte';

@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 import { ApiError } from '#lib/client/api-error.ts';
-import type { MergePreview } from '#lib/client/workers-api.ts';
+import type { MergePreview } from '#lib/client/worker-merge-api.ts';
 import { worker } from '#lib/testing/builders.ts';
 import { createMergeModel, type MergeHost } from './merge-model.svelte.ts';
 

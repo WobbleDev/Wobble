@@ -16,7 +16,7 @@
 	import * as AlertDialog from '#lib/components/ui/alert-dialog/index.ts';
 	import { Button } from '#lib/components/ui/button/index.ts';
 	import * as Field from '#lib/components/ui/field/index.ts';
-	import { deleteWorksite } from '#lib/client/workers-api.ts';
+	import { deleteWorksite } from '#lib/client/configuration-api.ts';
 	import { m } from '#lib/paraglide/messages.js';
 	import type { Worksite } from '#lib/domain-vocabulary.ts';
 	import {
