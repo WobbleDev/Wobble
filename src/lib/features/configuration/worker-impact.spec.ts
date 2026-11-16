@@ -7,7 +7,7 @@ import {
 	holderKey,
 	resolutionsFromPreview,
 	type PreviewHolderChoices
-} from './configuration-preview.ts';
+} from './preview-resolutions.ts';
 import { fieldExampleOptions } from './field-example.ts';
 import { workerImpact } from './worker-impact.ts';
 
@@ -91,7 +91,7 @@ describe('worker impact', () => {
 			/draftAttributes|draftAgitations|draftLanguages|saved(Configuration|Agitations|Languages)/
 		);
 		const imports = [...source.matchAll(/from '([^']+)'/g)].map((match) => match[1]);
-		expect(imports).toEqual(['#lib/paraglide/messages.js', './configuration-preview.ts']);
+		expect(imports).toEqual(['#lib/paraglide/messages.js', './preview-resolutions.ts']);
 	});
 });
 

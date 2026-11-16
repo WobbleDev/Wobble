@@ -4,24 +4,27 @@ import { decodeConfigurationPreview } from '#lib/client/api-decode.ts';
 import { ApiError } from '#lib/client/api-error.ts';
 import { fromWorkerAttributeDefinitions, type AttributeDraft } from './attribute-draft.ts';
 import type { ConfigurationDraft } from './configuration-draft.ts';
+import { configurationSaveFailureMessage, previewFailureMessage } from './preview-failures.ts';
 import {
-	buildResolutionGroups,
 	hasPreviewableAttributeChanges,
 	hasPreviewableConfigurationChanges,
 	hasPreviewableSharedChanges,
-	configurationSaveFailureMessage,
-	holderKey,
-	previewFailureMessage,
 	previewRequest,
 	previewRequestKey,
-	previewRequiresConfirmation,
-	previewSummarySentence,
+	previewRequiresConfirmation
+} from './preview-request.ts';
+import {
+	buildResolutionGroups,
+	holderKey,
 	resolutionsComplete,
 	resolutionsFromPreview,
+	type PreviewHolderChoices
+} from './preview-resolutions.ts';
+import {
+	previewSummarySentence,
 	summarizePreview,
-	type PreviewHolderChoices,
 	type PreviewVocabulary
-} from './configuration-preview.ts';
+} from './preview-summary.ts';
 
 const department: WorkerAttributeDefinition = {
 	id: 'dept',
