@@ -8,9 +8,9 @@
 	import { Badge } from '#lib/components/ui/badge/index.ts';
 	import { Button } from '#lib/components/ui/button/index.ts';
 	import * as DropdownMenu from '#lib/components/ui/dropdown-menu/index.ts';
-	import type { OptionChoice } from '../answers.ts';
+	import type { OptionChoice } from '../../answers.ts';
 	import { m } from '#lib/paraglide/messages.js';
-	import DataTableFilterOptionItems from './data-table-filter-option-items.svelte';
+	import DataTableFilterOptionItems from './filter-option-items.svelte';
 
 	type Props = {
 		label: string;

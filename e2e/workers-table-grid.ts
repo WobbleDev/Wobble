@@ -5,7 +5,7 @@ import {
 	contentColumnRem,
 	nameColumnRem,
 	workersColumnMinRem
-} from '../src/lib/features/workers/data-table/workers-table-width.ts';
+} from '../src/lib/features/workers/data-table/columns/workers-table-width.ts';
 import { wireDefinitions, wireWorkerAttributes } from './answer-wire.ts';
 
 /** The density cases the Workers table is measured at, and what each renders. */

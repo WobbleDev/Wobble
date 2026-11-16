@@ -20,8 +20,8 @@
 		WorkerAttributeValue
 	} from '#lib/domain-vocabulary.ts';
 	import { answerChoices, describeAnswerValue, heldAnswerIds } from '../answers.ts';
-	import { runSingleEdit } from '../data-table/data-table-bulk-actions.ts';
-	import type { DataTableEditReport } from '../data-table/data-table-features.ts';
+	import { runSingleEdit } from '../data-table/bulk-actions/bulk-actions.ts';
+	import type { DataTableEditReport } from '../data-table/features.ts';
 	import { m } from '#lib/paraglide/messages.js';
 	import { copyAttributeValue, sameAttributeValue } from './panel-draft.ts';
 	import { getPanelDraft } from './panel-draft-state.svelte.ts';

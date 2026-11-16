@@ -7,7 +7,7 @@
  * has been frozen.
  */
 import { m } from '#lib/paraglide/messages.js';
-import type { BulkCopy } from './data-table/bulk-actions-copy.ts';
+import type { BulkCopy } from './data-table/bulk-actions/bulk-actions-copy.ts';
 
 /** "0 workers", "1 worker", "3 workers". */
 export function workerCount(count: number): string {

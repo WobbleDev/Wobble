@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { worker as baseWorker } from '#lib/testing/builders.ts';
-import { createWorkersSelection } from './data-table-selection.svelte.ts';
+import { createWorkersSelection } from './selection.svelte.ts';
 
 const worker = (id: string) => baseWorker({ id, name: id });
 

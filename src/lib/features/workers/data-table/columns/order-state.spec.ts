@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { createWorkersColumnOrder, isMovableColumn } from './data-table-column-order.svelte.ts';
+import { createWorkersColumnOrder, isMovableColumn } from './order-state.svelte.ts';
 
 function harness(order: string[], hidden: string[] = []) {
 	let current = order;

@@ -9,7 +9,7 @@
  */
 import { getContext, setContext } from 'svelte';
 import { SvelteSet } from 'svelte/reactivity';
-import type { DataTableEditReport } from '#lib/features/workers/data-table/data-table-features.ts';
+import type { DataTableEditReport } from '#lib/features/workers/data-table/features.ts';
 import { m } from '#lib/paraglide/messages.js';
 import { EDIT_STATUS_MS } from './edit-status.ts';
 

@@ -6,7 +6,7 @@ import {
 	collectWorkerFiltersFrom,
 	dropObsoleteFilterParams,
 	filterParamsKey
-} from './data-table-url-filters.svelte.ts';
+} from './url-filters.svelte.ts';
 
 function attribute(id: string, name: string, kind: 'category' | 'tag' = 'category') {
 	return {

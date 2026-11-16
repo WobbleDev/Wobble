@@ -7,10 +7,10 @@
 	import { assessmentOptions, type AssessmentOption } from '#lib/domain-vocabulary.ts';
 	import type { Snippet } from 'svelte';
 	import type { Worker, WorkerTextField } from '#lib/domain-vocabulary.ts';
-	import DataTableOptionCell from '../data-table/data-table-option-cell.svelte';
+	import DataTableOptionCell from '../data-table/columns/option-cell.svelte';
 	import RecordPanelField from './record-panel-field.svelte';
 	import { getEditModel } from '../edit-model.svelte.ts';
-	import type { DataTableEditReport } from '../data-table/data-table-features.ts';
+	import type { DataTableEditReport } from '../data-table/features.ts';
 	import { assessmentChoices } from '../answers.ts';
 	import { m } from '#lib/paraglide/messages.js';
 

@@ -7,8 +7,8 @@
 	import * as DropdownMenu from '#lib/components/ui/dropdown-menu/index.ts';
 	import SwatchDot from '#lib/shared/swatch-dot.svelte';
 	import { assessmentColorFor, isAssessment } from '#lib/shared/assessment.ts';
-	import { workerCount } from '../copy.ts';
-	import type { OptionChoice } from '../answers.ts';
+	import { workerCount } from '../../copy.ts';
+	import type { OptionChoice } from '../../answers.ts';
 
 	type Props = {
 		options: readonly OptionChoice[];

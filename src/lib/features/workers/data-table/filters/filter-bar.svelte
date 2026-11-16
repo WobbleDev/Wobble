@@ -8,8 +8,8 @@
 		type Worker
 	} from '#lib/domain-vocabulary.ts';
 	import type { WorkerAttributeDefinition } from '#lib/domain-vocabulary.ts';
-	import { answerFilterChoices, assessmentChoices, type OptionChoice } from '../answers.ts';
-	import { workerCount as workerCountLabel } from '../copy.ts';
+	import { answerFilterChoices, assessmentChoices, type OptionChoice } from '../../answers.ts';
+	import { workerCount as workerCountLabel } from '../../copy.ts';
 	import { m } from '#lib/paraglide/messages.js';
 	import {
 		NO_SELECTION_CHOICE,
@@ -23,10 +23,10 @@
 	import { Button } from '#lib/components/ui/button/index.ts';
 	import { Input } from '#lib/components/ui/input/index.ts';
 	import { getEditModel } from '#lib/features/workers/edit-model.svelte.ts';
-	import type { DataTableFeatures } from './data-table-features.ts';
-	import DataTableFiltersMenu from './data-table-filters-menu.svelte';
-	import DataTableColumnsPopover from './data-table-columns-popover.svelte';
-	import DataTableFiltersSheet from './data-table-filters-sheet.svelte';
+	import type { DataTableFeatures } from '../features.ts';
+	import DataTableFiltersMenu from './filters-menu.svelte';
+	import DataTableColumnsPopover from '../columns/columns-popover.svelte';
+	import DataTableFiltersSheet from './filters-sheet.svelte';
 	import SavedViewsMenu from '#lib/features/saved-views/saved-views-menu.svelte';
 	import type { SavedViews } from '#lib/features/saved-views/saved-views.svelte.ts';
 

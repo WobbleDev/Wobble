@@ -62,7 +62,7 @@ TypeScript side:
 1. `src/lib/domain-vocabulary.ts` — the field's type.
 2. `src/lib/client/workers-api.ts` (and `api-decode.ts` if the response shape changes) — carrying
    it to and from the backend.
-3. `src/lib/features/workers/data-table/columns.ts` — showing it in the Workers table.
+3. `src/lib/features/workers/data-table/columns/columns.ts` — showing it in the Workers table.
 4. `src/lib/features/workers/worker-form/` — letting someone edit it.
 
 Rust side, in `crates/wobble-core/src/`:

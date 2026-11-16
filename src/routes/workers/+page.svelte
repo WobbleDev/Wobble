@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { refreshWorkers } from '#lib/features/workers/refresh-workers.ts';
 	import DataTable from '#lib/features/workers/data-table/data-table.svelte';
-	import { columnsKey, createColumns } from '#lib/features/workers/data-table/columns.ts';
+	import { columnsKey, createColumns } from '#lib/features/workers/data-table/columns/columns.ts';
 	import {
 		addWorkerNote as addWorkerNoteRequest,
 		addWorkerRelationship as addWorkerRelationshipRequest,

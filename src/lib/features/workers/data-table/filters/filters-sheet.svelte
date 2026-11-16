@@ -13,9 +13,9 @@
 	import { Button } from '#lib/components/ui/button/index.ts';
 	import * as Sheet from '#lib/components/ui/sheet/index.ts';
 	import type { Worker } from '#lib/domain-vocabulary.ts';
-	import type { DataTableFeatures } from './data-table-features.ts';
-	import type { OptionChoice } from '../answers.ts';
-	import DataTableFiltersContent from './data-table-filters-content.svelte';
+	import type { DataTableFeatures } from '../features.ts';
+	import type { OptionChoice } from '../../answers.ts';
+	import DataTableFiltersContent from './filters-content.svelte';
 	import { m } from '#lib/paraglide/messages.js';
 
 	type Props = {

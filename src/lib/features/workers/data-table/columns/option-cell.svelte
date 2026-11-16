@@ -3,10 +3,10 @@
 	import * as DropdownMenu from '#lib/components/ui/dropdown-menu/index.ts';
 	import SwatchDot from '#lib/shared/swatch-dot.svelte';
 	import { cn } from '#lib/utils.ts';
-	import { createDataTableActionState } from './data-table-action-state.svelte.ts';
-	import type { DataTableEditReport } from './data-table-features.ts';
-	import { runSingleEdit } from './data-table-bulk-actions.ts';
-	import type { OptionChoice } from '../answers.ts';
+	import { createDataTableActionState } from '../bulk-actions/action-state.svelte.ts';
+	import type { DataTableEditReport } from '../features.ts';
+	import { runSingleEdit } from '../bulk-actions/bulk-actions.ts';
+	import type { OptionChoice } from '../../answers.ts';
 	import { m } from '#lib/paraglide/messages.js';
 	import { formatList } from '#lib/i18n/format.ts';
 

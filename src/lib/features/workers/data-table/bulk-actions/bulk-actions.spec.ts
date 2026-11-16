@@ -6,9 +6,9 @@ import {
 	createBulkActions,
 	runSingleEdit,
 	type BulkEndpoints
-} from './data-table-bulk-actions.ts';
+} from './bulk-actions.ts';
 import type { BulkCopy } from './bulk-actions-copy.ts';
-import type { DataTableEditReport } from './data-table-features.ts';
+import type { DataTableEditReport } from '../features.ts';
 
 /** The English copy the component passes in, so the reports read as users see them. */
 const copy: BulkCopy = {

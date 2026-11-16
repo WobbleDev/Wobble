@@ -11,7 +11,7 @@
 	import { Input } from '#lib/components/ui/input/index.ts';
 	import RecordPanelNoteEntry from './record-panel-note-entry.svelte';
 	import RecordPanelNoteComposer from './record-panel-note-composer.svelte';
-	import type { DataTableEditReport } from '../data-table/data-table-features.ts';
+	import type { DataTableEditReport } from '../data-table/features.ts';
 	import type {
 		Worker,
 		WorkerNote,

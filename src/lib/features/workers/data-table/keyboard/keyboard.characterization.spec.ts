@@ -3,8 +3,8 @@
  * the data-table split. Specced through the factories with literal hosts (no table, no DOM).
  */
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { createDataTableActionState } from './data-table-action-state.svelte.ts';
-import { createWorkersKeyboard, type WorkersKeyboardHost } from './data-table-keyboard.svelte.ts';
+import { createDataTableActionState } from '../bulk-actions/action-state.svelte.ts';
+import { createWorkersKeyboard, type WorkersKeyboardHost } from './keyboard.svelte.ts';
 
 beforeEach(() => {
 	vi.stubGlobal('CSS', { escape: (value: string) => value });

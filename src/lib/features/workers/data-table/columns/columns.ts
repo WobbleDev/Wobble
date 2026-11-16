@@ -21,14 +21,14 @@ import {
 	heldAnswerIds,
 	heldCategoryAnswerId,
 	heldTagAnswerIds
-} from '../answers.ts';
+} from '../../answers.ts';
 import { agitationFilterMatches, answerFilterMatches } from '#lib/shared/worker-filters.ts';
 import { noValueReading } from '#lib/shared/no-value-reading.ts';
 import { applyChange, storesList } from '#lib/shared/select-mode.ts';
-import type { DataTableColumnMeta, DataTableFeatures } from './data-table-features.ts';
-import DataTableColumnHeader from './data-table-column-header.svelte';
-import DataTableOptionCell from './data-table-option-cell.svelte';
-import DataTableSelectAllCell from './data-table-select-all-cell.svelte';
+import type { DataTableColumnMeta, DataTableFeatures } from '../features.ts';
+import DataTableColumnHeader from './column-header.svelte';
+import DataTableOptionCell from './option-cell.svelte';
+import DataTableSelectAllCell from '../selection/select-all-cell.svelte';
 import {
 	assessmentSortKey,
 	compareAssessmentScale,

@@ -11,34 +11,30 @@
 	import { cn } from '#lib/utils.ts';
 	import * as Table from '#lib/components/ui/table/index.ts';
 	import { Button } from '#lib/components/ui/button/index.ts';
-	import { columnStyle, pinClass, workersRowClass } from './columns.ts';
-	import {
-		features,
-		type DataTableEditReport,
-		type DataTableFeatures
-	} from './data-table-features.ts';
+	import { columnStyle, pinClass, workersRowClass } from './columns/columns.ts';
+	import { features, type DataTableEditReport, type DataTableFeatures } from './features.ts';
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import type { PersonPartition } from '#lib/shared/person-state.svelte.ts';
-	import { cohortExhausted, cohortPosition } from './worker-cohort.ts';
-	import { filterParamsKey } from './data-table-url-filters.svelte.ts';
-	import DataTableRow from './data-table-row.svelte';
+	import { cohortExhausted, cohortPosition } from './filters/worker-cohort.ts';
+	import { filterParamsKey } from './filters/url-filters.svelte.ts';
+	import DataTableRow from './rows/row.svelte';
 	import RecordPanel from '../record-panel/record-panel.svelte';
-	import DataTableFilterBar from './data-table-filter-bar.svelte';
-	import DataTableVirtualSpacer from './data-table-virtual-spacer.svelte';
-	import DataTableBulkBar from './data-table-bulk-bar.svelte';
-	import { createWorkersSelection } from './data-table-selection.svelte.ts';
-	import { createWorkersColumnOrder } from './data-table-column-order.svelte.ts';
-	import { createWorkersColumnFit } from './data-table-column-fit.svelte.ts';
-	import { createWorkersUrlFilters } from './data-table-url-filters.svelte.ts';
-	import { createWorkersKeyboard } from './data-table-keyboard.svelte.ts';
+	import DataTableFilterBar from './filters/filter-bar.svelte';
+	import DataTableVirtualSpacer from './rows/virtual-spacer.svelte';
+	import DataTableBulkBar from './bulk-actions/bulk-bar.svelte';
+	import { createWorkersSelection } from './selection/selection.svelte.ts';
+	import { createWorkersColumnOrder } from './columns/order-state.svelte.ts';
+	import { createWorkersColumnFit } from './columns/column-fit.svelte.ts';
+	import { createWorkersUrlFilters } from './filters/url-filters.svelte.ts';
+	import { createWorkersKeyboard } from './keyboard/keyboard.svelte.ts';
 	import StatusLine from '#lib/features/workers/status-line.svelte';
 	import { getEditModel } from '#lib/features/workers/edit-model.svelte.ts';
 	import {
 		createDataTableVirtualizer,
 		type DataTableRenderItem
-	} from './data-table-virtualizer.svelte.ts';
-	import { nameColumnRem } from './workers-table-width.ts';
+	} from './rows/virtualizer.svelte.ts';
+	import { nameColumnRem } from './columns/workers-table-width.ts';
 	import { createView, deleteView, listViews, updateView } from '#lib/client/views-api.ts';
 	import { createSavedViews } from '#lib/features/saved-views/saved-views.svelte.ts';
 	import SavedViewReviewDialog from '#lib/features/saved-views/saved-view-review-dialog.svelte';

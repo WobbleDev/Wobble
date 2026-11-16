@@ -5,8 +5,8 @@
 	 * whose Undo puts the previous list back.
 	 */
 	import { Button } from '#lib/components/ui/button/index.ts';
-	import { runSingleEdit } from '../data-table/data-table-bulk-actions.ts';
-	import type { DataTableEditReport } from '../data-table/data-table-features.ts';
+	import { runSingleEdit } from '../data-table/bulk-actions/bulk-actions.ts';
+	import type { DataTableEditReport } from '../data-table/features.ts';
 	import type { Language, Worker } from '#lib/domain-vocabulary.ts';
 	import { m } from '#lib/paraglide/messages.js';
 

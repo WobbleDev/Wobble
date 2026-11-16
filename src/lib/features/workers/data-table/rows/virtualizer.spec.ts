@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { shouldMeasure } from './data-table-virtualizer.svelte.ts';
+import { shouldMeasure } from './virtualizer.svelte.ts';
 
 describe('shouldMeasure', () => {
 	it('measures an element the first time it is seen', () => {

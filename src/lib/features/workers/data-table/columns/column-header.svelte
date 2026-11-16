@@ -1,14 +1,14 @@
 <script lang="ts">
 	import type { Column } from '@tanstack/svelte-table';
-	import type { DataTableFeatures } from './data-table-features.ts';
+	import type { DataTableFeatures } from '../features.ts';
 	import type { Worker } from '#lib/domain-vocabulary.ts';
 	import { Button } from '#lib/components/ui/button/index.ts';
 	import ArrowUpIcon from '@lucide/svelte/icons/arrow-up';
 	import ArrowDownIcon from '@lucide/svelte/icons/arrow-down';
 	import ArrowUpDownIcon from '@lucide/svelte/icons/arrow-up-down';
 	import FunnelIcon from '@lucide/svelte/icons/funnel';
-	import DataTableChoiceFilterDropdown from './data-table-choice-filter-dropdown.svelte';
-	import type { OptionChoice } from '../answers.ts';
+	import DataTableChoiceFilterDropdown from '../filters/choice-filter-dropdown.svelte';
+	import type { OptionChoice } from '../../answers.ts';
 	import { m } from '#lib/paraglide/messages.js';
 	import {
 		NO_SELECTION_CHOICE,

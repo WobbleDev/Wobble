@@ -4,7 +4,7 @@
  * previous value back.
  *
  * The endpoints are injected rather than imported so this module can be tested
- * without a browser or a running core; `data-table-bulk-bar.svelte` wires them
+ * without a browser or a running core; `bulk-bar.svelte` wires them
  * to `#lib/client/workers-api.ts` and `refreshWorkers`.
  *
  * Every previous value is read before the first call is made, because the
@@ -23,9 +23,9 @@ import type {
 	WorkerAttributeValue
 } from '#lib/domain-vocabulary.ts';
 import { pickAnswer } from '#lib/shared/select-mode.ts';
-import { heldCategoryAnswerId, heldTagAnswerIds } from '../answers.ts';
+import { heldCategoryAnswerId, heldTagAnswerIds } from '../../answers.ts';
 import { ApiError } from '#lib/client/api-error.ts';
-import type { DataTableEditReport, DataTableUndoResult } from './data-table-features.ts';
+import type { DataTableEditReport, DataTableUndoResult } from '../features.ts';
 import type { BulkCopy } from './bulk-actions-copy.ts';
 
 export type BulkEndpoints = {

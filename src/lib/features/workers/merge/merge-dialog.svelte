@@ -23,7 +23,7 @@
 		WorkerAttributeValue
 	} from '#lib/domain-vocabulary.ts';
 	import { refreshWorkers } from '../refresh-workers.ts';
-	import type { DataTableEditReport } from '../data-table/data-table-features.ts';
+	import type { DataTableEditReport } from '../data-table/features.ts';
 	import { createMergeModel } from './merge-model.svelte.ts';
 
 	type Props = {

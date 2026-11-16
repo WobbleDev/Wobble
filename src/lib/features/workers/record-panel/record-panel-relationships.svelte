@@ -13,8 +13,8 @@
 	import { relationshipCandidates } from './relationship-candidates.ts';
 	import SwatchDot from '#lib/shared/swatch-dot.svelte';
 	import { assessmentColorKey } from '#lib/shared/assessment.ts';
-	import { runSingleEdit } from '../data-table/data-table-bulk-actions.ts';
-	import type { DataTableEditReport } from '../data-table/data-table-features.ts';
+	import { runSingleEdit } from '../data-table/bulk-actions/bulk-actions.ts';
+	import type { DataTableEditReport } from '../data-table/features.ts';
 	import type { Worker, WorkerAttributeDefinition } from '#lib/domain-vocabulary.ts';
 	import { m } from '#lib/paraglide/messages.js';
 	import { assessmentLabel } from '#lib/i18n/assessment.ts';
