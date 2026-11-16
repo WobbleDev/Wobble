@@ -25,22 +25,22 @@ import {
 	saveWorksiteName
 } from '#lib/client/configuration-api.ts';
 import type { ConfigurationPreview } from '#lib/domain-vocabulary.ts';
+import { configurationSaveFailureMessage, previewFailureMessage } from './preview-failures.ts';
 import {
-	buildResolutionGroups,
-	configurationSaveFailureMessage,
 	hasPreviewableConfigurationChanges,
-	previewFailureMessage,
 	previewRequest,
 	previewRequestKey,
 	suggestionRequest,
-	previewRequiresConfirmation as needsPreviewConfirmation,
-	previewSummarySentence,
+	previewRequiresConfirmation as needsPreviewConfirmation
+} from './preview-request.ts';
+import {
+	buildResolutionGroups,
 	resolutionsComplete,
 	resolutionsFromPreview,
-	summarizePreview,
 	type PreviewHolderChoice,
 	type PreviewHolderChoices
-} from './configuration-preview.ts';
+} from './preview-resolutions.ts';
+import { previewSummarySentence, summarizePreview } from './preview-summary.ts';
 import {
 	canSave as computeCanSave,
 	canSaveWorksiteName as computeCanSaveWorksiteName,

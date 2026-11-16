@@ -4,7 +4,7 @@
  * the save path will execute with the same resolutions.
  */
 import { m } from '#lib/paraglide/messages.js';
-import type { PreviewHolderRow, PreviewResolutionGroup } from './configuration-preview.ts';
+import type { PreviewHolderRow, PreviewResolutionGroup } from './preview-resolutions.ts';
 
 export type WorkerImpactState = 'retained' | 'removed' | 'unresolved';
 

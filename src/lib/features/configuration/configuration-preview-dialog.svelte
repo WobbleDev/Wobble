@@ -7,9 +7,9 @@
 	import type {
 		PreviewHolderChoice,
 		PreviewHolderRow,
-		PreviewResolutionGroup,
-		PreviewSummaryRow
-	} from './configuration-preview.ts';
+		PreviewResolutionGroup
+	} from './preview-resolutions.ts';
+	import type { PreviewSummaryRow } from './preview-summary.ts';
 
 	type Props = {
 		open: boolean;
