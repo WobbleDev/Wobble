@@ -6,9 +6,9 @@ import type {
 	WorkerAttributeDefinition,
 	WorkerAttributeValues
 } from '#lib/domain-vocabulary.ts';
-import { normalizeExpansion, remainderIdentity } from '#lib/shared/answer-hierarchy.ts';
+import { normalizeExpansion, remainderIdentity } from '#lib/shared/workers/answer-hierarchy.ts';
 import { worker as baseWorker } from '#lib/testing/builders.ts';
-import { selectWorkerPopulation } from '#lib/shared/worker-population.ts';
+import { selectWorkerPopulation } from '#lib/shared/workers/worker-population.ts';
 import {
 	attemptExpansion,
 	projectLayoutInput,

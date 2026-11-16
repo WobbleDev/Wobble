@@ -6,10 +6,10 @@
 	import { getContext } from 'svelte';
 	import MoonIcon from '@lucide/svelte/icons/moon';
 	import SunIcon from '@lucide/svelte/icons/sun';
-	import { appSettingsContextKey, type AppSettingsContext } from '#lib/shared/app-settings.ts';
+	import { appSettingsContextKey, type AppSettingsContext } from '#lib/shared/app/app-settings.ts';
 	import { m } from '#lib/paraglide/messages.js';
 	import { Button } from '#lib/components/ui/button/index.ts';
-	import IconTip from '#lib/shared/icon-tip.svelte';
+	import IconTip from '#lib/shared/ui/icon-tip.svelte';
 
 	const settings = getContext<AppSettingsContext>(appSettingsContextKey);
 	const themeLabel = $derived(

@@ -1,7 +1,7 @@
 import {
 	chooseAbbreviationLabels,
 	type AbbreviationLabelEntry
-} from '#lib/shared/abbreviation-label.ts';
+} from '#lib/shared/text/abbreviation-label.ts';
 import { GROUP_GAP_PX } from './agitations-paging.svelte.ts';
 
 type HeaderHost = {

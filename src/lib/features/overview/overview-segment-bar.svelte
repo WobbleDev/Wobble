@@ -2,7 +2,7 @@
 	import * as Tooltip from '#lib/components/ui/tooltip/index.ts';
 	import { assessmentGroupLabel } from '#lib/i18n/assessment.ts';
 	import type { AssessmentOption } from '#lib/domain-vocabulary.ts';
-	import { isSupportAssessment } from '#lib/shared/assessment.ts';
+	import { isSupportAssessment } from '#lib/shared/workers/assessment.ts';
 	import {
 		segmentFill,
 		segmentLabelTone,

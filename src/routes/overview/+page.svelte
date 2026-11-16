@@ -38,7 +38,7 @@
 	import { wireOverviewChartZoom } from '#lib/features/overview/overview-chart-zoom.svelte.ts';
 	import WorksiteSetupDialog from '#lib/features/overview/worksite-setup-dialog.svelte';
 	import { PanCapability } from '#lib/hooks/pan-capability.svelte.ts';
-	import { replaceCurrentUrl } from '#lib/shared/navigation.ts';
+	import { replaceCurrentUrl } from '#lib/shared/app/navigation.ts';
 	import { m } from '#lib/paraglide/messages.js';
 	import type { PageProps } from './$types';
 

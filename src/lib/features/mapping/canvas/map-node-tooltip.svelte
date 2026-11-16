@@ -4,8 +4,8 @@
 	 * relationship count, and every Attribute the worksite asks about.
 	 */
 	import { Tooltip as LayerTooltip } from 'layerchart';
-	import SwatchDot from '#lib/shared/swatch-dot.svelte';
-	import { assessmentColorFor } from '#lib/shared/assessment.ts';
+	import SwatchDot from '#lib/shared/ui/swatch-dot.svelte';
+	import { assessmentColorFor } from '#lib/shared/workers/assessment.ts';
 	import { assessmentLabel } from '#lib/i18n/assessment.ts';
 	import { m } from '#lib/paraglide/messages.js';
 	import type { WorkerAttributeDefinition } from '#lib/domain-vocabulary.ts';

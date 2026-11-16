@@ -1,4 +1,4 @@
-import { isAppSettings, type AppSettings } from '#lib/shared/app-settings.ts';
+import { isAppSettings, type AppSettings } from '#lib/shared/app/app-settings.ts';
 import type {
 	Agitation,
 	ConfigurationPreview,

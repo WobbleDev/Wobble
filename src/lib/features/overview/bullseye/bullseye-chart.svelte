@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { ENTRANCE_ANIMATION_DURATION_MS } from '../overview-entrance-animation-lifecycle.ts';
 	import { SvelteMap, SvelteSet } from 'svelte/reactivity';
-	import { assessmentColorFor } from '#lib/shared/assessment.ts';
+	import { assessmentColorFor } from '#lib/shared/workers/assessment.ts';
 	import type { Worker } from '#lib/domain-vocabulary.ts';
 	import { assessmentGroupLabel, assessmentLabel } from '#lib/i18n/assessment.ts';
 	import { m } from '#lib/paraglide/messages.js';

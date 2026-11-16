@@ -1,5 +1,5 @@
 <script lang="ts">
-	import SectionCard from '#lib/shared/section-card.svelte';
+	import SectionCard from '#lib/shared/ui/section-card.svelte';
 	import CommitteeGoalEditor from './committee-goal-editor.svelte';
 	import WorksiteNameEditor from './worksite-name-editor.svelte';
 

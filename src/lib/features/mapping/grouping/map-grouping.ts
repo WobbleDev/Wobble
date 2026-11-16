@@ -18,19 +18,19 @@ import {
 	remainderIdentity,
 	remainderReading,
 	type HierarchyRegion
-} from '#lib/shared/answer-hierarchy.ts';
-import { answerDisplayLabel } from '#lib/shared/answer-path.ts';
-import { noValueReading } from '#lib/shared/no-value-reading.ts';
+} from '#lib/shared/workers/answer-hierarchy.ts';
+import { answerDisplayLabel } from '#lib/shared/workers/answer-path.ts';
+import { noValueReading } from '#lib/shared/text/no-value-reading.ts';
 import {
 	NO_VALUE_REGION,
 	regionIdentity,
 	type RegionIdentity
-} from '#lib/shared/region-identity.ts';
+} from '#lib/shared/workers/region-identity.ts';
 import {
 	heldAnswerIds,
 	selectWorkerPopulation,
 	type PopulationFilters
-} from '#lib/shared/worker-population.ts';
+} from '#lib/shared/workers/worker-population.ts';
 import type { WorkerGraphNode } from '../canvas/worker-relationship-map-model.ts';
 
 export type DisplayedRegion = {

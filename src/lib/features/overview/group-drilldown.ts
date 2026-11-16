@@ -16,8 +16,8 @@
  * further-detail-unknown remainder opens Casey (who holds Central itself) only.
  */
 import type { WorkerAttributeDefinition } from '#lib/domain-vocabulary.ts';
-import type { WorkerFilters } from '#lib/shared/worker-filters.ts';
-import { answerIsInSubtree } from '#lib/shared/worker-population.ts';
+import type { WorkerFilters } from '#lib/shared/workers/worker-filters.ts';
+import { answerIsInSubtree } from '#lib/shared/workers/worker-population.ts';
 import type { GroupReading } from './support-summary.ts';
 
 /** The same filters with every collection mutable, so one condition can be replaced. */

@@ -3,7 +3,7 @@ import { resolve } from '$app/paths';
 import { createWorksite } from '#lib/client/worksite-api.ts';
 import { appliedLocale } from '#lib/i18n/locale.ts';
 import { m } from '#lib/paraglide/messages.js';
-import { withQuery } from '#lib/shared/navigation.ts';
+import { withQuery } from '#lib/shared/app/navigation.ts';
 
 /**
  * Creating the install's first Worksite from the empty shell, then opening the

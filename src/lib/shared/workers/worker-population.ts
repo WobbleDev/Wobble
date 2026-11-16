@@ -12,7 +12,7 @@
  * - The no-answer reading matches either cardinality.
  */
 import type { AttributeAnswer, Worker, WorkerAttributeDefinition } from '#lib/domain-vocabulary.ts';
-import { heldIdsOf } from '#lib/shared/select-mode.ts';
+import { heldIdsOf } from '#lib/shared/workers/select-mode.ts';
 
 /** The filters that select a population. Every map holds selected answer ids by Attribute id. */
 export type PopulationFilters = {

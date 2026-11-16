@@ -3,7 +3,7 @@
  * from the draft definition alone. Read-only by construction: it imports no client, takes
  * no callbacks, and the example holds its pick in local component state.
  */
-import { answerDisplayLabel } from '#lib/shared/answer-path.ts';
+import { answerDisplayLabel } from '#lib/shared/workers/answer-path.ts';
 import type { WorkerAttributeDefinition } from '#lib/domain-vocabulary.ts';
 
 export type FieldExampleOption = { value: string; label: string };

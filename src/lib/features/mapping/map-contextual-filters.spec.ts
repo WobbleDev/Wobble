@@ -1,6 +1,9 @@
 // @module-tag mapping
 import { describe, expect, it } from 'vitest';
-import { emptyContextualFilters, type ContextualFilters } from '#lib/shared/contextual-filters.ts';
+import {
+	emptyContextualFilters,
+	type ContextualFilters
+} from '#lib/shared/workers/contextual-filters.ts';
 import {
 	contextFilterChips,
 	contextFilterGroupCount,

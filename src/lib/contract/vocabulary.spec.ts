@@ -11,7 +11,7 @@ import {
 	textSizePreferences,
 	themePreferences,
 	timeFormatPreferences
-} from '#lib/shared/app-settings.ts';
+} from '#lib/shared/app/app-settings.ts';
 
 const golden = JSON.parse(
 	readFileSync(fileURLToPath(new URL('../../../contract/vocabulary.json', import.meta.url)), 'utf8')

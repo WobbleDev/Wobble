@@ -7,14 +7,14 @@
 import { tick, untrack } from 'svelte';
 import { SvelteMap, SvelteSet, SvelteURL } from 'svelte/reactivity';
 import { page } from '$app/state';
-import { replaceCurrentUrl } from '#lib/shared/navigation.ts';
-import { personParams, stripPersonParams } from '#lib/shared/person-state.svelte.ts';
+import { replaceCurrentUrl } from '#lib/shared/app/navigation.ts';
+import { personParams, stripPersonParams } from '#lib/shared/workers/person-state.svelte.ts';
 import {
 	readAnswerFilter,
 	writeWorkerFilters,
 	type AnswerFilterValue,
 	type WorkerFilters
-} from '#lib/shared/worker-filters.ts';
+} from '#lib/shared/workers/worker-filters.ts';
 import type { Agitation, WorkerAttributeDefinition } from '#lib/domain-vocabulary.ts';
 import { m } from '#lib/paraglide/messages.js';
 

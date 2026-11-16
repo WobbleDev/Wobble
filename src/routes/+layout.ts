@@ -3,7 +3,7 @@ import { startupStatus } from '#lib/shell/startup-status.ts';
 import { m } from '#lib/paraglide/messages.js';
 import type { LayoutLoad } from './$types';
 import { getBootStatus } from '#lib/client/boot-api.ts';
-import { defaultAppSettings } from '#lib/shared/app-settings.ts';
+import { defaultAppSettings } from '#lib/shared/app/app-settings.ts';
 import { getWorksiteDataset, takePrimedDataset } from '#lib/client/dataset-api.ts';
 import { initApiTransport } from '#lib/client/transport.ts';
 import { showWindowAfterFirstPaint } from '#lib/client/tauri-window.ts';
@@ -14,7 +14,7 @@ import {
 	readPreferredLanguages
 } from '#lib/i18n/locale.ts';
 import { cacheLanguage } from '#lib/i18n/language-cache.ts';
-import type { LanguagePreference } from '#lib/shared/app-settings.ts';
+import type { LanguagePreference } from '#lib/shared/app/app-settings.ts';
 
 let confirmedLocale: ReturnType<typeof launchLocale> | undefined;
 

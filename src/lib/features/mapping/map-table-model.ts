@@ -1,6 +1,6 @@
 /** Pure row construction and sorting for the Mapping's table presentation. */
 import type { Language, WorkerAttributeDefinition } from '#lib/domain-vocabulary.ts';
-import { noValueReading } from '#lib/shared/no-value-reading.ts';
+import { noValueReading } from '#lib/shared/text/no-value-reading.ts';
 import { bucketLabel, groupValue, linkEndId } from './layout/graph-analysis.ts';
 import type { GroupingReading } from './grouping/map-grouping.ts';
 import type { WorkerGraphLink, WorkerGraphNode } from './canvas/worker-relationship-map-model.ts';

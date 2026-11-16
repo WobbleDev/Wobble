@@ -8,8 +8,8 @@
 	import { Input } from '#lib/components/ui/input/index.ts';
 	import { m } from '#lib/paraglide/messages.js';
 	import type { Worker } from '#lib/domain-vocabulary.ts';
-	import { kindMode } from '#lib/shared/select-mode.ts';
-	import { countAnswerPopulation } from '#lib/shared/worker-population.ts';
+	import { kindMode } from '#lib/shared/workers/select-mode.ts';
+	import { countAnswerPopulation } from '#lib/shared/workers/worker-population.ts';
 	import {
 		attributeTypeLabel,
 		toWorkerAttributeDefinition,

@@ -8,7 +8,7 @@
  * therefore changes the next launch, never the running session.
  */
 import { getLocale, getTextDirection, setLocale } from '#lib/paraglide/runtime.js';
-import type { LanguagePreference } from '#lib/shared/app-settings.ts';
+import type { LanguagePreference } from '#lib/shared/app/app-settings.ts';
 
 /** The catalogs this release ships, in the order the registry lists them. */
 export type AppLocale = 'en' | 'es-419';

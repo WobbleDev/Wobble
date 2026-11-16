@@ -11,8 +11,8 @@
 	import { Button } from '#lib/components/ui/button/index.ts';
 	import { Input } from '#lib/components/ui/input/index.ts';
 	import { relationshipCandidates } from './relationship-candidates.ts';
-	import SwatchDot from '#lib/shared/swatch-dot.svelte';
-	import { assessmentColorKey } from '#lib/shared/assessment.ts';
+	import SwatchDot from '#lib/shared/ui/swatch-dot.svelte';
+	import { assessmentColorKey } from '#lib/shared/workers/assessment.ts';
 	import { runSingleEdit } from '../data-table/bulk-actions/bulk-actions.ts';
 	import type { DataTableEditReport } from '../data-table/features.ts';
 	import type { Worker, WorkerAttributeDefinition } from '#lib/domain-vocabulary.ts';

@@ -1,12 +1,12 @@
 import { describe, expect, it } from 'vitest';
 import type { Worker, WorkerAttributeDefinition } from '#lib/domain-vocabulary.ts';
-import type { PopulationFilters } from '#lib/shared/worker-population.ts';
-import { selectWorkerPopulation } from '#lib/shared/worker-population.ts';
+import type { PopulationFilters } from '#lib/shared/workers/worker-population.ts';
+import { selectWorkerPopulation } from '#lib/shared/workers/worker-population.ts';
 import {
 	parseWorkerFilters,
 	writeWorkerFilters,
 	type WorkerFilters
-} from '#lib/shared/worker-filters.ts';
+} from '#lib/shared/workers/worker-filters.ts';
 import { worker as baseWorker } from '#lib/testing/builders.ts';
 import { contextualGroupReadings, groupReadings } from './support-summary.ts';
 import { agitationDrilldownFilters, groupDrilldownFilters } from './group-drilldown.ts';

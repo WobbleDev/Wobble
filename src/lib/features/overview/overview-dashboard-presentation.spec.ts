@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { assessmentColorFor } from '#lib/shared/assessment.ts';
+import { assessmentColorFor } from '#lib/shared/workers/assessment.ts';
 import type { AssessmentOption } from '#lib/domain-vocabulary.ts';
 import {
 	pct,

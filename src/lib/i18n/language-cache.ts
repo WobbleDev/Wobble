@@ -8,7 +8,7 @@
  *
  * Keep the key and the checks in step with the inline resolver in `src/app.html`.
  */
-import type { LanguagePreference } from '#lib/shared/app-settings.ts';
+import type { LanguagePreference } from '#lib/shared/app/app-settings.ts';
 import type { AppLocale } from './locale.ts';
 
 const languageStorageKey = 'wobble.language';

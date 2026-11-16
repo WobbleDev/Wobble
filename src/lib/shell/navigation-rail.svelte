@@ -6,7 +6,7 @@
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
-	import { withQuery } from '#lib/shared/navigation.ts';
+	import { withQuery } from '#lib/shared/app/navigation.ts';
 	import ChevronDown from '@lucide/svelte/icons/chevron-down';
 	import Check from '@lucide/svelte/icons/check';
 	import LayoutDashboard from '@lucide/svelte/icons/layout-dashboard';
@@ -17,7 +17,7 @@
 	import { Button } from '#lib/components/ui/button/index.ts';
 	import * as DropdownMenu from '#lib/components/ui/dropdown-menu/index.ts';
 	import * as Sidebar from '#lib/components/ui/sidebar/index.ts';
-	import { getUnsavedChanges } from '#lib/shared/unsaved-changes.svelte.ts';
+	import { getUnsavedChanges } from '#lib/shared/app/unsaved-changes.svelte.ts';
 	import { m } from '#lib/paraglide/messages.js';
 	import { appliedLocale } from '#lib/i18n/locale.ts';
 	import type { Worksite } from '#lib/domain-vocabulary.ts';

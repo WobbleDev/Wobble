@@ -13,8 +13,8 @@
 	import Trash2Icon from '@lucide/svelte/icons/trash-2';
 	import { Button } from '#lib/components/ui/button/index.ts';
 	import { Label } from '#lib/components/ui/label/index.ts';
-	import { appSettingsContextKey, type AppSettingsContext } from '#lib/shared/app-settings.ts';
-	import { formatTimestamp } from '#lib/shared/format.ts';
+	import { appSettingsContextKey, type AppSettingsContext } from '#lib/shared/app/app-settings.ts';
+	import { formatTimestamp } from '#lib/shared/text/format.ts';
 	import { Textarea } from '#lib/components/ui/textarea/index.ts';
 	import WorkerNoteItem from '../worker-note-item.svelte';
 	import { getEditModel } from '../edit-model.svelte.ts';

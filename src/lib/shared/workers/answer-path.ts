@@ -4,7 +4,7 @@
  * id (ADR 0030); a path is only how the interface names one answer next to another.
  */
 import type { AttributeAnswer } from '#lib/domain-vocabulary.ts';
-import { normalizeForMatch } from './text.ts';
+import { normalizeForMatch } from '../text/text.ts';
 
 const PATH_SEPARATOR = ' / ';
 

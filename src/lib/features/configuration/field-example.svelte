@@ -1,5 +1,5 @@
 <script lang="ts">
-	import ChoiceSelect from '#lib/shared/choice-select.svelte';
+	import ChoiceSelect from '#lib/shared/ui/choice-select.svelte';
 	import { m } from '#lib/paraglide/messages.js';
 	import type { WorkerAttributeDefinition } from '#lib/domain-vocabulary.ts';
 	import { fieldExampleOptions } from './field-example.ts';

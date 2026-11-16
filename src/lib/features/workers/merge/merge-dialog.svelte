@@ -14,8 +14,8 @@
 	} from '#lib/client/workers-api.ts';
 	import { m } from '#lib/paraglide/messages.js';
 	import { assessmentLabel } from '#lib/i18n/assessment.ts';
-	import { answerDisplayLabel } from '#lib/shared/answer-path.ts';
-	import { heldIdsOf } from '#lib/shared/select-mode.ts';
+	import { answerDisplayLabel } from '#lib/shared/workers/answer-path.ts';
+	import { heldIdsOf } from '#lib/shared/workers/select-mode.ts';
 	import type {
 		AssessmentOption,
 		Worker,

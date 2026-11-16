@@ -9,7 +9,7 @@
 	import { Button } from '#lib/components/ui/button/index.ts';
 	import * as Field from '#lib/components/ui/field/index.ts';
 	import { Input } from '#lib/components/ui/input/index.ts';
-	import { appSettingsContextKey, type AppSettingsContext } from '#lib/shared/app-settings.ts';
+	import { appSettingsContextKey, type AppSettingsContext } from '#lib/shared/app/app-settings.ts';
 	import { m } from '#lib/paraglide/messages.js';
 	import DataErrorNotice from '../data-error-notice.svelte';
 	import FileReceipt from '../file-receipt.svelte';

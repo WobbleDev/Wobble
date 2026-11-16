@@ -10,7 +10,7 @@ Restore calls `POST /api/restore` with the path chosen in the desktop open dialo
 
 Remember window is read by the desktop shell straight from the SQLite file at launch, before the window-state plugin is built, so turning it off skips the restore without a request. Reset window is a Tauri command that clears the plugin's saved state and restores the default 1280×832 centred window. Both controls are hidden in the browser dev shim, whose "Startup and window" well shows a desktop-only sentence instead.
 
-Date format and Time format reach the app through `src/lib/shared/format.ts`, whose `formatDate`, `formatTime` and `formatTimestamp` take the saved preferences. The two Note components read them from the settings context and pass them in, so a Note's "Written …" and "Edited …" text and its edit/delete labels follow the setting.
+Date format and Time format reach the app through `src/lib/shared/text/format.ts`, whose `formatDate`, `formatTime` and `formatTimestamp` take the saved preferences. The two Note components read them from the settings context and pass them in, so a Note's "Written …" and "Edited …" text and its edit/delete labels follow the setting.
 
 The Accessibility controls write root attributes that the CSS and the motion store read: `data-motion` (`system`/`reduce`/`full`), `data-contrast="on"`, `data-text-size` and `data-assessment-palette="colorblind"`. `src/app.html` applies the same mapping from the local appearance cache before first paint, and `settings-sync.svelte.ts` reconciles it after load; keep the two in step.
 

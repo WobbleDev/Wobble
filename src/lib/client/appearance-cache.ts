@@ -1,4 +1,4 @@
-import type { AppSettings } from '#lib/shared/app-settings.ts';
+import type { AppSettings } from '#lib/shared/app/app-settings.ts';
 
 /** Keep this key in step with the inline first-paint script in `src/app.html`. */
 const appearanceStorageKey = 'wobble.appearance';

@@ -7,8 +7,8 @@
 	import { Badge } from '#lib/components/ui/badge/index.ts';
 	import { Button } from '#lib/components/ui/button/index.ts';
 	import * as DropdownMenu from '#lib/components/ui/dropdown-menu/index.ts';
-	import SwatchDot from '#lib/shared/swatch-dot.svelte';
-	import { assessmentColorFor, isAssessment } from '#lib/shared/assessment.ts';
+	import SwatchDot from '#lib/shared/ui/swatch-dot.svelte';
+	import { assessmentColorFor, isAssessment } from '#lib/shared/workers/assessment.ts';
 
 	type Props = {
 		label: string;

@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { defaultAppSettings } from '#lib/shared/app-settings.ts';
+import { defaultAppSettings } from '#lib/shared/app/app-settings.ts';
 import { jsonResponse } from '#lib/testing/http.ts';
 import { getAppSettings, resetAppSettings, saveAppSettings } from './settings-api.ts';
 

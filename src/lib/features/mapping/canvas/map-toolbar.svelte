@@ -11,13 +11,13 @@
 	import ChevronDownIcon from '@lucide/svelte/icons/chevron-down';
 	import XIcon from '@lucide/svelte/icons/x';
 	import * as Select from '#lib/components/ui/select/index.ts';
-	import IconTip from '#lib/shared/icon-tip.svelte';
+	import IconTip from '#lib/shared/ui/icon-tip.svelte';
 	import * as Field from '#lib/components/ui/field/index.ts';
 	import { m } from '#lib/paraglide/messages.js';
 	import type { Language, WorkerAttributeDefinition } from '#lib/domain-vocabulary.ts';
-	import { hasContextualFilters } from '#lib/shared/contextual-filters.ts';
-	import { answerDisplayLabel } from '#lib/shared/answer-path.ts';
-	import { noValueReading } from '#lib/shared/no-value-reading.ts';
+	import { hasContextualFilters } from '#lib/shared/workers/contextual-filters.ts';
+	import { answerDisplayLabel } from '#lib/shared/workers/answer-path.ts';
+	import { noValueReading } from '#lib/shared/text/no-value-reading.ts';
 	import {
 		regionReading,
 		type ExpansionBranch,

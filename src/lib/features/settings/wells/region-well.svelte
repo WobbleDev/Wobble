@@ -6,8 +6,8 @@
 		isLanguagePreference,
 		isTimeFormatPreference,
 		type AppSettingsContext
-	} from '#lib/shared/app-settings.ts';
-	import { formatTimestamp } from '#lib/shared/format.ts';
+	} from '#lib/shared/app/app-settings.ts';
+	import { formatTimestamp } from '#lib/shared/text/format.ts';
 	import { appliedLocale, readPreferredLanguages, resolveAppLocale } from '#lib/i18n/locale.ts';
 	import { m } from '#lib/paraglide/messages.js';
 	import type { Choice } from '../choice.ts';

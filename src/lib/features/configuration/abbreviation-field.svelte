@@ -2,7 +2,7 @@
 	import { Input } from '#lib/components/ui/input/index.ts';
 	import { m } from '#lib/paraglide/messages.js';
 	import { cn } from '#lib/utils.ts';
-	import { ABBREVIATION_LIMIT, graphemeCount } from '#lib/shared/abbreviation.ts';
+	import { ABBREVIATION_LIMIT, graphemeCount } from '#lib/shared/text/abbreviation.ts';
 
 	type Props = {
 		/** The value's name, for the accessible name. */

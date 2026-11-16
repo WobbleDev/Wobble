@@ -22,9 +22,9 @@ import {
 	heldCategoryAnswerId,
 	heldTagAnswerIds
 } from '../../answers.ts';
-import { agitationFilterMatches, answerFilterMatches } from '#lib/shared/worker-filters.ts';
-import { noValueReading } from '#lib/shared/no-value-reading.ts';
-import { applyChange, storesList } from '#lib/shared/select-mode.ts';
+import { agitationFilterMatches, answerFilterMatches } from '#lib/shared/workers/worker-filters.ts';
+import { noValueReading } from '#lib/shared/text/no-value-reading.ts';
+import { applyChange, storesList } from '#lib/shared/workers/select-mode.ts';
 import type { DataTableColumnMeta, DataTableFeatures } from '../features.ts';
 import DataTableColumnHeader from './column-header.svelte';
 import DataTableOptionCell from './option-cell.svelte';
@@ -36,7 +36,7 @@ import {
 	heldLabelsKey,
 	labelsSortKey
 } from './worker-sort.ts';
-import { assessmentColorFor } from '#lib/shared/assessment.ts';
+import { assessmentColorFor } from '#lib/shared/workers/assessment.ts';
 import {
 	WORKERS_SELECT_REM,
 	contentColumnRem,

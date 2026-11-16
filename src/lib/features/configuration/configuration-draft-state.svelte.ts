@@ -6,7 +6,7 @@ import { invalidateAll } from '$app/navigation';
 import { onDestroy, tick, untrack } from 'svelte';
 import { SvelteMap, SvelteSet } from 'svelte/reactivity';
 import { m } from '#lib/paraglide/messages.js';
-import { newId } from '#lib/shared/new-id.ts';
+import { newId } from '#lib/shared/text/new-id.ts';
 import type {
 	Agitation,
 	Language,

@@ -3,14 +3,14 @@
  * mean for one Worker.
  */
 import type { Agitation, Worker, WorkerAttributeDefinition } from '#lib/domain-vocabulary.ts';
-import { workerMatchesAnswerFilter } from '#lib/shared/worker-population.ts';
+import { workerMatchesAnswerFilter } from '#lib/shared/workers/worker-population.ts';
 import {
 	knownAnswerIds,
 	parseContextualFilters,
 	writeContextualFilters
-} from '#lib/shared/contextual-filters.ts';
-import { NO_SELECTION_CHOICE } from '#lib/shared/no-value-reading.ts';
-import { heldIdsOf } from '#lib/shared/select-mode.ts';
+} from '#lib/shared/workers/contextual-filters.ts';
+import { NO_SELECTION_CHOICE } from '#lib/shared/text/no-value-reading.ts';
+import { heldIdsOf } from '#lib/shared/workers/select-mode.ts';
 
 export { NO_SELECTION_CHOICE };
 

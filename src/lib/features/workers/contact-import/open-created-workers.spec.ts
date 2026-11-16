@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { personState } from '#lib/shared/person-state.svelte.ts';
+import { personState } from '#lib/shared/workers/person-state.svelte.ts';
 import { openCreatedWorkers } from './open-created-workers.ts';
 
 describe('opening the created Workers', () => {

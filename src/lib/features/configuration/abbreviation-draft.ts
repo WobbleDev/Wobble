@@ -2,7 +2,7 @@
  * Abbreviations while a Configuration is edited (ADR 0046). Pure: the core generates and
  * validates every form; this only decides what a row shows and what an edit does to the draft.
  */
-import { ABBREVIATION_LIMIT, graphemeCount } from '#lib/shared/abbreviation.ts';
+import { ABBREVIATION_LIMIT, graphemeCount } from '#lib/shared/text/abbreviation.ts';
 import type { AttributeAnswerDraft } from './attribute-draft.ts';
 
 /** The text a row's Abbreviation field shows: the edited form, else the core's suggestion. */

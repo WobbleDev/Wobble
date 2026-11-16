@@ -12,7 +12,7 @@
 	import * as Sidebar from '#lib/components/ui/sidebar/index.ts';
 	import type { Worksite } from '#lib/domain-vocabulary.ts';
 	import { m } from '#lib/paraglide/messages.js';
-	import IconTip from '#lib/shared/icon-tip.svelte';
+	import IconTip from '#lib/shared/ui/icon-tip.svelte';
 	import AppBreadcrumbs from './app-breadcrumbs.svelte';
 	import ContactCsvImportDialog from '../../features/workers/contact-import/contact-csv-import-dialog.svelte';
 	import ThemeSwitcher from './theme-switcher.svelte';

@@ -1,7 +1,7 @@
 import type { Worker, WorkerAttributeDefinition } from '#lib/domain-vocabulary.ts';
-import { answerDisplayLabel } from '#lib/shared/answer-path.ts';
-import { heldIds } from '#lib/shared/select-mode.ts';
-import { normalizeForMatch } from '#lib/shared/text.ts';
+import { answerDisplayLabel } from '#lib/shared/workers/answer-path.ts';
+import { heldIds } from '#lib/shared/workers/select-mode.ts';
+import { normalizeForMatch } from '#lib/shared/text/text.ts';
 
 /** The most results the list names; a longer match narrows by typing more. */
 export const searchResultLimit = 12;

@@ -14,7 +14,7 @@
 		NO_SELECTION_CHOICE,
 		readAnswerFilter,
 		toggleAnswerFilter
-	} from '#lib/shared/worker-filters.ts';
+	} from '#lib/shared/workers/worker-filters.ts';
 
 	let {
 		column,

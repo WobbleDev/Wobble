@@ -12,7 +12,7 @@
  * All arithmetic reads the support-summary readings; shares only add the labeled
  * population they divide by.
  */
-import { remainderIdentity } from '#lib/shared/answer-hierarchy.ts';
+import { remainderIdentity } from '#lib/shared/workers/answer-hierarchy.ts';
 import type { AssessmentOption } from '#lib/domain-vocabulary.ts';
 import type { GroupPredicate } from './group-drilldown.ts';
 import { assessmentBreakdown, populationOf, type ReadingPopulation } from './overview-readings.ts';

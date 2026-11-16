@@ -5,8 +5,8 @@
 	 */
 	import FunnelIcon from '@lucide/svelte/icons/funnel';
 	import type { Language, WorkerAttributeDefinition } from '#lib/domain-vocabulary.ts';
-	import { answerDisplayLabel } from '#lib/shared/answer-path.ts';
-	import { NO_SELECTION_CHOICE } from '#lib/shared/no-value-reading.ts';
+	import { answerDisplayLabel } from '#lib/shared/workers/answer-path.ts';
+	import { NO_SELECTION_CHOICE } from '#lib/shared/text/no-value-reading.ts';
 	import { m } from '#lib/paraglide/messages.js';
 	import MapAnswerDropdown from './map-answer-dropdown.svelte';
 	import { includeFilterChoices } from './map-contextual-filters.ts';

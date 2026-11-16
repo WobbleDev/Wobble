@@ -9,9 +9,9 @@
  * describe the same reading differently.
  */
 import type { WorkerAttributeDefinition } from '#lib/domain-vocabulary.ts';
-import { answerDisplayLabel } from '#lib/shared/answer-path.ts';
-import type { ContextualFilters } from '#lib/shared/contextual-filters.ts';
-import { NO_SELECTION_CHOICE, noValueReading } from '#lib/shared/no-value-reading.ts';
+import { answerDisplayLabel } from '#lib/shared/workers/answer-path.ts';
+import type { ContextualFilters } from '#lib/shared/workers/contextual-filters.ts';
+import { NO_SELECTION_CHOICE, noValueReading } from '#lib/shared/text/no-value-reading.ts';
 
 /** One active contextual condition, as the map names it beside the other filters. */
 export type ContextFilterChip = {

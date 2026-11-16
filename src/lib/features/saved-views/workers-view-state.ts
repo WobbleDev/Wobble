@@ -9,7 +9,7 @@ import {
 	toColumnFilters,
 	type ColumnFilterEntry,
 	type WorkerFilters
-} from '#lib/shared/worker-filters.ts';
+} from '#lib/shared/workers/worker-filters.ts';
 import { workersColumnIds, type ViewVocabulary } from './saved-view-references.ts';
 
 /** The table's own state, as the column-filter reader and TanStack state hold it. */

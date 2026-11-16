@@ -4,7 +4,7 @@
 	import * as Table from '#lib/components/ui/table/index.ts';
 	import CsvColumnSelect from './csv-column-select.svelte';
 	import type { WorkerAttributeDefinition } from '#lib/domain-vocabulary.ts';
-	import { answerDisplayLabel } from '#lib/shared/answer-path.ts';
+	import { answerDisplayLabel } from '#lib/shared/workers/answer-path.ts';
 	import type {
 		AttributeDecision,
 		DuplicateDecision,

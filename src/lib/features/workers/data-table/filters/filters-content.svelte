@@ -9,8 +9,8 @@
 	import type { Table } from '@tanstack/svelte-table';
 	import CheckIcon from '@lucide/svelte/icons/check';
 	import { Button } from '#lib/components/ui/button/index.ts';
-	import SwatchDot from '#lib/shared/swatch-dot.svelte';
-	import { assessmentColorFor, isAssessment } from '#lib/shared/assessment.ts';
+	import SwatchDot from '#lib/shared/ui/swatch-dot.svelte';
+	import { assessmentColorFor, isAssessment } from '#lib/shared/workers/assessment.ts';
 	import type { Worker } from '#lib/domain-vocabulary.ts';
 	import type { DataTableFeatures } from '../features.ts';
 	import type { OptionChoice } from '../../answers.ts';

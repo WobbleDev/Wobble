@@ -1,9 +1,9 @@
 import { resolve } from '$app/paths';
 import type { ResolvedPathname } from '$app/types';
 import type { WorkerAttributeDefinition } from '#lib/domain-vocabulary.ts';
-import { writeWorkerFilters, type WorkerFilters } from '#lib/shared/worker-filters.ts';
-import { withQuery, withSearch } from '#lib/shared/navigation.ts';
-import { remainderIdentity } from '#lib/shared/answer-hierarchy.ts';
+import { writeWorkerFilters, type WorkerFilters } from '#lib/shared/workers/worker-filters.ts';
+import { withQuery, withSearch } from '#lib/shared/app/navigation.ts';
+import { remainderIdentity } from '#lib/shared/workers/answer-hierarchy.ts';
 import { agitationDrilldownFilters, type GroupPredicate } from './group-drilldown.ts';
 import type { AgitationMatrixRow } from './support-summary.ts';
 

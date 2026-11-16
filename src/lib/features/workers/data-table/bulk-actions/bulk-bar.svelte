@@ -12,10 +12,10 @@
 	import { getEditModel } from '#lib/features/workers/edit-model.svelte.ts';
 	import { Button } from '#lib/components/ui/button/index.ts';
 	import * as DropdownMenu from '#lib/components/ui/dropdown-menu/index.ts';
-	import SwatchDot from '#lib/shared/swatch-dot.svelte';
-	import { assessmentColorFor } from '#lib/shared/assessment.ts';
-	import { storesList } from '#lib/shared/select-mode.ts';
-	import { normalizeForMatch } from '#lib/shared/text.ts';
+	import SwatchDot from '#lib/shared/ui/swatch-dot.svelte';
+	import { assessmentColorFor } from '#lib/shared/workers/assessment.ts';
+	import { storesList } from '#lib/shared/workers/select-mode.ts';
+	import { normalizeForMatch } from '#lib/shared/text/text.ts';
 	import {
 		assessmentOptions,
 		type AssessmentOption,

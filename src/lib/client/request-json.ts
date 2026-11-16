@@ -1,6 +1,6 @@
 import { appliedLocale } from '#lib/i18n/locale.ts';
-import { appLocaleHeaderName } from '#lib/shared/app-locale-header.ts';
-import { activeWorksiteHeaderName } from '#lib/shared/active-worksite-header.ts';
+import { appLocaleHeaderName } from '#lib/shared/app/app-locale-header.ts';
+import { activeWorksiteHeaderName } from '#lib/shared/app/active-worksite-header.ts';
 import { readStoredActiveWorksiteId } from './active-worksite-storage.ts';
 import { parseApiResponse } from './api-response.ts';
 import { sendApiRequest } from './transport.ts';

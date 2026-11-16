@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { defaultAppSettings } from '#lib/shared/app-settings.ts';
+import { defaultAppSettings } from '#lib/shared/app/app-settings.ts';
 import { applyAppearanceAttributes } from './appearance-attributes.ts';
 
 const rootWith = (dataset: Record<string, string> = {}) => ({ dataset: { ...dataset } });

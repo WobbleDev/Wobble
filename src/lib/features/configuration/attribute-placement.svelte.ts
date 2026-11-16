@@ -1,6 +1,6 @@
 import { tick } from 'svelte';
 import { m } from '#lib/paraglide/messages.js';
-import { answerPathLabel } from '#lib/shared/answer-path.ts';
+import { answerPathLabel } from '#lib/shared/workers/answer-path.ts';
 import type { AttributeDraft } from './attribute-draft.ts';
 import { visibleValues } from './configuration-draft.ts';
 import { isAnswerInSubtree } from './attribute-validation.ts';

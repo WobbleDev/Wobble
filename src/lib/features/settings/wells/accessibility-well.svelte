@@ -5,7 +5,7 @@
 		isReduceMotionPreference,
 		isTextSizePreference,
 		type AppSettingsContext
-	} from '#lib/shared/app-settings.ts';
+	} from '#lib/shared/app/app-settings.ts';
 	import { m } from '#lib/paraglide/messages.js';
 	import type { Choice } from '../choice.ts';
 	import Picker from '../picker.svelte';

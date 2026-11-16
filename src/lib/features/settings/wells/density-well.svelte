@@ -4,7 +4,7 @@
 		appSettingsContextKey,
 		isDensityPreference,
 		type AppSettingsContext
-	} from '#lib/shared/app-settings.ts';
+	} from '#lib/shared/app/app-settings.ts';
 	import { m } from '#lib/paraglide/messages.js';
 	import ChoiceSet from '../choice-set.svelte';
 	import SettingsWell from '../settings-well.svelte';

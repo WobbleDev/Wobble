@@ -10,9 +10,9 @@ import type {
 	WorkerAttributeValue
 } from '#lib/domain-vocabulary.ts';
 import { assessmentLabel } from '#lib/i18n/assessment.ts';
-import { answerDisplayLabel } from '#lib/shared/answer-path.ts';
-import { NO_SELECTION_CHOICE, noValueReading } from '#lib/shared/no-value-reading.ts';
-import { heldIdsOf, storesList } from '#lib/shared/select-mode.ts';
+import { answerDisplayLabel } from '#lib/shared/workers/answer-path.ts';
+import { NO_SELECTION_CHOICE, noValueReading } from '#lib/shared/text/no-value-reading.ts';
+import { heldIdsOf, storesList } from '#lib/shared/workers/select-mode.ts';
 
 /** One menu or filter choice: `value` is what the UI keys on, `label` is what it shows. */
 export type OptionChoice = {

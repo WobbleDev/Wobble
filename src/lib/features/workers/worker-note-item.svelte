@@ -6,8 +6,8 @@
 	 */
 	import { getContext } from 'svelte';
 	import type { WorkerNote } from '#lib/domain-vocabulary.ts';
-	import { appSettingsContextKey, type AppSettingsContext } from '#lib/shared/app-settings.ts';
-	import { formatTimestamp } from '#lib/shared/format.ts';
+	import { appSettingsContextKey, type AppSettingsContext } from '#lib/shared/app/app-settings.ts';
+	import { formatTimestamp } from '#lib/shared/text/format.ts';
 	import { m } from '#lib/paraglide/messages.js';
 
 	let { note }: { note: WorkerNote } = $props();

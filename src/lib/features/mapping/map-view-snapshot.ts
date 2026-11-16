@@ -2,14 +2,14 @@
  * Writing the map's view into the URL and reading it back, so a Mapping link opens
  * the same picture.
  */
-import { encodeColonPair, parseColonPair } from '#lib/shared/colon-pair.ts';
+import { encodeColonPair, parseColonPair } from '#lib/shared/text/colon-pair.ts';
 import type { Language, WorkerAttributeDefinition } from '#lib/domain-vocabulary.ts';
 import {
 	emptyContextualFilters,
 	parseContextualFilters,
 	writeContextualFilters,
 	type ContextualFilters
-} from '#lib/shared/contextual-filters.ts';
+} from '#lib/shared/workers/contextual-filters.ts';
 import type { MapLayoutMode } from './map-view-model.ts';
 
 export type MapViewSnapshot = {

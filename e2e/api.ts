@@ -2,7 +2,7 @@ import { expect, type APIRequestContext, type BrowserContext, type Page } from '
 import type { DatasetReply } from '../src/lib/client/generated/DatasetReply.ts';
 import { wireWorkerAttributes } from './answer-wire.ts';
 
-/** The request header that names the Active Worksite (mirrors `#lib/shared/active-worksite-header.ts`). */
+/** The request header that names the Active Worksite (mirrors `#lib/shared/app/active-worksite-header.ts`). */
 export const activeWorksiteHeaderName = 'x-wobble-worksite';
 
 /** The webview-storage key the client remembers the Active Worksite under. */

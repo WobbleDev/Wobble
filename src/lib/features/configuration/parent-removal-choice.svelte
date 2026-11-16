@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { tick } from 'svelte';
-	import ChoiceSelect from '#lib/shared/choice-select.svelte';
+	import ChoiceSelect from '#lib/shared/ui/choice-select.svelte';
 	import { Button } from '#lib/components/ui/button/index.ts';
 	import * as Field from '#lib/components/ui/field/index.ts';
 	import { m } from '#lib/paraglide/messages.js';
-	import { answerPathLabel } from '#lib/shared/answer-path.ts';
+	import { answerPathLabel } from '#lib/shared/workers/answer-path.ts';
 	import type { AttributeAnswerDraft } from './attribute-draft.ts';
 	import { isAnswerInSubtree } from './attribute-validation.ts';
 
