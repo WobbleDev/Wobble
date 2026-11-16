@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { paginateReadingRows } from './breakdown-paging.ts';
-import { groupPageRange } from './agitations-paging.ts';
+import { paginateReadingRows } from './reading-rows.ts';
+import { groupPageRange } from './page-math.ts';
 
 describe('whole-row reading pages', () => {
 	it('always reserves the permanent footer, even when every row fits', () => {

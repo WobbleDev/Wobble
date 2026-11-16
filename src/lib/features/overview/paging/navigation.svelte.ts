@@ -1,5 +1,5 @@
 import { tick } from 'svelte';
-import { clampPageIndex } from './agitations-paging.ts';
+import { clampPageIndex } from './page-math.ts';
 
 /**
  * A page turn that disables the button it was made with would drop focus to the page body

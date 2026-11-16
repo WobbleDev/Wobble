@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { clampPageIndex, paginateGroups } from './agitations-paging.ts';
+import { clampPageIndex, paginateGroups } from './page-math.ts';
 
 /**
  * The Agitations card pages whole group columns instead of scrolling them:

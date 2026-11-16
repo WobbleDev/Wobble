@@ -5,10 +5,10 @@
  * helpers with literal hosts; no DOM.
  */
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { clampPageIndex, groupPageRange, paginateGroups } from './agitations-paging.ts';
-import { createAgitationsPaging } from './agitations-paging.svelte.ts';
-import { createBreakdownPaging } from './breakdown-paging.svelte.ts';
-import { createGroupPaging } from './group-paging.svelte.ts';
+import { clampPageIndex, groupPageRange, paginateGroups } from './page-math.ts';
+import { createAgitationsPaging } from './agitations-card.svelte.ts';
+import { createBreakdownPaging } from './breakdown-card.svelte.ts';
+import { createGroupPaging } from './navigation.svelte.ts';
 
 afterEach(() => vi.unstubAllGlobals());
 

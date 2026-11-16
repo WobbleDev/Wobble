@@ -1,10 +1,10 @@
-import { createGroupPaging } from './group-paging.svelte.ts';
+import { createGroupPaging } from './navigation.svelte.ts';
 
 /**
  * The Agitations card's page behaviour: which whole-group page shows, how many
  * whole group columns fit the card, and when the card has measured them. The
  * route mounts this beside its matrix derivation and keeps only the element
- * bindings and the render; pure slicing stays in agitations-paging.ts.
+ * bindings and the render; pure slicing stays in page-math.ts.
  *
  * Paging slices the presentation, never the matrix arithmetic: the page resets
  * to the first one only when the grouping identity changes, and the per-page

@@ -2,7 +2,7 @@ import {
 	chooseAbbreviationLabels,
 	type AbbreviationLabelEntry
 } from '#lib/shared/text/abbreviation-label.ts';
-import { GROUP_GAP_PX } from './agitations-paging.svelte.ts';
+import { GROUP_GAP_PX } from './paging/agitations-card.svelte.ts';
 
 type HeaderHost = {
 	/** Every value of the grouping, whether or not a Worker holds it, so counts never rename one. */

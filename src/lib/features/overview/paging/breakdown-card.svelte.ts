@@ -1,5 +1,5 @@
-import { paginateReadingRows } from './breakdown-paging.ts';
-import { createGroupPaging } from './group-paging.svelte.ts';
+import { paginateReadingRows } from './reading-rows.ts';
+import { createGroupPaging } from './navigation.svelte.ts';
 
 /** Measures every retained row, including inert off-page rows, at its real width. */
 export function createBreakdownPaging(host: { groupingKey: () => string }) {
