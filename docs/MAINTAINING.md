@@ -60,7 +60,7 @@ A Worker field has to be added everywhere that carries it, in this order:
 TypeScript side:
 
 1. `src/lib/domain-vocabulary.ts` — the field's type.
-2. `src/lib/client/workers-api.ts` (and `api-decode.ts` if the response shape changes) — carrying
+2. `src/lib/client/worker-writes-api.ts` (and `api-decode.ts` if the response shape changes) — carrying
    it to and from the backend.
 3. `src/lib/features/workers/data-table/columns/columns.ts` — showing it in the Workers table.
 4. `src/lib/features/workers/worker-form/` — letting someone edit it.
@@ -132,7 +132,7 @@ source; do not copy it here, because two copies drift.
 ### 7. Delete a Worksite
 
 `src/lib/features/configuration/worksite-danger-zone.svelte` is the control, and
-`src/lib/client/workers-api.ts` sends the deletion. Deleting is a hard cascade — read
+`src/lib/client/worker-writes-api.ts` sends the deletion. Deleting is a hard cascade — read
 the local decision record on Worksite deletion before touching it.
 
 ### 8. Switch the Active Worksite

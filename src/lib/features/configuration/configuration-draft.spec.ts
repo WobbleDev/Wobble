@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import type { WorkerAttributeDefinition } from '#lib/domain-vocabulary.ts';
 import { attributeDefinition } from '#lib/testing/builders.ts';
-import { attributeWrites } from '#lib/client/workers-api.ts';
+import { attributeWrites } from '#lib/client/configuration-api.ts';
 import {
 	fromWorkerAttributeDefinitions,
 	toWorkerAttributeDefinition,

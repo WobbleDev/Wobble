@@ -101,7 +101,11 @@ describe('field example', () => {
 		'updateWorkerAttribute',
 		'updateWorkerLanguages',
 		'createWorker',
-		'workers-api'
+		'worker-writes-api',
+		'worker-drafts-api',
+		'worker-import-api',
+		'worker-merge-api',
+		'configuration-api'
 	];
 
 	function closure(entry: string, seen = new Set<string>()): Set<string> {

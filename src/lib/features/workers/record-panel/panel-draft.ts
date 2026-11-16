@@ -12,7 +12,11 @@ import {
 	type WorkerAttributeValue,
 	type WorkerTextField
 } from '#lib/domain-vocabulary.ts';
-import type { PendingNoteDraft, WorkerDraft, WorkerDraftInput } from '#lib/client/workers-api.ts';
+import type {
+	PendingNoteDraft,
+	WorkerDraft,
+	WorkerDraftInput
+} from '#lib/client/worker-drafts-api.ts';
 import { toWorkerUpdate } from '../worker-update.ts';
 
 export type PanelTextField = WorkerTextField;

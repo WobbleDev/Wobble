@@ -11,7 +11,7 @@
 		previewWorkerMerge,
 		undoWorkerMerge,
 		type MergeChoice
-	} from '#lib/client/workers-api.ts';
+	} from '#lib/client/worker-merge-api.ts';
 	import { m } from '#lib/paraglide/messages.js';
 	import { assessmentLabel } from '#lib/i18n/assessment.ts';
 	import { answerDisplayLabel } from '#lib/shared/workers/answer-path.ts';

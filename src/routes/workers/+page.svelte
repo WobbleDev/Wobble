@@ -2,11 +2,11 @@
 	import { refreshWorkers } from '#lib/features/workers/refresh-workers.ts';
 	import DataTable from '#lib/features/workers/data-table/data-table.svelte';
 	import { columnsKey, createColumns } from '#lib/features/workers/data-table/columns/columns.ts';
+	import { createAgitation as createAgitationRequest } from '#lib/client/configuration-api.ts';
 	import {
 		addWorkerNote as addWorkerNoteRequest,
 		addWorkerRelationship as addWorkerRelationshipRequest,
 		assignWorkerAgitation as assignWorkerAgitationRequest,
-		createAgitation as createAgitationRequest,
 		createWorker as createWorkerRequest,
 		deleteWorker as deleteWorkerRequest,
 		deleteWorkerNote as deleteWorkerNoteRequest,
@@ -18,7 +18,7 @@
 		updateWorkerAttribute as updateWorkerAttributeRequest,
 		updateWorkerField as updateWorkerFieldRequest,
 		updateWorkerLanguages as updateWorkerLanguagesRequest
-	} from '#lib/client/workers-api.ts';
+	} from '#lib/client/worker-writes-api.ts';
 	import type {
 		AssessmentOption,
 		Agitation,

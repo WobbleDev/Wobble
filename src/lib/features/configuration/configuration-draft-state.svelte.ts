@@ -23,7 +23,7 @@ import {
 	saveLanguages,
 	saveWorksiteCommitteeGoal,
 	saveWorksiteName
-} from '#lib/client/workers-api.ts';
+} from '#lib/client/configuration-api.ts';
 import type { ConfigurationPreview } from '#lib/domain-vocabulary.ts';
 import {
 	buildResolutionGroups,

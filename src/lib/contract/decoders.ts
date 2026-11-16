@@ -13,7 +13,8 @@ import {
 } from '#lib/client/api-decode.ts';
 import { decodeBootStatus } from '#lib/client/boot-api.ts';
 import { decodeWorksiteDataset } from '#lib/client/dataset-api.ts';
-import { decodeDraft, decodeWorkerReply } from '#lib/client/workers-api.ts';
+import { decodeDraft } from '#lib/client/worker-drafts-api.ts';
+import { decodeWorkerReply } from '#lib/client/worker-writes-api.ts';
 
 /** A contact import body: the accepted rows with the Attribute ids the review saw. */
 function isReviewedImport(requestBody: unknown) {

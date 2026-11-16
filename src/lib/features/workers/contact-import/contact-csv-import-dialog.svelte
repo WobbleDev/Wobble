@@ -4,7 +4,7 @@
 	import { Button } from '#lib/components/ui/button/index.ts';
 	import * as Dialog from '#lib/components/ui/dialog/index.ts';
 	import { getWorksiteDataset } from '#lib/client/dataset-api.ts';
-	import { importContacts } from '#lib/client/workers-api.ts';
+	import { importContacts } from '#lib/client/worker-import-api.ts';
 	import { m } from '#lib/paraglide/messages.js';
 	import { filterParamsKey } from '../data-table/filters/url-filters.svelte.ts';
 	import {

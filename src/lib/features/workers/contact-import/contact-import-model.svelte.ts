@@ -7,7 +7,7 @@
 import { SvelteMap } from 'svelte/reactivity';
 import { ApiError } from '#lib/client/api-error.ts';
 import type { ImportResult } from '#lib/client/api-decode.ts';
-import type { ImportRowContact } from '#lib/client/workers-api.ts';
+import type { ImportRowContact } from '#lib/client/worker-import-api.ts';
 import type { WorkerAttributeDefinition } from '#lib/domain-vocabulary.ts';
 import {
 	acceptedRows,

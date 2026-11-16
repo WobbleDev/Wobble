@@ -3,7 +3,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import type { Worker } from '#lib/domain-vocabulary.ts';
 import { worker as baseWorker } from '#lib/testing/builders.ts';
 import { scriptFetch, type ScriptedReply } from '#lib/testing/http.ts';
-import type { WorkerDraft, WorkerDraftInput } from '#lib/client/workers-api.ts';
+import type { WorkerDraft, WorkerDraftInput } from '#lib/client/worker-drafts-api.ts';
 import { PanelDraftState } from './panel-draft-state.svelte.ts';
 
 const worker = (extra: Partial<Worker> = {}) =>
