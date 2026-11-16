@@ -40,13 +40,8 @@
 		linkRegions as readLinkRegions,
 		resolveEffectiveLayout
 	} from '../map-view-model.ts';
-	import {
-		attemptExpansion,
-		projectLayoutInput,
-		readGrouping,
-		type ExpansionBranch,
-		type ExpansionRefusal
-	} from '../grouping/map-grouping.ts';
+	import { type ExpansionBranch, type ExpansionRefusal } from '../grouping/grouping-types.ts';
+	import { attemptExpansion, projectLayoutInput, readGrouping } from '../grouping/map-grouping.ts';
 	import { contextFilterLabels } from '../map-contextual-filters.ts';
 	import { createPanZoom } from './map-pan-zoom.svelte.ts';
 	import { floatingGutter } from '../layout/graph-free-canvas.ts';
