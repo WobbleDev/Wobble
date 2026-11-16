@@ -1,17 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import type { AssessmentOption, Worker } from '#lib/domain-vocabulary.ts';
 import { worker as baseWorker } from '#lib/testing/builders.ts';
-import {
-	bandLayout,
-	CHART_CENTER,
-	DOT_FOOTPRINT,
-	plotWorkerGroups,
-	plotRelationshipTies,
-	ringLabelWedge,
-	tiePath,
-	type BandLayout,
-	type RingNames
-} from './bullseye-geometry.ts';
+import { bandLayout, ringLabelWedge } from './bullseye-bands.ts';
+import { plotWorkerGroups } from './bullseye-geometry.ts';
+import { CHART_CENTER, DOT_FOOTPRINT, type BandLayout, type RingNames } from './bullseye-shared.ts';
+import { plotRelationshipTies, tiePath } from './bullseye-ties.ts';
 
 /** The en ring names the chart passes: the group labels of each drawn standing. */
 const EN_RING_NAMES: RingNames = {

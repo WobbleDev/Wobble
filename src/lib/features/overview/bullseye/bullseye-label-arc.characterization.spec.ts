@@ -3,7 +3,8 @@
  * where it starts and ends for a given radius and anchor, and that it always bows the same way.
  */
 import { describe, expect, it } from 'vitest';
-import { CHART_CENTER, labelArcPath } from './bullseye-geometry.ts';
+import { labelArcPath } from './bullseye-bands.ts';
+import { CHART_CENTER } from './bullseye-shared.ts';
 
 describe('labelArcPath', () => {
 	it('runs clockwise as a half circle of the ring radius, ending opposite its start', () => {
