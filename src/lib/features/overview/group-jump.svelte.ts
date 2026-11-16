@@ -1,4 +1,4 @@
-import { clampPageIndex } from './agitations-paging.ts';
+import { clampPageIndex } from './paging/page-math.ts';
 
 /** One pager the jump aligns: its own page contents by key, and how to turn to a page. */
 export type JumpPager = {

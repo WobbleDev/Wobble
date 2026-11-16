@@ -1,5 +1,5 @@
-import { groupPageRange } from './agitations-paging.ts';
-import { createBreakdownPaging } from './breakdown-paging.svelte.ts';
+import { groupPageRange } from './paging/page-math.ts';
+import { createBreakdownPaging } from './paging/breakdown-card.svelte.ts';
 
 /**
  * The By Attribute card's page behaviour: the paging factory plus what the card reads

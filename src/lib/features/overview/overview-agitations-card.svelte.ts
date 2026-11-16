@@ -1,8 +1,8 @@
 import type { AttributeAnswer } from '#lib/domain-vocabulary.ts';
 import { answerPath } from '#lib/shared/workers/answer-path.ts';
-import { clampPageIndex, groupPageRange, paginateGroups } from './agitations-paging.ts';
+import { clampPageIndex, groupPageRange, paginateGroups } from './paging/page-math.ts';
 import { createAgitationsHeaders } from './agitations-headers.svelte.ts';
-import { createAgitationsPaging } from './agitations-paging.svelte.ts';
+import { createAgitationsPaging } from './paging/agitations-card.svelte.ts';
 import type { AgitationMatrixRow } from './support-summary.ts';
 
 /**

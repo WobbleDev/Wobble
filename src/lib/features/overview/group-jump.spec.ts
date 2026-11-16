@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { createGroupPaging } from './group-paging.svelte.ts';
+import { createGroupPaging } from './paging/navigation.svelte.ts';
 import { createGroupJump } from './group-jump.svelte.ts';
 
 describe('createGroupJump', () => {

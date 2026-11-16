@@ -6,7 +6,7 @@
  * stands in for the map.
  */
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { GROUP_GAP_PX, createAgitationsPaging } from './agitations-paging.svelte.ts';
+import { GROUP_GAP_PX, createAgitationsPaging } from './agitations-card.svelte.ts';
 
 function setup(pageCount = 3, groupingKey = 'attribute-1|north,south') {
 	let key = groupingKey;

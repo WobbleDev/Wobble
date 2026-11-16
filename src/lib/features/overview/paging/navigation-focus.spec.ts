@@ -3,7 +3,7 @@
  * disables the button it was made with hands focus to the pager's other button.
  */
 import { describe, expect, it } from 'vitest';
-import { createGroupPaging } from './group-paging.svelte.ts';
+import { createGroupPaging } from './navigation.svelte.ts';
 
 function pager(disabled: { previous: boolean; next: boolean }) {
 	const focused: string[] = [];
