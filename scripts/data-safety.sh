@@ -11,6 +11,9 @@ ALLOW_FILES='^contract/fixtures/[a-z0-9.-]+\.sqlite$|^e2e/evidence\.ts$'
 FILE_RE='\.(db|sqlite3?|db-wal|db-shm|wav|mp3|m4a|aac|ogg|webm|mov|mp4|har)$|(^|/)evidence[^/]*\.json$'
 EMAIL_RE='[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}'
 SAFE_DOMAIN='@([a-z0-9.-]*example\.(com|org|net|test)|[a-z]\.(com|test)|localhost|users\.noreply\.github\.com)$'
+# A Playwright trace's action log names its screenshot resources like
+# "page@<hex>.jpeg", which EMAIL_RE reads as an address. An asset suffix is not a domain.
+ASSET_SUFFIX='\.(jpeg|jpg|png|webp|gif|svg|json|js|css|html|woff2?|ttf|zip|map|ts|tsx|mjs|cjs)$'
 
 mode="${1:-}"; shift || true
 case "$mode" in
@@ -40,7 +43,7 @@ case "$mode" in
           *.zip) src() { unzip -p "$f" 2>/dev/null | grep -aEoh "$EMAIL_RE" || true; } ;;
           *)     src() { grep -IEoh "$EMAIL_RE" "$f" 2>/dev/null || true; } ;;
         esac
-        n=$(src | { grep -Eiv "$SAFE_DOMAIN" || true; } | wc -l | tr -d ' ')
+        n=$(src | { grep -Eiv "$SAFE_DOMAIN" || true; } | { grep -Eiv "$ASSET_SUFFIX" || true; } | wc -l | tr -d ' ')
         if [ "$n" -gt 0 ]; then echo "$f: $n non-synthetic address(es)"; hits=$((hits+n)); fi
       done < <(find "$d" -type f)
     done
