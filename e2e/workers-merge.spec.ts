@@ -3,6 +3,11 @@ import { openWorkersTable } from './workers-table-page.ts';
 
 const rows = (page: import('@playwright/test').Page) => page.locator('tbody tr[data-worker-id]');
 
+// The merge Undo snapshot lives on the server, one per database, and a merge replaces it.
+// The regular suite runs two workers, so these two tests would clobber each other's snapshot
+// and one Undo would answer merge_undo_expired (#105). Run them one at a time.
+test.describe.configure({ mode: 'serial' });
+
 test('Merge is offered for exactly two selected workers and works from the keyboard, then Undo restores both', async ({
 	page,
 	request
@@ -47,7 +52,16 @@ test('Merge is offered for exactly two selected workers and works from the keybo
 	await expect(page.getByText(/^Merged .+ into .+$/)).toBeVisible();
 	await expect(rows(page)).toHaveCount(7);
 
-	await page.getByRole('button', { name: 'Undo' }).click();
+	// WebKit can press Undo before the status line has settled, so the click lands on
+	// nothing and the merge stays. Wait for the control, press it, and let the "Undone"
+	// message prove the press registered before counting the restored rows (#105).
+	const statusLine = page.getByTestId('status-line');
+	const undo = statusLine.getByRole('button', { name: 'Undo', exact: true });
+	await expect(statusLine).toHaveAttribute('data-empty', 'false');
+	await expect(undo).toBeVisible();
+	await expect(undo).toBeEnabled();
+	await undo.click();
+	await expect(statusLine).toContainText('Undone');
 	await expect(rows(page)).toHaveCount(8);
 	await expect(page.getByRole('checkbox', { name: 'Select Ada Lovelace' })).toBeVisible();
 	await expect(page.getByRole('checkbox', { name: 'Select Grace Hopper' })).toBeVisible();
