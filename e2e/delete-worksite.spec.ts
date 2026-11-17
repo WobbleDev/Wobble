@@ -1,7 +1,8 @@
-import type { APIRequestContext, BrowserContext, Locator, Page } from '@playwright/test';
+import type { BrowserContext, Locator, Page } from '@playwright/test';
 import { appReady } from './page-ready.ts';
 import { expect, test } from './fixtures.ts';
 import { wireDefinitions, wireWorkerAttributes } from './answer-wire.ts';
+import { activeWorksiteHeaderName } from './api.ts';
 
 const deleteWorksiteButton = 'Delete Worksite';
 
@@ -10,10 +11,15 @@ type TestWorksite = { id: string; name: string };
 /**
  * DELETE /api/worksite acts on the Active Worksite and re-selects the earliest survivor, so
  * repeated deletes drain the database. A null `worksite` (or a 409) means the list is empty.
+ *
+ * The header is cleared first: a write whose `x-wobble-worksite` header names a Worksite that
+ * a previous delete removed is refused with a 409 instead of retargeted, so a header that goes
+ * stale on the first delete would stop the drain after one Worksite.
  */
-async function removeEveryWorksite(request: APIRequestContext): Promise<void> {
+async function removeEveryWorksite(context: BrowserContext): Promise<void> {
+	await context.setExtraHTTPHeaders({});
 	for (let guard = 0; guard < 50; guard += 1) {
-		const response = await request.delete('/api/worksite');
+		const response = await context.request.delete('/api/worksite');
 		if (response.status() === 409) return;
 		expect(response.status()).toBe(200);
 		if (((await response.json()) as { worksite: unknown }).worksite === null) return;
@@ -29,14 +35,16 @@ async function createWorksite(context: BrowserContext): Promise<TestWorksite> {
 	return ((await created.json()) as { worksite: TestWorksite }).worksite;
 }
 
+/** Selects the Worksite on the server, then makes every later request name it. */
 async function activateWorksite(context: BrowserContext, id: string): Promise<void> {
 	const selection = await context.request.put('/api/worksite/active', { data: { id } });
 	expect(selection.ok()).toBeTruthy();
+	await context.setExtraHTTPHeaders({ [activeWorksiteHeaderName]: id });
 }
 
 /** Leaves exactly one Worksite, selected in the browser context, and returns it. */
 async function createSoleWorksite(context: BrowserContext): Promise<TestWorksite> {
-	await removeEveryWorksite(context.request);
+	await removeEveryWorksite(context);
 	const worksite = await createWorksite(context);
 	await activateWorksite(context, worksite.id);
 
@@ -147,7 +155,7 @@ test.describe('Worksite deletion', () => {
 		page,
 		context
 	}) => {
-		await removeEveryWorksite(context.request);
+		await removeEveryWorksite(context);
 		const doomed = await createWorksite(context);
 		const survivor = await createWorksite(context);
 		await activateWorksite(context, doomed.id);
