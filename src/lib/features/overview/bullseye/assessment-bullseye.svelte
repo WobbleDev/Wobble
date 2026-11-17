@@ -3,7 +3,6 @@
 	import type { Worker } from '#lib/domain-vocabulary.ts';
 	import BullseyeChart from './bullseye-chart.svelte';
 	import TooltipCallout from './tooltip-callout.svelte';
-	import { m } from '#lib/paraglide/messages.js';
 	import { createTooltip } from './tooltip.svelte.ts';
 
 	let {
@@ -109,7 +108,6 @@
 
 		<TooltipCallout active={tooltip.active} />
 	</figure>
-	<p class="text-xs text-ink-2" data-bullseye-label>{m.overview_bullseye_label()}</p>
 </div>
 
 <style>

@@ -430,12 +430,6 @@
 					entranceAnimationState={isOverview ? overviewEntranceAnimation.state : 'idle'}
 					entranceAnimationElapsed={overviewEntranceAnimation.elapsed}
 				/>
-				<p
-					class="pointer-events-none absolute right-32 bottom-7 z-[4] text-xs text-ink-2"
-					data-bullseye-label
-				>
-					{m.overview_bullseye_label()}
-				</p>
 				<OverviewEdgeControl />
 			{/if}
 		</Sidebar.Inset>
