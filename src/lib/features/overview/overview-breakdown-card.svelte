@@ -4,8 +4,6 @@
 	import { m } from '#lib/paraglide/messages.js';
 	import GroupComparisonDialog from './group-comparison-dialog.svelte';
 	import GroupPager from './group-pager.svelte';
-	import type { createGroupJump } from './group-jump.svelte.ts';
-	import { frontierKey } from './overview-comparison.ts';
 	import { pct, type DashboardTheme } from './overview-dashboard-presentation.ts';
 	import type { createOverviewBreakdownCard } from './overview-breakdown-card.svelte.ts';
 	import type { createOverviewGrouping } from './overview-grouping.svelte.ts';
@@ -21,7 +19,6 @@
 		matrix,
 		worksiteTotal,
 		card,
-		groupJump,
 		theme,
 		palette
 	}: {
@@ -31,7 +28,6 @@
 		matrix: { columns: { id: string; text: string; count: number }[]; rows: AgitationMatrixRow[] };
 		worksiteTotal: number;
 		card: ReturnType<typeof createOverviewBreakdownCard>;
-		groupJump: ReturnType<typeof createGroupJump>;
 		theme: DashboardTheme;
 		palette: 'default' | 'colorblind';
 	} = $props();
@@ -71,20 +67,6 @@
 		{/if}
 		{#if attribute}
 			<div class="flex shrink-0 items-center gap-1">
-				<Select.Root
-					type="single"
-					value={groupJump.key ?? ''}
-					onValueChange={(next) => next && groupJump.jump(next)}
-				>
-					<Select.Trigger size="sm" aria-label={m.overview_jump_label()} data-group-jump
-						>{m.overview_jump_label()}</Select.Trigger
-					>
-					<Select.Content>
-						{#each groups as group (frontierKey(group))}
-							<Select.Item value={frontierKey(group)}>{group.value}</Select.Item>
-						{/each}
-					</Select.Content>
-				</Select.Root>
 				<GroupComparisonDialog {groups} {matrix} {worksiteTotal} />
 			</div>
 		{/if}

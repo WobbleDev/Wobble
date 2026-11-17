@@ -21,8 +21,6 @@
 		groupReadings,
 		supportReading
 	} from '#lib/features/overview/support-summary.ts';
-	import { createGroupJump } from '#lib/features/overview/group-jump.svelte.ts';
-	import { frontierKey } from '#lib/features/overview/overview-comparison.ts';
 	import { getLocale } from '#lib/paraglide/runtime.js';
 	import { overviewEntranceGuard } from '#lib/features/overview/overview-entrance-guard.svelte.ts';
 	import { overviewEntranceAnimationController } from '#lib/features/overview/overview-entrance-animation.svelte.ts';
@@ -88,22 +86,6 @@
 		allLabel: () => m.overview_dashboard_all()
 	});
 
-	/* Jump to group turns both pagers to the page holding one group, by stable key:
-	   the Support rows run by support and the matrix columns by configured order. */
-	const groupJump = createGroupJump({
-		pagers: () => [
-			{
-				pages: () =>
-					breakdown.paging.pages.map((rows) => rows.map((index) => frontierKey(groups[index]))),
-				goTo: (next) => breakdown.paging.goTo(next)
-			},
-			{
-				pages: () => agitations.pages.map((rows) => rows.map(frontierKey)),
-				goTo: (next) => agitations.paging.goTo(next)
-			}
-		]
-	});
-
 	/* The shell decides whether the bullseye is a chart backdrop behind the page or a
 	   chart drawn in the page here, where there is nothing to drag; it also holds
 	   the scale the wheel sets. */
@@ -163,7 +145,6 @@
 			{matrix}
 			worksiteTotal={workers.length}
 			card={breakdown}
-			{groupJump}
 			theme={rootState.theme}
 			palette={rootState.palette}
 		/>
