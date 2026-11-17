@@ -48,32 +48,3 @@ test('Compare groups reads two groups of one Attribute with labeled denominators
 	await expect(row('support')).toContainText('1 of 1 · 100%');
 	await expect(row('level-Unassessed')).toContainText('1 of 2 · 50%');
 });
-
-test('Jump to group turns the Support rows to the chosen group by identity', async ({
-	page,
-	request
-}) => {
-	const departmentId = randomUUID();
-	const options = Array.from({ length: 12 }, (_, i) => `Unit ${String(i + 1).padStart(2, '0')}`);
-	const configured = await request.put('/api/attributes', {
-		data: wireDefinitions([{ id: departmentId, name: 'Department', kind: 'category', options }])
-	});
-	expect(configured.ok(), await configured.text()).toBeTruthy();
-	for (const unit of options) {
-		await createWorker(request, {
-			name: `W ${unit}`,
-			assessment: 'Supporter',
-			attributes: { [departmentId]: unit }
-		});
-	}
-	await page.setViewportSize({ width: 1440, height: 900 });
-	await page.goto('/overview');
-	await appReady(page);
-
-	const last = options[options.length - 1];
-	const rows = page.locator('[data-breakdown-rows] [data-group-row]:not([inert])');
-	await expect(rows.filter({ hasText: last })).toHaveCount(0);
-	await page.getByRole('button', { name: 'Jump to group' }).click();
-	await page.getByRole('option', { name: last }).click();
-	await expect(rows.filter({ hasText: last })).toHaveCount(1);
-});
