@@ -50,6 +50,8 @@ test('a new value shows a greyed suggestion, typing makes it edited, and eleven 
 }) => {
 	const id = await seedDepartments(request, ['Kitchen']);
 	await openConfiguration(page);
+	// The short-code boxes carry a visible column header (#152).
+	await expect(page.getByTestId('abbreviation-header')).toHaveText('Abbreviation');
 	await addValue(page, 'Department', 'Customer Service');
 
 	const row = answerRow(page, 'Customer Service', 'Department');

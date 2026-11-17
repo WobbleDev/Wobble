@@ -25,6 +25,7 @@ test('the Configuration tab speaks Attributes', async ({ page }) => {
 	await expect(page.getByText('Scope', { exact: true })).toHaveCount(0);
 	// The one count column counts Workers, never assignments.
 	await expect(workerColumn(page).getByTestId('worker-count-header')).toHaveText('Workers');
+	await expect(workerColumn(page).getByTestId('abbreviation-header')).toHaveText('Abbreviation');
 	await expect(workerColumn(page).getByText(/assignment/i)).toHaveCount(0);
 });
 

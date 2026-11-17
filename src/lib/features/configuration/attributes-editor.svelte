@@ -218,7 +218,12 @@
 		aria-hidden="true"
 	>
 		<span></span>
-		<span class="key">{m.configuration_attribute_name()}</span>
+		<span class="flex min-w-0 items-center justify-between gap-2">
+			<span class="key min-w-0 truncate">{m.configuration_attribute_name()}</span>
+			<span class="key shrink-0 text-right whitespace-nowrap" data-testid="abbreviation-header"
+				>{m.configuration_column_abbreviation()}</span
+			>
+		</span>
 		<span class="key text-right leading-tight hyphens-auto" data-testid="worker-count-header"
 			>{m.configuration_column_workers()}</span
 		>
