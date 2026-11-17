@@ -399,7 +399,8 @@ test('hierarchy detail invalidates manual moves while worker and Attribute IDs s
 	await open(page, fixture, fixture.url.split('&sub=')[0]);
 	const before = await read(page);
 	const heading = Object.keys(before.headings)[0];
-	await dragFrom(page, await screenCentre(page, `[data-region-label="${heading}"]`), {
+	// The transparent rect behind the label is the press target: WebKit does not hit SVG text (#102).
+	await dragFrom(page, await screenCentre(page, `[data-region-label-hit="${heading}"]`), {
 		x: 40,
 		y: 30
 	});
