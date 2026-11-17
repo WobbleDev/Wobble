@@ -87,7 +87,9 @@ jobs:
         if: always()
         with:
           name: flake-hunt-results
-          path: test-results
+          path: |
+            test-results
+            hunt-report.json
           retention-days: 3
           if-no-files-found: ignore
       - if: steps.run.outcome == 'failure'

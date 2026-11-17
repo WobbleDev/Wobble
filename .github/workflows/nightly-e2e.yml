@@ -21,6 +21,10 @@ jobs:
       - run: npm ci
       - run: npx playwright install chromium
       - run: npm run test:e2e
+        env:
+          # e2e-all.sh writes every suite's results and traces under this directory; keep them
+          # inside the uploaded path instead of a temp dir the job cannot reach.
+          WOBBLE_E2E_RUN_DIR: test-results/run
       - name: Scan artifacts for non-synthetic emails
         if: always()
         run: scripts/data-safety.sh emails playwright-report test-results || { rm -rf playwright-report test-results; exit 1; }
@@ -53,6 +57,8 @@ jobs:
       # Turn it on so the Tab specs test the app, not the runner's default.
       - run: defaults write -g AppleKeyboardUIMode -int 3
       - run: npm run test:e2e:webkit
+        env:
+          WOBBLE_E2E_RUN_DIR: test-results/run
       - name: Scan artifacts for non-synthetic emails
         if: always()
         run: scripts/data-safety.sh emails playwright-report test-results || { rm -rf playwright-report test-results; exit 1; }
