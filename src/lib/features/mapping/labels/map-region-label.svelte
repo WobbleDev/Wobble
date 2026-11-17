@@ -15,6 +15,29 @@
 	const truncated = $derived(
 		region.displayLabel !== undefined && region.displayLabel !== region.label
 	);
+	/**
+	 * The label's box in map units. WebKit does not hit SVG text where Playwright
+	 * presses (#102), so a transparent rect behind the text takes the press. A
+	 * measured heading brings its own box; otherwise the box is the estimate the
+	 * placement already uses for it.
+	 */
+	const hit = $derived.by(() => {
+		const box = region.labelBox;
+		if (box) return { x: box.x, y: box.y, width: box.width, height: box.height };
+		const fontSize = screenFixed(headingFontPx, zoom);
+		const text = region.displayLabel ?? region.label;
+		const suffix = count !== undefined && region.displayCount !== false ? `  · ${count}` : '';
+		const width = [...(text + suffix)].length * fontSize * 0.72;
+		const { x, y, textAnchor } = region.labelAt;
+		const left = textAnchor === 'start' ? x : textAnchor === 'end' ? x - width : x - width / 2;
+		const pad = screenFixed(3, zoom);
+		return {
+			x: left - pad,
+			y: y - fontSize - pad,
+			width: width + pad * 2,
+			height: fontSize * 1.4
+		};
+	});
 </script>
 
 {#snippet text(local = false)}
@@ -50,6 +73,7 @@
 				>
 					<!-- A local origin gives WebKit a reliable SVG hit box and tooltip anchor. -->
 					<rect
+						data-region-label-hit={region.key}
 						x="-4"
 						y="-15"
 						width={region.labelBox?.width ?? 20}
@@ -63,5 +87,14 @@
 		<Tooltip.Content role="tooltip">{region.label}</Tooltip.Content>
 	</Tooltip.Root>
 {:else}
+	<!-- See `hit`: the text alone is not a press target in WebKit. -->
+	<rect
+		data-region-label-hit={region.key}
+		x={hit.x}
+		y={hit.y}
+		width={hit.width}
+		height={hit.height}
+		fill="transparent"
+	/>
 	{@render text()}
 {/if}
