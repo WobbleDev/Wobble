@@ -142,6 +142,7 @@
 	"configuration_move_row_detail_empty": "No saved Worker value or draft holds this branch. Its path changes from {previous} to {next}.",
 	"configuration_move_row_detail_kept": "{workers} affected; saved values and drafts keep their values. The path changes from {previous} to {next}.",
 	"configuration_move_root": "the root value",
+	"configuration_column_abbreviation": "Abbreviation",
 	"configuration_column_workers": "Workers",
 	"configuration_count_workers": [
 		{

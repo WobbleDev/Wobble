@@ -142,6 +142,7 @@
 	"configuration_move_row_detail_empty": "Ningún valor de Trabajador ni borrador guardados tienen esta rama. Su ruta cambia de {previous} a {next}.",
 	"configuration_move_row_detail_kept": "{workers} afectados; los valores guardados y los borradores conservan sus valores. La ruta cambia de {previous} a {next}.",
 	"configuration_move_root": "el valor raíz",
+	"configuration_column_abbreviation": "Abreviatura",
 	"configuration_column_workers": "Trabajadores",
 	"configuration_count_workers": [
 		{
