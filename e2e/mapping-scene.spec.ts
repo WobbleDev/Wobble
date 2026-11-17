@@ -247,10 +247,11 @@ test('Free: a dot drag moves that Worker, its name and its tie ends, and Reset o
 	await page.evaluate(() => new Promise((done) => requestAnimationFrame(() => done(null))));
 	const resting = await read(page);
 	expect(resting.dots).toEqual(after.dots);
-	expect(resting.names[id].x - resting.dots[id].x).toBeCloseTo(
-		after.names[id].x - after.dots[id].x,
-		6
-	);
+	// Reset reframes the whole map for the new window, so the name's map offset must change
+	// with the camera's zoom: a frozen name keeps its side and its screen gap from the dot's
+	// edge (map-frozen-names.spec.ts), not its map offset. Assert the side, as the card's
+	// refit above does.
+	expect(side(resting, id)).toEqual(side(after, id));
 	expect(resting.scene).toBe(before.scene);
 	expect(resting.manual).toBe('1');
 });
