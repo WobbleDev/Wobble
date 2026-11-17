@@ -1436,6 +1436,7 @@
 		data-scene-ready={sceneReady ? 'true' : undefined}
 		data-composition-chosen={settled.composition?.chosen}
 		data-composition-text={settled.composition?.textSource}
+		data-text-source={textSnapshot?.source}
 		data-composition-published={publishedReport.published ? 'true' : undefined}
 		data-layout-canvas={`${Math.round(layoutCanvas.width)}x${Math.round(layoutCanvas.height)}`}
 		data-composition-scale={settled.composition?.scale}

@@ -105,7 +105,8 @@ async function readDrawing(page: Page): Promise<DrawnGeometry> {
 		return {
 			scale: matrix.a,
 			chosen: surface.getAttribute('data-composition-chosen'),
-			textSource: surface.getAttribute('data-composition-text'),
+			textSource:
+				surface.getAttribute('data-composition-text') ?? surface.getAttribute('data-text-source'),
 			packetScale: Number(surface.getAttribute('data-composition-scale')) || null,
 			layoutCanvas: surface.getAttribute('data-layout-canvas'),
 			report: JSON.parse(surface.getAttribute('data-composition-report') ?? 'null'),
@@ -607,13 +608,14 @@ function nameSide(drawing: DrawnGeometry, name: DrawnGeometry['names'][number]):
 function expectRestingNamesKept(before: DrawnGeometry, after: DrawnGeometry, when: string) {
 	for (const name of before.names) {
 		const now = after.names.find((entry) => entry.id === name.id);
-		expect(now, `${when}: ${name.text} is still drawn`).toBeDefined();
-		expect(nameSide(after, now!), `${when}: ${name.text} keeps its side`).toBe(
+		const source = ` (text ${before.textSource} -> ${after.textSource}, scale ${before.scale.toFixed(3)} -> ${after.scale.toFixed(3)})`;
+		expect(now, `${when}: ${name.text} is still drawn${source}`).toBeDefined();
+		expect(nameSide(after, now!), `${when}: ${name.text} keeps its side${source}`).toBe(
 			nameSide(before, name)
 		);
 		expect(
 			Math.abs(screenStandoff(after, now!) - screenStandoff(before, name)),
-			`${when}: ${name.text} keeps its screen gap`
+			`${when}: ${name.text} keeps its screen gap${source}`
 		).toBeLessThan(1.5);
 	}
 }
@@ -808,9 +810,14 @@ test('Free keeps every other name in place when a Worker is hovered in Isolate',
 	// Every name it keeps holds its place, and only non-neighbours may be hidden.
 	const others = new Map([...resting].filter(([id]) => id !== other));
 	const neighbours = neighboursOf(cliquesWorksite(), populated).get(other)!;
-	expect(expectNamesHeld(others, hovered, 'hovered', (id) => !neighbours.has(id))).toBeGreaterThan(
-		1
-	);
+	expect(
+		expectNamesHeld(
+			others,
+			hovered,
+			`hovered (text ${before.textSource} -> ${hovered.textSource}, scale ${before.scale.toFixed(3)} -> ${hovered.scale.toFixed(3)})`,
+			(id) => !neighbours.has(id)
+		)
+	).toBeGreaterThan(1);
 });
 
 /** Open the Filter panel and hide one answer of an Attribute. */
