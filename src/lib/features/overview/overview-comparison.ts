@@ -34,7 +34,7 @@ export function frontierKey(group: GroupPredicate): string {
 }
 
 /** The Attribute a frontier key belongs to. */
-export function frontierKeyAttribute(key: string): string | null {
+function frontierKeyAttribute(key: string): string | null {
 	const match = /^frontier:([^/]+)\//.exec(key);
 	return match ? match[1] : null;
 }

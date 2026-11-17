@@ -3,8 +3,8 @@ import type { AssessmentOption, Worker } from '#lib/domain-vocabulary.ts';
 import { worker as baseWorker } from '#lib/testing/builders.ts';
 import { bandLayout, ringLabelWedge } from './bullseye-bands.ts';
 import { plotWorkerGroups } from './bullseye-geometry.ts';
-import { CHART_CENTER, DOT_FOOTPRINT, type BandLayout, type RingNames } from './bullseye-shared.ts';
-import { plotRelationshipTies, tiePath } from './bullseye-ties.ts';
+import { CHART_CENTER, type BandLayout, type RingNames } from './bullseye-shared.ts';
+import { tiePath } from './bullseye-ties.ts';
 
 /** The en ring names the chart passes: the group labels of each drawn standing. */
 const EN_RING_NAMES: RingNames = {
@@ -44,106 +44,6 @@ function pairwiseMin(dots: { cx: number; cy: number }[]): number {
 }
 
 describe('bullseye-geometry', () => {
-	it('grows each tree from a Committee member out to the Hostile track', () => {
-		const workers = [
-			worker('L1', 'Leader', ['L2', 'A1', 'H1']),
-			worker('L2', 'Leader', ['L1']),
-			worker('A1', 'Activist', ['L1', 'S1']),
-			worker('S1', 'Supporter', ['A1', 'S2', 'D1']),
-			worker('S2', 'Supporter', ['S1']),
-			worker('D1', 'Disengaged', ['S1']),
-			worker('H1', 'Hostile', ['L1'])
-		];
-		const groups = plot(workers, bandLayout(counts(2, 1, 2, 1)));
-		const ties = plotRelationshipTies(workers, groups);
-		expect(ties.map(({ id }) => id)).toEqual(['A1--S1', 'L1--A1', 'L1--H1', 'S1--D1', 'S1--S2']);
-	});
-
-	it('hangs a worker known by two members off just one of them', () => {
-		const workers = [
-			worker('L1', 'Leader', ['A1', 'A2']),
-			worker('L2', 'Leader', ['A1']),
-			worker('A1', 'Activist', ['L1', 'L2']),
-			worker('A2', 'Activist', ['L1'])
-		];
-		const groups = plot(workers, bandLayout(counts(2, 2, 0, 0)));
-		const ties = plotRelationshipTies(workers, groups);
-		expect(ties.map(({ id }) => id)).toEqual(['L1--A1', 'L1--A2']);
-	});
-
-	it('never crosses two ties or runs one over a dot it does not join', () => {
-		// A dense worksite with branching trees, including chains along the Supporter row.
-		const workers: Worker[] = [];
-		const add = (id: string, assessment: Worker['assessment']) => {
-			workers.push(worker(id, assessment));
-		};
-		for (let i = 0; i < 6; i++) add(`L${i}`, 'Leader');
-		for (let i = 0; i < 12; i++) add(`A${i}`, 'Activist');
-		for (let i = 0; i < 16; i++) add(`S${i}`, 'Supporter');
-		for (let i = 0; i < 8; i++) add(`D${i}`, 'Disengaged');
-		const byId = new Map(workers.map((w) => [w.id, w]));
-		const relate = (a: string, b: string) => {
-			byId.get(a)!.relationships.push(b);
-			byId.get(b)!.relationships.push(a);
-		};
-		for (let i = 0; i < 12; i++) relate(`A${i}`, `L${i % 6}`);
-		for (let i = 0; i < 10; i++) relate(`S${i}`, `A${(i * 5) % 12}`);
-		for (let i = 10; i < 16; i++) relate(`S${i}`, `S${i - 4}`);
-		for (let i = 0; i < 8; i++) relate(`D${i}`, `S${i}`);
-		const groups = plot(workers, bandLayout(counts(6, 12, 16, 8)));
-		const ties = plotRelationshipTies(workers, groups);
-		const dots = groups.flatMap((group) => group.dots);
-		expect(ties).toHaveLength(36);
-
-		const points = (d: string) => {
-			const n = d.match(/-?[\d.]+/g)!.map(Number);
-			if (!d.includes('Q')) return [n.slice(0, 2), n.slice(2, 4)];
-			const [x0, y0, cx, cy, x1, y1] = n;
-			return Array.from({ length: 41 }, (_, i) => {
-				const t = i / 40;
-				return [
-					(1 - t) ** 2 * x0 + 2 * (1 - t) * t * cx + t * t * x1,
-					(1 - t) ** 2 * y0 + 2 * (1 - t) * t * cy + t * t * y1
-				];
-			});
-		};
-		const turn = (p: number[], q: number[], r: number[]) =>
-			Math.sign((q[0] - p[0]) * (r[1] - p[1]) - (q[1] - p[1]) * (r[0] - p[0]));
-		const crosses = (a: number[][], b: number[][]) =>
-			a
-				.slice(1)
-				.some((_, i) =>
-					b
-						.slice(1)
-						.some(
-							(_, j) =>
-								turn(a[i], a[i + 1], b[j]) !== turn(a[i], a[i + 1], b[j + 1]) &&
-								turn(b[j], b[j + 1], a[i]) !== turn(b[j], b[j + 1], a[i + 1])
-						)
-				);
-		const paths = ties.map((tie) => points(tie.d));
-		for (let i = 0; i < ties.length; i++) {
-			for (let j = i + 1; j < ties.length; j++) {
-				const ends = new Set([ties[i].from, ties[i].to]);
-				if (ends.has(ties[j].from) || ends.has(ties[j].to)) continue;
-				expect(crosses(paths[i], paths[j]), `${ties[i].id} × ${ties[j].id}`).toBe(false);
-			}
-			const along = paths[i]
-				.slice(1)
-				.flatMap((q, k) =>
-					Array.from({ length: 11 }, (_, s) => [
-						paths[i][k][0] + ((q[0] - paths[i][k][0]) * s) / 10,
-						paths[i][k][1] + ((q[1] - paths[i][k][1]) * s) / 10
-					])
-				);
-			for (const dot of dots) {
-				if (dot.worker.id === ties[i].from || dot.worker.id === ties[i].to) continue;
-				const nearest = Math.min(...along.map(([x, y]) => Math.hypot(x - dot.cx, y - dot.cy)));
-				expect(nearest, `${ties[i].id} over ${dot.worker.id}`).toBeGreaterThan(DOT_FOOTPRINT);
-			}
-		}
-	});
-
 	it('draws a straight tie that stops short of both dots', () => {
 		const d = tiePath({ cx: 128, cy: 30 }, { cx: 128, cy: 80 });
 		const [y1, y2] = [...d.matchAll(/128 ([\d.]+)/g)].map((m) => Number(m[1]));

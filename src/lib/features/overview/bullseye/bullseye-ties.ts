@@ -9,38 +9,8 @@ import {
 	TIE_SAMPLES,
 	TIE_BOWS,
 	MIN_PITCH,
-	type PlotAssessment,
-	type RelationshipTie,
-	type PlotGroup
+	type PlotAssessment
 } from './bullseye-shared.ts';
-
-/**
- * The drawn ties: one per branch of the Committee's reach tree, from the worker
- * a branch grows out of to the worker it reaches.
- */
-export function plotRelationshipTies(workers: Worker[], groups: PlotGroup[]): RelationshipTie[] {
-	const dots = new Map(
-		groups.flatMap((group) => group.dots.map((dot) => [dot.worker.id, dot] as const))
-	);
-	const everyDot = [...dots.values()];
-	const ties: RelationshipTie[] = [];
-	for (const [childId, parentId] of reachTree(workers)) {
-		const start = dots.get(parentId);
-		const end = dots.get(childId);
-		if (!start || !end) continue;
-		ties.push({
-			id: `${parentId}--${childId}`,
-			from: parentId,
-			to: childId,
-			x1: start.cx,
-			y1: start.cy,
-			x2: end.cx,
-			y2: end.cy,
-			d: tiePath(start, end, everyDot)
-		});
-	}
-	return ties.sort((a, b) => a.id.localeCompare(b.id));
-}
 
 /**
  * A tie is a hairline that stops short of both dots, so it reads as a spoke
