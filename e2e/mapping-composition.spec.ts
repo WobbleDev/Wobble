@@ -627,6 +627,8 @@ for (const { slug, worksite } of nearFixtures) {
 	}) => {
 		await populateWorksite(request, worksite);
 		await openMapping(page, viewports.wide, undefined);
+		// The first fit can settle after map-ready: read only once the scene and camera have.
+		await waitForSceneReady(page);
 		const before = await settled(() => readDrawing(page));
 
 		const zoomIn = page.getByRole('button', { name: 'Zoom in' });
@@ -797,6 +799,8 @@ test('Free keeps every other name in place when a Worker is hovered in Isolate',
 		.getByRole('button', { name: 'Isolate' });
 	await isolate.click();
 	await expect(isolate).toHaveAttribute('aria-pressed', 'true');
+	// Isolate eases to its 1x frame; the hover reads must start from the landed camera.
+	await waitForSceneReady(page);
 	const before = await settled(() => readDrawing(page));
 	const resting = nameBoxes(before);
 	expect(resting.size, 'the Isolate names its neighbourhood').toBeGreaterThan(1);
@@ -804,6 +808,7 @@ test('Free keeps every other name in place when a Worker is hovered in Isolate',
 	const point = await centre(page, other);
 	await page.mouse.move(point.x, point.y);
 	await expect(page.locator(`[data-node-label="${other}"]`)).toBeVisible();
+	await waitForSceneReady(page);
 	const hovered = await settled(() => readDrawing(page));
 
 	// Isolate names every drawn Worker; the hover's spotlight still hides non-neighbours.
