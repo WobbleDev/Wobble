@@ -29,6 +29,49 @@ async function seed(request: import('@playwright/test').APIRequestContext) {
 	}
 }
 
+async function settleLayout(page: import('@playwright/test').Page) {
+	await page.evaluate(() => document.fonts?.ready ?? Promise.resolve());
+	await page.evaluate(
+		() =>
+			new Promise<void>((resolve) =>
+				requestAnimationFrame(() => requestAnimationFrame(() => resolve()))
+			)
+	);
+}
+
+async function settledBox(locator: import('@playwright/test').Locator) {
+	const frames = () =>
+		locator.evaluate(
+			() =>
+				new Promise<void>((resolve) =>
+					requestAnimationFrame(() => requestAnimationFrame(() => resolve()))
+				)
+		);
+	let previous: { x: number; y: number; width: number; height: number } | null = null;
+	let last: { x: number; y: number; width: number; height: number } | null = null;
+	for (let attempt = 0; attempt < 10; attempt++) {
+		const box = await locator.boundingBox();
+		if (!box) {
+			previous = null;
+			await frames();
+			continue;
+		}
+		last = box;
+		if (
+			previous &&
+			Math.abs(previous.x - box.x) <= 0.5 &&
+			Math.abs(previous.y - box.y) <= 0.5 &&
+			Math.abs(previous.width - box.width) <= 0.5 &&
+			Math.abs(previous.height - box.height) <= 0.5
+		) {
+			return box;
+		}
+		previous = box;
+		await frames();
+	}
+	return last!;
+}
+
 for (const [width, textSize] of [
 	[320, '100'],
 	[375, '100'],
@@ -44,11 +87,12 @@ for (const [width, textSize] of [
 		await page.goto('/workers');
 		await appReady(page);
 		await page.evaluate((size) => (document.documentElement.dataset.textSize = size), textSize);
+		await settleLayout(page);
 
 		const search = page.locator('[data-worker-search]');
 		const newWorker = page.locator('[data-new-worker-trigger]');
 		await expect(search).toBeVisible();
-		const [s, n] = await Promise.all([search.boundingBox(), newWorker.boundingBox()]);
+		const [s, n] = await Promise.all([settledBox(search), settledBox(newWorker)]);
 		expect(s!.x).toBeGreaterThanOrEqual(0);
 		expect(s!.x + s!.width).toBeLessThanOrEqual(width);
 		expect(s!.y).toBeGreaterThanOrEqual(n!.y + n!.height - 1);
@@ -57,10 +101,14 @@ for (const [width, textSize] of [
 
 		await search.fill('Worker 01');
 		await expect(page.getByTestId('worker-count')).toBeVisible();
-		const overflow = await page.evaluate(
-			() => document.documentElement.scrollWidth - document.documentElement.clientWidth
-		);
-		expect(overflow).toBeLessThanOrEqual(0);
+		// The filtered layout can settle a frame or two after the count appears.
+		await expect
+			.poll(() =>
+				page.evaluate(
+					() => document.documentElement.scrollWidth - document.documentElement.clientWidth
+				)
+			)
+			.toBeLessThanOrEqual(0);
 	});
 }
 
