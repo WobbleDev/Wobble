@@ -537,6 +537,24 @@ async function pointerPlace(page: Page, sourcePath: string, parentId: string): P
 	}
 }
 
+/** Reads the region's scrollTop once two readings 100 ms apart agree: the drag's auto-scroll has stopped. */
+async function settledScrollTop(region: Locator) {
+	let previous: number | undefined;
+	let latest = 0;
+	await expect
+		.poll(
+			async () => {
+				latest = await region.evaluate((element) => (element as HTMLElement).scrollTop);
+				const stable = latest === previous;
+				previous = latest;
+				return stable;
+			},
+			{ intervals: [100], message: 'the outline scroll never settled' }
+		)
+		.toBe(true);
+	return latest;
+}
+
 async function beginTouchDrag(page: Page, from: { x: number; y: number }) {
 	const cdp = await page.context().newCDPSession(page);
 	await cdp.send('Input.dispatchTouchEvent', {
@@ -739,13 +757,7 @@ test.describe('touch placement in long Attribute outlines', () => {
 			y: regionBox.y + regionBox.height / 2
 		};
 		await drag.move(scrollStopPoint);
-		await page.evaluate(
-			() =>
-				new Promise<void>((resolve) =>
-					requestAnimationFrame(() => requestAnimationFrame(() => resolve()))
-				)
-		);
-		const stoppedAt = await region.evaluate((element) => (element as HTMLElement).scrollTop);
+		const stoppedAt = await settledScrollTop(region);
 		const currentDestinationBox = (await destination.boundingBox())!;
 		const currentDestinationPoint = {
 			x: currentDestinationBox.x + currentDestinationBox.width / 2,
