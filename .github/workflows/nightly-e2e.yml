@@ -10,6 +10,10 @@ jobs:
   e2e:
     runs-on: macos-latest
     timeout-minutes: 90
+    # The last step files an issue per failed spec with this token.
+    permissions:
+      contents: read
+      issues: write
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
@@ -46,12 +50,25 @@ jobs:
           path: e2e-reports
           if-no-files-found: ignore
           retention-days: 3
+      # One issue per failed spec, deduped by its title marker, so a nightly failure is
+      # visible without reading a log that expires. The issue carries the spec path and the
+      # run link only: the same text reports, never a trace or a screenshot.
+      - name: File one issue per failed spec
+        if: failure()
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NIGHTLY_JOB: chromium
+        run: node scripts/nightly-flake-issues.mjs e2e-reports
   # The Mac app renders in WebKit (WKWebView), so a Chromium-only run does not prove it looks
   # right. Own job so a WebKit failure shows up on its own and never hides the Chromium result.
   # Only the regular suite runs on WebKit; the state-owning suites stay Chromium-only.
   webkit:
     runs-on: macos-latest
     timeout-minutes: 90
+    # The last step files an issue per failed spec with this token.
+    permissions:
+      contents: read
+      issues: write
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
@@ -87,3 +104,9 @@ jobs:
           path: e2e-reports
           if-no-files-found: ignore
           retention-days: 3
+      - name: File one issue per failed spec
+        if: failure()
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NIGHTLY_JOB: webkit
+        run: node scripts/nightly-flake-issues.mjs e2e-reports
