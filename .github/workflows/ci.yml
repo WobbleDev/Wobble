@@ -140,7 +140,8 @@ jobs:
       - run: npx playwright install chromium
       - name: Run e2e
         env:
-          # Keep results and traces inside the uploaded path; e2e-all.sh otherwise uses a temp dir.
+          # Write every suite's results under one directory so the JSON reports can be collected;
+          # e2e-all.sh otherwise uses a temp dir. Traces and screenshots stay on the runner.
           WOBBLE_E2E_RUN_DIR: test-results/run
         run: |
           if [ "${{ needs.changes.outputs.e2e_full }}" = "true" ]; then
@@ -149,16 +150,24 @@ jobs:
             # The areas the changed paths belong to (and nothing else); the nightly run is the full set.
             node scripts/verify.mjs --e2e-only --base HEAD^1
           fi
-      # A failed run is only diagnosable with its traces, so keep them for a few days.
-      - name: Scan artifacts for non-synthetic emails
+      # A PR's artifacts are public. Traces and screenshots can show the app's screen, network
+      # bodies and DOM, which the email scan cannot vet, so only each suite's text report leaves
+      # the runner: the JSON report with its attachment lists removed.
+      - name: Collect text reports
         if: failure()
-        run: scripts/data-safety.sh emails playwright-report test-results || { rm -rf playwright-report test-results; exit 1; }
+        run: |
+          mkdir -p e2e-reports
+          for f in test-results/run/*/results.json; do
+            [ -e "$f" ] || continue
+            jq 'walk(if type == "object" and has("attachments") then .attachments = [] else . end)' "$f" > "e2e-reports/$(basename "$(dirname "$f")").json" || true
+          done
+      - name: Scan reports for non-synthetic emails
+        if: failure()
+        run: scripts/data-safety.sh emails e2e-reports || { rm -rf e2e-reports; exit 1; }
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: failure()
         with:
-          name: e2e-evidence
-          path: |
-            playwright-report
-            test-results
+          name: e2e-report
+          path: e2e-reports
           retention-days: 3
           if-no-files-found: ignore
