@@ -636,12 +636,25 @@ for (const { slug, worksite } of nearFixtures) {
 		const beforeZoom = await cameraRevision(page);
 		for (let step = 0; step < 2; step += 1) await page.keyboard.press('Enter');
 		await waitForSceneReady(page, { cameraAfter: beforeZoom });
+		// The Enter handlers can schedule the zoom after the readiness check: wait for the two
+		// zooms to have actually scaled the drawing before resetting. Two 1.3 steps are 1.69.
+		await expect
+			.poll(async () => (await readDrawing(page)).scale, {
+				message: 'the two zoom steps scaled the drawing'
+			})
+			.toBeGreaterThan(before.scale * 1.5);
 		await settled(() => readDrawing(page));
 		await page.getByRole('button', { name: 'Reset zoom' }).focus();
 		const beforeReset = await cameraRevision(page);
 		await page.keyboard.press('Enter');
-		// The reset glides back; read only once the camera has landed, not after two equal frames.
+		// The reset glides back to the framing it was fitted at: wait for that scale, not just
+		// for a camera revision bump (a late zoom step can bump it too).
 		await waitForSceneReady(page, { cameraAfter: beforeReset });
+		await expect
+			.poll(async () => (await readDrawing(page)).scale, {
+				message: 'the reset returned to the fitted framing'
+			})
+			.toBeCloseTo(before.scale, 2);
 		const after = await settled(() => readDrawing(page));
 
 		// The refit lands on the same framing; a name only moves if its kept spot is
