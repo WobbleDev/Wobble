@@ -80,16 +80,24 @@ jobs:
           console.log(line);
           fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, line + "\n");
           JS
-      - name: Scan artifacts for non-synthetic emails
+      # The repo is public, so its artifacts are too. Traces and screenshots can show the app's
+      # screen, network bodies and DOM, which the email scan cannot vet: only the text report
+      # leaves the runner, with its attachment lists removed.
+      - name: Collect text report
         if: always()
-        run: scripts/data-safety.sh emails playwright-report test-results || { rm -rf playwright-report test-results; exit 1; }
+        run: |
+          mkdir -p e2e-reports
+          if [ -f hunt-report.json ]; then
+            jq 'walk(if type == "object" and has("attachments") then .attachments = [] else . end)' hunt-report.json > e2e-reports/hunt-report.json || true
+          fi
+      - name: Scan report for non-synthetic emails
+        if: always()
+        run: scripts/data-safety.sh emails e2e-reports || { rm -rf e2e-reports; exit 1; }
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: always()
         with:
           name: flake-hunt-results
-          path: |
-            test-results
-            hunt-report.json
+          path: e2e-reports
           retention-days: 3
           if-no-files-found: ignore
       - if: steps.run.outcome == 'failure'
