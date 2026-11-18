@@ -9,7 +9,7 @@ use common::legacy_db::{
     add_assignment_draft, add_attribute, add_saved_assignment, add_worker, add_worksite, count,
     finish_source, raw_version, set_value, start_source, start_source_at,
 };
-use common::remove_database;
+use common::{remove_database, upgrade_backups_beside};
 use rusqlite::{Connection, OpenFlags};
 use serde_json::json;
 use wobble_core::db::Db;
@@ -28,31 +28,6 @@ fn current_app(path: &str) -> App {
 }
 
 const WS: &str = "ws-upgrade";
-
-/// Every `pre-upgrade` sibling of the database, whatever version and stamp it names.
-fn upgrade_backups_beside(path: &str) -> Vec<PathBuf> {
-    let database = Path::new(path);
-    let prefix = format!(
-        "{}.pre-upgrade-",
-        database
-            .file_name()
-            .expect("a database file name")
-            .to_string_lossy()
-    );
-    let mut found: Vec<PathBuf> = std::fs::read_dir(database.parent().expect("a parent directory"))
-        .expect("reads the database's folder")
-        .filter_map(|entry| entry.ok())
-        .map(|entry| entry.path())
-        .filter(|entry| {
-            entry
-                .file_name()
-                .map(|name| name.to_string_lossy().starts_with(&prefix))
-                .unwrap_or(false)
-        })
-        .collect();
-    found.sort();
-    found
-}
 
 fn remove_backups(paths: &[PathBuf]) {
     for path in paths {
@@ -576,4 +551,41 @@ fn a_successful_restore_keeps_its_sequence_and_writes_no_staging_backup() {
     remove_database(&target);
     remove_database(&source);
     let _ = std::fs::remove_dir_all(&dir);
+}
+
+/// The keyed path an upgraded installation takes: the backup is written through the keyed
+/// export, so it must reopen under the same credential and refuse another one.
+#[test]
+fn a_keyed_upgrade_writes_one_backup_that_opens_under_the_same_key() {
+    let installation = installation_key();
+    let path = common::keyed_v20_source("upgrade-backup", "keyed", &installation);
+
+    let db = Db::open_keyed(&path, Some(&installation)).expect("the keyed v20 database upgrades");
+    assert_eq!(raw_version(db.conn()), Some(CURRENT_SCHEMA_VERSION));
+
+    let backups = upgrade_backups_beside(&path);
+    assert_eq!(
+        backups.len(),
+        1,
+        "exactly one keyed upgrade backup: {backups:?}"
+    );
+    let backup = &backups[0];
+    let (version, worksites) = wobble_core::key::verify_copy_keyed(backup, Some(&installation))
+        .expect("the keyed backup reopens and verifies under the same key");
+    assert_eq!(
+        version,
+        Some(20),
+        "the backup keeps the incoming schema version"
+    );
+    assert_eq!(worksites, 1, "the backup carries the incoming Worksite");
+    let other =
+        wobble_core::key::Secret::from_passphrase("a different installation fixture").unwrap();
+    assert!(
+        wobble_core::key::verify_copy_keyed(backup, Some(&other)).is_err(),
+        "another key does not open the backup"
+    );
+
+    drop(db);
+    remove_backups(&backups);
+    remove_database(&path);
 }
