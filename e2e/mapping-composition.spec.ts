@@ -878,6 +878,13 @@ test('Free places names anew when a filter changes the map', async ({ page, requ
 	const beforeZoom = await cameraRevision(page);
 	for (let step = 0; step < 3; step += 1) await page.keyboard.press('Enter');
 	await waitForSceneReady(page, { cameraAfter: beforeZoom });
+	// The Enter handlers can schedule a zoom after the readiness check: wait for the three
+	// zooms to have actually scaled the drawing before reading it. Three 1.3 steps are 2.2.
+	await expect
+		.poll(async () => (await readDrawing(page)).scale, {
+			message: 'the three zoom steps scaled the drawing'
+		})
+		.toBeGreaterThan(filtered.scale * 1.5);
 	const zoomed = await settled(() => readDrawing(page));
 	await hideFilterValue(page, /^Department/, 'D1');
 	const after = await settled(() => readDrawing(page));
