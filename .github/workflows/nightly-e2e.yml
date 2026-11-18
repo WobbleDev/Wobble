@@ -22,19 +22,28 @@ jobs:
       - run: npx playwright install chromium
       - run: npm run test:e2e
         env:
-          # e2e-all.sh writes every suite's results and traces under this directory; keep them
-          # inside the uploaded path instead of a temp dir the job cannot reach.
+          # e2e-all.sh writes every suite's results under this directory so the JSON reports can
+          # be collected. Traces and screenshots stay on the runner.
           WOBBLE_E2E_RUN_DIR: test-results/run
-      - name: Scan artifacts for non-synthetic emails
-        if: always()
-        run: scripts/data-safety.sh emails playwright-report test-results || { rm -rf playwright-report test-results; exit 1; }
+      # The repo is public, so its artifacts are too. Traces and screenshots can show the app's
+      # screen, network bodies and DOM, which the email scan cannot vet: only each suite's text
+      # report leaves the runner, with its attachment lists removed.
+      - name: Collect text reports
+        if: failure()
+        run: |
+          mkdir -p e2e-reports
+          for f in test-results/run/*/results.json; do
+            [ -e "$f" ] || continue
+            jq 'walk(if type == "object" and has("attachments") then .attachments = [] else . end)' "$f" > "e2e-reports/$(basename "$(dirname "$f")").json" || true
+          done
+      - name: Scan reports for non-synthetic emails
+        if: failure()
+        run: scripts/data-safety.sh emails e2e-reports || { rm -rf e2e-reports; exit 1; }
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: failure()
         with:
-          name: playwright-report
-          path: |
-            playwright-report
-            test-results
+          name: e2e-report
+          path: e2e-reports
           if-no-files-found: ignore
           retention-days: 3
   # The Mac app renders in WebKit (WKWebView), so a Chromium-only run does not prove it looks
@@ -59,15 +68,22 @@ jobs:
       - run: npm run test:e2e:webkit
         env:
           WOBBLE_E2E_RUN_DIR: test-results/run
-      - name: Scan artifacts for non-synthetic emails
-        if: always()
-        run: scripts/data-safety.sh emails playwright-report test-results || { rm -rf playwright-report test-results; exit 1; }
+      # Text reports only; see the Chromium job.
+      - name: Collect text reports
+        if: failure()
+        run: |
+          mkdir -p e2e-reports
+          for f in test-results/run/*/results.json; do
+            [ -e "$f" ] || continue
+            jq 'walk(if type == "object" and has("attachments") then .attachments = [] else . end)' "$f" > "e2e-reports/$(basename "$(dirname "$f")").json" || true
+          done
+      - name: Scan reports for non-synthetic emails
+        if: failure()
+        run: scripts/data-safety.sh emails e2e-reports || { rm -rf e2e-reports; exit 1; }
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: failure()
         with:
-          name: playwright-report-webkit
-          path: |
-            playwright-report
-            test-results
+          name: e2e-report-webkit
+          path: e2e-reports
           if-no-files-found: ignore
           retention-days: 3
