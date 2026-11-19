@@ -16,7 +16,7 @@
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import type { PersonPartition } from '#lib/shared/workers/person-state.svelte.ts';
-	import { cohortExhausted, cohortPosition } from './filters/worker-cohort.ts';
+	import { createRecordCohort } from './record/record-cohort.svelte.ts';
 	import { filterParamsKey } from './filters/url-filters.svelte.ts';
 	import DataTableRow from './rows/row.svelte';
 	import RecordPanel from '../record-panel/record-panel.svelte';
@@ -290,7 +290,7 @@
 		currentColumnId: () => effectiveActive?.columnId ?? 'name',
 		select: (workerId) => {
 			person.workersSelectedId = workerId;
-			captureCohort({ workerId, columnId: effectiveActive?.columnId ?? 'name' });
+			record.capture({ workerId, columnId: effectiveActive?.columnId ?? 'name' });
 		},
 		activate: activateCell
 	});
@@ -318,7 +318,7 @@
 		const id = person.workersSelectedId;
 		const origin = person.workersReturn?.sourceFocus?.workerId ?? null;
 		if (newWorker) cancelNewWorker();
-		else dropRecord();
+		else record.drop();
 		if (id === null) return;
 		void tick().then(() => {
 			const find = (workerId: string | null) =>
@@ -473,60 +473,6 @@
 		summaryMode = mobileViewport.current;
 		sheetRequested = mobileViewport.current;
 	}
-	const selectedRow = $derived(
-		person.workersSelectedId === null
-			? undefined
-			: rows.find((row) => row.id === person.workersSelectedId)
-	);
-
-	/**
-	 * A Worker created while the list could not refresh: the record stays open on the
-	 * stored Worker until the table's data carries it.
-	 */
-	let createdFallback = $state<Worker | null>(null);
-	/**
-	 * The open record, resolved against every Worker, not the filtered rows: a Worker
-	 * created or edited out of the filters stays open, with a note.
-	 */
-	const selectedWorker = $derived.by(() => {
-		const id = person.workersSelectedId;
-		if (id === null) return undefined;
-		return (
-			data.find((worker) => worker.id === id) ??
-			(createdFallback?.id === id ? createdFallback : undefined)
-		);
-	});
-	const outsideFilters = $derived(!!selectedWorker && !selectedRow);
-
-	const liveIds = $derived(new Set(data.map((worker) => worker.id)));
-	const isLive = (id: string) => liveIds.has(id) || createdFallback?.id === id;
-	const cohortAt = $derived(cohortPosition(person.workersCohort, person.workersSelectedId, isLive));
-	/** Every Worker of the list the record was opened from is gone: the card shows a way back. */
-	const cohortEmpty = $derived(
-		person.workersSelectedId === null && cohortExhausted(person.workersCohort, isLive)
-	);
-
-	function currentFiltersHash() {
-		return filterParamsKey(new URLSearchParams(window.location.search));
-	}
-
-	/** Snapshots the rows now as the cohort Previous and Next walk, and where closing returns to. */
-	function captureCohort(sourceFocus: { workerId: string; columnId: string } | null) {
-		person.workersCohort = rows.map((row) => row.id);
-		person.workersReturn = {
-			sourceRoute: 'workers',
-			sourceFocus,
-			returnFiltersHash: currentFiltersHash()
-		};
-	}
-
-	/** Drops the open record and its cohort; the return context goes with them. */
-	function dropRecord() {
-		person.workersSelectedId = null;
-		person.workersCohort = [];
-		person.workersReturn = null;
-	}
-
 	/** Focus into the open record's heading, where a cohort step lands. */
 	async function focusRecordHeading() {
 		await tick();
@@ -535,35 +481,26 @@
 			?.focus();
 	}
 
-	/** Previous or Next: save what is typed first; a refused save keeps the record and its input. */
-	async function stepCohort(direction: -1 | 1) {
-		const target = direction < 0 ? cohortAt.previousId : cohortAt.nextId;
-		if (target === null) return;
-		if (!(await editModel.flushDrafts())) return;
-		person.workersSelectedId = target;
-		sheetRequested = mobileViewport.current;
-		const index = rows.findIndex((row) => row.id === target);
-		if (index >= 0) virtualization.scrollToIndex(index);
-		await focusRecordHeading();
+	function currentFiltersHash() {
+		return filterParamsKey(new URLSearchParams(window.location.search));
 	}
 
-	/** The way back from the record: closes it and puts focus where the organizer came from. */
-	const cohort = $derived({
-		position: cohortAt.position,
-		total: cohortAt.total,
-		hasPrevious: cohortAt.previousId !== null,
-		hasNext: cohortAt.nextId !== null,
-		outsideFilters,
-		empty: cohortEmpty,
-		onPrevious: () => void stepCohort(-1),
-		onNext: () => void stepCohort(1),
-		onReturn: returnToList
+	/**
+	 * The open record's cohort: which Worker is open, the rows it was opened from, where
+	 * Previous and Next walk, and where closing returns focus.
+	 */
+	const record = createRecordCohort({
+		person: () => person,
+		rows: () => rows,
+		data: () => data,
+		flushDrafts: () => editModel.flushDrafts(),
+		scrollToRow: (index) => virtualization.scrollToIndex(index),
+		isMobile: () => mobileViewport.current,
+		setSheet: (open) => (sheetRequested = open),
+		focusHeading: focusRecordHeading,
+		closeRecord: closeRecordPanel,
+		filtersHash: currentFiltersHash
 	});
-
-	function returnToList() {
-		sheetRequested = false;
-		closeRecordPanel();
-	}
 
 	/** What a screen reader hears when a deliberate filter or sort change rebuilds the list. */
 	let cohortNotice = $state('');
@@ -622,11 +559,11 @@
 	 */
 	let recordNotice = $state('');
 	$effect(() => {
-		if (mobileViewport.current || !selectedWorker) {
+		if (mobileViewport.current || !record.selectedWorker) {
 			recordNotice = '';
 			return;
 		}
-		recordNotice = m.workers_panel_details_named({ name: selectedWorker.name });
+		recordNotice = m.workers_panel_details_named({ name: record.selectedWorker.name });
 	});
 
 	/** Checking a row closes the desktop card for good: the open Worker is dropped, not parked. */
@@ -634,7 +571,7 @@
 		if (!mobileViewport.current && selection.count > 0 && !newWorker)
 			person.workersSelectedId = null;
 	});
-	const cardOpen = $derived(!!newWorker || !!selectedWorker || cohortEmpty);
+	const cardOpen = $derived(!!newWorker || !!record.selectedWorker || record.cohortEmpty);
 
 	/** What the desktop card last showed; the outro keeps showing it once the selection is gone. */
 	let heldCard = $state<{
@@ -645,7 +582,7 @@
 	$effect.pre(() => {
 		if (cardOpen) {
 			heldCard = {
-				worker: newWorker ? null : (selectedWorker ?? null),
+				worker: newWorker ? null : (record.selectedWorker ?? null),
 				creating: !!newWorker,
 				checkedCount: 0
 			};
@@ -678,7 +615,7 @@
 	async function onOpenRow(workerId: string): Promise<boolean> {
 		const opened = await onSelectWorker(workerId);
 		if (opened) {
-			captureCohort({ workerId, columnId: effectiveActive?.columnId ?? 'name' });
+			record.capture({ workerId, columnId: effectiveActive?.columnId ?? 'name' });
 		}
 		return opened;
 	}
@@ -723,11 +660,11 @@
 		} catch {
 			// The Worker exists; the next reload shows it.
 			refreshed = false;
-			createdFallback = created;
+			record.rememberCreated(created);
 		}
 		await tick();
 		person.workersSelectedId = created.id;
-		captureCohort(null);
+		record.capture(null);
 		sheetRequested = mobileViewport.current;
 		newWorker = null;
 		// Undo is bound to this Worker by value (ticket 25).
@@ -761,9 +698,9 @@
 
 	// The open record stays open through filters; it closes only when the Worker is gone.
 	$effect(() => {
-		if (createdFallback && data.some((worker) => worker.id === createdFallback!.id))
-			createdFallback = null;
-		if (person.workersSelectedId !== null && !selectedWorker) person.workersSelectedId = null;
+		record.forgetListed();
+		if (person.workersSelectedId !== null && !record.selectedWorker)
+			person.workersSelectedId = null;
 	});
 
 	const renderItems = $derived.by(() => {
@@ -1090,7 +1027,7 @@
 					onAddAnother={() => void beginNewWorker()}
 					{onShowOnMapping}
 					{onSelectWorker}
-					{cohort}
+					cohort={record.cohort}
 					{onUpdateField}
 					{onUpdateAssessment}
 					{onUpdateAttribute}
@@ -1116,7 +1053,7 @@
 {#if mobileViewport.current}
 	<RecordPanel
 		presentation="sheet"
-		worker={newWorker || !sheetRequested || summaryMode ? null : (selectedWorker ?? null)}
+		worker={newWorker || !sheetRequested || summaryMode ? null : (record.selectedWorker ?? null)}
 		checkedCount={summaryMode ? selection.count : 0}
 		summaryOpen={summaryMode && sheetRequested && !newWorker}
 		creating={newWorker ? { onCreate: createNewWorker, onCancel: cancelNewWorker } : null}
@@ -1128,7 +1065,7 @@
 		onAddAnother={() => void beginNewWorker()}
 		{onShowOnMapping}
 		{onSelectWorker}
-		{cohort}
+		cohort={record.cohort}
 		{onUpdateField}
 		{onUpdateAssessment}
 		{onUpdateAttribute}
@@ -1149,7 +1086,7 @@
 		onClose={() => {
 			sheetRequested = false;
 			if (newWorker) cancelNewWorker();
-			else if (!summaryMode) dropRecord();
+			else if (!summaryMode) record.drop();
 		}}
 	/>
 {/if}
