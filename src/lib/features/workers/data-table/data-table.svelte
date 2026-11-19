@@ -39,9 +39,10 @@
 	import { createSavedViews } from '#lib/features/saved-views/saved-views.svelte.ts';
 	import SavedViewReviewDialog from '#lib/features/saved-views/saved-view-review-dialog.svelte';
 	import {
-		captureWorkersView,
-		workersViewToTable
-	} from '#lib/features/saved-views/workers-view-state.ts';
+		applyTableView,
+		captureTableView,
+		type WorkersTableViewPort
+	} from './views/table-view.ts';
 	import type {
 		Agitation,
 		AssessmentOption,
@@ -239,6 +240,21 @@
 	 * through the filter state below, while sort, columns and order are set here directly
 	 * and so reset to the table's defaults on reload. The Name search is never part of one.
 	 */
+	/** The table as a saved view reads and sets it: built per call, so it reads the state now. */
+	function tableViewPort(): WorkersTableViewPort {
+		const state = table.store.get();
+		return {
+			filterValue: (columnId) => table.getColumn(columnId)?.getFilterValue(),
+			sorting: state.sorting ?? [],
+			columnVisibility: state.columnVisibility ?? {},
+			columnOrder: state.columnOrder ?? [],
+			setColumnFilters: (filters) => table.setColumnFilters(filters),
+			setSorting: (sorting) => table.setSorting(sorting),
+			setColumnVisibility: (visibility) => table.setColumnVisibility(visibility),
+			setColumnOrder: (order) => table.setColumnOrder(order)
+		};
+	}
+
 	const savedViews = createSavedViews({
 		kind: 'workers',
 		api: {
@@ -248,34 +264,9 @@
 			remove: deleteView
 		},
 		vocabulary: () => ({ attributes, languages, agitations }),
-		capture: () => {
-			const state = table.store.get();
-			return {
-				version: 1,
-				kind: 'workers',
-				workers: captureWorkersView(
-					{
-						filterValue: (columnId) => table.getColumn(columnId)?.getFilterValue(),
-						sorting: state.sorting ?? [],
-						columnVisibility: state.columnVisibility ?? {},
-						columnOrder: state.columnOrder ?? []
-					},
-					{ attributes, languages, agitations }
-				)
-			};
-		},
-		apply: (snapshot) => {
-			if (!snapshot.workers) return;
-			const target = workersViewToTable(snapshot.workers, { attributes, languages, agitations });
-			const search = table.getColumn('name')?.getFilterValue();
-			table.setColumnFilters([
-				...target.columnFilters,
-				...(typeof search === 'string' && search ? [{ id: 'name', value: search }] : [])
-			]);
-			table.setSorting(target.sorting);
-			table.setColumnVisibility(target.columnVisibility);
-			table.setColumnOrder(target.columnOrder);
-		}
+		capture: () => captureTableView(tableViewPort(), { attributes, languages, agitations }),
+		apply: (snapshot) =>
+			applyTableView(tableViewPort(), snapshot, { attributes, languages, agitations })
 	});
 
 	/** Arrow movement, focus and Shift ranges across the rows. */
