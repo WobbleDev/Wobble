@@ -19,6 +19,7 @@
 	import { createRecordCohort } from './record/record-cohort.svelte.ts';
 	import { filterParamsKey } from './filters/url-filters.svelte.ts';
 	import DataTableRow from './rows/row.svelte';
+	import { createNewWorker } from './rows/new-worker.svelte.ts';
 	import RecordPanel from '../record-panel/record-panel.svelte';
 	import DataTableFilterBar from './filters/filter-bar.svelte';
 	import DataTableVirtualSpacer from './rows/virtual-spacer.svelte';
@@ -285,7 +286,7 @@
 		scrollToRow: (index) => virtualization.scrollToIndex(index),
 		flushDrafts: () => editModel.flushDrafts(),
 		selection,
-		creating: () => !!newWorker,
+		creating: () => newWorker.open,
 		isGrid: () => !mobileViewport.current,
 		currentColumnId: () => effectiveActive?.columnId ?? 'name',
 		select: (workerId) => {
@@ -317,7 +318,7 @@
 	function closeRecordPanel() {
 		const id = person.workersSelectedId;
 		const origin = person.workersReturn?.sourceFocus?.workerId ?? null;
-		if (newWorker) cancelNewWorker();
+		if (newWorker.open) newWorker.cancel();
 		else record.drop();
 		if (id === null) return;
 		void tick().then(() => {
@@ -444,7 +445,31 @@
 	 * committed. `person.workersSelectedId` is left alone while it is open, so cancelling
 	 * simply closes it and the previous selection is still there.
 	 */
-	let newWorker = $state<{ open: true } | null>(null);
+	const newWorker = createNewWorker({
+		flushDrafts: () => editModel.flushDrafts(),
+		create: (name, attributes) => onCreateWorker(name, attributes),
+		refresh: () => onRefresh(),
+		rememberCreated: (worker) => record.rememberCreated(worker),
+		openCreated: async (worker) => {
+			await tick();
+			person.workersSelectedId = worker.id;
+			record.capture(null);
+			sheetRequested = mobileViewport.current;
+		},
+		reportAdded: (name, refreshed, created) => {
+			// Undo is bound to this Worker by value (ticket 25).
+			const added = refreshed ? 'Added ' + name : m.workers_added_not_refreshed({ name });
+			editModel.setStatus(added, async () => {
+				await onDeleteWorker(created.id);
+				await onRefresh();
+			});
+		},
+		reveal: () => scrollViewport?.scrollTo({ top: 0, behavior: reducedMotion ? 'auto' : 'smooth' }),
+		focusTrigger: () =>
+			void tick().then(() =>
+				document.querySelector<HTMLElement>('[data-new-worker-trigger]')?.focus()
+			)
+	});
 	/**
 	 * Below `lg` the record opens in a sheet, but only from an explicit row activation
 	 * (click, tap, Enter): an open Worker carried over from a wider window, or one still
@@ -568,10 +593,10 @@
 
 	/** Checking a row closes the desktop card for good: the open Worker is dropped, not parked. */
 	$effect(() => {
-		if (!mobileViewport.current && selection.count > 0 && !newWorker)
+		if (!mobileViewport.current && selection.count > 0 && !newWorker.open)
 			person.workersSelectedId = null;
 	});
-	const cardOpen = $derived(!!newWorker || !!record.selectedWorker || record.cohortEmpty);
+	const cardOpen = $derived(newWorker.open || !!record.selectedWorker || record.cohortEmpty);
 
 	/** What the desktop card last showed; the outro keeps showing it once the selection is gone. */
 	let heldCard = $state<{
@@ -582,8 +607,8 @@
 	$effect.pre(() => {
 		if (cardOpen) {
 			heldCard = {
-				worker: newWorker ? null : (record.selectedWorker ?? null),
-				creating: !!newWorker,
+				worker: newWorker.open ? null : (record.selectedWorker ?? null),
+				creating: newWorker.open,
 				checkedCount: 0
 			};
 		}
@@ -595,7 +620,7 @@
 	 */
 	async function onSelectWorker(workerId: string): Promise<boolean> {
 		summaryMode = false;
-		if (workerId === person.workersSelectedId && !newWorker) {
+		if (workerId === person.workersSelectedId && !newWorker.open) {
 			sheetRequested = mobileViewport.current;
 			return true;
 		}
@@ -620,74 +645,13 @@
 		return opened;
 	}
 
-	/** New Worker: save open panel drafts, then open the placeholder row. */
-	async function beginNewWorker() {
-		if (newWorker) return;
-		if (!(await editModel.flushDrafts())) return;
-		newWorker = { open: true };
-		// The placeholder row is inserted at the top: bring the top into view so
-		// it is seen arriving, rather than the rows under the pointer sliding away.
-		scrollViewport?.scrollTo({ top: 0, behavior: reducedMotion ? 'auto' : 'smooth' });
-	}
-
-	function cancelNewWorker() {
-		newWorker = null;
-		// The placeholder (and the Name field holding focus) is gone: hand focus back
-		// to the control that opened it, so keyboard users do not restart from the top.
-		void tick().then(() =>
-			document.querySelector<HTMLElement>('[data-new-worker-trigger]')?.focus()
-		);
-	}
-
-	/**
-	 * Creates the Worker the placeholder named. Answers false when the core refused,
-	 * so the Name editor stays open with what was typed.
-	 */
-	async function createNewWorker(
-		name: string,
-		attributes: WorkerAttributeValues
-	): Promise<boolean> {
-		if (!newWorker) return true;
-		let created: Worker;
-		try {
-			created = await onCreateWorker(name, attributes);
-		} catch {
-			return false;
-		}
-		let refreshed = true;
-		try {
-			await onRefresh();
-		} catch {
-			// The Worker exists; the next reload shows it.
-			refreshed = false;
-			record.rememberCreated(created);
-		}
-		await tick();
-		person.workersSelectedId = created.id;
-		record.capture(null);
-		sheetRequested = mobileViewport.current;
-		newWorker = null;
-		// Undo is bound to this Worker by value (ticket 25).
-		const createdId = created.id;
-		const remove = onDeleteWorker;
-		const refresh = onRefresh;
-		const added = refreshed
-			? `Added ${created.name}`
-			: m.workers_added_not_refreshed({ name: created.name });
-		editModel.setStatus(added, async () => {
-			await remove(createdId);
-			await refresh();
-		});
-		return true;
-	}
-
 	// The top bar's New Worker: answer each request made after this table mounted.
 	let answeredNewWorkerRequests = untrack(() => editModel.newWorkerRequests);
 	$effect(() => {
 		const requests = editModel.newWorkerRequests;
 		if (requests === answeredNewWorkerRequests) return;
 		answeredNewWorkerRequests = requests;
-		untrack(() => void beginNewWorker());
+		untrack(() => void newWorker.begin());
 	});
 
 	/** Focus entering the grid (Tab, or a click on the viewport) lands on the active cell. */
@@ -867,7 +831,7 @@
 							{/each}
 						</Table.Header>
 						<Table.Body>
-							{#if newWorker}
+							{#if newWorker.open}
 								<Table.Row data-testid="new-worker-row" aria-current="true" class={workersRowClass}>
 									{#each table.getVisibleLeafColumns() as column (column.id)}
 										{@const meta = column.columnDef.meta}
@@ -883,7 +847,7 @@
 									{/each}
 								</Table.Row>
 							{/if}
-							{#if rows.length === 0 && !newWorker}
+							{#if rows.length === 0 && !newWorker.open}
 								<Table.Row>
 									<Table.Cell colspan={tableColspan} class="h-32">
 										<div class="mx-auto flex max-w-prose flex-col items-center gap-1 text-center">
@@ -953,7 +917,7 @@
 												: null}
 											onActivate={activateCell}
 											checked={selection.isSelected(item.row.id)}
-											open={!newWorker && item.row.id === person.workersSelectedId}
+											open={!newWorker.open && item.row.id === person.workersSelectedId}
 										/>
 									{/if}
 								{/each}
@@ -1016,7 +980,7 @@
 					onClose={closeRecordPanel}
 					worker={heldCard.worker}
 					creating={heldCard.creating
-						? { onCreate: createNewWorker, onCancel: cancelNewWorker }
+						? { onCreate: newWorker.create, onCancel: newWorker.cancel }
 						: null}
 					checkedCount={heldCard.checkedCount}
 					workers={data}
@@ -1024,7 +988,7 @@
 					{agitations}
 					{languages}
 					{onUpdateLanguages}
-					onAddAnother={() => void beginNewWorker()}
+					onAddAnother={() => void newWorker.begin()}
 					{onShowOnMapping}
 					{onSelectWorker}
 					cohort={record.cohort}
@@ -1053,16 +1017,18 @@
 {#if mobileViewport.current}
 	<RecordPanel
 		presentation="sheet"
-		worker={newWorker || !sheetRequested || summaryMode ? null : (record.selectedWorker ?? null)}
+		worker={newWorker.open || !sheetRequested || summaryMode
+			? null
+			: (record.selectedWorker ?? null)}
 		checkedCount={summaryMode ? selection.count : 0}
-		summaryOpen={summaryMode && sheetRequested && !newWorker}
-		creating={newWorker ? { onCreate: createNewWorker, onCancel: cancelNewWorker } : null}
+		summaryOpen={summaryMode && sheetRequested && !newWorker.open}
+		creating={newWorker.open ? { onCreate: newWorker.create, onCancel: newWorker.cancel } : null}
 		workers={data}
 		{attributes}
 		{agitations}
 		{languages}
 		{onUpdateLanguages}
-		onAddAnother={() => void beginNewWorker()}
+		onAddAnother={() => void newWorker.begin()}
 		{onShowOnMapping}
 		{onSelectWorker}
 		cohort={record.cohort}
@@ -1085,7 +1051,7 @@
 		onAfterDelete={focusGridAfterRemoval}
 		onClose={() => {
 			sheetRequested = false;
-			if (newWorker) cancelNewWorker();
+			if (newWorker.open) newWorker.cancel();
 			else if (!summaryMode) record.drop();
 		}}
 	/>
