@@ -55,7 +55,6 @@ import {
 	removeValue,
 	visibleValues,
 	type ConfigurationDraft,
-	type ValueEntry,
 	type ValueTextCheck
 } from './configuration-draft.ts';
 import {
@@ -123,70 +122,23 @@ export class ConfigurationDraftState {
 
 	/**
 	 * The Agitation and Language lists. Both follow the same add, remove, rename and merge
-	 * rules over a different label field, so they share one list implementation and this
-	 * class only exposes it under the names the editors and the draft read.
+	 * rules over a different label field, so they share one list implementation; the editors
+	 * and the draft read the list objects themselves.
 	 */
-	private readonly agitationList = createValueList({
+	readonly agitations = createValueList({
 		field: 'text',
 		makeEntry: (id, text) => ({ id, text }),
 		duplicateMessage: () => m.configuration_agitation_exists(),
 		locked: () => this.saving
 	});
-	private readonly languageList = createValueList({
+	readonly languages = createValueList({
 		field: 'name',
 		makeEntry: (id, name) => ({ id, name }),
 		duplicateMessage: () => m.configuration_language_exists(),
 		locked: () => this.saving
 	});
 
-	get draftAgitations() {
-		return this.agitationList.draft;
-	}
-	set draftAgitations(next: ValueEntry<'text'>[]) {
-		this.agitationList.draft = next;
-	}
-	get newAgitationText() {
-		return this.agitationList.input;
-	}
-	set newAgitationText(next: string) {
-		this.agitationList.input = next;
-	}
-	get agitationError() {
-		return this.agitationList.error;
-	}
-	set agitationError(next: string) {
-		this.agitationList.error = next;
-	}
-	/** The Agitations the editor shows: folded entries wait for Save out of sight. */
-	get visibleAgitations() {
-		return this.agitationList.visible;
-	}
-
 	savedAgitations = $state<Agitation[]>([]);
-
-	get draftLanguages() {
-		return this.languageList.draft;
-	}
-	set draftLanguages(next: ValueEntry<'name'>[]) {
-		this.languageList.draft = next;
-	}
-	get newLanguageName() {
-		return this.languageList.input;
-	}
-	set newLanguageName(next: string) {
-		this.languageList.input = next;
-	}
-	get languageError() {
-		return this.languageList.error;
-	}
-	set languageError(next: string) {
-		this.languageList.error = next;
-	}
-	/** The Languages the editor shows: folded entries wait for Save out of sight. */
-	get visibleLanguages() {
-		return this.languageList.visible;
-	}
-
 	savedLanguages = $state<Language[]>([]);
 
 	saving = $state(false);
@@ -238,9 +190,9 @@ export class ConfigurationDraftState {
 		this.preview
 			? summarizePreview(this.preview, this.savedConfiguration, this.draftAttributes, {
 					savedAgitations: this.savedAgitations,
-					draftAgitations: this.draftAgitations,
+					draftAgitations: this.agitations.draft,
 					savedLanguages: this.savedLanguages,
-					draftLanguages: this.draftLanguages
+					draftLanguages: this.languages.draft
 				})
 			: []
 	);
@@ -310,9 +262,9 @@ export class ConfigurationDraftState {
 		this.savedCommitteeGoal = untrack(() => worksite.committeeGoal);
 		this.draftAttributes = untrack(() => fromWorkerAttributeDefinitions(attributes));
 		this.savedConfiguration = untrack(() => toWorkerAttributeDefinitions(this.draftAttributes));
-		this.draftAgitations = untrack(() => agitations.map((agitation) => ({ ...agitation })));
+		this.agitations.draft = untrack(() => agitations.map((agitation) => ({ ...agitation })));
 		this.savedAgitations = untrack(() => agitations.map((agitation) => ({ ...agitation })));
-		this.draftLanguages = untrack(() => languages.map((language) => ({ ...language })));
+		this.languages.draft = untrack(() => languages.map((language) => ({ ...language })));
 		this.savedLanguages = untrack(() => languages.map((language) => ({ ...language })));
 
 		$effect(() => {
@@ -352,13 +304,13 @@ export class ConfigurationDraftState {
 			savedCommitteeGoal: this.savedCommitteeGoal,
 			draftAttributes: this.draftAttributes,
 			savedConfiguration: this.savedConfiguration,
-			draftAgitations: this.draftAgitations,
+			draftAgitations: this.agitations.draft,
 			savedAgitations: this.savedAgitations,
-			draftLanguages: this.draftLanguages,
+			draftLanguages: this.languages.draft,
 			savedLanguages: this.savedLanguages,
 			addFormOpen: this.addFormOpen,
-			newAgitationText: this.newAgitationText,
-			newLanguageName: this.newLanguageName
+			newAgitationText: this.agitations.input,
+			newLanguageName: this.languages.input
 		};
 	}
 
@@ -700,50 +652,6 @@ export class ConfigurationDraftState {
 		this.deleteDialogOpen = true;
 	}
 
-	addAgitation() {
-		this.agitationList.add();
-	}
-
-	submitAgitation(event: SubmitEvent) {
-		this.agitationList.submit(event);
-	}
-
-	removeAgitation(id: string) {
-		this.agitationList.remove(id);
-	}
-
-	/** Checks an inline edit; applies the rename only when the text is new and not blank. */
-	renameAgitation(id: string, text: string): ValueTextCheck {
-		return this.agitationList.rename(id, text);
-	}
-
-	/** Folds an edited Agitation into another one; applied on Save, undone by Discard. */
-	mergeAgitation(foldedId: string, survivorId: string) {
-		this.agitationList.merge(foldedId, survivorId);
-	}
-
-	addLanguage() {
-		this.languageList.add();
-	}
-
-	submitLanguage(event: SubmitEvent) {
-		this.languageList.submit(event);
-	}
-
-	removeLanguage(id: string) {
-		this.languageList.remove(id);
-	}
-
-	/** Checks an inline edit; applies the rename only when the name is new and not blank. */
-	renameLanguage(id: string, name: string): ValueTextCheck {
-		return this.languageList.rename(id, name);
-	}
-
-	/** Folds an edited Language into another one; applied on Save, undone by Discard. */
-	mergeLanguage(foldedId: string, survivorId: string) {
-		this.languageList.merge(foldedId, survivorId);
-	}
-
 	/**
 	 * Save all: the existing protocol, plus the authoritative impact preview. A draft that
 	 * removes, merges or converts saved Attribute answers, or removes or merges a saved
@@ -907,7 +815,7 @@ export class ConfigurationDraftState {
 							id,
 							text
 						}));
-						this.draftAgitations = visibleValues(this.draftAgitations);
+						this.agitations.draft = visibleValues(this.agitations.draft);
 					})
 				);
 			}
@@ -920,7 +828,7 @@ export class ConfigurationDraftState {
 							id,
 							name
 						}));
-						this.draftLanguages = visibleValues(this.draftLanguages);
+						this.languages.draft = visibleValues(this.languages.draft);
 					})
 				);
 			}
@@ -991,12 +899,12 @@ export class ConfigurationDraftState {
 		this.editingName = false;
 		this.draftCommitteeGoal = String(this.savedCommitteeGoal);
 		this.draftAttributes = fromWorkerAttributeDefinitions(this.savedConfiguration);
-		this.draftAgitations = this.savedAgitations.map((agitation) => ({ ...agitation }));
-		this.newAgitationText = '';
-		this.agitationError = '';
-		this.draftLanguages = this.savedLanguages.map((language) => ({ ...language }));
-		this.newLanguageName = '';
-		this.languageError = '';
+		this.agitations.draft = this.savedAgitations.map((agitation) => ({ ...agitation }));
+		this.agitations.input = '';
+		this.agitations.error = '';
+		this.languages.draft = this.savedLanguages.map((language) => ({ ...language }));
+		this.languages.input = '';
+		this.languages.error = '';
 		this.addFormOpen = false;
 		this.addAttempted = false;
 		this.expandedIds.clear();

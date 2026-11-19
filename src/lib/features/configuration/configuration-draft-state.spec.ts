@@ -51,13 +51,13 @@ describe('ConfigurationDraftState', () => {
 	it('is clean again when an added Agitation is removed', () => {
 		const draft = openDraft();
 
-		draft.newAgitationText = 'Short breaks';
-		draft.addAgitation();
+		draft.agitations.input = 'Short breaks';
+		draft.agitations.add();
 		expect(draft.hasUnsavedDraft).toBe(true);
-		expect(draft.visibleAgitations.map((a) => a.text)).toEqual(['Parking fees', 'Short breaks']);
+		expect(draft.agitations.visible.map((a) => a.text)).toEqual(['Parking fees', 'Short breaks']);
 
-		const added = draft.visibleAgitations[1];
-		draft.removeAgitation(added.id);
+		const added = draft.agitations.visible[1];
+		draft.agitations.remove(added.id);
 		expect(draft.hasUnsavedDraft).toBe(false);
 	});
 
@@ -131,8 +131,8 @@ describe('ConfigurationDraftState', () => {
 			}
 		});
 		const draft = openDraft();
-		draft.newAgitationText = 'Short breaks';
-		draft.addAgitation();
+		draft.agitations.input = 'Short breaks';
+		draft.agitations.add();
 		await draft.saveAll();
 
 		await draft.saveAll();
