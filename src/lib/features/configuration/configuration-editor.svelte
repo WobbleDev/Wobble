@@ -258,17 +258,17 @@
 				class="content-start overscroll-none pt-0 md:max-h-[max(20rem,45dvh)] md:overflow-y-auto"
 			>
 				<AgitationsEditor
-					agitations={draftState.visibleAgitations}
-					allAgitations={draftState.draftAgitations}
+					agitations={draftState.agitations.visible}
+					allAgitations={draftState.agitations.draft}
 					{workers}
-					bind:newAgitationText={draftState.newAgitationText}
-					error={draftState.agitationError}
+					bind:newAgitationText={draftState.agitations.input}
+					error={draftState.agitations.error}
 					saving={draftState.saving}
-					onInput={() => (draftState.agitationError = '')}
-					onSubmit={(event) => draftState.submitAgitation(event)}
-					onRemove={(id) => draftState.removeAgitation(id)}
-					onRename={(id, text) => draftState.renameAgitation(id, text)}
-					onMerge={(foldedId, survivorId) => draftState.mergeAgitation(foldedId, survivorId)}
+					onInput={() => (draftState.agitations.error = '')}
+					onSubmit={(event) => draftState.agitations.submit(event)}
+					onRemove={(id) => draftState.agitations.remove(id)}
+					onRename={(id, text) => draftState.agitations.rename(id, text)}
+					onMerge={(foldedId, survivorId) => draftState.agitations.merge(foldedId, survivorId)}
 				/>
 			</SectionCard>
 			<SectionCard
@@ -276,17 +276,17 @@
 				class="content-start overscroll-none pt-0 md:max-h-[max(20rem,45dvh)] md:overflow-y-auto"
 			>
 				<LanguagesEditor
-					languages={draftState.visibleLanguages}
-					allLanguages={draftState.draftLanguages}
+					languages={draftState.languages.visible}
+					allLanguages={draftState.languages.draft}
 					{workers}
-					bind:newLanguageName={draftState.newLanguageName}
-					error={draftState.languageError}
+					bind:newLanguageName={draftState.languages.input}
+					error={draftState.languages.error}
 					saving={draftState.saving}
-					onInput={() => (draftState.languageError = '')}
-					onSubmit={(event) => draftState.submitLanguage(event)}
-					onRemove={(id) => draftState.removeLanguage(id)}
-					onRename={(id, name) => draftState.renameLanguage(id, name)}
-					onMerge={(foldedId, survivorId) => draftState.mergeLanguage(foldedId, survivorId)}
+					onInput={() => (draftState.languages.error = '')}
+					onSubmit={(event) => draftState.languages.submit(event)}
+					onRemove={(id) => draftState.languages.remove(id)}
+					onRename={(id, name) => draftState.languages.rename(id, name)}
+					onMerge={(foldedId, survivorId) => draftState.languages.merge(foldedId, survivorId)}
 				/>
 			</SectionCard>
 		</div>

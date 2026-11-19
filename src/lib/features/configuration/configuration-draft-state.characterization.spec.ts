@@ -184,52 +184,52 @@ describe('Attribute answers', () => {
 describe('Agitations and Languages', () => {
 	it('adds through the form and refuses a duplicate with an error', () => {
 		const draft = open();
-		draft.newAgitationText = ' Breaks ';
+		draft.agitations.input = ' Breaks ';
 		const event = submit();
-		draft.submitAgitation(event);
+		draft.agitations.submit(event);
 		expect(event.preventDefault).toHaveBeenCalled();
-		expect(draft.visibleAgitations.map((a) => a.text)).toEqual(['Pay', 'Hours', 'Breaks']);
-		expect(draft.newAgitationText).toBe('');
-		draft.newAgitationText = 'pay';
-		draft.addAgitation();
-		expect(draft.agitationError).not.toBe('');
-		expect(draft.visibleAgitations).toHaveLength(3);
+		expect(draft.agitations.visible.map((a) => a.text)).toEqual(['Pay', 'Hours', 'Breaks']);
+		expect(draft.agitations.input).toBe('');
+		draft.agitations.input = 'pay';
+		draft.agitations.add();
+		expect(draft.agitations.error).not.toBe('');
+		expect(draft.agitations.visible).toHaveLength(3);
 
-		draft.newLanguageName = 'Coptic';
-		draft.submitLanguage(submit());
-		expect(draft.visibleLanguages.map((l) => l.name)).toEqual(['Greek', 'Latin', 'Coptic']);
-		draft.newLanguageName = 'greek';
-		draft.addLanguage();
-		expect(draft.languageError).not.toBe('');
+		draft.languages.input = 'Coptic';
+		draft.languages.submit(submit());
+		expect(draft.languages.visible.map((l) => l.name)).toEqual(['Greek', 'Latin', 'Coptic']);
+		draft.languages.input = 'greek';
+		draft.languages.add();
+		expect(draft.languages.error).not.toBe('');
 	});
 
 	it('renames only to a new, non-blank text and says why otherwise', () => {
 		const draft = open();
-		expect(draft.renameAgitation('pay', 'Wages')).toEqual({ status: 'ok' });
-		expect(draft.visibleAgitations[0]!.text).toBe('Wages');
-		expect(draft.renameAgitation('pay', ' ')).toEqual({ status: 'blank' });
-		expect(draft.renameAgitation('pay', 'Hours')).toMatchObject({
+		expect(draft.agitations.rename('pay', 'Wages')).toEqual({ status: 'ok' });
+		expect(draft.agitations.visible[0]!.text).toBe('Wages');
+		expect(draft.agitations.rename('pay', ' ')).toEqual({ status: 'blank' });
+		expect(draft.agitations.rename('pay', 'Hours')).toMatchObject({
 			status: 'duplicate',
 			survivorId: 'hours'
 		});
-		expect(draft.renameLanguage('greek', 'Hellenic')).toEqual({ status: 'ok' });
-		expect(draft.renameLanguage('greek', 'Latin')).toMatchObject({ status: 'duplicate' });
-		expect(draft.visibleLanguages[0]!.name).toBe('Hellenic');
+		expect(draft.languages.rename('greek', 'Hellenic')).toEqual({ status: 'ok' });
+		expect(draft.languages.rename('greek', 'Latin')).toMatchObject({ status: 'duplicate' });
+		expect(draft.languages.visible[0]!.name).toBe('Hellenic');
 	});
 
 	it('removes, and folds an entry out of sight until Save', () => {
 		const draft = open();
-		draft.removeAgitation('hours');
-		expect(draft.visibleAgitations.map((a) => a.id)).toEqual(['pay']);
-		draft.mergeAgitation('pay', 'hours');
-		draft.removeLanguage('latin');
-		expect(draft.visibleLanguages.map((l) => l.id)).toEqual(['greek']);
-		draft.mergeLanguage('greek', 'latin');
+		draft.agitations.remove('hours');
+		expect(draft.agitations.visible.map((a) => a.id)).toEqual(['pay']);
+		draft.agitations.merge('pay', 'hours');
+		draft.languages.remove('latin');
+		expect(draft.languages.visible.map((l) => l.id)).toEqual(['greek']);
+		draft.languages.merge('greek', 'latin');
 		expect(draft.dirtyAgitations).toBe(true);
 		expect(draft.dirtyLanguages).toBe(true);
 		draft.discardAll();
-		expect(draft.visibleAgitations).toHaveLength(2);
-		expect(draft.visibleLanguages).toHaveLength(2);
+		expect(draft.agitations.visible).toHaveLength(2);
+		expect(draft.languages.visible).toHaveLength(2);
 	});
 });
 
@@ -244,10 +244,10 @@ describe('the saving lock', () => {
 		expect(draft.moveAttribute('dept', 1)).toBe(false);
 		draft.requestDeleteAttribute('dept');
 		draft.deleteAttribute('dept');
-		draft.removeAgitation('pay');
-		draft.mergeAgitation('pay', 'hours');
-		draft.removeLanguage('greek');
-		draft.mergeLanguage('greek', 'latin');
+		draft.agitations.remove('pay');
+		draft.agitations.merge('pay', 'hours');
+		draft.languages.remove('greek');
+		draft.languages.merge('greek', 'latin');
 		draft.mergeAttributeAnswer('dept', 'back', 'front');
 		draft.discardAll();
 		draft.saving = false;
@@ -296,7 +296,7 @@ describe('the preview-then-save flow', () => {
 			'POST /api/configuration/preview': () => ({ body: lossyPreview })
 		});
 		const draft = open();
-		draft.removeAgitation('pay');
+		draft.agitations.remove('pay');
 		await draft.saveAll();
 		expect(calls.map((call) => call.path)).toEqual(['/api/configuration/preview']);
 		expect(draft.previewOpen).toBe(true);
@@ -316,7 +316,7 @@ describe('the preview-then-save flow', () => {
 			'PUT /api/agitations': () => ({})
 		});
 		const draft = open();
-		draft.removeAgitation('pay');
+		draft.agitations.remove('pay');
 		await draft.saveAll();
 		draft.confirmPreview();
 		await vi.waitFor(() => expect(draft.saving).toBe(false));
@@ -335,7 +335,7 @@ describe('the preview-then-save flow', () => {
 			'PUT /api/agitations': () => ({})
 		});
 		const draft = open();
-		draft.removeAgitation('pay');
+		draft.agitations.remove('pay');
 		await draft.saveAll();
 		expect(draft.previewOpen).toBe(false);
 		expect(calls.map((call) => call.path)).toEqual([
@@ -349,7 +349,7 @@ describe('the preview-then-save flow', () => {
 			'POST /api/configuration/preview': () => ({ status: 500, body: { message: 'Core is busy.' } })
 		});
 		const draft = open();
-		draft.removeAgitation('pay');
+		draft.agitations.remove('pay');
 		await draft.saveAll();
 		expect(draft.previewOpen).toBe(false);
 		expect(draft.errorMessage).not.toBe('');
@@ -361,7 +361,7 @@ describe('the preview-then-save flow', () => {
 	it('discarding closes an open preview and clears every error', async () => {
 		scriptFetch({ 'POST /api/configuration/preview': () => ({ body: lossyPreview }) });
 		const draft = open();
-		draft.removeAgitation('pay');
+		draft.agitations.remove('pay');
 		await draft.saveAll();
 		draft.errorMessage = 'old';
 		draft.discardAll();
