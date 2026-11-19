@@ -17,8 +17,7 @@
 	import type { Language, WorkerAttributeDefinition } from '#lib/domain-vocabulary.ts';
 	import { hasContextualFilters } from '#lib/shared/workers/contextual-filters.ts';
 	import { answerDisplayLabel } from '#lib/shared/workers/answer-path.ts';
-	import { noValueReading } from '#lib/shared/text/no-value-reading.ts';
-	import { regionReading } from '../grouping/grouping-cells.ts';
+
 	import {
 		type ExpansionBranch,
 		type ExpansionRefusal,
@@ -30,6 +29,7 @@
 		contextFilterGroupCount,
 		type ContextFilterChip
 	} from '../map-contextual-filters.ts';
+	import { createGroupingRefusals, expansionRefusalText } from './grouping-refusals.svelte.ts';
 	import MapFilterPanel from '../map-filter-panel.svelte';
 	import MapHighlightGroup from '../map-highlight-group.svelte';
 	import { starterQuery, withStarterRule } from '../map-highlight-query-edit.ts';
@@ -237,142 +237,22 @@
 
 	const attributeById = $derived(new Map(attributes.map((attribute) => [attribute.id, attribute])));
 
-	/** The chosen Grouping's refusal, when it has one; the status explains it. */
-	const groupingRefusal = $derived(
-		activeGroupingReading?.status === 'unavailable' ? activeGroupingReading : undefined
-	);
+	/** The two chosen readings' Attributes; the refusals read their own copies. */
 	const groupingAttribute = $derived(view.groupingAttribute);
-
-	/** The refusal in words: which Workers hold more than one region, or which ids are gone. */
-	const groupingReason = $derived.by(() => {
-		const reading = groupingRefusal;
-		const attribute = groupingAttribute;
-		if (!reading || !attribute) return '';
-		if (reading.reason.code === 'multiple-regions') {
-			const workers = reading.reason.workers
-				.map(
-					({ workerId, keys }) =>
-						`${workerNames.get(workerId) ?? workerId} (${keys
-							.map((key) => regionReading(attribute, key).label)
-							.join(', ')})`
-				)
-				.join('; ');
-			return m.mapping_group_reason_multiple_regions({ attribute: attribute.name, workers });
-		}
-		// The active reading never carries an expansion refusal; the control explains a
-		// refused attempt through the same words if it ever did.
-		if (reading.reason.code === 'expansion-breaks-partition') {
-			return expansionRefusalText(reading.reason, attribute);
-		}
-		return m.mapping_group_reason_unresolved({
-			attribute: attribute.name,
-			answers: reading.reason.answerIds.join(', ')
-		});
-	});
-
-	/** The checked narrowing filters offered beside the refusal. */
-	const groupingSuggestions = $derived.by(() => {
-		const reading = groupingRefusal;
-		if (!reading) return [];
-		return reading.suggestions.flatMap((suggestion) => {
-			const attribute = attributeById.get(suggestion.attributeId);
-			if (!attribute) return [];
-			const answer = suggestion.missing
-				? noValueReading(attribute).label
-				: answerDisplayLabel(attribute.answers, suggestion.answerIds[0] ?? '');
-			return [
-				{
-					key: `${suggestion.attributeId}:${suggestion.missing ? 'missing' : suggestion.answerIds[0]}`,
-					label: m.mapping_group_suggestion({ attribute: attribute.name, answers: answer })
-				}
-			];
-		});
-	});
-
-	/** The chosen Sub-grouping's refusal, when the primary stays grouped but pairing cannot. */
-	const subGroupingRefusal = $derived(
-		activeGroupingReading?.status === 'available' &&
-			activeGroupingReading.subGrouping?.status === 'unavailable'
-			? activeGroupingReading.subGrouping
-			: undefined
-	);
 	const subGroupingAttribute = $derived(view.subGroupingAttribute);
 
-	/** The pairing refusal in words: each Worker's pairs, read by both questions. */
-	const subGroupingReason = $derived.by(() => {
-		const reading = subGroupingRefusal;
-		const primary = groupingAttribute;
-		const secondary = subGroupingAttribute;
-		if (!reading || !primary || !secondary) return '';
-		if (reading.reason.code === 'paired-regions-differ') {
-			const workers = reading.reason.workers
-				.map(({ workerId, pairs }) => {
-					const pairText = pairs
-						.map(
-							([group, subGroup]) =>
-								`${regionReading(primary, group).label} / ${
-									regionReading(secondary, subGroup).label
-								}`
-						)
-						.join(', ');
-					return `${workerNames.get(workerId) ?? workerId} (${pairText})`;
-				})
-				.join('; ');
-			return m.mapping_sub_group_reason_paired_regions({
-				subAttribute: secondary.name,
-				workers
-			});
-		}
-		return m.mapping_group_reason_unresolved({
-			attribute: secondary.name,
-			answers: reading.reason.answerIds.join(', ')
-		});
+	const refusals = createGroupingRefusals({
+		reading: () => activeGroupingReading,
+		view: () => view,
+		workerNames: () => workerNames,
+		attributeById: () => attributeById
 	});
-
-	/** The checked narrowing filters offered beside a pairing refusal. */
-	const subGroupingSuggestions = $derived.by(() => {
-		const reading = subGroupingRefusal;
-		if (!reading) return [];
-		return reading.suggestions.flatMap((suggestion) => {
-			const attribute = attributeById.get(suggestion.attributeId);
-			if (!attribute) return [];
-			const answer = suggestion.missing
-				? noValueReading(attribute).label
-				: answerDisplayLabel(attribute.answers, suggestion.answerIds[0] ?? '');
-			return [
-				{
-					key: `sub:${suggestion.attributeId}:${suggestion.missing ? 'missing' : suggestion.answerIds[0]}`,
-					label: m.mapping_group_suggestion({ attribute: attribute.name, answers: answer })
-				}
-			];
-		});
-	});
-
-	/** A refused branch expansion in words: the Workers it would split across regions. */
-	function expansionRefusalText(
-		reading: ExpansionRefusal | null,
-		attribute: WorkerAttributeDefinition | undefined
-	): string {
-		if (!reading || !attribute) return '';
-		const workers = reading.workers
-			.map(
-				({ workerId, keys }) =>
-					`${workerNames.get(workerId) ?? workerId} (${keys
-						.map((key) => regionReading(attribute, key).label)
-						.join(', ')})`
-			)
-			.join('; ');
-		return m.mapping_expansion_refused({
-			answer: regionReading(attribute, reading.branchId).label,
-			workers
-		});
-	}
 
 	const expansionRefusalReason = $derived(
-		expansionRefusalText(expansionRefusal, groupingAttribute)
+		expansionRefusalText(expansionRefusal, groupingAttribute, workerNames)
 	);
 	const subExpansionRefusalReason = $derived(
-		expansionRefusalText(subExpansionRefusal, subGroupingAttribute)
+		expansionRefusalText(subExpansionRefusal, subGroupingAttribute, workerNames)
 	);
 
 	const hasFilters = $derived(
@@ -785,7 +665,7 @@
 							{expansionRefusalReason}
 						</p>
 					{/if}
-					{#if groupingRefusal && groupingAttribute}
+					{#if refusals.groupingRefusal && groupingAttribute}
 						<div
 							data-testid="map-grouping-status"
 							role="status"
@@ -794,11 +674,11 @@
 							<p class="text-ink-2">
 								{m.mapping_group_fallback({ attribute: groupingAttribute.name })}
 							</p>
-							<p class="text-ink" data-testid="map-grouping-reason">{groupingReason}</p>
-							{#if groupingSuggestions.length > 0}
+							<p class="text-ink" data-testid="map-grouping-reason">{refusals.groupingReason}</p>
+							{#if refusals.groupingSuggestions.length > 0}
 								<p class="text-ink-2">{m.mapping_group_narrow_hint()}</p>
 								<ul class="flex flex-col gap-1">
-									{#each groupingSuggestions as suggestion (suggestion.key)}
+									{#each refusals.groupingSuggestions as suggestion (suggestion.key)}
 										<li data-testid="map-grouping-suggestion" class="text-ink">
 											{suggestion.label}
 										</li>
@@ -849,7 +729,7 @@
 								{subExpansionRefusalReason}
 							</p>
 						{/if}
-						{#if subGroupingRefusal && groupingAttribute && subGroupingAttribute}
+						{#if refusals.subGroupingRefusal && groupingAttribute && subGroupingAttribute}
 							<div
 								data-testid="map-sub-grouping-status"
 								role="status"
@@ -861,11 +741,13 @@
 										subAttribute: subGroupingAttribute.name
 									})}
 								</p>
-								<p class="text-ink" data-testid="map-sub-grouping-reason">{subGroupingReason}</p>
-								{#if subGroupingSuggestions.length > 0}
+								<p class="text-ink" data-testid="map-sub-grouping-reason">
+									{refusals.subGroupingReason}
+								</p>
+								{#if refusals.subGroupingSuggestions.length > 0}
 									<p class="text-ink-2">{m.mapping_group_narrow_hint()}</p>
 									<ul class="flex flex-col gap-1">
-										{#each subGroupingSuggestions as suggestion (suggestion.key)}
+										{#each refusals.subGroupingSuggestions as suggestion (suggestion.key)}
 											<li data-testid="map-sub-grouping-suggestion" class="text-ink">
 												{suggestion.label}
 											</li>
@@ -936,7 +818,7 @@
 				? ''
 				: m.mapping_zoom_level({ percent: panZoom.announcedZoom })}
 		</p>
-		{#if groupingRefusal && groupingAttribute}
+		{#if refusals.groupingRefusal && groupingAttribute}
 			<div
 				data-testid="map-grouping-fallback"
 				data-material="glass"
