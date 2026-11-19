@@ -169,6 +169,9 @@ test('mobile widths reserve toolbar space instead of overlapping the drawing', a
 	page,
 	request
 }) => {
+	// Two cold loads of a 500-Worker hub exceed the 30s default on slower runners, and this
+	// test is the one the WebKit nightly hit it on.
+	test.slow();
 	await seedHub(request);
 
 	for (const width of [320, 390]) {
