@@ -44,8 +44,6 @@ import { previewSummarySentence, summarizePreview } from './preview-summary.ts';
 import {
 	canSave as computeCanSave,
 	canSaveWorksiteName as computeCanSaveWorksiteName,
-	checkValueText,
-	findDuplicateValue,
 	getCommitteeGoalError,
 	getDirtyState,
 	hasUnsavedDraft as computeHasUnsavedDraft,
@@ -55,7 +53,6 @@ import {
 	moveValue,
 	planConfigurationSave,
 	removeValue,
-	renameValue,
 	visibleValues,
 	type ConfigurationDraft,
 	type ValueEntry,
@@ -95,6 +92,7 @@ import {
 	shownAbbreviation
 } from './abbreviation-draft.ts';
 import type { AttributeAnswerDraft } from './attribute-draft.ts';
+import { createValueList } from './value-list.svelte.ts';
 
 export const configurationDraftContextKey = Symbol('configuration-draft');
 
@@ -123,15 +121,73 @@ export class ConfigurationDraftState {
 	deleteDialogOpen = $state(false);
 	pendingDeleteId = $state<string | null>(null);
 
-	draftAgitations = $state<ValueEntry<'text'>[]>([]);
-	savedAgitations = $state<Agitation[]>([]);
-	newAgitationText = $state('');
-	agitationError = $state('');
+	/**
+	 * The Agitation and Language lists. Both follow the same add, remove, rename and merge
+	 * rules over a different label field, so they share one list implementation and this
+	 * class only exposes it under the names the editors and the draft read.
+	 */
+	private readonly agitationList = createValueList({
+		field: 'text',
+		makeEntry: (id, text) => ({ id, text }),
+		duplicateMessage: () => m.configuration_agitation_exists(),
+		locked: () => this.saving
+	});
+	private readonly languageList = createValueList({
+		field: 'name',
+		makeEntry: (id, name) => ({ id, name }),
+		duplicateMessage: () => m.configuration_language_exists(),
+		locked: () => this.saving
+	});
 
-	draftLanguages = $state<ValueEntry<'name'>[]>([]);
+	get draftAgitations() {
+		return this.agitationList.draft;
+	}
+	set draftAgitations(next: ValueEntry<'text'>[]) {
+		this.agitationList.draft = next;
+	}
+	get newAgitationText() {
+		return this.agitationList.input;
+	}
+	set newAgitationText(next: string) {
+		this.agitationList.input = next;
+	}
+	get agitationError() {
+		return this.agitationList.error;
+	}
+	set agitationError(next: string) {
+		this.agitationList.error = next;
+	}
+	/** The Agitations the editor shows: folded entries wait for Save out of sight. */
+	get visibleAgitations() {
+		return this.agitationList.visible;
+	}
+
+	savedAgitations = $state<Agitation[]>([]);
+
+	get draftLanguages() {
+		return this.languageList.draft;
+	}
+	set draftLanguages(next: ValueEntry<'name'>[]) {
+		this.languageList.draft = next;
+	}
+	get newLanguageName() {
+		return this.languageList.input;
+	}
+	set newLanguageName(next: string) {
+		this.languageList.input = next;
+	}
+	get languageError() {
+		return this.languageList.error;
+	}
+	set languageError(next: string) {
+		this.languageList.error = next;
+	}
+	/** The Languages the editor shows: folded entries wait for Save out of sight. */
+	get visibleLanguages() {
+		return this.languageList.visible;
+	}
+
 	savedLanguages = $state<Language[]>([]);
-	newLanguageName = $state('');
-	languageError = $state('');
 
 	saving = $state(false);
 	refreshingData = $state(false);
@@ -232,9 +288,6 @@ export class ConfigurationDraftState {
 			this.dirtySections.length > 0 ||
 			Boolean(this.errorMessage || this.refreshErrorMessage)
 	);
-	/** The Agitations and Languages the lists show: folded entries wait for Save out of sight. */
-	visibleAgitations = $derived(visibleValues(this.draftAgitations));
-	visibleLanguages = $derived(visibleValues(this.draftLanguages));
 	pendingDeleteAttribute = $derived(
 		this.draftAttributes.find((attribute) => attribute.id === this.pendingDeleteId)
 	);
@@ -648,77 +701,47 @@ export class ConfigurationDraftState {
 	}
 
 	addAgitation() {
-		const text = this.newAgitationText.trim();
-		if (!text || this.saving) return;
-		if (findDuplicateValue(this.draftAgitations, 'text', null, text)) {
-			this.agitationError = m.configuration_agitation_exists();
-			return;
-		}
-		this.draftAgitations = [...this.draftAgitations, { id: newId(), text }];
-		this.newAgitationText = '';
-		this.agitationError = '';
+		this.agitationList.add();
 	}
 
 	submitAgitation(event: SubmitEvent) {
-		event.preventDefault();
-		this.addAgitation();
+		this.agitationList.submit(event);
 	}
 
 	removeAgitation(id: string) {
-		if (this.saving) return;
-		this.draftAgitations = removeValue(this.draftAgitations, id);
+		this.agitationList.remove(id);
 	}
 
 	/** Checks an inline edit; applies the rename only when the text is new and not blank. */
 	renameAgitation(id: string, text: string): ValueTextCheck {
-		const check = checkValueText(this.draftAgitations, 'text', id, text);
-		if (check.status === 'ok' && !this.saving) {
-			this.draftAgitations = renameValue(this.draftAgitations, 'text', id, text);
-		}
-		return check;
+		return this.agitationList.rename(id, text);
 	}
 
 	/** Folds an edited Agitation into another one; applied on Save, undone by Discard. */
 	mergeAgitation(foldedId: string, survivorId: string) {
-		if (this.saving) return;
-		this.draftAgitations = mergeValue(this.draftAgitations, foldedId, survivorId);
+		this.agitationList.merge(foldedId, survivorId);
 	}
 
 	addLanguage() {
-		const name = this.newLanguageName.trim();
-		if (!name || this.saving) return;
-		if (findDuplicateValue(this.draftLanguages, 'name', null, name)) {
-			this.languageError = m.configuration_language_exists();
-			return;
-		}
-		this.draftLanguages = [...this.draftLanguages, { id: newId(), name }];
-		this.newLanguageName = '';
-		this.languageError = '';
+		this.languageList.add();
 	}
 
 	submitLanguage(event: SubmitEvent) {
-		event.preventDefault();
-		this.addLanguage();
+		this.languageList.submit(event);
 	}
 
 	removeLanguage(id: string) {
-		if (this.saving) return;
-		this.draftLanguages = removeValue(this.draftLanguages, id);
+		this.languageList.remove(id);
 	}
 
 	/** Checks an inline edit; applies the rename only when the name is new and not blank. */
 	renameLanguage(id: string, name: string): ValueTextCheck {
-		const check = checkValueText(this.draftLanguages, 'name', id, name);
-		if (check.status === 'ok' && !this.saving) {
-			this.draftLanguages = renameValue(this.draftLanguages, 'name', id, name);
-		}
-		return check;
+		return this.languageList.rename(id, name);
 	}
 
 	/** Folds an edited Language into another one; applied on Save, undone by Discard. */
 	mergeLanguage(foldedId: string, survivorId: string) {
-		if (this.saving) return;
-		this.draftLanguages = mergeValue(this.draftLanguages, foldedId, survivorId);
+		this.languageList.merge(foldedId, survivorId);
 	}
 
 	/**
