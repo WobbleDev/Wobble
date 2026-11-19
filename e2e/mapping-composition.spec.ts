@@ -810,10 +810,13 @@ test('Free keeps every other name in place when a Worker is hovered in Isolate',
 	const isolate = page
 		.getByTestId('relationship-map-canvas')
 		.getByRole('button', { name: 'Isolate' });
+	const beforeIsolate = await cameraRevision(page);
 	await isolate.click();
 	await expect(isolate).toHaveAttribute('aria-pressed', 'true');
-	// Isolate eases to its 1x frame; the hover reads must start from the landed camera.
-	await waitForSceneReady(page);
+	// Isolate eases to its 1x frame, and the ease can start after the camera still reads
+	// idle: wait for it to have moved and landed, or the names are read against the
+	// fitted map and every one of them looks moved.
+	await waitForSceneReady(page, { cameraAfter: beforeIsolate });
 	const before = await settled(() => readDrawing(page));
 	const resting = nameBoxes(before);
 	expect(resting.size, 'the Isolate names its neighbourhood').toBeGreaterThan(1);
