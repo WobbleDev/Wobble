@@ -14,14 +14,9 @@ import { placeRegionLabels } from '../labels/graph-label-placement.ts';
 import type { Box } from './graph-free-canvas.ts';
 import type { Point } from './graph-layout.ts';
 import { answerPositionLabel, groupValue, type LabelOf } from './graph-analysis.ts';
-import { fitAndSeparate, type StressPoint } from './graph-stress.ts';
-import { freePhysicsLayout } from './graph-free-physics.ts';
-import { detectClusters, gatherStart } from './graph-clusters.ts';
+import type { StressPoint } from './graph-stress.ts';
 import { layoutGroup, type CrossTie, type GroupMember } from './graph-group-layout.ts';
 import { layoutSubGroups } from './graph-sub-group-layout.ts';
-import { fanLeaves, type LeafBound } from './graph-leaf-placement.ts';
-import { orientBodies } from './graph-body-orientation.ts';
-import { tidyLayout } from './graph-tidy.ts';
 import { placeQuotientBodies } from './graph-quotient-layout.ts';
 import { groupPairKey, type GroupBody } from './graph-group-physics.ts';
 import {
@@ -36,7 +31,8 @@ import type { WorkerGraphLink, WorkerGraphNode } from '../canvas/worker-relation
 import type { WorkerAttributeDefinition } from '#lib/domain-vocabulary.ts';
 import type { MapLayoutMode } from '../map-view-model.ts';
 import { applyManual, type ManualGeometry } from './graph-manual.ts';
-import { arrangeGrouped, subGroupTidySlack } from './graph-grouped-scope.ts';
+import { arrangeGrouped } from './graph-grouped-scope.ts';
+import { arrangeFree } from './graph-free-arrangement.ts';
 
 export type ArrangeInput = {
 	mode: MapLayoutMode;
@@ -73,9 +69,6 @@ export type ArrangeInput = {
 	 */
 	composition?: CompositionInput;
 };
-
-/** The low alpha a fresh Free layout settles at from its gathered start. */
-const freeGatherAlpha = 0.05;
 
 export type Arrangement = {
 	/**
@@ -514,8 +507,6 @@ export function createArranger() {
 
 	/** Fraction of the canvas's shorter side that sets the initial anchor ellipse's short radius, in layout units. */
 	const anchorEllipseShare = 0.35;
-	/** Padding handed to the final dot separator of the ungrouped layout, in layout units. */
-	const freeFitPad = 10;
 	/** How much larger than the view the layouts spread. */
 	const layoutSpread = 1.95;
 
@@ -540,7 +531,18 @@ export function createArranger() {
 		const radiusFor = (id: string) => radiusById.get(id) ?? 0;
 
 		const grouping = input.groupingAttribute;
-		if (!grouping) return computeFreeArrangement(input, canvas, radiusFor);
+		if (!grouping) {
+			const free = arrangeFree(input, canvas, radiusFor);
+			const extent = extentOf(free.positions);
+			return {
+				regions: [],
+				positions: free.positions,
+				centres: new Map(),
+				min: extent.min,
+				max: extent.max,
+				crossLinkIds: free.crossLinkIds
+			};
+		}
 
 		const grouped = arrangeGrouped(input, grouping, canvas, radiusById, radiusFor, {
 			localLayout,
@@ -560,95 +562,6 @@ export function createArranger() {
 			routes: grouped.routes,
 			composition: grouped.composition
 		};
-	}
-
-	function computeFreeArrangement(
-		input: ArrangeInput,
-		canvas: ArrangeInput['canvas'],
-		radiusFor: (id: string) => number
-	): Omit<Arrangement, 'revision'> {
-		const { nodes, links } = input;
-		const positions = new Map<string, Point>();
-		const crossLinkIds = new Set<string>();
-		// Ungrouped: free physics over the whole graph, from a fresh gathered start.
-		const clusters = detectClusters(
-			nodes.map((node) => node.id),
-			links
-		);
-		const gathered = gatherStart(
-			nodes.map((node) => node.id),
-			clusters,
-			canvas,
-			links,
-			radiusFor
-		);
-
-		const laid = freePhysicsLayout(
-			nodes.map((node) => ({ id: node.id })),
-			links.map((link) => ({ source: link.source, target: link.target })),
-			{ width: canvas.width, height: canvas.height },
-			{ start: gathered, alpha: freeGatherAlpha }
-		);
-		const oriented = orientBodies(
-			laid,
-			new Map([...clusters].map(([id, key]) => [id, String(key)])),
-			links,
-			radiusFor
-		);
-		// Preserve the existing uniform fit after rigid orientation. The final
-		// separator corrects only dot clearance; it does not re-aim clusters.
-		const fanned = fanLeaves(oriented, links, radiusFor);
-		const fitted = fitAndSeparate(fanned, radiusFor, canvas, { pad: freeFitPad });
-		// Each Worker tidies within reach of its cluster, so a cluster stays one
-		// cluster. Tidy can move a hub; its leaves are fanned again around it.
-		const placed = fanLeaves(
-			tidyLayout(fitted, links, radiusFor, {
-				bounds: clusterBounds(fitted, clusters, radiusFor)
-			}),
-			links,
-			radiusFor
-		);
-		for (const [id, point] of placed) positions.set(id, point);
-
-		const extent = extentOf(positions);
-		return {
-			regions: [],
-			positions,
-			centres: new Map(),
-			min: extent.min,
-			max: extent.max,
-			crossLinkIds
-		};
-	}
-
-	/** Each Worker's cluster circle, with the same give sub-group members get. */
-	function clusterBounds(
-		positions: ReadonlyMap<string, Point>,
-		clusters: ReadonlyMap<string, unknown>,
-		radiusFor: (id: string) => number
-	): Map<string, LeafBound> {
-		const members = new Map<unknown, string[]>();
-		for (const id of positions.keys()) {
-			const key = clusters.get(id) ?? id;
-			const list = members.get(key) ?? [];
-			list.push(id);
-			members.set(key, list);
-		}
-		const bounds = new Map<string, LeafBound>();
-		for (const ids of members.values()) {
-			const centre = {
-				x: ids.reduce((sum, id) => sum + positions.get(id)!.x, 0) / ids.length,
-				y: ids.reduce((sum, id) => sum + positions.get(id)!.y, 0) / ids.length
-			};
-			const radius = Math.max(
-				...ids.map((id) => {
-					const p = positions.get(id)!;
-					return Math.hypot(p.x - centre.x, p.y - centre.y) + radiusFor(id);
-				})
-			);
-			for (const id of ids) bounds.set(id, { centre, radius: radius + subGroupTidySlack });
-		}
-		return bounds;
 	}
 
 	function extentOf(positions: Map<string, Point>): { min: Point; max: Point } {
