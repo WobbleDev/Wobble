@@ -225,30 +225,31 @@
 				onToggleExpanded={(id) => draftState.toggleExpanded(id)}
 				onRequestDelete={(id) => draftState.requestDeleteAttribute(id)}
 				onMoveAttribute={(id, direction) => draftState.moveAttribute(id, direction)}
-				onAddOption={(attribute, parentId) => draftState.addAttributeOption(attribute, parentId)}
+				onAddOption={(attribute, parentId) =>
+					draftState.answers.addAttributeOption(attribute, parentId)}
 				onRemoveOption={(attributeId, optionId, removeBranch) =>
-					draftState.removeAttributeOption(attributeId, optionId, removeBranch)}
+					draftState.answers.removeAttributeOption(attributeId, optionId, removeBranch)}
 				onRenameOption={(attributeId, optionId, text) =>
-					draftState.renameAttributeAnswer(attributeId, optionId, text)}
-				abbreviationShown={(answer) => draftState.abbreviationShown(answer)}
+					draftState.answers.renameAttributeAnswer(attributeId, optionId, text)}
+				abbreviationShown={(answer) => draftState.answers.abbreviationShown(answer)}
 				onEditAbbreviation={(attributeId, answerId, text) =>
-					draftState.editAbbreviation(attributeId, answerId, text)}
+					draftState.answers.editAbbreviation(attributeId, answerId, text)}
 				onMergeOption={(attributeId, foldedId, survivorId) =>
-					draftState.mergeAttributeAnswer(attributeId, foldedId, survivorId)}
+					draftState.answers.mergeAttributeAnswer(attributeId, foldedId, survivorId)}
 				onMoveAnswer={(attributeId, optionId, parentId) =>
-					draftState.moveAttributeAnswer(attributeId, optionId, parentId)}
+					draftState.answers.moveAttributeAnswer(attributeId, optionId, parentId)}
 				onMoveAnswerToAttribute={(source, target) =>
-					draftState.moveAnswerToAttribute(source, target)}
-				onPromoteAnswer={(source) => draftState.promoteAnswerToAttribute(source)}
+					draftState.answers.moveAnswerToAttribute(source, target)}
+				onPromoteAnswer={(source) => draftState.answers.promoteAnswerToAttribute(source)}
 				onMoveAnswerSibling={(attributeId, answerId, direction) =>
-					draftState.moveAnswerSibling(attributeId, answerId, direction)}
+					draftState.answers.moveAnswerSibling(attributeId, answerId, direction)}
 				onMoveAnswerBeside={(attributeId, answerId, targetId, after) =>
-					draftState.moveAnswerBeside(attributeId, answerId, targetId, after)}
+					draftState.answers.moveAnswerBeside(attributeId, answerId, targetId, after)}
 				answerSiblingPlace={(attributeId, answerId) =>
-					draftState.answerSiblingPlace(attributeId, answerId)}
-				answerOrder={(attributeId) => draftState.answerOrder(attributeId)}
+					draftState.answers.answerSiblingPlace(attributeId, answerId)}
+				answerOrder={(attributeId) => draftState.answers.answerOrder(attributeId)}
 				onRestoreAnswerOrder={(attributeId, order) =>
-					draftState.restoreAnswerOrder(attributeId, order)}
+					draftState.answers.restoreAnswerOrder(attributeId, order)}
 			/>
 		</SectionCard>
 
