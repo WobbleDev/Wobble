@@ -13,7 +13,9 @@ set -euo pipefail
 ALLOW_FILES='^contract/fixtures/[a-z0-9.-]+\.sqlite$|^e2e/evidence\.ts$'
 FILE_RE='\.(db|sqlite3?|db-wal|db-shm|wav|mp3|m4a|aac|ogg|webm|mov|mp4|har)$|(^|/)evidence[^/]*\.json$'
 EMAIL_RE='[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}'
-SAFE_DOMAIN='@([a-z0-9.-]*example\.(com|org|net|test)|[a-z]\.(com|test)|localhost|users\.noreply\.github\.com)$'
+SAFE_DOMAIN='@([a-z0-9.-]*example\.(com|org|net|test)|[a-z]\.(com|test)|localhost|users\.noreply\.github\.com)$|^noreply@github\.com$'
+# GitHub's own address, the committer of every commit made in its web UI. Only this exact address:
+# any other @github.com address is a person's.
 # A Playwright trace's action log names its screenshot resources like
 # "page@<hex>.jpeg", which EMAIL_RE reads as an address. Skip only that exact shape: a broader
 # suffix list would also hide a real address on a real TLD (.zip is one).
