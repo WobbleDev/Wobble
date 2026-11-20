@@ -4,6 +4,9 @@
 #                                     recording or evidence files outside the allowlist
 #   data-safety.sh emails <dir>...    fail if text files (and zip traces) under the dirs contain an email address
 #                                     outside the synthetic domains
+#   data-safety.sh redact <dir>...    in the *.json files under the dirs, replace every non-synthetic address with
+#                                     "[redacted-email]" in place, and name the key paths that held one (never the
+#                                     value). Run it before `emails` so a report keeps explaining a failure.
 set -euo pipefail
 
 # Synthetic fixtures that are known safe.
@@ -51,5 +54,32 @@ case "$mode" in
     if [ "$hits" -gt 0 ]; then echo "emails: $hits hit(s)"; exit 1; fi
     echo "emails: clean"
     ;;
-  *) echo "usage: $0 files [base-ref] | emails <dir>..." >&2; exit 2 ;;
+  redact)
+    [ "$#" -ge 1 ] || { echo "usage: $0 redact <dir>..." >&2; exit 2; }
+    total=0
+    for d in "$@"; do
+      [ -e "$d" ] || continue
+      while IFS= read -r f; do
+        # Only key paths and counts leave this step; array indexes collapse to [] so one field is one line.
+        paths=$(jq -r --arg re "$EMAIL_RE" --arg safe "$SAFE_DOMAIN" --arg trace "$TRACE_RESOURCE" '
+          def bad: test($safe; "i") or test($trace);
+          [ paths(type == "string") as $p
+            | (getpath($p) | [match($re; "g").string | select(bad | not)] | length) as $n
+            | select($n > 0)
+            | {path: ($p | map(if type == "number" then "[]" else . end) | join(".")), n: $n} ]
+          | group_by(.path) | .[] | "\(.[0].path): \(map(.n) | add)"' "$f" 2>/dev/null) || { echo "$f: not valid JSON, left for the scan"; continue; }
+        [ -n "$paths" ] || continue
+        tmp="$f.redacted"
+        jq --arg re "(?<e>$EMAIL_RE)" --arg safe "$SAFE_DOMAIN" --arg trace "$TRACE_RESOURCE" '
+          def bad: test($safe; "i") or test($trace);
+          walk(if type == "string" then gsub($re; if (.e | bad) then .e else "[redacted-email]" end) else . end)' "$f" > "$tmp" && mv "$tmp" "$f"
+        n=$(printf '%s\n' "$paths" | awk -F': ' '{s+=$NF} END{print s}')
+        total=$((total+n))
+        echo "::warning file=$f::redacted $n non-synthetic address(es) in key path(s):"
+        printf '%s\n' "$paths" | sed 's/^/  /'
+      done < <(find "$d" -type f -name '*.json')
+    done
+    echo "redact: $total address(es) redacted"
+    ;;
+  *) echo "usage: $0 files [base-ref] | emails <dir>... | redact <dir>..." >&2; exit 2 ;;
 esac
