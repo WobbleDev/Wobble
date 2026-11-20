@@ -371,9 +371,21 @@ for (const density of densityCases) {
 					);
 					const initial = await settled(() => readNames(page));
 					expect(initial.names.length, `${tag} names`).toBeGreaterThan(0);
+					// A rare failure names the composition and the text it was laid out with, so the
+					// next one says whether the arrangement or the name pass put a name under a key.
+					const composition = clippedNames(initial).length
+						? await surface.evaluate((element) => ({
+								chosen: element.getAttribute('data-composition-chosen'),
+								text: element.getAttribute('data-composition-text'),
+								textSource: element.getAttribute('data-text-source'),
+								scale: element.getAttribute('data-composition-scale'),
+								frozen: element.getAttribute('data-names-frozen'),
+								report: element.getAttribute('data-composition-report')?.slice(0, 1200)
+							}))
+						: undefined;
 					expect(
 						clippedNames(initial),
-						`${tag} initial ${JSON.stringify({ chrome: initial.chrome, usable: initial.usable, layoutCanvas: initial.layoutCanvas, names: initial.names.filter((n) => clippedNames({ ...initial, names: [n] }).length) })}`
+						`${tag} initial ${JSON.stringify({ chrome: initial.chrome, usable: initial.usable, layoutCanvas: initial.layoutCanvas, composition, names: initial.names.filter((n) => clippedNames({ ...initial, names: [n] }).length) })}`
 					).toEqual([]);
 					const keyAtRest = (await dotKey.boundingBox())!;
 					const beforeZoom = await cameraRevision(page);
