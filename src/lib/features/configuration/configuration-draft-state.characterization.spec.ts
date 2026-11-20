@@ -299,14 +299,14 @@ describe('the preview-then-save flow', () => {
 		draft.agitations.remove('pay');
 		await draft.saveAll();
 		expect(calls.map((call) => call.path)).toEqual(['/api/configuration/preview']);
-		expect(draft.previewOpen).toBe(true);
-		expect(draft.previewRequiresConfirmation).toBe(true);
-		expect(draft.previewSharedLoss).toBe(true);
-		expect(draft.previewTotals).toEqual(lossyPreview.totals);
-		expect(draft.previewing).toBe(false);
-		draft.cancelPreview();
-		expect(draft.previewOpen).toBe(false);
-		expect(draft.preview).toBeNull();
+		expect(draft.previewFlow.open).toBe(true);
+		expect(draft.previewFlow.requiresConfirmation).toBe(true);
+		expect(draft.previewFlow.sharedLoss).toBe(true);
+		expect(draft.previewFlow.totals).toEqual(lossyPreview.totals);
+		expect(draft.previewFlow.loading).toBe(false);
+		draft.previewFlow.cancel();
+		expect(draft.previewFlow.open).toBe(false);
+		expect(draft.previewFlow.preview).toBeNull();
 		expect(draft.dirtyAgitations).toBe(true);
 	});
 
@@ -318,7 +318,7 @@ describe('the preview-then-save flow', () => {
 		const draft = open();
 		draft.agitations.remove('pay');
 		await draft.saveAll();
-		draft.confirmPreview();
+		draft.previewFlow.confirm();
 		await vi.waitFor(() => expect(draft.saving).toBe(false));
 		await vi.waitFor(() => expect(draft.dirtyAgitations).toBe(false));
 		expect(calls.map((call) => `${call.method} ${call.path}`)).toEqual([
@@ -337,7 +337,7 @@ describe('the preview-then-save flow', () => {
 		const draft = open();
 		draft.agitations.remove('pay');
 		await draft.saveAll();
-		expect(draft.previewOpen).toBe(false);
+		expect(draft.previewFlow.open).toBe(false);
 		expect(calls.map((call) => call.path)).toEqual([
 			'/api/configuration/preview',
 			'/api/agitations'
@@ -351,11 +351,11 @@ describe('the preview-then-save flow', () => {
 		const draft = open();
 		draft.agitations.remove('pay');
 		await draft.saveAll();
-		expect(draft.previewOpen).toBe(false);
+		expect(draft.previewFlow.open).toBe(false);
 		expect(draft.errorMessage).not.toBe('');
 		expect(draft.showSaveBar).toBe(true);
 		expect(draft.dirtyAgitations).toBe(true);
-		expect(draft.previewing).toBe(false);
+		expect(draft.previewFlow.loading).toBe(false);
 	});
 
 	it('discarding closes an open preview and clears every error', async () => {
@@ -365,7 +365,7 @@ describe('the preview-then-save flow', () => {
 		await draft.saveAll();
 		draft.errorMessage = 'old';
 		draft.discardAll();
-		expect(draft.previewOpen).toBe(false);
+		expect(draft.previewFlow.open).toBe(false);
 		expect(draft.errorMessage).toBe('');
 		expect(draft.hasUnsavedDraft).toBe(false);
 	});
