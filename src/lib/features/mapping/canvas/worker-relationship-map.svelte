@@ -11,8 +11,6 @@
 	import { MediaQuery, SvelteSet } from 'svelte/reactivity';
 	import { assessmentOptions, type Worker } from '#lib/domain-vocabulary.ts';
 	import type { Agitation, Language, WorkerAttributeDefinition } from '#lib/domain-vocabulary.ts';
-	import { answerDisplayLabel } from '#lib/shared/workers/answer-path.ts';
-	import { collapseBranch } from '#lib/shared/workers/answer-hierarchy.ts';
 	import { formatAttributeValue } from '#lib/shared/text/format.ts';
 	import { normalizeForMatch } from '#lib/shared/text/text.ts';
 	import { toPopulationFilters } from '#lib/shared/workers/contextual-filters.ts';
@@ -37,13 +35,11 @@
 		isolateDrawnLinkIds,
 		isolateNeighbourhood,
 		labelledWorkerIds,
-		linkRegions as readLinkRegions,
-		resolveEffectiveLayout
+		linkRegions as readLinkRegions
 	} from '../map-view-model.ts';
-	import { type ExpansionBranch, type ExpansionRefusal } from '../grouping/grouping-types.ts';
-	import { attemptExpansion, projectLayoutInput, readGrouping } from '../grouping/map-grouping.ts';
 	import { contextFilterLabels } from '../map-contextual-filters.ts';
 	import { createPanZoom } from './map-pan-zoom.svelte.ts';
+	import { createMapGrouping } from './map-grouping-model.svelte.ts';
 	import { createUndoOffer } from './map-undo-offer.svelte.ts';
 	import { floatingGutter } from '../layout/graph-free-canvas.ts';
 	import { buildWorkerGraph, type WorkerGraphNode } from './worker-relationship-map-model.ts';
@@ -270,144 +266,15 @@
 	 */
 	const layoutGraph = $derived.by(() => deriveVisibleGraph(graph.nodes, graph.links, filteredIds));
 
-	/**
-	 * The one grouping ledger every choice reads: the layout set's Workers and their
-	 * own held answers. Availability for every choice is cheap; narrowing guidance is
-	 * asked for only for the refusal that is actually on screen.
-	 */
-	const groupingInput = $derived({
-		nodes: layoutGraph.nodes,
-		workers,
-		attributes,
-		filters: populationFilters
-	});
-	const groupingReadings = $derived.by(
-		() =>
-			new Map(
-				view.groupableAttributes.map((attribute) => [
-					attribute.id,
-					readGrouping(groupingInput, attribute.id)
-				])
-			)
-	);
-	const activeGroupingReading = $derived.by(() =>
-		view.groupingAttribute
-			? readGrouping(groupingInput, view.groupingAttribute.id, {
-					subAttributeId: view.subGroupingAttribute?.id,
-					guidance: true,
-					expandedIds: view.expanded,
-					expandedSubIds: view.expandedSub
-				})
-			: undefined
-	);
-	const activeGrouping = $derived(
-		activeGroupingReading?.status === 'available' ? activeGroupingReading : undefined
-	);
-
-	/**
-	 * The branches the Group control can open or close at this detail: every occupied
-	 * answer region that has children, plus the branches already open so a restored
-	 * detail can still be collapsed. An empty region is no affordance.
-	 */
-	function expansionBranchesFor(
-		attribute: WorkerAttributeDefinition | undefined,
-		reading: { regions: readonly { key: string; label: string; identity: string }[] } | undefined,
-		expanded: readonly string[]
-	): ExpansionBranch[] {
-		if (!attribute) return [];
-		const parents = new Set(
-			attribute.answers
-				.map((answer) => answer.parentId)
-				.filter((parentId): parentId is string => typeof parentId === 'string')
-		);
-		const rows: ExpansionBranch[] = [];
-		for (const region of reading?.regions ?? []) {
-			if (region.identity !== 'answer' || !parents.has(region.key)) continue;
-			if (rows.some((row) => row.answerId === region.key)) continue;
-			rows.push({ answerId: region.key, label: region.label, expanded: false });
-		}
-		for (const answerId of expanded) {
-			if (!attribute.answers.some((answer) => answer.id === answerId)) continue;
-			const row = {
-				answerId,
-				label: answerDisplayLabel(attribute.answers, answerId),
-				expanded: true
-			};
-			const existing = rows.findIndex((entry) => entry.answerId === answerId);
-			if (existing === -1) rows.push(row);
-			else rows[existing] = row;
-		}
-		const position = new Map(attribute.answers.map((answer, index) => [answer.id, index]));
-		return rows.sort(
-			(first, second) => (position.get(first.answerId) ?? 0) - (position.get(second.answerId) ?? 0)
-		);
-	}
-
-	const primaryExpansionBranches = $derived.by(() =>
-		expansionBranchesFor(view.groupingAttribute, activeGrouping, view.expanded)
-	);
-	const secondaryExpansionBranches = $derived.by(() =>
-		expansionBranchesFor(
-			view.subGroupingAttribute,
-			activeGrouping?.subGrouping?.status === 'available' ? activeGrouping.subGrouping : undefined,
-			view.expandedSub
-		)
-	);
-
-	/**
-	 * Whether each secondary choice puts every displayed Worker in one pair. Only the
-	 * primary availability gates them: an unavailable primary shows no per-choice
-	 * marking, because the primary's own status explains the fallback.
-	 */
-	const subGroupingReadings = $derived.by(() => {
-		const primary = view.groupingAttribute;
-		if (!primary || !activeGrouping) return new Map();
-		return new Map(
-			view.subGroupingAttributes.map((attribute) => {
-				const reading = readGrouping(groupingInput, primary.id, {
-					subAttributeId: attribute.id
-				});
-				return [
-					attribute.id,
-					reading.status === 'available' ? reading.subGrouping : undefined
-				] as const;
-			})
-		);
+	/** Grouping for the whole map: its readings, branches, refusals and the solver's projection. */
+	const grouping = createMapGrouping({
+		view,
+		workers: () => workers,
+		attributes: () => attributes,
+		layoutNodes: () => layoutGraph.nodes,
+		populationFilters: () => populationFilters
 	});
 
-	/**
-	 * The solver's view of the same partition: projected region keys and a view-only
-	 * synthetic definition. The real definition stays authoritative for predicates,
-	 * and the graph itself — one node per Worker, the same links — is untouched.
-	 */
-	const projectedGrouping = $derived.by(() => {
-		const attribute = view.groupingAttribute;
-		if (!attribute || !activeGrouping) return undefined;
-		return projectLayoutInput(
-			layoutGraph.nodes,
-			activeGrouping,
-			attribute,
-			view.subGroupingAttribute
-		);
-	});
-	const groupingAttribute = $derived(projectedGrouping?.groupingAttribute);
-	/** A projected secondary exists only while the pairing is available. */
-	const effectiveSubGroupingAttribute = $derived(projectedGrouping?.subGroupingAttribute);
-	/** An unavailable primary Grouping falls back to Free and takes its Sub-grouping with it. */
-	const effectiveLayout = $derived(resolveEffectiveLayout(view.layout, groupingAttribute));
-	const projectedNodesById = $derived(
-		new Map((projectedGrouping?.nodes ?? []).map((node) => [node.id, node]))
-	);
-	const projectedLayoutNodes = $derived(projectedGrouping?.nodes ?? layoutGraph.nodes);
-	const tooltipAttributes = $derived(
-		attributes.map((attribute) =>
-			attribute.id === groupingAttribute?.id
-				? groupingAttribute
-				: attribute.id === effectiveSubGroupingAttribute?.id
-					? effectiveSubGroupingAttribute
-					: attribute
-		)
-	);
 	const workerNames = $derived(new Map(workers.map((worker) => [worker.id, worker.name])));
 
 	/** What the map draws: the layout set narrowed by the Isolate focus. */
@@ -433,12 +300,12 @@
 
 	/** The same drawn Workers, carrying their projected region key for the layout. */
 	const projectedVisibleNodes = $derived(
-		visibleGraph.nodes.map((node) => projectedNodesById.get(node.id) ?? node)
+		visibleGraph.nodes.map((node) => grouping.projectedNodesById.get(node.id) ?? node)
 	);
 
 	const scopeInput = $derived({
 		total: workers.length,
-		layoutCount: projectedLayoutNodes.length,
+		layoutCount: grouping.projectedLayoutNodes.length,
 		visibleCount: projectedVisibleNodes.length,
 		isolatedInEffect: view.isolatedInEffect
 	});
@@ -473,7 +340,7 @@
 		// Free names the resting set first and adds the hovered or selected name on top, so
 		// pointing at a Worker never takes another Worker's name away. Grouped keeps the
 		// shipped cap, which counts an active name inside it.
-		if (groupingAttribute === undefined) {
+		if (grouping.groupingAttribute === undefined) {
 			const ids = new SvelteSet(restingLabelIds);
 			for (const id of [view.selectedId, view.hoveredId]) if (id) ids.add(id);
 			return ids;
@@ -486,7 +353,7 @@
 
 	/** Each Relationship read as crossing between Grouping regions or staying within one. */
 	const linkRegionReadings = $derived(
-		readLinkRegions(projectedLayoutNodes, layoutGraph.links, groupingAttribute)
+		readLinkRegions(grouping.projectedLayoutNodes, layoutGraph.links, grouping.groupingAttribute)
 	);
 
 	/**
@@ -500,13 +367,13 @@
 	 */
 	const viewModel = {
 		get effectiveLayout() {
-			return effectiveLayout;
+			return grouping.effectiveLayout;
 		},
 		get isolated() {
 			return view.isolatedInEffect;
 		},
 		get layoutNodes() {
-			return projectedLayoutNodes;
+			return grouping.projectedLayoutNodes;
 		},
 		get layoutLinks() {
 			return layoutGraph.links;
@@ -604,59 +471,6 @@
 		view.clearGrouping();
 	}
 
-	/** A transient explanation for a refused expansion; state and address stay untouched. */
-	let expansionRefusal = $state<ExpansionRefusal | null>(null);
-	let subExpansionRefusal = $state<ExpansionRefusal | null>(null);
-
-	/**
-	 * Attempts one branch of the primary Grouping. Only a candidate that still puts every
-	 * displayed Worker in one region commits; a refusal keeps the coarser view as it was.
-	 */
-	function togglePrimaryExpansion(answerId: string, expand: boolean) {
-		const attribute = view.groupingAttribute;
-		if (!attribute) return;
-		if (!expand) {
-			view.expanded = collapseBranch(attribute, view.expanded, answerId);
-			expansionRefusal = null;
-			return;
-		}
-		const attempt = attemptExpansion(groupingInput, attribute.id, view.expanded, answerId);
-		if (attempt.status === 'available') {
-			view.expanded = attempt.expandedIds;
-			expansionRefusal = null;
-		} else {
-			expansionRefusal = attempt.reason;
-		}
-	}
-
-	/** The same attempt for the paired Sub-grouping's own Attribute. */
-	function toggleSecondaryExpansion(answerId: string, expand: boolean) {
-		const attribute = view.subGroupingAttribute;
-		if (!attribute) return;
-		if (!expand) {
-			view.expandedSub = collapseBranch(attribute, view.expandedSub, answerId);
-			subExpansionRefusal = null;
-			return;
-		}
-		const attempt = attemptExpansion(groupingInput, attribute.id, view.expandedSub, answerId);
-		if (attempt.status === 'available') {
-			view.expandedSub = attempt.expandedIds;
-			subExpansionRefusal = null;
-		} else {
-			subExpansionRefusal = attempt.reason;
-		}
-	}
-
-	$effect(() => {
-		// A different Grouping is a different branch list, so an old attempt no longer applies.
-		void view.groupBy;
-		void view.subGroupBy;
-		untrack(() => {
-			expansionRefusal = null;
-			subExpansionRefusal = null;
-		});
-	});
-
 	function runReset() {
 		undo.offer(m.mapping_undo_view_reset());
 		view.reset();
@@ -696,10 +510,10 @@
 		class="relative flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden rounded-surface bg-panel shadow-surface max-lg:[@media(max-height:44.999rem)]:min-h-[38rem]"
 	>
 		<MapCanvas
-			nodes={projectedLayoutNodes}
-			attributes={tooltipAttributes}
-			{groupingAttribute}
-			subGroupingAttribute={effectiveSubGroupingAttribute}
+			nodes={grouping.projectedLayoutNodes}
+			attributes={grouping.tooltipAttributes}
+			groupingAttribute={grouping.groupingAttribute}
+			subGroupingAttribute={grouping.effectiveSubGroupingAttribute}
 			{viewModel}
 			{colorFor}
 			{radiusFor}
@@ -736,9 +550,9 @@
 				<MapTable
 					nodes={projectedVisibleNodes}
 					links={visibleGraph.links}
-					{groupingAttribute}
-					subGroupingAttribute={effectiveSubGroupingAttribute}
-					reading={activeGrouping}
+					groupingAttribute={grouping.groupingAttribute}
+					subGroupingAttribute={grouping.effectiveSubGroupingAttribute}
+					reading={grouping.activeGrouping}
 					{languages}
 					{highlightIds}
 					selectedId={view.selectedId}
@@ -756,16 +570,16 @@
 					{attributes}
 					{languages}
 					{highlightCount}
-					{groupingReadings}
-					{subGroupingReadings}
-					{activeGroupingReading}
+					groupingReadings={grouping.groupingReadings}
+					subGroupingReadings={grouping.subGroupingReadings}
+					activeGroupingReading={grouping.activeGroupingReading}
 					{workerNames}
-					expansionBranches={primaryExpansionBranches}
-					{expansionRefusal}
-					subExpansionBranches={secondaryExpansionBranches}
-					{subExpansionRefusal}
-					onToggleExpansion={togglePrimaryExpansion}
-					onToggleSubExpansion={toggleSecondaryExpansion}
+					expansionBranches={grouping.primaryExpansionBranches}
+					expansionRefusal={grouping.expansionRefusal}
+					subExpansionBranches={grouping.secondaryExpansionBranches}
+					subExpansionRefusal={grouping.subExpansionRefusal}
+					onToggleExpansion={grouping.togglePrimaryExpansion}
+					onToggleSubExpansion={grouping.toggleSecondaryExpansion}
 					onClearGrouping={clearGrouping}
 					undo={undo.current}
 					onUndo={undo.apply}
@@ -921,8 +735,8 @@
 				...(view.isolatedInEffect
 					? [m.mapping_scope_isolated({ listed: scope.listed, away: scope.isolatedAway })]
 					: []),
-				...(groupingAttribute
-					? [m.mapping_scope_grouped({ attribute: groupingAttribute.name })]
+				...(grouping.groupingAttribute
+					? [m.mapping_scope_grouped({ attribute: grouping.groupingAttribute.name })]
 					: [])
 			].join(' · ')}
 		</p>
