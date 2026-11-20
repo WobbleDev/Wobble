@@ -304,7 +304,7 @@
 			>
 				<ConfigurationSaveBar
 					saving={draftState.saving}
-					previewing={draftState.previewing}
+					previewing={draftState.previewFlow.loading}
 					refreshingData={draftState.refreshingData}
 					dirtySections={draftState.dirtySections}
 					canSave={draftState.canSave}
@@ -360,14 +360,14 @@
 </AlertDialog.Root>
 
 <ConfigurationPreviewDialog
-	open={draftState.previewOpen}
-	rows={draftState.previewRows}
-	summary={draftState.previewSummary}
-	requiresConfirmation={draftState.previewRequiresConfirmation}
-	sharedLoss={draftState.previewSharedLoss}
-	resolutionGroups={draftState.previewResolutionGroups}
-	resolutionsComplete={draftState.previewResolutionsComplete}
-	onChoose={(key, choice) => draftState.chooseResolution(key, choice)}
-	onConfirm={() => draftState.confirmPreview()}
-	onCancel={() => draftState.cancelPreview()}
+	open={draftState.previewFlow.open}
+	rows={draftState.previewFlow.rows}
+	summary={draftState.previewFlow.summary}
+	requiresConfirmation={draftState.previewFlow.requiresConfirmation}
+	sharedLoss={draftState.previewFlow.sharedLoss}
+	resolutionGroups={draftState.previewFlow.resolutionGroups}
+	resolutionsComplete={draftState.previewFlow.resolutionsComplete}
+	onChoose={(key, choice) => draftState.previewFlow.choose(key, choice)}
+	onConfirm={() => draftState.previewFlow.confirm()}
+	onCancel={() => draftState.previewFlow.cancel()}
 />

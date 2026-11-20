@@ -15,7 +15,6 @@ import type {
 } from '#lib/domain-vocabulary.ts';
 import {
 	attributeWrites,
-	previewConfiguration,
 	suggestAbbreviations,
 	saveAgitations,
 	saveAttributes,
@@ -24,23 +23,13 @@ import {
 	saveWorksiteCommitteeGoal,
 	saveWorksiteName
 } from '#lib/client/configuration-api.ts';
-import type { ConfigurationPreview } from '#lib/domain-vocabulary.ts';
-import { configurationSaveFailureMessage, previewFailureMessage } from './preview-failures.ts';
+import { configurationSaveFailureMessage } from './preview-failures.ts';
 import {
 	hasPreviewableConfigurationChanges,
 	previewRequest,
 	previewRequestKey,
-	suggestionRequest,
-	previewRequiresConfirmation as needsPreviewConfirmation
+	suggestionRequest
 } from './preview-request.ts';
-import {
-	buildResolutionGroups,
-	resolutionsComplete,
-	resolutionsFromPreview,
-	type PreviewHolderChoice,
-	type PreviewHolderChoices
-} from './preview-resolutions.ts';
-import { previewSummarySentence, summarizePreview } from './preview-summary.ts';
 import {
 	canSave as computeCanSave,
 	canSaveWorksiteName as computeCanSaveWorksiteName,
@@ -91,6 +80,7 @@ import {
 	shownAbbreviation
 } from './abbreviation-draft.ts';
 import type { AttributeAnswerDraft } from './attribute-draft.ts';
+import { PreviewFlow } from './preview-flow.svelte.ts';
 import { createValueList } from './value-list.svelte.ts';
 
 export const configurationDraftContextKey = Symbol('configuration-draft');
@@ -159,66 +149,26 @@ export class ConfigurationDraftState {
 	readonly suggestedAbbreviations = new SvelteMap<string, string>();
 	private suggestionToken = 0;
 
-	/** The last preview of the current draft, and whether its confirmation is open. */
-	preview = $state<ConfigurationPreview | null>(null);
-	previewOpen = $state(false);
-	previewing = $state(false);
-	private previewKey = $state<string | null>(null);
-	/** Bumped on every preview request, so a late reply for an older draft is dropped. */
-	private previewToken = 0;
-	/** The organizer's explicit resolution for every affected holder. */
-	previewChoices = $state<PreviewHolderChoices>({});
-	/** The confirmed plan the Save carries; it is cleared when the preview changes. */
-	private pendingResolutionSave = $state<{
-		base: string;
-		resolutions: ReturnType<typeof resolutionsFromPreview>;
-	} | null>(null);
-	previewRequiresConfirmation = $derived(
-		this.preview ? needsPreviewConfirmation(this.preview) : false
-	);
-	/** Whether the loss being confirmed is of shared values rather than answers. */
-	previewSharedLoss = $derived(
-		Boolean(
-			this.preview?.changes.some(
-				(change) =>
-					(change.entity === 'agitation' || change.entity === 'language') &&
-					(change.lossyWorkers > 0 || change.discardedValues > 0)
-			)
-		)
-	);
-	previewRows = $derived(
-		this.preview
-			? summarizePreview(this.preview, this.savedConfiguration, this.draftAttributes, {
-					savedAgitations: this.savedAgitations,
-					draftAgitations: this.agitations.draft,
-					savedLanguages: this.savedLanguages,
-					draftLanguages: this.languages.draft
-				})
-			: []
-	);
-	previewTotals = $derived(this.preview?.totals ?? null);
-	previewSummary = $derived(
-		this.preview
-			? previewSummarySentence(
-					this.preview.totals,
-					this.preview.changes,
-					this.preview.removedAnswers,
-					this.preview.removedAttributes,
-					this.preview.cardinality
-				)
-			: ''
-	);
-	previewResolutionGroups = $derived(
-		this.preview
-			? buildResolutionGroups(
-					this.preview,
-					this.savedConfiguration,
-					this.draftAttributes,
-					this.previewChoices
-				)
-			: []
-	);
-	previewResolutionsComplete = $derived(resolutionsComplete(this.previewResolutionGroups));
+	/** The impact preview and confirmation that runs before a lossy save. */
+	readonly previewFlow = new PreviewFlow({
+		draftInput: () => this.draftInput,
+		view: () => ({
+			savedConfiguration: this.savedConfiguration,
+			draftAttributes: this.draftAttributes,
+			savedAgitations: this.savedAgitations,
+			draftAgitations: this.agitations.draft,
+			savedLanguages: this.savedLanguages,
+			draftLanguages: this.languages.draft
+		}),
+		clearErrors: () => {
+			this.errorMessage = '';
+			this.refreshErrorMessage = '';
+		},
+		fail: (message) => {
+			this.errorMessage = message;
+		},
+		save: () => this.performSave()
+	});
 
 	private dirty = $derived(getDirtyState(this.draftInput));
 	dirtyName = $derived(this.dirty.name);
@@ -279,9 +229,7 @@ export class ConfigurationDraftState {
 		// consequence that no longer describes the draft.
 		$effect(() => {
 			const key = previewRequestKey(previewRequest(this.draftInput));
-			if (this.previewKey !== null && this.previewKey !== key) {
-				this.closePreview();
-			}
+			this.previewFlow.closeIfStale(key);
 		});
 
 		// A new, renamed or edited value asks the core for its Abbreviation once typing settles.
@@ -661,81 +609,14 @@ export class ConfigurationDraftState {
 	 * draft invalidates the confirmation before it can be used.
 	 */
 	async saveAll() {
-		if (this.saving || this.previewing || !this.canSave) return;
+		if (this.saving || this.previewFlow.loading || !this.canSave) return;
 
 		if (hasPreviewableConfigurationChanges(this.draftInput)) {
-			await this.loadPreview();
+			await this.previewFlow.load();
 			return;
 		}
 
 		await this.performSave();
-	}
-
-	/** Records one holder's explicit resolution in the open preview. */
-	chooseResolution(key: string, choice: PreviewHolderChoice) {
-		this.previewChoices = { ...this.previewChoices, [key]: choice };
-	}
-
-	/** Asks the core what this draft would change, then confirms or reports the refusal. */
-	private async loadPreview() {
-		const request = previewRequest(this.draftInput);
-		const key = previewRequestKey(request);
-		this.errorMessage = '';
-		this.refreshErrorMessage = '';
-		this.previewing = true;
-		this.previewChoices = {};
-		this.pendingResolutionSave = null;
-		const token = ++this.previewToken;
-
-		try {
-			const preview = await previewConfiguration(request);
-			// A late reply never describes the draft that replaced it.
-			if (token !== this.previewToken) return;
-			if (key !== previewRequestKey(previewRequest(this.draftInput))) return;
-
-			if (preview.changes.length === 0) {
-				// Only a harmless change reached this point (the preview is requested for
-				// consequences); there is nothing to confirm.
-				this.closePreview();
-				await this.performSave();
-				return;
-			}
-
-			this.preview = preview;
-			this.previewKey = key;
-			this.previewOpen = true;
-		} catch (error) {
-			if (token !== this.previewToken) return;
-			this.closePreview();
-			this.errorMessage = previewFailureMessage(error);
-		} finally {
-			if (token === this.previewToken) this.previewing = false;
-		}
-	}
-
-	/** Confirms the preview that is on screen; the save protocol still performs the write. */
-	confirmPreview() {
-		const key = this.previewKey;
-		if (key === null || !this.preview || !this.previewResolutionsComplete) return;
-		const base = this.preview.base;
-		const resolutions = resolutionsFromPreview(this.preview, this.previewResolutionGroups);
-		this.closePreview();
-		if (key !== previewRequestKey(previewRequest(this.draftInput))) return;
-
-		this.pendingResolutionSave = { base, resolutions };
-		void this.performSave();
-	}
-
-	/** Cancel forgets the preview and keeps the recoverable draft untouched. */
-	cancelPreview() {
-		this.closePreview();
-	}
-
-	private closePreview() {
-		this.preview = null;
-		this.previewOpen = false;
-		this.previewKey = null;
-		this.previewChoices = {};
 	}
 
 	private async performSave() {
@@ -773,7 +654,7 @@ export class ConfigurationDraftState {
 			}
 			if (plan.attributes.dirty) {
 				const nextConfiguration = plan.attributes.snapshot;
-				const pending = this.pendingResolutionSave;
+				const pending = this.previewFlow.pendingSave;
 				const save = pending
 					? saveConfigurationAttributes({
 							attributes: attributeWrites(nextConfiguration),
@@ -836,11 +717,10 @@ export class ConfigurationDraftState {
 			const results = await Promise.allSettled(saves);
 			const failure = results.find((result) => result.status === 'rejected');
 			if (failure?.status === 'rejected') throw failure.reason;
-			this.pendingResolutionSave = null;
-			this.previewChoices = {};
+			this.previewFlow.settleSave({ clearChoices: true });
 		} catch (error) {
 			// The draft stays; a stale or refused plan must be reviewed again before retry.
-			this.pendingResolutionSave = null;
+			this.previewFlow.settleSave({ clearChoices: false });
 			this.errorMessage = configurationSaveFailureMessage(error);
 			// The parts that did save are real: refresh the header, nav rail and Workers data so
 			// they stop showing the old values (for example the old Worksite name).
@@ -890,11 +770,8 @@ export class ConfigurationDraftState {
 	discardAll() {
 		if (this.saving) return;
 		// Anything in flight belongs to the draft being discarded.
-		this.previewToken += 1;
-		this.previewing = false;
-		this.pendingResolutionSave = null;
+		this.previewFlow.reset();
 		this.saveAnnouncement = '';
-		this.closePreview();
 		this.worksiteName = this.savedWorksiteName;
 		this.editingName = false;
 		this.draftCommitteeGoal = String(this.savedCommitteeGoal);
