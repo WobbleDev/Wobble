@@ -81,6 +81,10 @@ export default defineConfig({
 	// JSON results, so it stays visible; locally a failure is a failure.
 	retries: process.env.CI ? 1 : 0,
 	forbidOnly: true,
+	// On CI Playwright copies the commit's author and committer addresses into the report's
+	// metadata. The reports leave the runner, and the committer of a merged commit is GitHub's own
+	// address, so the report keeps no git info (#184).
+	captureGitInfo: { commit: false, diff: false },
 	...(suiteDir ? { outputDir: join(suiteDir, 'test-results') } : {}),
 	reporter: suiteDir
 		? [['list'], ['json', { outputFile: join(suiteDir, 'results.json') }]]
