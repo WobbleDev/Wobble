@@ -241,11 +241,15 @@ for (let index = 0; index < dashboardLinkCount; index += 1) {
 	});
 }
 
-/** Tabs from the address bar until the link itself holds focus. */
+/**
+ * Tabs from the address bar until the link itself holds focus. The link is looked up again on
+ * every press: a handle taken once goes stale when the Overview re-renders the card, and a
+ * stale handle never equals the focused element, so the loop would Tab past the link until
+ * the test timed out.
+ */
 async function tabTo(page: Page, link: Locator): Promise<void> {
-	const handle = await link.elementHandle();
 	for (let i = 0; i < 120; i++) {
-		const focused = await page.evaluate((el) => document.activeElement === el, handle);
+		const focused = await link.evaluate((el) => document.activeElement === el).catch(() => false);
 		if (focused) return;
 		await page.keyboard.press('Tab');
 	}
