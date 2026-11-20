@@ -29,6 +29,7 @@
 	import { createWorkersColumnFit } from './columns/column-fit.svelte.ts';
 	import { createWorkersUrlFilters } from './filters/url-filters.svelte.ts';
 	import { createWorkersKeyboard } from './keyboard/keyboard.svelte.ts';
+	import { createCohortRebuild } from './record/cohort-rebuild.svelte.ts';
 	import { createGridFocusReturn } from './keyboard/grid-focus-return.ts';
 	import StatusLine from '#lib/features/workers/status-line.svelte';
 	import { getEditModel } from '#lib/features/workers/edit-model.svelte.ts';
@@ -450,55 +451,20 @@
 		filtersHash: currentFiltersHash
 	});
 
-	/** What a screen reader hears when a deliberate filter or sort change rebuilds the list. */
-	let cohortNotice = $state('');
-	let intentKey: string | null = null;
-	// Only the organizer's own filter or sort change rebuilds the cohort. Mount
-	// normalization rewrites the address, never these columns, so it cannot reach here.
-	$effect(() => {
-		const key = JSON.stringify([
-			filterColumnIds.map((columnId) => table.getColumn(columnId)?.getFilterValue() ?? null),
-			table.getAllLeafColumns().map((column) => column.getIsSorted())
-		]);
-		const previous = intentKey;
-		intentKey = key;
-		if (previous === null || previous === key) return;
-		untrack(() => void rebuildCohort());
+	/** Follows the organizer's own filter or sort change: rebuilds the cohort and announces it. */
+	const cohortRebuild = createCohortRebuild({
+		person: () => person,
+		rows: () => rows,
+		intentKey: () =>
+			JSON.stringify([
+				filterColumnIds.map((columnId) => table.getColumn(columnId)?.getFilterValue() ?? null),
+				table.getAllLeafColumns().map((column) => column.getIsSorted())
+			]),
+		filtersHash: currentFiltersHash,
+		flushDrafts: () => editModel.flushDrafts(),
+		setSheet: (open) => (sheetRequested = open),
+		isMobile: () => mobileViewport.current
 	});
-
-	async function rebuildCohort() {
-		await tick();
-		const ids = rows.map((row) => row.id);
-		person.workersCohort = ids;
-		const sourceFocus = person.workersReturn?.sourceFocus ?? null;
-		const hadRecord = person.workersSelectedId !== null || person.workersReturn !== null;
-		if (!hadRecord) return;
-		person.workersReturn = {
-			sourceRoute: 'workers',
-			sourceFocus,
-			returnFiltersHash: currentFiltersHash()
-		};
-		const first = rows[0];
-		// A record still among the new rows keeps its place; one that left them moves to the first.
-		const stillShown = ids.includes(person.workersSelectedId ?? '');
-		if (person.workersSelectedId !== null && first && !stillShown) {
-			if (!(await editModel.flushDrafts())) {
-				cohortNotice = m.workers_cohort_rebuilt_blocked();
-				return;
-			}
-			person.workersSelectedId = first.id;
-			sheetRequested = mobileViewport.current;
-		}
-		const shownId = person.workersSelectedId;
-		const name = rows.find((row) => row.id === shownId)?.original.name ?? first?.original.name;
-		cohortNotice = name
-			? m.workers_cohort_rebuilt({
-					name,
-					position: Math.max(1, ids.indexOf(shownId ?? '') + 1),
-					count: ids.length
-				})
-			: m.workers_cohort_rebuilt_empty();
-	}
 
 	/**
 	 * What a screen reader hears when the desktop record opens: the panel's own label.
@@ -658,7 +624,7 @@
 				{recordNotice}
 			</p>
 			<p class="sr-only" aria-live="polite" aria-atomic="true" data-testid="workers-cohort-notice">
-				{cohortNotice}
+				{cohortRebuild.notice}
 			</p>
 			<DataTableFilterBar
 				{table}
