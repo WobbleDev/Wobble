@@ -163,7 +163,11 @@ jobs:
           done
       - name: Scan reports for non-synthetic emails
         if: failure()
-        run: scripts/data-safety.sh emails e2e-reports || { rm -rf e2e-reports; exit 1; }
+        # Redact first: a report that trips the scan keeps explaining the failure, and the log names
+        # the key paths (never the values) so the source of the address can be found and fixed.
+        run: |
+          scripts/data-safety.sh redact e2e-reports
+          scripts/data-safety.sh emails e2e-reports || { rm -rf e2e-reports; exit 1; }
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: failure()
         with:
