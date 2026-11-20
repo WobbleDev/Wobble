@@ -234,7 +234,7 @@ describe('ConfigurationDraftState Attribute moves', () => {
 	it('moves a deep branch into another Attribute, expands the target, and marks the draft dirty', () => {
 		const draft = openDraftWithAttributes(savedAttributes);
 
-		const moved = draft.moveAnswerToAttribute(
+		const moved = draft.answers.moveAnswerToAttribute(
 			{ attributeId: 'region', answerId: 'store' },
 			{ attributeId: 'site', parentId: 'bay' }
 		);
@@ -259,7 +259,7 @@ describe('ConfigurationDraftState Attribute moves', () => {
 	it('refuses a move the core cannot take, names the reason on the source, and keeps the draft', () => {
 		const draft = openDraftWithAttributes(savedAttributes);
 
-		const moved = draft.moveAnswerToAttribute(
+		const moved = draft.answers.moveAnswerToAttribute(
 			{ attributeId: 'region', answerId: 'store' },
 			{ attributeId: 'site', parentId: 'nope' }
 		);
@@ -274,7 +274,7 @@ describe('ConfigurationDraftState Attribute moves', () => {
 		const draft = openDraftWithAttributes(savedAttributes);
 		draft.saving = true;
 
-		const moved = draft.moveAnswerToAttribute(
+		const moved = draft.answers.moveAnswerToAttribute(
 			{ attributeId: 'region', answerId: 'store' },
 			{ attributeId: 'site', parentId: 'bay' }
 		);
@@ -287,7 +287,10 @@ describe('ConfigurationDraftState Attribute moves', () => {
 	it('promotes a branch to a new Attribute after its source and expands it', () => {
 		const draft = openDraftWithAttributes(savedAttributes);
 
-		const promoted = draft.promoteAnswerToAttribute({ attributeId: 'region', answerId: 'store' });
+		const promoted = draft.answers.promoteAnswerToAttribute({
+			attributeId: 'region',
+			answerId: 'store'
+		});
 
 		expect(promoted).toBe(true);
 		expect(attributeIds(draft)).toEqual(['region', 'store', 'site']);
@@ -307,7 +310,7 @@ describe('ConfigurationDraftState Attribute moves', () => {
 			savedAttributes[1]
 		]);
 
-		const promoted = draft.promoteAnswerToAttribute({
+		const promoted = draft.answers.promoteAnswerToAttribute({
 			attributeId: 'region',
 			answerId: 'site-label'
 		});
@@ -319,11 +322,11 @@ describe('ConfigurationDraftState Attribute moves', () => {
 
 	it('discardAll restores the saved configuration after a move and a promotion', () => {
 		const draft = openDraftWithAttributes(savedAttributes);
-		draft.moveAnswerToAttribute(
+		draft.answers.moveAnswerToAttribute(
 			{ attributeId: 'region', answerId: 'store' },
 			{ attributeId: 'site', parentId: 'bay' }
 		);
-		draft.promoteAnswerToAttribute({ attributeId: 'region', answerId: 'north' });
+		draft.answers.promoteAnswerToAttribute({ attributeId: 'region', answerId: 'north' });
 
 		draft.discardAll();
 
@@ -385,9 +388,9 @@ describe('ConfigurationDraftState five-level Attribute answers', () => {
 		const region = draft.draftAttributes[0];
 
 		region.newOption = 'Bay';
-		expect(draft.addAttributeOption(region, 'floor')).not.toBeNull();
+		expect(draft.answers.addAttributeOption(region, 'floor')).not.toBeNull();
 		region.newOption = 'Bin';
-		expect(draft.addAttributeOption(region, 'aisle')).not.toBeNull();
+		expect(draft.answers.addAttributeOption(region, 'aisle')).not.toBeNull();
 
 		expect(region.answers.find((answer) => answer.value === 'Bay')?.parentId).toBe('floor');
 		expect(region.answers.find((answer) => answer.value === 'Bin')?.parentId).toBe('aisle');
@@ -398,10 +401,10 @@ describe('ConfigurationDraftState five-level Attribute answers', () => {
 		const draft = openDeep();
 		const region = draft.draftAttributes[0];
 		region.newOption = 'Bin';
-		draft.addAttributeOption(region, 'aisle');
+		draft.answers.addAttributeOption(region, 'aisle');
 
 		region.newOption = 'bin';
-		expect(draft.addAttributeOption(region, 'aisle')).toBeNull();
+		expect(draft.answers.addAttributeOption(region, 'aisle')).toBeNull();
 		expect(region.newOptionError).toBe(m.configuration_option_exists());
 		expect(region.answers.filter((answer) => answer.parentId === 'aisle')).toHaveLength(2);
 	});
@@ -410,13 +413,15 @@ describe('ConfigurationDraftState five-level Attribute answers', () => {
 		const draft = openDeep();
 		const region = draft.draftAttributes[0];
 		region.newOption = 'Bin';
-		draft.addAttributeOption(region, 'aisle');
+		draft.answers.addAttributeOption(region, 'aisle');
 		const binId = region.answers.find((answer) => answer.value === 'Bin')?.id;
 
-		expect(draft.renameAttributeAnswer('region', 'shelf', 'Shelf B')).toEqual({ status: 'ok' });
+		expect(draft.answers.renameAttributeAnswer('region', 'shelf', 'Shelf B')).toEqual({
+			status: 'ok'
+		});
 		expect(region.answers.find((answer) => answer.id === 'shelf')?.value).toBe('Shelf B');
 
-		expect(draft.renameAttributeAnswer('region', 'shelf', 'bin')).toEqual({
+		expect(draft.answers.renameAttributeAnswer('region', 'shelf', 'bin')).toEqual({
 			status: 'duplicate',
 			survivorId: binId
 		});
@@ -426,7 +431,9 @@ describe('ConfigurationDraftState five-level Attribute answers', () => {
 	it('renames a level-4 answer in place', () => {
 		const draft = openDeep();
 
-		expect(draft.renameAttributeAnswer('region', 'aisle', 'Aisle 2')).toEqual({ status: 'ok' });
+		expect(draft.answers.renameAttributeAnswer('region', 'aisle', 'Aisle 2')).toEqual({
+			status: 'ok'
+		});
 		expect(draft.draftAttributes[0].answers.find((answer) => answer.id === 'aisle')?.value).toBe(
 			'Aisle 2'
 		);
@@ -435,7 +442,7 @@ describe('ConfigurationDraftState five-level Attribute answers', () => {
 	it('moves a level-5 answer up to level 2 and accepts it', () => {
 		const draft = openDeep();
 
-		draft.moveAttributeAnswer('region', 'shelf', 'store');
+		draft.answers.moveAttributeAnswer('region', 'shelf', 'store');
 
 		expect(parentOf(draft, 'shelf')).toBe('store');
 		expect(draft.draftAttributes[0].moveError).toBe('');
@@ -445,7 +452,7 @@ describe('ConfigurationDraftState five-level Attribute answers', () => {
 	it('moves a level-2 branch under a level-5-deep answer outside it and accepts it', () => {
 		const draft = openDeep();
 
-		draft.moveAttributeAnswer('region', 'store', 'north-5');
+		draft.answers.moveAttributeAnswer('region', 'store', 'north-5');
 
 		expect(parentOf(draft, 'store')).toBe('north-5');
 		expect(parentOf(draft, 'floor')).toBe('store');
@@ -456,7 +463,7 @@ describe('ConfigurationDraftState five-level Attribute answers', () => {
 	it('refuses to move an answer under its own level-5 descendant and keeps its parent', () => {
 		const draft = openDeep();
 
-		draft.moveAttributeAnswer('region', 'store', 'shelf');
+		draft.answers.moveAttributeAnswer('region', 'store', 'shelf');
 
 		expect(draft.draftAttributes[0].moveError).toBe(m.configuration_move_below_descendant());
 		expect(parentOf(draft, 'store')).toBe('central');
@@ -487,32 +494,32 @@ describe('ConfigurationDraftState Abbreviations (ADR 0046)', () => {
 	it('editing a form makes the draft dirty and clearing it makes it clean again', () => {
 		const draft = openWith([...stored]);
 
-		draft.editAbbreviation('dept', 'a', 'CS');
+		draft.answers.editAbbreviation('dept', 'a', 'CS');
 		expect(draft.dirtyAttributes).toBe(true);
 		expect(draft.draftAttributes[0].answers[0]).toMatchObject({
 			abbreviation: 'CS',
 			abbreviationOrigin: 'edited'
 		});
 
-		draft.editAbbreviation('dept', 'a', '');
+		draft.answers.editAbbreviation('dept', 'a', '');
 		expect(draft.dirtyAttributes).toBe(false);
 		expect(draft.draftAttributes[0].answers[0].abbreviationOrigin).toBeUndefined();
 	});
 
 	it('clearing an edited form drops the stale suggestion until the core answers again', () => {
 		const draft = openWith([...stored]);
-		draft.suggestedAbbreviations.set('b', 'Maint.');
+		draft.answers.suggestedAbbreviations.set('b', 'Maint.');
 
-		draft.editAbbreviation('dept', 'b', '');
+		draft.answers.editAbbreviation('dept', 'b', '');
 
-		expect(draft.abbreviationShown(draft.draftAttributes[0].answers[1])).toBe('');
+		expect(draft.answers.abbreviationShown(draft.draftAttributes[0].answers[1])).toBe('');
 	});
 
 	it('a rename drops a generated form and keeps an edited one', () => {
 		const draft = openWith([...stored]);
 
-		draft.renameAttributeAnswer('dept', 'a', 'Night Service');
-		draft.renameAttributeAnswer('dept', 'b', 'Facilities');
+		draft.answers.renameAttributeAnswer('dept', 'a', 'Night Service');
+		draft.answers.renameAttributeAnswer('dept', 'b', 'Facilities');
 
 		const [a, b] = draft.draftAttributes[0].answers;
 		expect(a).toEqual({ id: 'a', value: 'Night Service' });
@@ -525,28 +532,28 @@ describe('ConfigurationDraftState Abbreviations (ADR 0046)', () => {
 
 	it('shows the core suggestion for a generated value and the typed text for an edited one', () => {
 		const draft = openWith([...stored]);
-		draft.suggestedAbbreviations.set('a', 'Night Svc.');
+		draft.answers.suggestedAbbreviations.set('a', 'Night Svc.');
 
-		expect(draft.abbreviationShown(draft.draftAttributes[0].answers[0])).toBe('Night Svc.');
-		expect(draft.abbreviationShown(draft.draftAttributes[0].answers[1])).toBe('MX');
+		expect(draft.answers.abbreviationShown(draft.draftAttributes[0].answers[0])).toBe('Night Svc.');
+		expect(draft.answers.abbreviationShown(draft.draftAttributes[0].answers[1])).toBe('MX');
 	});
 
 	it('blocks Save while an edited form is beyond the limit and allows it once it fits', () => {
 		const draft = openWith([...stored]);
 
-		draft.editAbbreviation('dept', 'a', 'Eleven char');
+		draft.answers.editAbbreviation('dept', 'a', 'Eleven char');
 		expect(draft.canSave).toBe(false);
 
-		draft.editAbbreviation('dept', 'a', 'Ten chars!!');
+		draft.answers.editAbbreviation('dept', 'a', 'Ten chars!!');
 		expect(draft.canSave).toBe(false);
-		draft.editAbbreviation('dept', 'a', 'Ten chars!');
+		draft.answers.editAbbreviation('dept', 'a', 'Ten chars!');
 		expect(draft.canSave).toBe(true);
 	});
 
 	it('saves an edited form with its origin and leaves a generated one to the core', async () => {
 		const { calls } = scriptFetch({ 'PUT /api/attributes': () => ({}) });
 		const draft = openWith([...stored]);
-		draft.editAbbreviation('dept', 'a', 'CS');
+		draft.answers.editAbbreviation('dept', 'a', 'CS');
 
 		await draft.saveAll();
 
@@ -593,13 +600,13 @@ describe('ConfigurationDraftState Abbreviations (ADR 0046)', () => {
 			})
 		});
 		const draft = openWith([...stored]);
-		draft.renameAttributeAnswer('dept', 'a', 'Night Service');
+		draft.answers.renameAttributeAnswer('dept', 'a', 'Night Service');
 
-		await draft.loadSuggestions();
+		await draft.answers.loadSuggestions();
 
 		expect(calls).toHaveLength(1);
 		expect(calls[0].path).toBe('/api/configuration/abbreviations');
-		expect(draft.abbreviationShown(draft.draftAttributes[0].answers[0])).toBe('Night Svc.');
-		expect([...draft.suggestedAbbreviations.keys()]).toEqual(['a']);
+		expect(draft.answers.abbreviationShown(draft.draftAttributes[0].answers[0])).toBe('Night Svc.');
+		expect([...draft.answers.suggestedAbbreviations.keys()]).toEqual(['a']);
 	});
 });

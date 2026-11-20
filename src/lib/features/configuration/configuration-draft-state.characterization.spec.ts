@@ -128,56 +128,56 @@ describe('Attribute list', () => {
 describe('Attribute answers', () => {
 	it('refuses to remove a parent answer unless its branch goes too', () => {
 		const draft = open();
-		draft.removeAttributeOption('dept', 'front');
+		draft.answers.removeAttributeOption('dept', 'front');
 		expect(draft.draftAttributes[0]!.removalError).not.toBe('');
 		expect(draft.draftAttributes[0]!.answers.map((a) => a.id)).toEqual(['front', 'back', 'tills']);
-		draft.removeAttributeOption('dept', 'front', true);
+		draft.answers.removeAttributeOption('dept', 'front', true);
 		expect(draft.draftAttributes[0]!.answers.map((a) => a.id)).toEqual(['back']);
 		expect(draft.draftAttributes[0]!.removalError).toBe('');
 	});
 
 	it('removes a leaf answer, and ignores an unknown Attribute', () => {
 		const draft = open();
-		draft.removeAttributeOption('dept', 'tills');
-		expect(draft.answerOrder('dept')).toEqual(['front', 'back']);
-		draft.removeAttributeOption('nope', 'x');
-		expect(draft.answerOrder('nope')).toEqual([]);
+		draft.answers.removeAttributeOption('dept', 'tills');
+		expect(draft.answers.answerOrder('dept')).toEqual(['front', 'back']);
+		draft.answers.removeAttributeOption('nope', 'x');
+		expect(draft.answers.answerOrder('nope')).toEqual([]);
 	});
 
 	it('orders siblings: a step reports its new place, an end returns null', () => {
 		const draft = open();
-		expect(draft.answerSiblingPlace('dept', 'front')).toEqual({ position: 1, count: 2 });
-		expect(draft.moveAnswerSibling('dept', 'front', -1)).toBeNull();
-		expect(draft.moveAnswerSibling('dept', 'front', 1)).toEqual({ position: 2, count: 2 });
-		expect(draft.answerOrder('dept').indexOf('back')).toBeLessThan(
-			draft.answerOrder('dept').indexOf('front')
+		expect(draft.answers.answerSiblingPlace('dept', 'front')).toEqual({ position: 1, count: 2 });
+		expect(draft.answers.moveAnswerSibling('dept', 'front', -1)).toBeNull();
+		expect(draft.answers.moveAnswerSibling('dept', 'front', 1)).toEqual({ position: 2, count: 2 });
+		expect(draft.answers.answerOrder('dept').indexOf('back')).toBeLessThan(
+			draft.answers.answerOrder('dept').indexOf('front')
 		);
 	});
 
 	it('puts a value before or after a sibling, and refuses a non-sibling', () => {
 		const draft = open();
-		expect(draft.moveAnswerBeside('dept', 'back', 'front', false)).toBe(true);
-		expect(draft.answerOrder('dept').slice(0, 2)).toEqual(['back', 'front']);
-		expect(draft.moveAnswerBeside('dept', 'back', 'tills', true)).toBe(false);
-		expect(draft.moveAnswerBeside('dept', 'back', 'back', true)).toBe(false);
+		expect(draft.answers.moveAnswerBeside('dept', 'back', 'front', false)).toBe(true);
+		expect(draft.answers.answerOrder('dept').slice(0, 2)).toEqual(['back', 'front']);
+		expect(draft.answers.moveAnswerBeside('dept', 'back', 'tills', true)).toBe(false);
+		expect(draft.answers.moveAnswerBeside('dept', 'back', 'back', true)).toBe(false);
 	});
 
 	it('restores a remembered answer order', () => {
 		const draft = open();
-		const before = draft.answerOrder('dept');
-		draft.moveAnswerSibling('dept', 'front', 1);
-		expect(draft.answerOrder('dept')).not.toEqual(before);
-		draft.restoreAnswerOrder('dept', before);
-		expect(draft.answerOrder('dept')).toEqual(before);
+		const before = draft.answers.answerOrder('dept');
+		draft.answers.moveAnswerSibling('dept', 'front', 1);
+		expect(draft.answers.answerOrder('dept')).not.toEqual(before);
+		draft.answers.restoreAnswerOrder('dept', before);
+		expect(draft.answers.answerOrder('dept')).toEqual(before);
 	});
 
 	it('folds an answer into a sibling and keeps the draft dirty until Discard', () => {
 		const draft = open();
-		draft.mergeAttributeAnswer('dept', 'back', 'front');
+		draft.answers.mergeAttributeAnswer('dept', 'back', 'front');
 		expect(draft.dirtyAttributes).toBe(true);
 		draft.discardAll();
 		expect(draft.dirtyAttributes).toBe(false);
-		expect(draft.answerOrder('dept')).toEqual(['front', 'back', 'tills']);
+		expect(draft.answers.answerOrder('dept')).toEqual(['front', 'back', 'tills']);
 	});
 });
 
@@ -237,10 +237,10 @@ describe('the saving lock', () => {
 	it('ignores edits while a save is running', () => {
 		const draft = open();
 		draft.saving = true;
-		draft.removeAttributeOption('dept', 'tills');
-		draft.editAbbreviation('dept', 'front', 'F');
-		expect(draft.moveAnswerSibling('dept', 'front', 1)).toBeNull();
-		expect(draft.moveAnswerBeside('dept', 'back', 'front', false)).toBe(false);
+		draft.answers.removeAttributeOption('dept', 'tills');
+		draft.answers.editAbbreviation('dept', 'front', 'F');
+		expect(draft.answers.moveAnswerSibling('dept', 'front', 1)).toBeNull();
+		expect(draft.answers.moveAnswerBeside('dept', 'back', 'front', false)).toBe(false);
 		expect(draft.moveAttribute('dept', 1)).toBe(false);
 		draft.requestDeleteAttribute('dept');
 		draft.deleteAttribute('dept');
@@ -248,7 +248,7 @@ describe('the saving lock', () => {
 		draft.agitations.merge('pay', 'hours');
 		draft.languages.remove('greek');
 		draft.languages.merge('greek', 'latin');
-		draft.mergeAttributeAnswer('dept', 'back', 'front');
+		draft.answers.mergeAttributeAnswer('dept', 'back', 'front');
 		draft.discardAll();
 		draft.saving = false;
 		expect(draft.hasUnsavedDraft).toBe(false);
