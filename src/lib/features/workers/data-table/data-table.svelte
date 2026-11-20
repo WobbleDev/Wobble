@@ -29,6 +29,7 @@
 	import { createWorkersColumnFit } from './columns/column-fit.svelte.ts';
 	import { createWorkersUrlFilters } from './filters/url-filters.svelte.ts';
 	import { createWorkersKeyboard } from './keyboard/keyboard.svelte.ts';
+	import { createGridFocusReturn } from './keyboard/grid-focus-return.ts';
 	import StatusLine from '#lib/features/workers/status-line.svelte';
 	import { getEditModel } from '#lib/features/workers/edit-model.svelte.ts';
 	import {
@@ -311,86 +312,17 @@
 		const origin = person.workersReturn?.sourceFocus?.workerId ?? null;
 		if (newWorker.open) newWorker.cancel();
 		else record.drop();
-		if (id === null) return;
-		void tick().then(() => {
-			const find = (workerId: string | null) =>
-				workerId === null
-					? null
-					: (scrollViewport?.querySelector<HTMLElement>(
-							`tr[data-worker-id="${CSS.escape(workerId)}"]`
-						) ?? null);
-			// The originating row, else the closed Worker's row, else the filter bar.
-			const row = find(origin) ?? find(id);
-			if (!row) {
-				document.querySelector<HTMLElement>('[data-worker-search]')?.focus();
-				return;
-			}
-			// In the grid the cell takes focus, not the row.
-			const column = mobileViewport.current ? null : (effectiveActive?.columnId ?? 'name');
-			const cell = column
-				? row?.querySelector<HTMLElement>(`td[data-column-id="${CSS.escape(column)}"]`)
-				: null;
-			(cell ?? row)?.focus();
-		});
+		if (id !== null) void gridFocus.afterClose(id, origin);
 	}
 
-	/**
-	 * The row index of a Worker a delete is about to remove, read while its row is
-	 * still in the model, so focus can land on the row that takes its place.
-	 */
-	let removalRowIndex: number | null = null;
-
-	/** Records where a delete started, so its success can put focus back in the grid. */
-	function noteRemoval(workerId: string) {
-		removalRowIndex = rows.findIndex((row) => row.id === workerId);
-	}
-
-	/**
-	 * Puts focus back in the grid once the control that held it has been removed by
-	 * its own action (a delete, or clearing the selection). The captured row index
-	 * lands on the Worker that took the deleted one's place; with none captured the
-	 * active cell is the fallback. The closing dialog or record card restores focus to
-	 * its own trigger a few frames later, so the placement is re-checked for a short
-	 * window and re-applied only while focus is still lost; a real focus elsewhere is
-	 * never stolen.
-	 */
-	function focusGridAfterRemoval() {
-		const index = removalRowIndex;
-		removalRowIndex = null;
-		/** True while a placement is in flight, so a frame does not start a second one. */
-		let placing = false;
-
-		const place = () => {
-			if (placing) return;
-			const active = document.activeElement;
-			const focusLost =
-				!(active instanceof HTMLElement) || active === document.body || !active.isConnected;
-			if (!focusLost) return;
-			const row = index === null ? undefined : rows[Math.min(Math.max(index, 0), rows.length - 1)];
-			const workerId = row?.id ?? effectiveActive?.workerId;
-			if (workerId) {
-				placing = true;
-				void keyboard
-					.focusCell(
-						workerId,
-						mobileViewport.current ? null : (effectiveActive?.columnId ?? 'name')
-					)
-					.finally(() => (placing = false));
-				return;
-			}
-			// The last Worker went: the table is empty, so its New Worker control takes focus.
-			document.querySelector<HTMLElement>('[data-new-worker-trigger]')?.focus();
-		};
-
-		void tick().then(() => {
-			const until = performance.now() + 400;
-			const step = () => {
-				place();
-				if (performance.now() < until) requestAnimationFrame(step);
-			};
-			requestAnimationFrame(step);
-		});
-	}
+	/** Where focus lands when the control that held it is removed by its own action. */
+	const gridFocus = createGridFocusReturn({
+		viewport: () => scrollViewport,
+		rows: () => rows,
+		activeCell: () => effectiveActive,
+		isMobile: () => mobileViewport.current,
+		focusCell: (workerId, columnId) => keyboard.focusCell(workerId, columnId)
+	});
 
 	type TableRow = ReturnType<typeof table.getRowModel>['rows'][number];
 	const mobileViewport = new IsMobile();
@@ -954,9 +886,9 @@
 					{reportEdit}
 					onOpenSummary={openSummary}
 					bind:barRef={bulkBarElement}
-					onBeforeDelete={noteRemoval}
-					onAfterDelete={focusGridAfterRemoval}
-					onFocusReturn={focusGridAfterRemoval}
+					onBeforeDelete={gridFocus.noteRemoval}
+					onAfterDelete={gridFocus.afterRemoval}
+					onFocusReturn={gridFocus.afterRemoval}
 				/>
 				<StatusLine />
 			</div>
@@ -998,8 +930,8 @@
 					{onCreateAgitation}
 					{onRefresh}
 					onEditSaved={reportEdit}
-					onBeforeDelete={noteRemoval}
-					onAfterDelete={focusGridAfterRemoval}
+					onBeforeDelete={gridFocus.noteRemoval}
+					onAfterDelete={gridFocus.afterRemoval}
 				/>
 			</div>
 		{/if}
@@ -1038,8 +970,8 @@
 		{onCreateAgitation}
 		{onRefresh}
 		onEditSaved={reportEdit}
-		onBeforeDelete={noteRemoval}
-		onAfterDelete={focusGridAfterRemoval}
+		onBeforeDelete={gridFocus.noteRemoval}
+		onAfterDelete={gridFocus.afterRemoval}
 		onClose={() => {
 			sheetRequested = false;
 			if (newWorker.open) newWorker.cancel();
