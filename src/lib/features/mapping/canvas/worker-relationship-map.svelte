@@ -44,6 +44,7 @@
 	import { attemptExpansion, projectLayoutInput, readGrouping } from '../grouping/map-grouping.ts';
 	import { contextFilterLabels } from '../map-contextual-filters.ts';
 	import { createPanZoom } from './map-pan-zoom.svelte.ts';
+	import { createUndoOffer } from './map-undo-offer.svelte.ts';
 	import { floatingGutter } from '../layout/graph-free-canvas.ts';
 	import { buildWorkerGraph, type WorkerGraphNode } from './worker-relationship-map-model.ts';
 	import MapCanvas from './map-canvas.svelte';
@@ -587,34 +588,14 @@
 	}
 
 	/** The last clear or reset, held briefly so a wrong click can be taken back. */
-	let undo = $state<{ snapshot: MapViewCapture; label: string } | null>(null);
-	let undoTimer: ReturnType<typeof setTimeout> | undefined;
-
-	function startUndoTimer() {
-		clearTimeout(undoTimer);
-		undoTimer = setTimeout(() => (undo = null), 6000);
-	}
-
-	function offerUndo(label: string) {
-		undo = { snapshot: view.capture(), label };
-		startUndoTimer();
-	}
-
-	function pauseUndoTimer() {
-		clearTimeout(undoTimer);
-	}
-
-	function resumeUndoTimer() {
-		if (undo) startUndoTimer();
-	}
-
-	function dismissUndo() {
-		undo = null;
-		clearTimeout(undoTimer);
-	}
+	const undo = createUndoOffer<MapViewCapture>({
+		capture: () => view.capture(),
+		restore: (snapshot) => view.restore(snapshot)
+	});
+	onDestroy(() => undo.dispose());
 
 	function runClearFilters() {
-		offerUndo(m.mapping_undo_filters_cleared());
+		undo.offer(m.mapping_undo_filters_cleared());
 		view.clearFilters();
 	}
 
@@ -677,19 +658,11 @@
 	});
 
 	function runReset() {
-		offerUndo(m.mapping_undo_view_reset());
+		undo.offer(m.mapping_undo_view_reset());
 		view.reset();
 		panZoom.resetView();
 	}
 
-	function applyUndo() {
-		if (!undo) return;
-		view.restore(undo.snapshot);
-		undo = null;
-		clearTimeout(undoTimer);
-	}
-
-	onDestroy(() => clearTimeout(undoTimer));
 	// The dot-size key keeps the map's relative dot sizes at one fixed scale (dot-size-key.ts).
 	const dotSizeKey = dotSizeKeyGeometry();
 	// Initial readiness stays true across later resizes and user-driven reframing.
@@ -794,11 +767,11 @@
 					onToggleExpansion={togglePrimaryExpansion}
 					onToggleSubExpansion={toggleSecondaryExpansion}
 					onClearGrouping={clearGrouping}
-					{undo}
-					onUndo={applyUndo}
-					onDismissUndo={dismissUndo}
-					onPauseUndo={pauseUndoTimer}
-					onResumeUndo={resumeUndoTimer}
+					undo={undo.current}
+					onUndo={undo.apply}
+					onDismissUndo={undo.dismiss}
+					onPauseUndo={undo.pause}
+					onResumeUndo={undo.resume}
 					onReset={runReset}
 					onResetFrame={resetFrame}
 					onClearFilters={runClearFilters}
