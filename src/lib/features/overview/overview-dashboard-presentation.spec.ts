@@ -162,7 +162,7 @@ describe('segmentLabelTone', () => {
 				const foreground = tone === 'white' ? 1 : 0;
 				const ratio =
 					(Math.max(background, foreground) + 0.05) / (Math.min(background, foreground) + 0.05);
-				// The default Light fills carry white counts by choice, short of 4.5:1.
+				// The default Light fills carry white counts in large bold print, which owes 3:1.
 				const floor = theme === 'light' && palette === 'default' ? 3 : 4.5;
 				expect(ratio, `${assessment} ${theme} ${palette} ${tone}`).toBeGreaterThanOrEqual(floor);
 			});

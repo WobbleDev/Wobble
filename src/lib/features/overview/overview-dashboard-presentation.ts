@@ -102,8 +102,9 @@ export function segmentLabelTone(
 	palette: 'default' | 'colorblind' = 'default'
 ): CellTone {
 	if (assessment === 'Unassessed') return 'default';
-	// The default Light fills carry white counts by the organizer's choice: white on them reads
-	// 3.2 to 4.4:1, under the 4.5:1 the other contexts meet (the spec pins a 3:1 floor here).
+	// The default Light fills carry white counts: white on them reads 3.2 to 4.4:1, which only
+	// large print earns. The printed counts are text-xl bold (20px, 700), WCAG's large text,
+	// so the 3:1 floor applies (the spec pins it); the other contexts meet 4.5:1.
 	if (theme === 'light' && palette === 'default') return 'white';
 	if (
 		palette === 'colorblind' &&

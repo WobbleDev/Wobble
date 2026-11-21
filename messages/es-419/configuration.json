@@ -284,8 +284,6 @@
 	"configuration_impact_state_retained": "Se conserva",
 	"configuration_impact_state_removed": "Se quita",
 	"configuration_impact_state_unresolved": "Sin resolver",
-	"configuration_field_example_aria": "Ejemplo del campo {name}",
-	"configuration_field_example_placeholder": "Ejemplo de {name}",
 	"configuration_list_toggle": "Mostrar u ocultar {name}",
 	"configuration_reorder_picked_up": "{name} tomado, {position} de {count}.",
 	"configuration_reorder_moved": "{name} movido a {position} de {count}.",

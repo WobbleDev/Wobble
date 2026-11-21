@@ -12,33 +12,48 @@ const inspector = (page: Page, name: string) =>
 const search = (page: Page) => page.getByRole('searchbox', { name: 'Search Name' });
 const cohortNav = (page: Page) => page.getByRole('navigation', { name: 'Workers in list' });
 
-test('Previous and Next walk the opened list, disable at the ends and land focus on the heading', async ({
+test('the desktop card has no Previous and Next row, and closing returns focus to the cell', async ({
 	page,
 	request
 }) => {
 	await openWorkersTable(page, request, { seed: seedInspectorWorkers });
 	await nameCell(page, 'Ada Lovelace').click();
 	await expect(inspector(page, 'Ada Lovelace')).toBeVisible();
+	// The table beside the card walks the list, so the card carries no second control for it.
+	await expect(cohortNav(page)).toHaveCount(0);
+
+	// Closing returns focus to the cell the record was opened from.
+	await page.keyboard.press('Escape');
+	await expect(inspector(page, 'Ada Lovelace')).toHaveCount(0);
+	await expect(nameCell(page, 'Ada Lovelace')).toBeFocused();
+});
+
+test('in the sheet, Previous and Next walk the opened list, disable at the ends and land focus on the heading', async ({
+	page,
+	request
+}) => {
+	await openWorkersTable(page, request, {
+		seed: seedInspectorWorkers,
+		viewport: { width: 375, height: 812 }
+	});
+	await nameCell(page, 'Ada Lovelace').click();
+	const sheet = (name: string) => page.getByRole('dialog', { name: `Worker details: ${name}` });
+	await expect(sheet('Ada Lovelace')).toBeVisible();
 	const previous = cohortNav(page).getByRole('button', { name: 'Previous' });
 	const next = cohortNav(page).getByRole('button', { name: 'Next' });
 	await expect(previous).toBeDisabled();
 	await expect(cohortNav(page)).toContainText('1 of 3');
 
 	await next.click();
-	await expect(inspector(page, 'Grace Hopper')).toBeVisible();
-	await expect(inspector(page, 'Grace Hopper').locator('h2')).toBeFocused();
+	await expect(sheet('Grace Hopper')).toBeVisible();
+	await expect(sheet('Grace Hopper').locator('[data-record-heading]')).toBeFocused();
 	await expect(previous).toBeEnabled();
 	await expect(next).toBeEnabled();
 
-	await cohortNav(page).getByRole('button', { name: 'Next' }).click();
-	await expect(inspector(page, 'Katherine Johnson')).toBeVisible();
-	await expect(cohortNav(page).getByRole('button', { name: 'Next' })).toBeDisabled();
+	await next.click();
+	await expect(sheet('Katherine Johnson')).toBeVisible();
+	await expect(next).toBeDisabled();
 	await expect(cohortNav(page)).toContainText('3 of 3');
-
-	// Closing returns focus to the cell the record was opened from.
-	await page.keyboard.press('Escape');
-	await expect(inspector(page, 'Katherine Johnson')).toHaveCount(0);
-	await expect(nameCell(page, 'Ada Lovelace')).toBeFocused();
 });
 
 test('a created Worker outside the filters stays open with a note and a way back', async ({

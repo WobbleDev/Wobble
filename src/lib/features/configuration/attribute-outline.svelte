@@ -25,7 +25,6 @@
 	import { visibleValues, type ValueTextCheck } from './configuration-draft.ts';
 	import AnswerOutline, { type AnswerActions } from './answer-outline.svelte';
 	import AttributeTools from './attribute-tools.svelte';
-	import FieldExample from './field-example.svelte';
 	import ParentRemovalChoice from './parent-removal-choice.svelte';
 	import OutlineCount from './outline-count.svelte';
 
@@ -411,7 +410,6 @@
 			<div class="ml-4 pl-2"><Field.Error>{attribute.removalError}</Field.Error></div>
 		{/if}
 		<AttributeTools {attribute} {saving} {onAddOption} {placement} />
-		<FieldExample attribute={definition} />
 	{/if}
 	{#if !expanded && placement.destination?.attributeId === attribute.id}
 		<div

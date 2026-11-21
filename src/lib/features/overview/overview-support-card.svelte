@@ -106,7 +106,7 @@
 	</div>
 	{#if overall.total > 0}
 		<div class="self-center">
-			<OverviewSegmentBar {counts} height="h-9 text-sm" labelled {theme} {palette} />
+			<OverviewSegmentBar {counts} height="h-9 text-xl" labelled {theme} {palette} />
 		</div>
 	{/if}
 </section>
