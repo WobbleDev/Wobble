@@ -1,7 +1,8 @@
 <script lang="ts">
-	import ChevronLeftIcon from '@lucide/svelte/icons/chevron-left';
-	import ChevronRightIcon from '@lucide/svelte/icons/chevron-right';
+	import LayoutDashboardIcon from '@lucide/svelte/icons/layout-dashboard';
+	import TargetIcon from '@lucide/svelte/icons/target';
 	import { Button } from '#lib/components/ui/button/index.ts';
+	import * as Tooltip from '#lib/components/ui/tooltip/index.ts';
 	import { m } from '#lib/paraglide/messages.js';
 	import { bullseyeView } from './bullseye/bullseye-view.ts';
 	import { overviewFocus } from './overview-focus.svelte.ts';
@@ -13,21 +14,26 @@
 	const view = bullseyeView();
 </script>
 
-<!-- The focus tab: a 24x80 strip at the vertical centre of the right edge,
-     above both layers and never inside an inert region, so it answers in
+<!-- The focus tab: a 24x80 strip at the vertical centre of the right edge, in the
+     dashboard's right gutter so it never covers a card, above both layers and never inside an inert region, so it answers in
      either state. Toggling keeps keyboard focus on the button itself. -->
-<button
-	type="button"
-	data-focus-edge
-	class="absolute top-1/2 right-0 z-[4] flex h-20 w-6 -translate-y-1/2 items-center justify-center rounded-l-md border border-r-0 border-rule bg-panel/70 text-ink-3 backdrop-blur-sm transition-colors hover:bg-panel hover:text-ink focus-visible:outline-2 focus-visible:outline-ring motion-reduce:transition-none"
-	aria-pressed={focus.focused}
-	aria-label={focus.focused ? m.overview_show_dashboard() : m.overview_focus_bullseye()}
-	onclick={() => focus.toggle()}
->
-	{#if focus.focused}<ChevronRightIcon class="size-4" />{:else}<ChevronLeftIcon
-			class="size-4"
-		/>{/if}
-</button>
+<Tooltip.Root>
+	<Tooltip.Trigger
+		type="button"
+		data-focus-edge
+		class="absolute top-1/2 right-0 z-[4] flex h-20 w-6 -translate-y-1/2 items-center justify-center rounded-l-md border border-r-0 border-rule bg-panel/70 text-ink-3 backdrop-blur-sm transition-colors hover:bg-panel hover:text-ink focus-visible:outline-2 focus-visible:outline-ring motion-reduce:transition-none"
+		aria-pressed={focus.focused}
+		aria-label={focus.focused ? m.overview_show_dashboard() : m.overview_focus_bullseye()}
+		onclick={() => focus.toggle()}
+	>
+		{#if focus.focused}<LayoutDashboardIcon class="size-4" />{:else}<TargetIcon
+				class="size-4"
+			/>{/if}
+	</Tooltip.Trigger>
+	<Tooltip.Content side="left">
+		{focus.focused ? m.overview_show_dashboard() : m.overview_focus_tooltip()}
+	</Tooltip.Content>
+</Tooltip.Root>
 <!-- Reset zoom belongs to the focused chart backdrop, at the lower right above it;
      the fitted chart keeps its own reset in the page. -->
 {#if focus.focused}

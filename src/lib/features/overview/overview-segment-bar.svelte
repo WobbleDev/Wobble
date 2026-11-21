@@ -69,7 +69,7 @@
 					</svelte:element>
 				{/snippet}
 			</Tooltip.Trigger>
-			<Tooltip.Content>{s.count} {assessmentGroupLabel(s.option)}</Tooltip.Content>
+			<Tooltip.Content>{assessmentGroupLabel(s.option)}</Tooltip.Content>
 		</Tooltip.Root>
 	{/each}
 </div>
@@ -113,9 +113,9 @@
 		opacity: 0;
 		pointer-events: none;
 	}
-	:global(.neutral-bar .seg.support + .seg:not(.support)::before),
 	/* A band reads in the standing colours while its row or its bar is hovered or
 	   focused; the counts appear only on the bar itself, over the segment under it. */
+	:global(.neutral-bar .seg.support + .seg:not(.support)::before),
 	:global(.breakdown-row:hover .neutral-bar .seg + .seg::before),
 	:global(.breakdown-row:focus-within .neutral-bar .seg + .seg::before),
 	:global(.neutral-bar:hover .seg + .seg::before),

@@ -127,7 +127,10 @@
 	<!-- A scroller needs a tab stop, or a keyboard reader can neither reach nor scroll it. -->
 	<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 	<div
-		class="dashboard grid min-h-0 flex-1 grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)_minmax(0,0.9fr)] grid-rows-[auto_minmax(0,1fr)] gap-3 p-4 lg:p-5"
+		class={[
+			'dashboard grid min-h-0 flex-1 grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)_minmax(0,0.9fr)] grid-rows-[auto_minmax(0,1fr)] gap-3 p-4 lg:p-5',
+			view.shown && 'lg:pr-8'
+		]}
 		data-dashboard
 		data-scroll-region={rootState.enlargedText ? '' : undefined}
 		role={rootState.enlargedText ? 'region' : undefined}

@@ -148,6 +148,10 @@
 								needed: group.needed,
 								group: group.value
 							})}
+							tooltip={m.overview_coverage_tooltip({
+								leaders: group.leaders,
+								needed: group.needed
+							})}
 						/>
 					</div>
 				</li>

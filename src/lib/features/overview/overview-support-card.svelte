@@ -49,10 +49,13 @@
 			? m.overview_coverage_basis_one()
 			: m.overview_coverage_basis_other({ count: leaderTarget(target) })
 	);
-	/* The tooltip and accessible name carry the whole reading, including a shortfall. */
+	const coverageTooltip = $derived(
+		m.overview_coverage_tooltip({ leaders: coverage.leaders, needed: coverage.needed })
+	);
+	/* The accessible name carries the whole reading, including a shortfall. */
 	const coverageLabel = $derived(
 		[
-			m.overview_coverage_units({ leaders: coverage.leaders, needed: coverage.needed }),
+			coverageTooltip,
 			coverage.gap < 0
 				? m.overview_coverage_short({
 						leaders:
@@ -124,14 +127,15 @@
 <section class="panel" aria-label={m.domain_committee_coverage()}>
 	<div>
 		<h2 class="section-title">{m.domain_committee_coverage()}</h2>
-		<div class="mt-2 flex items-center gap-2.5" data-coverage-figure>
-			<CoverageMarks
-				leaders={coverage.leaders}
-				needed={coverage.needed}
-				size="size-5"
-				label={coverageLabel}
-				detail={coverageBasis}
-			/>
+		<div class="mt-1 flex items-center gap-2.5" data-coverage-figure>
+			<span
+				class="text-[clamp(1.25rem,10cqw,1.75rem)] leading-none font-semibold tracking-headline tabular-nums"
+				data-coverage-units
+				>{m.overview_coverage_units({
+					leaders: coverage.leaders,
+					needed: coverage.needed
+				})}</span
+			>
 			{#if coverage.needed > 0 && coverage.gap >= 0}
 				<CheckIcon
 					class="size-5 shrink-0 text-state-success"
@@ -139,6 +143,16 @@
 					aria-label={m.overview_target_met()}
 				/>
 			{/if}
+		</div>
+		<div class="mt-2">
+			<CoverageMarks
+				leaders={coverage.leaders}
+				needed={coverage.needed}
+				size="size-5"
+				label={coverageLabel}
+				tooltip={coverageTooltip}
+				detail={coverageBasis}
+			/>
 		</div>
 	</div>
 </section>

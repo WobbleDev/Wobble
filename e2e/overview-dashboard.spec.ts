@@ -136,13 +136,15 @@ test('shows Overall support and Committee coverage figures', async ({ page, requ
 
 	const coverage = coverageCard(page);
 	const marks = coverage.locator('[data-coverage-marks]');
-	await expect(marks).toHaveAttribute('aria-label', /Leaders 1 · needed 2 · .*short of target/);
+	await expect(marks).toHaveAttribute('aria-label', /Leaders: 1 of 2 · .*short of target/);
 	await expect(coverage.locator('[data-mark="leader"]')).toHaveCount(1);
 	await expect(coverage.locator('[data-mark="needed"]')).toHaveCount(1);
+	await expect(coverage.locator('[data-coverage-units]')).toHaveText('1 / 2 Leaders');
 	await expect(coverage).not.toContainText('1 Leader per');
 	await marks.focus();
 	await expect(marks).toHaveAttribute('aria-describedby', /.+/);
 	const tipId = await marks.getAttribute('aria-describedby');
+	await expect(page.locator(`[id="${tipId}"]`)).toContainText('Leaders: 1 of 2');
 	await expect(page.locator(`[id="${tipId}"]`)).toContainText(
 		'1 Leader per 5 workers, of all Workers'
 	);
@@ -158,10 +160,10 @@ test('bands each Department group with its support bar and coverage', async ({ p
 	await expect(by.getByRole('button', { name: 'Department' })).toBeVisible();
 	await expect(by).toContainText('Front of House');
 	await expect(by).toContainText('100%');
-	await expect(by.getByLabel('Leaders 1 · needed 1 · of Front of House')).toBeVisible();
+	await expect(by.getByLabel('Front of House: Leaders 1 of 1')).toBeVisible();
 	await expect(by).toContainText('Back of House');
 	await expect(by).toContainText('40%');
-	await expect(by.getByLabel('Leaders 0 · needed 1 · of Back of House')).toBeVisible();
+	await expect(by.getByLabel('Back of House: Leaders 0 of 1')).toBeVisible();
 	await expect(by).not.toContainText('needed');
 });
 
@@ -437,7 +439,7 @@ test.describe('in Spanish', () => {
 		).toBeVisible();
 		await expect(page.getByRole('region', { name: 'Apoyo general' })).toBeVisible();
 		await expect(page.getByRole('heading', { name: 'Por', exact: true })).toBeVisible();
-		await expect(page.getByLabel('Líderes 1 · necesarios 1 · de Front of House')).toBeVisible();
+		await expect(page.getByLabel('Front of House: líderes 1 de 1')).toBeVisible();
 		await expect(page.getByRole('columnheader', { name: 'Todos' })).toBeVisible();
 		await expect(page.getByRole('region', { name: 'Agitaciones' })).toBeVisible();
 		const matrix = page.getByRole('region', { name: 'Agitaciones' });

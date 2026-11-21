@@ -49,9 +49,10 @@
 	"overview_target_met": "Target met",
 	"overview_dashboard_by": "By",
 	"overview_dashboard_all": "All",
-	"overview_group_coverage": "Leaders {leaders} · needed {needed} · of {group}",
+	"overview_group_coverage": "{group}: Leaders {leaders} of {needed}",
 	"overview_focus_bullseye": "Focus bullseye",
 	"overview_show_dashboard": "Show dashboard",
+	"overview_focus_tooltip": "My Committee",
 	"overview_agitations_summary": "Worker counts by {attribute}. Select a count to view Workers.",
 	"overview_agitations_help_label": "How to read Agitations",
 	"overview_agitations_help": "The All column shows worksite totals. Shading uses the same count scale on every page.",
@@ -66,7 +67,8 @@
 	"overview_breakdown_previous_label": "Previous support breakdown page",
 	"overview_breakdown_next_label": "Next support breakdown page",
 	"overview_breakdown_page_label": "Support breakdown page",
-	"overview_coverage_units": "Leaders {leaders} · needed {needed}",
+	"overview_coverage_units": "{leaders} / {needed} Leaders",
+	"overview_coverage_tooltip": "Leaders: {leaders} of {needed}",
 	"overview_segment_link_all": "{count} {standing}, of all Workers. Open in Workers",
 	"overview_segment_link_group": "{count} {standing} in {group}. Open in Workers"
 }

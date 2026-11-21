@@ -2,10 +2,14 @@ import { render } from 'svelte/server';
 import { describe, expect, it } from 'vitest';
 import OverviewEdgeControl from './overview-edge-control.svelte';
 import OverviewContextHost from '#lib/testing/overview-context-host.svelte';
+import TooltipProviderHost from '#lib/testing/tooltip-provider-host.svelte';
 
 function control(focused: boolean, zoom = 1) {
-	return render(OverviewContextHost, {
-		props: { component: OverviewEdgeControl, focused, zoom }
+	return render(TooltipProviderHost, {
+		props: {
+			component: OverviewContextHost,
+			props: { component: OverviewEdgeControl, focused, zoom }
+		}
 	}).body;
 }
 
