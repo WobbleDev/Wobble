@@ -4,7 +4,7 @@ import type { Worker } from '#lib/domain-vocabulary.ts';
 import { worker as baseWorker } from '#lib/testing/builders.ts';
 import { scriptFetch, type ScriptedReply } from '#lib/testing/http.ts';
 import type { WorkerDraft, WorkerDraftInput } from '#lib/client/worker-drafts-api.ts';
-import { PanelDraftState } from './panel-draft-state.svelte.ts';
+import { DRAFT_READ_SETTLE_MS, PanelDraftState } from './panel-draft-state.svelte.ts';
 
 const worker = (extra: Partial<Worker> = {}) =>
 	baseWorker({
@@ -98,6 +98,30 @@ describe('PanelDraftState', () => {
 		expect(state.restoreRevision).toBe(1);
 	});
 
+	it('reads only the draft of the Worker a key run settles on', async () => {
+		vi.useFakeTimers();
+		try {
+			const { calls } = scriptFetch({
+				'GET /api/worker-drafts/w3': () => draftReply(null)
+			});
+			const state = new PanelDraftState();
+
+			const first = state.load(worker({ id: 'w1' }), []);
+			await vi.advanceTimersByTimeAsync(DRAFT_READ_SETTLE_MS - 1);
+			const second = state.load(worker({ id: 'w2' }), []);
+			await vi.advanceTimersByTimeAsync(DRAFT_READ_SETTLE_MS - 1);
+			const third = state.load(worker({ id: 'w3' }), []);
+			expect(state.ready).toBe(false);
+			await vi.advanceTimersByTimeAsync(DRAFT_READ_SETTLE_MS);
+			await Promise.all([first, second, third]);
+
+			expect(calls.map((call) => call.path)).toEqual(['/api/worker-drafts/w3']);
+			expect(state.ready).toBe(true);
+		} finally {
+			vi.useRealTimers();
+		}
+	});
+
 	it('flags a stored draft whose record moved on since it was taken', async () => {
 		scriptFetch({ 'GET /api/worker-drafts/w1': () => draftReply(storedDraft()) });
 		const state = new PanelDraftState();
@@ -152,28 +176,36 @@ describe('PanelDraftState', () => {
 	});
 
 	it('drops a late stored draft for a Worker the panel has since left', async () => {
-		let release: (reply: ScriptedReply) => void = () => {};
-		const { calls } = scriptFetch({
-			'GET /api/worker-drafts/w1': () =>
-				new Promise<ScriptedReply>((resolve) => {
-					release = resolve;
-				}),
-			'GET /api/worker-drafts/w2': () => draftReply(null)
-		});
-		const state = new PanelDraftState();
-		const first = state.load(worker(), []);
+		vi.useFakeTimers();
+		try {
+			let release: (reply: ScriptedReply) => void = () => {};
+			const { calls } = scriptFetch({
+				'GET /api/worker-drafts/w1': () =>
+					new Promise<ScriptedReply>((resolve) => {
+						release = resolve;
+					}),
+				'GET /api/worker-drafts/w2': () => draftReply(null)
+			});
+			const state = new PanelDraftState();
+			const first = state.load(worker(), []);
+			// The first read is in flight before the panel moves on.
+			await vi.advanceTimersByTimeAsync(DRAFT_READ_SETTLE_MS);
 
-		const second = state.load(worker({ id: 'w2', name: 'Grace' }), []);
-		release(draftReply(storedDraft()));
-		await Promise.all([first, second]);
+			const second = state.load(worker({ id: 'w2', name: 'Grace' }), []);
+			release(draftReply(storedDraft()));
+			await vi.advanceTimersByTimeAsync(DRAFT_READ_SETTLE_MS);
+			await Promise.all([first, second]);
 
-		expect(calls.map((call) => `${call.method} ${call.path}`)).toEqual([
-			'GET /api/worker-drafts/w1',
-			'GET /api/worker-drafts/w2'
-		]);
-		expect(state.workerId).toBe('w2');
-		expect(state.restored).toEqual({ noteEdits: {}, attributes: {} });
-		expect(state.stored).toBe(false);
+			expect(calls.map((call) => `${call.method} ${call.path}`)).toEqual([
+				'GET /api/worker-drafts/w1',
+				'GET /api/worker-drafts/w2'
+			]);
+			expect(state.workerId).toBe('w2');
+			expect(state.restored).toEqual({ noteEdits: {}, attributes: {} });
+			expect(state.stored).toBe(false);
+		} finally {
+			vi.useRealTimers();
+		}
 	});
 
 	it('Discard forgets the stored draft and closes what it reopened', async () => {
