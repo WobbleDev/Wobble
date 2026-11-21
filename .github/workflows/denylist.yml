@@ -1,0 +1,42 @@
+name: denylist
+# Fails when tracked files, their paths or this change's commit metadata hold a string from the
+# private denylist. The denylist itself is never in the repo; only its hashes are, as the
+# DENYLIST_HASHES Actions secret (generate it with scripts/make-denylist-hashes.mjs).
+#
+# Keep the `pull_request` trigger. Fork and Dependabot pull requests get no secrets under it, so
+# the check skips with a notice there. Never switch it to `pull_request_target`: that trigger
+# hands secrets to code from a fork.
+# Without the secret the job passes with a notice instead of failing.
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  denylist:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          fetch-depth: 0
+          # The PR's own head commit, not the merge commit Actions would build.
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version-file: .nvmrc
+      - name: Scan for denylisted strings (counts only)
+        env:
+          DENYLIST_HASHES: ${{ secrets.DENYLIST_HASHES }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          range=""
+          if [ -n "$BASE_SHA" ] && [ "$BASE_SHA" != "0000000000000000000000000000000000000000" ]; then
+            range="$BASE_SHA..$HEAD_SHA"
+          fi
+          if [ -n "$range" ]; then
+            node scripts/check-denylist-hashes.mjs --range "$range"
+          else
+            node scripts/check-denylist-hashes.mjs
+          fi
