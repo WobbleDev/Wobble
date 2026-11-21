@@ -41,7 +41,10 @@ test('an empty Worksite shows plain messages and no shade key', async ({ page, r
 
 	// Committee coverage shows 0/0 with no check mark.
 	const coverage = coverageCard(page);
-	await expect(coverage).toContainText('Leaders 0 · needed 0');
+	await expect(coverage.locator('[data-coverage-marks]')).toHaveAttribute(
+		'aria-label',
+		'Leaders 0 · needed 0'
+	);
 	await expect(coverage.getByRole('img', { name: 'Target met' })).toHaveCount(0);
 
 	// The By card names the missing grouping and its Select is empty.
@@ -152,33 +155,19 @@ test('group names truncate, row labels wrap fully, and long headers remain reada
 	expect(headerOverflow.whiteSpace, 'header can wrap').not.toBe('nowrap');
 	expect(headerOverflow.mono).toMatch(/mono/i);
 
-	// The shortfall line sits above the basis line, on its own line.
+	// The shortfall and the target it is measured against are not written on the card:
+	// the marks show two open marks, and the tooltip names both.
 	const coverage = coverageCard(page);
-	await expect(coverage).toContainText('Leaders, 2 short of target');
-	await expect(coverage).toContainText('1 Leader per 5 workers, of all Workers');
-	const lines = await coverage.evaluate((el) => {
-		const short = [...el.querySelectorAll('span')].find((s) =>
-			s.textContent?.includes('short of target')
-		);
-		if (!short) return null;
-		const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
-		const range = document.createRange();
-		let basisTop = NaN;
-		while (walker.nextNode()) {
-			const node = walker.currentNode as Text;
-			if (!node.textContent?.includes('1 Leader per')) continue;
-			range.selectNodeContents(node);
-			basisTop = range.getBoundingClientRect().top;
-		}
-		return {
-			display: getComputedStyle(short).display,
-			shortBottom: short.getBoundingClientRect().bottom,
-			basisTop
-		};
-	});
-	expect(lines?.display, 'shortfall is a block').toBe('block');
-	expect(lines!.shortBottom, 'shortfall sits above the basis line').toBeLessThanOrEqual(
-		lines!.basisTop + 1
+	const marks = coverage.locator('[data-coverage-marks]');
+	await expect(marks).toHaveAttribute('aria-label', /Leaders, 2 short of target/);
+	await expect(marks).toHaveAttribute('data-short', 'true');
+	await expect(coverage.locator('[data-mark="needed"]')).toHaveCount(2);
+	await expect(coverage).not.toContainText('1 Leader per');
+	await marks.focus();
+	await expect(marks).toHaveAttribute('aria-describedby', /.+/);
+	const tipId = await marks.getAttribute('aria-describedby');
+	await expect(page.locator(`[id="${tipId}"]`)).toContainText(
+		'1 Leader per 5 workers, of all Workers'
 	);
 
 	// The two-row matrix keeps natural row heights within its available card.
@@ -352,7 +341,10 @@ test('never scrolls the page at the floor in any density, and 10/10 fits its car
 
 	// The hero number and its check mark fit inside the coverage card.
 	const coverage = coverageCard(page);
-	await expect(coverage).toContainText('Leaders 10 · needed 10');
+	await expect(coverage.locator('[data-coverage-marks]')).toHaveAttribute(
+		'aria-label',
+		'Leaders 10 · needed 10'
+	);
 	await expect(coverage.getByRole('img', { name: 'Target met' })).toBeVisible();
 	await expectNoPageScroll(page);
 
@@ -363,7 +355,10 @@ test('never scrolls the page at the floor in any density, and 10/10 fits its car
 			document.documentElement.dataset.density = value;
 		}, density);
 		await appReady(page);
-		await expect(coverage).toContainText('Leaders 10 · needed 10');
+		await expect(coverage.locator('[data-coverage-marks]')).toHaveAttribute(
+			'aria-label',
+			'Leaders 10 · needed 10'
+		);
 		await expectNoPageScroll(page);
 	}
 	await page.evaluate(() => {
@@ -377,7 +372,10 @@ test('never scrolls the page at the floor in any density, and 10/10 fits its car
 			document.documentElement.dataset.textSize = value;
 		}, textSize);
 		await appReady(page);
-		await expect(coverage).toContainText('Leaders 10 · needed 10');
+		await expect(coverage.locator('[data-coverage-marks]')).toHaveAttribute(
+			'aria-label',
+			'Leaders 10 · needed 10'
+		);
 		await expectNoPageScroll(page);
 	}
 });
@@ -394,8 +392,8 @@ test.describe('in Spanish', () => {
 		await expect(page.locator('html')).toHaveAttribute('lang', 'es-419');
 		await expect(page.getByRole('region', { name: 'Apoyo general' })).toBeVisible();
 		await expect(page.getByRole('heading', { name: 'Por', exact: true })).toBeVisible();
-		await expect(page.getByText(/Líderes 2 · necesarios 1 · de /)).toBeVisible();
-		await expect(page.getByText(/Líderes 0 · necesarios 1 · de /)).toBeVisible();
+		await expect(page.getByLabel(/Líderes 2 · necesarios 1 · de /)).toBeVisible();
+		await expect(page.getByLabel(/Líderes 0 · necesarios 1 · de /)).toBeVisible();
 		await expect(page.getByRole('columnheader', { name: 'Todos' })).toBeVisible();
 		await expect(page.getByRole('region', { name: 'Agitaciones' })).toBeVisible();
 		await expectNoPageScroll(page);

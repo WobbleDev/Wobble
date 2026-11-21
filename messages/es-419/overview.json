@@ -66,19 +66,5 @@
 	"overview_breakdown_previous_label": "Página anterior del desglose de apoyo",
 	"overview_breakdown_next_label": "Página siguiente del desglose de apoyo",
 	"overview_breakdown_page_label": "Página del desglose de apoyo",
-	"overview_coverage_units": "Líderes {leaders} · necesarios {needed}",
-	"overview_support_levels_label": "Conteo por nivel, de todos los trabajadores",
-	"overview_compare_open": "Comparar grupos",
-	"overview_compare_title": "Comparar grupos",
-	"overview_compare_first": "Primer grupo",
-	"overview_compare_second": "Segundo grupo",
-	"overview_compare_choose": "Elige dos grupos",
-	"overview_compare_figure": "{count} de {of} · {percent}",
-	"overview_compare_figure_none": "{count} de 0 · sin proporción",
-	"overview_population_worksite": "de todos los trabajadores",
-	"overview_population_group": "de {group}",
-	"overview_compare_workers": "Trabajadores",
-	"overview_compare_support": "Apoyo",
-	"overview_compare_assessed": "Evaluados",
-	"overview_compare_no_agitations": "Ninguna"
+	"overview_coverage_units": "Líderes {leaders} · necesarios {needed}"
 }

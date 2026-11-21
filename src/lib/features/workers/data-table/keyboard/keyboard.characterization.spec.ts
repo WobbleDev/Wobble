@@ -57,7 +57,7 @@ describe('workers keyboard move', () => {
 	it('selects the next row, activates the kept column and focuses its cell', async () => {
 		const { keyboard, calls, focused } = setup();
 		await keyboard.move('ada', 1);
-		expect(calls).toEqual(['flush', 'select:bob', 'activate:bob:name', 'scroll:1']);
+		expect(calls).toEqual(['flush', 'select:bob', 'activate:bob:name']);
 		expect(focused).toEqual(['cell']);
 		expect(keyboard.navigating).toBe(true);
 	});
@@ -72,7 +72,7 @@ describe('workers keyboard move', () => {
 	it('focuses the row itself on the phone list, with no active cell', async () => {
 		const { keyboard, calls, focused } = setup({ grid: false });
 		await keyboard.move('bob', -1);
-		expect(calls).toEqual(['flush', 'select:ada', 'scroll:0']);
+		expect(calls).toEqual(['flush', 'select:ada']);
 		expect(focused).toEqual(['row']);
 	});
 
@@ -126,6 +126,29 @@ describe('workers keyboard move', () => {
 		const { keyboard, calls } = setup();
 		await keyboard.focusCell('nobody', 'name');
 		expect(calls).toEqual([]);
+	});
+
+	it('scrolls the virtualizer only when the row is not mounted yet', async () => {
+		const { keyboard, calls, host, focused } = setup();
+		const mountedViewport = host.viewport();
+		let mounted = false;
+		host.viewport = () =>
+			({
+				querySelector: (selector: string) => {
+					const row = mountedViewport?.querySelector(selector);
+					return mounted ? row : null;
+				}
+			}) as unknown as HTMLElement;
+		const original = host.scrollToRow;
+		host.scrollToRow = (index) => {
+			original(index);
+			mounted = true;
+		};
+		await keyboard.focusCell('bob', 'name');
+		expect(calls).toEqual(['scroll:1']);
+		expect(focused).toEqual(['cell']);
+		await keyboard.focusCell('bob', 'name');
+		expect(calls).toEqual(['scroll:1']);
 	});
 
 	it('gives up quietly when the row never mounts', async () => {
