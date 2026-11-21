@@ -49,4 +49,18 @@ describe('createOverviewGrouping', () => {
 		grouping.change('site');
 		expect(replaced()).toBe(1);
 	});
+
+	it('keeps opened branches per Attribute and closes one on a second toggle', () => {
+		const { grouping } = setup('site');
+		expect(grouping.expandedIds).toEqual([]);
+		grouping.toggleExpanded('north');
+		grouping.toggleExpanded('south');
+		expect(grouping.expandedIds).toEqual(['north', 'south']);
+		grouping.toggleExpanded('north');
+		expect(grouping.expandedIds).toEqual(['south']);
+		grouping.groupBy = 'dept';
+		expect(grouping.expandedIds).toEqual([]);
+		grouping.groupBy = 'site';
+		expect(grouping.expandedIds).toEqual(['south']);
+	});
 });
