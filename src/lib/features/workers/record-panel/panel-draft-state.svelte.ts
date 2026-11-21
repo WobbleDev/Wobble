@@ -26,6 +26,13 @@ import {
 
 const KEY = Symbol('panel-draft');
 
+/**
+ * How long a newly selected Worker must stay selected before its stored draft is read.
+ * Holding an arrow key selects a Worker per press; reading each one's draft would be an
+ * HTTP GET per press, so only the Worker the run settles on is read.
+ */
+export const DRAFT_READ_SETTLE_MS = 150;
+
 export class PanelDraftState {
 	/** What the open editors hold now. */
 	open = $state<OpenEditors>(noEditors());
@@ -49,11 +56,13 @@ export class PanelDraftState {
 	async load(worker: Worker | null, attributes: readonly WorkerAttributeDefinition[]) {
 		const id = worker?.id ?? null;
 		this.workerId = id;
-		this.open = noEditors();
-		this.restored = noEditors();
+		// Reset only what holds something: replacing an already-empty value would still
+		// notify every reader, and a key run does this on each press.
+		if (hasOpenEditors(this.open)) this.open = noEditors();
+		if (hasOpenEditors(this.restored)) this.restored = noEditors();
 		this.restoredAt = null;
 		this.baseChanged = false;
-		this.differences = [];
+		if (this.differences.length > 0) this.differences = [];
 		this.status = 'idle';
 		this.stored = false;
 		this.ready = false;
@@ -61,6 +70,8 @@ export class PanelDraftState {
 			this.ready = true;
 			return;
 		}
+		await new Promise((resolve) => setTimeout(resolve, DRAFT_READ_SETTLE_MS));
+		if (this.workerId !== id) return;
 		let draft = null;
 		try {
 			draft = await getWorkerDraft(id);
