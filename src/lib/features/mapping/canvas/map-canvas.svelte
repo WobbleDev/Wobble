@@ -165,6 +165,13 @@
 
 	let fittingNames = $state(false);
 	let nameFitFrame: number | undefined;
+	/**
+	 * The camera a Free map's first framing settled on, once its standing names were fitted
+	 * clear of the canvas edge and the floating keys, and the canvas size it is valid for.
+	 * Reset returns to it: a name keeps its offset from its dot on screen, so any other pan
+	 * can stand one under a key it was placed clear of (#190).
+	 */
+	let fitCamera: { key: string; size: string; camera: Camera } | undefined;
 
 	/** Finish whole-map framing against the names the renderer actually placed. */
 	function finishNameFit(bounds: Rect) {
@@ -227,7 +234,14 @@
 			fittingNames = false;
 			settleLabelShape();
 			// The camera is final only now, so this is where Free's names take their anchor.
-			if (groupingAttribute === undefined) anchorFreeNames();
+			if (groupingAttribute === undefined) {
+				anchorFreeNames();
+				fitCamera = {
+					key: untrack(() => fitKey),
+					size: `${width}x${height}`,
+					camera: { zoom: panZoom.zoom, panX: panZoom.panX, panY: panZoom.panY }
+				};
+			}
 			signalReady();
 		};
 		nameFitFrame = requestAnimationFrame(check);
@@ -249,6 +263,14 @@
 		// framing's zoom or, when the window has since shrunk, only as much lower as they need.
 		const dots = groupingAttribute === undefined && !viewModel.isolated ? settledFrame : undefined;
 		if (dots) {
+			// On the canvas the map was framed for, Reset goes back to that framing itself. A
+			// resized canvas is framed afresh below, to the frame that holds its names.
+			if (fitCamera && fitCamera.key === fitKey && fitCamera.size === `${width}x${height}`) {
+				panZoom.setView(fitCamera.camera);
+				anchorFreeNames();
+				settleLabelShape();
+				return;
+			}
 			const zoomFor = (frame: Rect) => {
 				const fit = panZoom.targetFor(frame, 28)?.zoom;
 				return fit === undefined ? undefined : Math.min(panZoom.framedZoom, fit);

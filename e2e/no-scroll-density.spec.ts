@@ -329,6 +329,44 @@ for (const density of densityCases) {
 	});
 }
 
+// Reset zoom must put a Free map back on the framing it first settled on. The first framing
+// fits the resting names clear of the canvas edge and the floating keys; any other pan stands a
+// name, which keeps its offset from its dot on screen, where nothing placed it clear (#190).
+// Whether the first framing had to step down for a name depends on the canvas and the Workers'
+// ids, so several canvas sizes are tried.
+test('Reset zoom returns a Free map to the framing it first settled on', async ({
+	page,
+	request
+}) => {
+	test.setTimeout(300_000);
+	await populateWorksite(request, ringWorksite());
+	await page.addInitScript(() => localStorage.removeItem('wobble.appearance'));
+	await page.emulateMedia({ colorScheme: 'light', reducedMotion: 'reduce' });
+	const saved = await request.put('/api/settings', { data: { density: 'standard' } });
+	expect(saved.ok(), await saved.text()).toBeTruthy();
+	const canvases = [1024, 1100, 1180, 1280, 1366, 1440].flatMap((width) =>
+		[520, 600, 680, 760].map((height) => ({ width, height }))
+	);
+	for (const size of canvases) {
+		const tag = `${size.width}x${size.height}`;
+		await page.setViewportSize(size);
+		await page.goto('/mapping');
+		await waitForMapReady(page);
+		await page.evaluate(() => document.fonts.ready.then(() => undefined));
+		await waitForSceneReady(page);
+		const initial = await settled(() => readNames(page));
+		const beforeZoom = await cameraRevision(page);
+		await page.getByRole('button', { name: 'Zoom in', exact: true }).click();
+		await waitForSceneReady(page, { cameraAfter: beforeZoom });
+		const beforeReset = await cameraRevision(page);
+		await page.getByRole('button', { name: 'Reset zoom', exact: true }).click();
+		await waitForSceneReady(page, { cameraAfter: beforeReset });
+		const reset = await settled(() => readNames(page));
+		expect(reset.camera, `${tag} reset camera`).toBe(initial.camera);
+		expect(clippedNames(reset), `${tag} names after reset`).toEqual([]);
+	}
+});
+
 // The first layout is captured once, so a fresh load (no cached appearance) must capture it
 // at the saved density, and the floating keys must keep their size at every zoom: every
 // resting name must stand clear of the keys as they are drawn.
@@ -404,8 +442,10 @@ for (const density of densityCases) {
 					const reset = await settled(() => readNames(page));
 					expect(
 						clippedNames(reset),
-						`${tag} reset ${JSON.stringify({ chrome: reset.chrome, usable: reset.usable })}`
+						`${tag} reset ${JSON.stringify({ chrome: reset.chrome, usable: reset.usable, initialCamera: initial.camera, resetCamera: reset.camera })}`
 					).toEqual([]);
+					// Reset is the framing the map first settled on, not another one (#190).
+					expect(reset.camera, `${tag} reset camera`).toBe(initial.camera);
 				}
 			}
 		} finally {
