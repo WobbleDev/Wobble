@@ -50,10 +50,13 @@ describe('OverviewSupportCard', () => {
 		const body = card();
 		expect(body).toContain('3 of 4');
 		expect(body).toContain('Leaders 1 · needed 2');
+		// One filled mark for the Leader, one open mark for the one still needed.
+		expect(body.match(/data-mark="leader"/g)).toHaveLength(1);
+		expect(body.match(/data-mark="needed"/g)).toHaveLength(1);
 	});
 
 	it('warns that coverage is short when the target asks for more Leaders', () => {
-		expect(card({ target: 2 })).toContain('coverage-warning');
+		expect(card({ target: 2 })).toContain('data-short="true"');
 	});
 
 	it('shows no coverage warning, and the target-met mark, when the target is covered', () => {
@@ -64,7 +67,7 @@ describe('OverviewSupportCard', () => {
 			worker({ id: 'c', name: 'Cory', assessment: 'Supporter' })
 		];
 		const body = card({ workers: twoLeaders, target: 2 });
-		expect(body).not.toContain('coverage-warning');
+		expect(body).not.toContain('data-short');
 		expect(body).toMatch(/role="img"/);
 	});
 

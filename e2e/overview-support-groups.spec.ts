@@ -48,7 +48,9 @@ test('@product-gap-04 Support lists every Worker once, with the system no-value 
 	// Whole-Worksite support keeps its arithmetic: 3 of 4, with Unassessed in the
 	// denominator.
 	await expect(gap04Overall(page)).toContainText('75%');
-	await expect(gap04Overall(page)).toContainText('3 of 4, of all Workers');
+	await expect(
+		gap04Overall(page).getByRole('button', { name: /3 of 4, of all Workers/ })
+	).toBeVisible();
 
 	// Every Worker appears exactly once: two configured answers, the literal
 	// answer's group, and the system group appended last.
