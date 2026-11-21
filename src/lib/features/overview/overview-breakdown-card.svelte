@@ -2,7 +2,6 @@
 	import * as Select from '#lib/components/ui/select/index.ts';
 	import type { WorkerAttributeDefinition } from '#lib/domain-vocabulary.ts';
 	import { m } from '#lib/paraglide/messages.js';
-	import GroupComparisonDialog from './group-comparison-dialog.svelte';
 	import GroupPager from './group-pager.svelte';
 	import { pct, type DashboardTheme } from './overview-dashboard-presentation.ts';
 	import type { createOverviewBreakdownCard } from './overview-breakdown-card.svelte.ts';
@@ -10,14 +9,12 @@
 	import CoverageMarks from './coverage-marks.svelte';
 	import OverviewSegmentBar from './overview-segment-bar.svelte';
 	import { groupHref } from './summary-links.ts';
-	import type { AgitationMatrixRow, GroupReading } from './support-summary.ts';
+	import type { GroupReading } from './support-summary.ts';
 
 	let {
 		grouping,
 		categories,
 		groups,
-		matrix,
-		worksiteTotal,
 		card,
 		theme,
 		palette
@@ -25,8 +22,6 @@
 		grouping: ReturnType<typeof createOverviewGrouping<WorkerAttributeDefinition>>;
 		categories: readonly WorkerAttributeDefinition[];
 		groups: GroupReading[];
-		matrix: { columns: { id: string; text: string; count: number }[]; rows: AgitationMatrixRow[] };
-		worksiteTotal: number;
 		card: ReturnType<typeof createOverviewBreakdownCard>;
 		theme: DashboardTheme;
 		palette: 'default' | 'colorblind';
@@ -64,11 +59,6 @@
 					{/each}
 				</Select.Content>
 			</Select.Root>
-		{/if}
-		{#if attribute}
-			<div class="flex shrink-0 items-center gap-1">
-				<GroupComparisonDialog {groups} {matrix} {worksiteTotal} />
-			</div>
 		{/if}
 	</div>
 	<div
