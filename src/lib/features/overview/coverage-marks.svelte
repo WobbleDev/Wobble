@@ -2,7 +2,8 @@
 	/**
 	 * Committee coverage as marks: a filled mark is a Leader, an open mark is a Leader
 	 * still needed. Past the cap the marks would crowd the row, so the same reading is a
-	 * fill against the target. The sentence lives in the tooltip and the accessible name.
+	 * fill against the target. The tooltip carries the short reading; the accessible name
+	 * may say more.
 	 */
 	import * as Tooltip from '#lib/components/ui/tooltip/index.ts';
 
@@ -10,14 +11,17 @@
 		leaders,
 		needed,
 		label,
+		tooltip = label,
 		detail,
 		size = 'size-3.5',
 		cap = 30
 	}: {
 		leaders: number;
 		needed: number;
-		/** The reading in words: the accessible name, and the tooltip's first line. */
+		/** The reading in words: the accessible name, and by default the tooltip's first line. */
 		label: string;
+		/** The tooltip's first line, when it should say less than the accessible name. */
+		tooltip?: string;
 		/** A second tooltip line, such as the target the marks are measured against. */
 		detail?: string;
 		size?: string;
@@ -57,7 +61,7 @@
 		{/if}
 	</Tooltip.Trigger>
 	<Tooltip.Content>
-		<p>{label}</p>
+		<p>{tooltip}</p>
 		{#if detail}<p class="mt-0.5 text-ink-3">{detail}</p>{/if}
 	</Tooltip.Content>
 </Tooltip.Root>

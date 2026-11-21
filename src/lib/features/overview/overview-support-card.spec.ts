@@ -49,7 +49,7 @@ describe('OverviewSupportCard', () => {
 	it('names the support count and the coverage fraction from the same readings', () => {
 		const body = card();
 		expect(body).toContain('3 of 4');
-		expect(body).toContain('Leaders 1 · needed 2');
+		expect(body).toContain('1 / 2 Leaders');
 		// One filled mark for the Leader, one open mark for the one still needed.
 		expect(body.match(/data-mark="leader"/g)).toHaveLength(1);
 		expect(body.match(/data-mark="needed"/g)).toHaveLength(1);

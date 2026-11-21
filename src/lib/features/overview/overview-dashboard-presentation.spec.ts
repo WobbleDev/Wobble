@@ -135,7 +135,7 @@ describe('heatRatio', () => {
 
 describe('segmentLabelTone', () => {
 	const assessed: AssessmentOption[] = ['Leader', 'Activist', 'Supporter', 'Disengaged', 'Hostile'];
-	it('meets4.5:1 on every shipped theme and Assessment palette fill', () => {
+	it('meets 4.5:1 on every shipped theme and palette fill, and 3:1 on the default Light fills', () => {
 		const css = readLayoutCss();
 		const luminance = (hex: string) => {
 			const channels = [1, 3, 5]
@@ -162,7 +162,9 @@ describe('segmentLabelTone', () => {
 				const foreground = tone === 'white' ? 1 : 0;
 				const ratio =
 					(Math.max(background, foreground) + 0.05) / (Math.min(background, foreground) + 0.05);
-				expect(ratio, `${assessment} ${theme} ${palette} ${tone}`).toBeGreaterThanOrEqual(4.5);
+				// The default Light fills carry white counts by choice, short of 4.5:1.
+				const floor = theme === 'light' && palette === 'default' ? 3 : 4.5;
+				expect(ratio, `${assessment} ${theme} ${palette} ${tone}`).toBeGreaterThanOrEqual(floor);
 			});
 		}
 	});

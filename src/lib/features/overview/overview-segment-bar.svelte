@@ -46,7 +46,7 @@
 				aria-label="{s.count} {assessmentGroupLabel(s.option)}"
 				>{labelled && showsSegmentCount(s.count, total) ? s.count : ''}</Tooltip.Trigger
 			>
-			<Tooltip.Content>{s.count} {assessmentGroupLabel(s.option)}</Tooltip.Content>
+			<Tooltip.Content>{assessmentGroupLabel(s.option)}</Tooltip.Content>
 		</Tooltip.Root>
 	{/each}
 </div>

@@ -108,7 +108,7 @@
 	"mapping_empty_isolate_named": "Isolate on {name} shows no workers.",
 	"mapping_empty_isolate": "Isolate shows no workers.",
 	"mapping_exit_isolate": "Exit Isolate",
-	"mapping_scope_drawn": "{drawn} of {total} workers drawn",
+	"mapping_scope_drawn": "{drawn} of {total} workers",
 	"mapping_scope_hidden": "{hidden} hidden by filters",
 	"mapping_scope_isolated": "Isolate lists {listed}, {away} isolated away",
 	"mapping_scope_grouped": "Grouped by {attribute}"
