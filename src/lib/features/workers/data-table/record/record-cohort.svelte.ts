@@ -57,6 +57,19 @@ export function createRecordCohort(host: RecordCohortHost) {
 	const cohortAt = $derived(
 		cohortPosition(host.person().workersCohort, host.person().workersSelectedId, isLive)
 	);
+	/**
+	 * The record was opened to walk a list the table does not show as it stands, such as the
+	 * Workers an import created or the pairs it flagged as duplicates. The table beside the
+	 * card cannot walk that list, so the card keeps Previous and Next for it.
+	 */
+	const guided = $derived.by(() => {
+		const cohort = host.person().workersCohort;
+		const rows = host.rows();
+		return (
+			cohort.length > 0 &&
+			(cohort.length !== rows.length || cohort.some((id, i) => id !== rows[i]?.id))
+		);
+	});
 	/** Every Worker of the list the record was opened from is gone: the card shows a way back. */
 	const cohortEmpty = $derived(
 		host.person().workersSelectedId === null && cohortExhausted(host.person().workersCohort, isLive)
@@ -114,6 +127,7 @@ export function createRecordCohort(host: RecordCohortHost) {
 		hasPrevious: cohortAt.previousId !== null,
 		hasNext: cohortAt.nextId !== null,
 		outsideFilters,
+		guided,
 		empty: cohortEmpty,
 		onPrevious: () => void step(-1),
 		onNext: () => void step(1),

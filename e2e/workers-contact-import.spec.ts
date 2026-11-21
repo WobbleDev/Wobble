@@ -172,7 +172,11 @@ test('an import opens its created Workers, first row first', async ({ page }) =>
 	await expect(
 		page.getByTestId('record-panel').getByRole('heading', { name: 'Ada Lovelace' })
 	).toBeVisible();
-	await page.getByRole('button', { name: 'Next', exact: true }).click();
+	// The table beside the card shows both Workers, so the second is one click away.
+	await page
+		.getByRole('row', { name: /Grace Hopper/ })
+		.getByRole('gridcell', { name: 'Name for Grace Hopper: Grace Hopper', exact: true })
+		.click();
 	await expect(
 		page.getByTestId('record-panel').getByRole('heading', { name: 'Grace Hopper' })
 	).toBeVisible();

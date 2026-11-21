@@ -36,7 +36,10 @@ test('in the sheet, Previous and Next walk the opened list, disable at the ends 
 		seed: seedInspectorWorkers,
 		viewport: { width: 375, height: 812 }
 	});
-	await nameCell(page, 'Ada Lovelace').click();
+	// Below the desktop rail the name cell holds the "Show details" button.
+	await workerRow(page, 'Ada Lovelace')
+		.getByRole('cell', { name: 'Show details for Ada Lovelace', exact: true })
+		.click();
 	const sheet = (name: string) => page.getByRole('dialog', { name: `Worker details: ${name}` });
 	await expect(sheet('Ada Lovelace')).toBeVisible();
 	const previous = cohortNav(page).getByRole('button', { name: 'Previous' });

@@ -52,6 +52,8 @@
 		hasNext: boolean;
 		/** The open Worker is not among the rows the filters show. */
 		outsideFilters: boolean;
+		/** The list is one the table does not show, so the desktop card walks it itself. */
+		guided: boolean;
 		/** Every Worker of the list is gone. */
 		empty: boolean;
 		onPrevious: () => void;
@@ -371,9 +373,9 @@
 				{actions}
 			/>
 			{#if cohort && (cohort.total > 0 || cohort.outsideFilters)}
-				<!-- The rail sits beside the table, which walks the list itself; only the sheet,
-				     which covers the table, carries Previous and Next. -->
-				{#if presentation === 'sheet'}
+				<!-- The rail sits beside the table, which walks the list itself; the sheet, which
+				     covers the table, and a list the table does not show carry Previous and Next. -->
+				{#if presentation === 'sheet' || cohort.guided}
 					<nav
 						aria-label={m.workers_cohort_nav()}
 						class="flex shrink-0 items-center gap-2 border-b border-rule px-4 py-1.5 text-sm"
