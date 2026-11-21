@@ -62,18 +62,18 @@ test('filters that leave nobody name the filters and clear only them', async ({
 	await page.goto('/mapping');
 	await waitForMapInteraction(page);
 	const reading = page.getByTestId('map-scope-reading');
-	await expect(reading).toHaveText('4 of 4 workers drawn');
+	await expect(reading).toHaveText('4 of 4 workers');
 
 	await page.getByRole('searchbox', { name: 'Find a worker' }).fill('Worker 0');
 	for (const name of ['Leader', 'Supporter', 'Hostile']) {
 		await page.getByRole('button', { name: new RegExp(`^${name}, \\d+ workers?, shown`) }).click();
 	}
 	await expect(page.getByTestId('map-empty-state')).toHaveAttribute('data-kind', 'filters');
-	await expect(reading).toHaveText('0 of 4 workers drawn · 4 hidden by filters');
+	await expect(reading).toHaveText('0 of 4 workers · 4 hidden by filters');
 
 	await page.getByTestId('map-empty-state').getByRole('button', { name: 'Clear filters' }).click();
 	await expect(page.getByTestId('map-empty-state')).toHaveCount(0);
-	await expect(reading).toHaveText('4 of 4 workers drawn');
+	await expect(reading).toHaveText('4 of 4 workers');
 	// The search is its own scope: Clear filters leaves it.
 	await expect(page.getByRole('searchbox', { name: 'Find a worker' })).toHaveValue('Worker 0');
 });
@@ -93,7 +93,7 @@ test('Isolate states drawn, listed and isolated-away counts that match the Map t
 	await page.getByRole('button', { name: 'Isolate', exact: true }).click();
 
 	await expect(reading).toHaveText(
-		'3 of 4 workers drawn · 1 hidden by filters · Isolate lists 2, 1 isolated away'
+		'3 of 4 workers · 1 hidden by filters · Isolate lists 2, 1 isolated away'
 	);
 	const rows = page.getByTestId('mapping-table').getByRole('row');
 	// One header row plus the listed Workers.

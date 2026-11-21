@@ -393,7 +393,12 @@
 	}
 
 	let fittedKey = '';
-	/** What the camera was last framed for, readable by the drawing's readiness. */
+	/**
+	 * What the camera was last framed for, readable by the drawing's readiness. Empty until
+	 * the first framing: until then the drawing waits unseen, because it would otherwise
+	 * show for a frame or two at the unframed camera, a fragment in a corner, before the
+	 * fitted map replaces it.
+	 */
 	let fittedMirror = $state('');
 
 	// Re-frame when the visible set changes, so a filtered map fills the canvas
@@ -1521,6 +1526,7 @@
 							bind:this={panZoom.layer}
 							data-testid="relationship-map-layer"
 							transform={`translate(${panZoom.panX} ${panZoom.panY}) scale(${panZoom.zoom})`}
+							style:visibility={fittedMirror === '' ? 'hidden' : undefined}
 						>
 							<MapRegionsLayer
 								{regions}

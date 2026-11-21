@@ -607,6 +607,7 @@
 </script>
 
 <!-- Padding leaves room for the panel's ring and shadow; nothing above this clips overflow.
+     The record card overhangs the table card by the same 0.625rem at its top and its bottom.
      The bottom edge sits where the Mapping canvas's does: flush with the shell's gutter.
      Below lg there is no panel, so the card runs down over the shell's bottom gutter
      (1rem) and the bulk bar, last in the card, ends at the bottom of the viewport. -->
@@ -861,7 +862,7 @@
 		</div>
 		{#if !mobileViewport.current && cardOpen}
 			<div
-				class="absolute -top-1 right-0 -bottom-2.5 z-30 flex min-h-0"
+				class="absolute -top-2.5 right-0 -bottom-2.5 z-30 flex min-h-0"
 				data-testid="record-card"
 				transition:fly={cardMotion}
 			>

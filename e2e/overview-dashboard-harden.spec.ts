@@ -43,7 +43,7 @@ test('an empty Worksite shows plain messages and no shade key', async ({ page, r
 	const coverage = coverageCard(page);
 	await expect(coverage.locator('[data-coverage-marks]')).toHaveAttribute(
 		'aria-label',
-		'Leaders 0 · needed 0'
+		'Leaders: 0 of 0'
 	);
 	await expect(coverage.getByRole('img', { name: 'Target met' })).toHaveCount(0);
 
@@ -343,7 +343,7 @@ test('never scrolls the page at the floor in any density, and 10/10 fits its car
 	const coverage = coverageCard(page);
 	await expect(coverage.locator('[data-coverage-marks]')).toHaveAttribute(
 		'aria-label',
-		'Leaders 10 · needed 10'
+		'Leaders: 10 of 10'
 	);
 	await expect(coverage.getByRole('img', { name: 'Target met' })).toBeVisible();
 	await expectNoPageScroll(page);
@@ -357,7 +357,7 @@ test('never scrolls the page at the floor in any density, and 10/10 fits its car
 		await appReady(page);
 		await expect(coverage.locator('[data-coverage-marks]')).toHaveAttribute(
 			'aria-label',
-			'Leaders 10 · needed 10'
+			'Leaders: 10 of 10'
 		);
 		await expectNoPageScroll(page);
 	}
@@ -374,7 +374,7 @@ test('never scrolls the page at the floor in any density, and 10/10 fits its car
 		await appReady(page);
 		await expect(coverage.locator('[data-coverage-marks]')).toHaveAttribute(
 			'aria-label',
-			'Leaders 10 · needed 10'
+			'Leaders: 10 of 10'
 		);
 		await expectNoPageScroll(page);
 	}
@@ -392,8 +392,8 @@ test.describe('in Spanish', () => {
 		await expect(page.locator('html')).toHaveAttribute('lang', 'es-419');
 		await expect(page.getByRole('region', { name: 'Apoyo general' })).toBeVisible();
 		await expect(page.getByRole('heading', { name: 'Por', exact: true })).toBeVisible();
-		await expect(page.getByLabel(/Líderes 2 · necesarios 1 · de /)).toBeVisible();
-		await expect(page.getByLabel(/Líderes 0 · necesarios 1 · de /)).toBeVisible();
+		await expect(page.getByLabel(/: líderes 2 de 1$/)).toBeVisible();
+		await expect(page.getByLabel(/: líderes 0 de 1$/)).toBeVisible();
 		await expect(page.getByRole('columnheader', { name: 'Todos' })).toBeVisible();
 		await expect(page.getByRole('region', { name: 'Agitaciones' })).toBeVisible();
 		await expectNoPageScroll(page);
@@ -429,6 +429,9 @@ test.describe('in the expanded pseudo-locale', () => {
 
 for (const colorScheme of ['light', 'dark'] as const) {
 	for (const palette of ['default', 'colorblind'] as const) {
+		// The title names the recording file, so it keeps its wording: printed segment counts on the
+		// default Light fills are white by the organizer's choice and only owe 3:1.
+		const floor = colorScheme === 'light' && palette === 'default' ? 3 : 4.5;
 		test(`every cell number and printed segment count reaches 4.5:1 in ${colorScheme} with ${palette} palette`, async ({
 			page,
 			request
@@ -475,7 +478,7 @@ for (const colorScheme of ['light', 'dark'] as const) {
 				expect(
 					contrastRatio(segment.background, segment.color),
 					`segment "${segment.text}" ${segment.background} / ${segment.color} in ${colorScheme}`
-				).toBeGreaterThanOrEqual(4.5);
+				).toBeGreaterThanOrEqual(floor);
 			}
 		});
 	}

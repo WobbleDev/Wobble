@@ -102,6 +102,9 @@ export function segmentLabelTone(
 	palette: 'default' | 'colorblind' = 'default'
 ): CellTone {
 	if (assessment === 'Unassessed') return 'default';
+	// The default Light fills carry white counts by the organizer's choice: white on them reads
+	// 3.2 to 4.4:1, under the 4.5:1 the other contexts meet (the spec pins a 3:1 floor here).
+	if (theme === 'light' && palette === 'default') return 'white';
 	if (
 		palette === 'colorblind' &&
 		((theme === 'light' && assessment === 'Leader') ||

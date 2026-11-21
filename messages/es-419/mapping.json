@@ -108,7 +108,7 @@
 	"mapping_empty_isolate_named": "Aislar a {name} no muestra trabajadores.",
 	"mapping_empty_isolate": "Aislar no muestra trabajadores.",
 	"mapping_exit_isolate": "Salir de Aislar",
-	"mapping_scope_drawn": "{drawn} de {total} trabajadores dibujados",
+	"mapping_scope_drawn": "{drawn} de {total} trabajadores",
 	"mapping_scope_hidden": "{hidden} ocultos por filtros",
 	"mapping_scope_isolated": "Aislar lista {listed}, {away} aislados fuera",
 	"mapping_scope_grouped": "Agrupado por {attribute}"
