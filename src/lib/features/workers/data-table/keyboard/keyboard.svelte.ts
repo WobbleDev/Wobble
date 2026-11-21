@@ -77,19 +77,28 @@ export function createWorkersKeyboard(host: WorkersKeyboardHost) {
 	/** The ids checked before the range began, so the range extends them rather than replacing them. */
 	let rangeBefore: readonly string[] = [];
 
+	/** The mounted row element for a Worker, or null while the virtualizer has not rendered it. */
+	function mountedRow(workerId: string): HTMLElement | null {
+		return (
+			host.viewport()?.querySelector<HTMLElement>(`tr[data-worker-id="${CSS.escape(workerId)}"]`) ??
+			null
+		);
+	}
+
 	/**
-	 * Focuses a row's cell (or the row itself when no column is given), scrolling the
-	 * virtualizer to it first. Retries while the row mounts; see MAX_FOCUS_ATTEMPTS.
+	 * Focuses a row's cell (or the row itself when no column is given). A row already
+	 * mounted is brought into view by the DOM alone; scrolling the virtualizer there
+	 * would re-render every mounted row on each arrow press. Only an unmounted row
+	 * scrolls the virtualizer first, and the loop retries while it mounts; see
+	 * MAX_FOCUS_ATTEMPTS.
 	 */
 	async function focusCell(workerId: string, columnId: string | null) {
 		const targetIndex = host.rowIds().indexOf(workerId);
 		if (targetIndex < 0) return;
-		host.scrollToRow(targetIndex);
+		if (!mountedRow(workerId)) host.scrollToRow(targetIndex);
 		for (let attempt = 0; attempt < MAX_FOCUS_ATTEMPTS; attempt++) {
 			await tick();
-			const row = host
-				.viewport()
-				?.querySelector<HTMLElement>(`tr[data-worker-id="${CSS.escape(workerId)}"]`);
+			const row = mountedRow(workerId);
 			const element = columnId
 				? row?.querySelector<HTMLElement>(`td[data-column-id="${CSS.escape(columnId)}"]`)
 				: row;
