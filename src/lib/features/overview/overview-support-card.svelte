@@ -13,6 +13,7 @@
 	import CoverageMarks from './coverage-marks.svelte';
 	import * as Tooltip from '#lib/components/ui/tooltip/index.ts';
 	import OverviewSegmentBar from './overview-segment-bar.svelte';
+	import { segmentHref } from './summary-links.ts';
 
 	let {
 		overall,
@@ -106,7 +107,19 @@
 	</div>
 	{#if overall.total > 0}
 		<div class="self-center">
-			<OverviewSegmentBar {counts} height="h-9 text-sm" labelled {theme} {palette} />
+			<OverviewSegmentBar
+				{counts}
+				height="h-9 text-sm"
+				labelled
+				hrefFor={(option) => segmentHref(undefined, option)}
+				linkLabel={(option, count) =>
+					m.overview_segment_link_all({
+						count,
+						standing: count === 1 ? assessmentLabel(option) : assessmentGroupLabel(option)
+					})}
+				{theme}
+				{palette}
+			/>
 		</div>
 	{/if}
 </section>

@@ -132,7 +132,7 @@ test('shows Overall support and Committee coverage figures', async ({ page, requ
 	await expect(overall.getByRole('button', { name: /5 of 8, of all Workers/ })).toBeVisible();
 	// One segment per held standing, each naming its count at 5% of the bar and above.
 	await expect(overall.locator('.seg')).toHaveCount(6);
-	await expect(overall.getByRole('button', { name: '3 Supporters' })).toBeVisible();
+	await expect(overall.getByRole('link', { name: /^3 Supporters, of all Workers/ })).toBeVisible();
 
 	const coverage = coverageCard(page);
 	const marks = coverage.locator('[data-coverage-marks]');

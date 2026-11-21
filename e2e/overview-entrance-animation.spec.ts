@@ -73,7 +73,7 @@ test('runs one entrance animation per Worksite activation and does not replay it
 	// The run settles on the exact figure, not a rounded-up count.
 	await expect(overall(page)).toContainText('100%');
 
-	await page.getByRole('link', { name: 'Workers' }).click();
+	await page.getByRole('link', { name: 'Workers', exact: true }).click();
 	await expect(page).toHaveURL(/\/workers$/);
 	await page.getByRole('link', { name: 'Overview' }).click();
 	await expect(page).toHaveURL(/\/overview$/);
@@ -177,7 +177,7 @@ test('resets focus to rest on every new entrance animation', async ({
 	// Leaving and returning is an entrance animation without a replay: rest either way.
 	await edge(page).click();
 	await expect(dashboardRoot(page)).toHaveAttribute('data-focused', 'true');
-	await page.getByRole('link', { name: 'Workers' }).click();
+	await page.getByRole('link', { name: 'Workers', exact: true }).click();
 	await expect(page).toHaveURL(/\/workers$/);
 	await page.getByRole('link', { name: 'Overview' }).click();
 	await expect(page).toHaveURL(/\/overview$/);

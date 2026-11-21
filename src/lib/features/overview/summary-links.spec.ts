@@ -1,5 +1,11 @@
 import { describe, expect, it, vi } from 'vitest';
-import { agitationHref, groupHref, matrixAllHref, matrixCellHref } from './summary-links.ts';
+import {
+	agitationHref,
+	groupHref,
+	matrixAllHref,
+	matrixCellHref,
+	segmentHref
+} from './summary-links.ts';
 
 vi.mock('$app/paths', () => ({ resolve: (path: string) => path }));
 
@@ -91,5 +97,27 @@ describe('matrixAllHref and matrixCellHref', () => {
 		expect(remainder).not.toBe(
 			matrixCellHref({ attributeId: 'department', answerId: 'front' }, 'pay', attributes)
 		);
+	});
+});
+
+/**
+ * A bar segment opens the Workers of one standing: the group recipe plus the
+ * Assessment facet, or the standing alone for the whole Worksite.
+ */
+describe('segmentHref', () => {
+	it('opens the whole Worksite at one standing', () => {
+		expect(segmentHref(undefined, 'Leader')).toBe('/workers?f=assessment%3ALeader');
+	});
+
+	it('adds the standing to an ordinary group, a no-value group and a remainder', () => {
+		expect(segmentHref({ attributeId: 'department', answerId: 'front' }, 'Supporter')).toBe(
+			'/workers?f=department%3Afront&f=assessment%3ASupporter'
+		);
+		expect(
+			segmentHref({ attributeId: 'department', answerId: '', noValue: true }, 'Unassessed')
+		).toBe('/workers?missing=department&f=assessment%3AUnassessed');
+		expect(
+			segmentHref({ attributeId: 'location', answerId: 'central', remainder: true }, 'Hostile')
+		).toBe('/workers?f=location%3A%23self%3Alocation%3Acentral&f=assessment%3AHostile');
 	});
 });

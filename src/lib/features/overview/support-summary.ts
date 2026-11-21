@@ -26,6 +26,11 @@ import {
 	type WorkerAttributeValue
 } from '#lib/domain-vocabulary.ts';
 
+/** A row's key among the displayed groups: an expanded branch's remainder shares its answer's id. */
+export function groupRowKey(group: Pick<GroupReading, 'answerId' | 'remainder'>): string {
+	return group.remainder ? `${group.answerId}:remainder` : group.answerId;
+}
+
 /** A population's support: how many are with us, out of how many, as a fraction. */
 export type SupportReading = { support: number; total: number; rate: number };
 
