@@ -128,15 +128,24 @@ test('shows Overall support and Committee coverage figures', async ({ page, requ
 
 	const overall = overallCard(page);
 	await expect(overall).toContainText('63');
-	await expect(overall).toContainText('5 of 8, of all Workers');
+	await expect(overall).not.toContainText('of all Workers');
+	await expect(overall.getByRole('button', { name: /5 of 8, of all Workers/ })).toBeVisible();
 	// One segment per held standing, each naming its count at 5% of the bar and above.
 	await expect(overall.locator('.seg')).toHaveCount(6);
 	await expect(overall.getByRole('button', { name: '3 Supporters' })).toBeVisible();
 
 	const coverage = coverageCard(page);
-	await expect(coverage).toContainText('Leaders 1 · needed 2');
-	await expect(coverage).toContainText('short of target');
-	await expect(coverage).toContainText('1 Leader per 5 workers, of all Workers');
+	const marks = coverage.locator('[data-coverage-marks]');
+	await expect(marks).toHaveAttribute('aria-label', /Leaders 1 · needed 2 · .*short of target/);
+	await expect(coverage.locator('[data-mark="leader"]')).toHaveCount(1);
+	await expect(coverage.locator('[data-mark="needed"]')).toHaveCount(1);
+	await expect(coverage).not.toContainText('1 Leader per');
+	await marks.focus();
+	await expect(marks).toHaveAttribute('aria-describedby', /.+/);
+	const tipId = await marks.getAttribute('aria-describedby');
+	await expect(page.locator(`[id="${tipId}"]`)).toContainText(
+		'1 Leader per 5 workers, of all Workers'
+	);
 });
 
 test('bands each Department group with its support bar and coverage', async ({ page, request }) => {
@@ -149,10 +158,11 @@ test('bands each Department group with its support bar and coverage', async ({ p
 	await expect(by.getByRole('button', { name: 'Department' })).toBeVisible();
 	await expect(by).toContainText('Front of House');
 	await expect(by).toContainText('100%');
-	await expect(by).toContainText('Leaders 1 · needed 1 · of Front of House');
+	await expect(by.getByLabel('Leaders 1 · needed 1 · of Front of House')).toBeVisible();
 	await expect(by).toContainText('Back of House');
 	await expect(by).toContainText('40%');
-	await expect(by).toContainText('Leaders 0 · needed 1 · of Back of House');
+	await expect(by.getByLabel('Leaders 0 · needed 1 · of Back of House')).toBeVisible();
+	await expect(by).not.toContainText('needed');
 });
 
 test('shades the Agitations matrix with no shade key', async ({ page, request }) => {
@@ -420,12 +430,14 @@ test.describe('in Spanish', () => {
 		await page.goto('/overview');
 		await appReady(page);
 
-		await expect(page.getByRole('region', { name: 'Apoyo general' })).toContainText(
-			'1 de 1, de todos los trabajadores'
-		);
+		await expect(
+			page
+				.getByRole('region', { name: 'Apoyo general' })
+				.getByRole('button', { name: /1 de 1, de todos los trabajadores/ })
+		).toBeVisible();
 		await expect(page.getByRole('region', { name: 'Apoyo general' })).toBeVisible();
 		await expect(page.getByRole('heading', { name: 'Por', exact: true })).toBeVisible();
-		await expect(page.getByText('Líderes 1 · necesarios 1 · de Front of House')).toBeVisible();
+		await expect(page.getByLabel('Líderes 1 · necesarios 1 · de Front of House')).toBeVisible();
 		await expect(page.getByRole('columnheader', { name: 'Todos' })).toBeVisible();
 		await expect(page.getByRole('region', { name: 'Agitaciones' })).toBeVisible();
 		const matrix = page.getByRole('region', { name: 'Agitaciones' });
@@ -577,7 +589,7 @@ test.describe('E6 folds product-gap-03 overview reading', () => {
 		const byDepartment = page.getByRole('region', { name: 'By Department' });
 		await expect(byDepartment).toBeVisible();
 		// The By choice offers the Single-Select Attributes by configured name.
-		await byDepartment.getByRole('button', { name: 'Department' }).click();
+		await byDepartment.getByRole('button', { name: 'Department', exact: true }).click();
 		await expect(page.getByRole('option')).toHaveText(['Department']);
 		// No type terminology survives in the reading.
 		await expect(page.getByText(/Category/)).toHaveCount(0);

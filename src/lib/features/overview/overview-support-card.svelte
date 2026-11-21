@@ -10,7 +10,8 @@
 		entranceAnimationCountUp,
 		type DashboardTheme
 	} from './overview-dashboard-presentation.ts';
-	import OverviewLevelCounts from './overview-level-counts.svelte';
+	import CoverageMarks from './coverage-marks.svelte';
+	import * as Tooltip from '#lib/components/ui/tooltip/index.ts';
 	import OverviewSegmentBar from './overview-segment-bar.svelte';
 
 	let {
@@ -41,6 +42,27 @@
 			? entranceAnimationCountUp(supportFinal, entranceAnimationElapsed)
 			: supportFinal
 	);
+
+	const coverageBasis = $derived(
+		leaderTarget(target) === 1
+			? m.overview_coverage_basis_one()
+			: m.overview_coverage_basis_other({ count: leaderTarget(target) })
+	);
+	/* The tooltip and accessible name carry the whole reading, including a shortfall. */
+	const coverageLabel = $derived(
+		[
+			m.overview_coverage_units({ leaders: coverage.leaders, needed: coverage.needed }),
+			coverage.gap < 0
+				? m.overview_coverage_short({
+						leaders:
+							coverage.leaders === 1 ? assessmentLabel('Leader') : assessmentGroupLabel('Leader'),
+						count: -coverage.gap
+					})
+				: ''
+		]
+			.filter(Boolean)
+			.join(' · ')
+	);
 </script>
 
 <!-- Support and coverage -->
@@ -62,26 +84,26 @@
 				{m.workers_add_first_worker()}
 			</Button>
 		{:else}
-			<div
-				class="mt-1 text-[clamp(2rem,28cqw,3.75rem)] leading-none font-semibold tracking-headline tabular-nums"
-			>
-				{supportPercent}<span class="pct-sign">%</span>
-			</div>
-			<div class="mt-1.5 text-sm text-ink-2">
-				{m.overview_support_count({ support: overall.support, total: overall.total })}
-			</div>
+			<Tooltip.Root>
+				<Tooltip.Trigger
+					class="mt-1 block cursor-default rounded-sm text-start text-[clamp(2rem,28cqw,3.75rem)] leading-none font-semibold tracking-headline tabular-nums focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+					aria-label="{supportFinal}% — {m.overview_support_count({
+						support: overall.support,
+						total: overall.total
+					})}"
+					data-support-figure
+				>
+					{supportPercent}<span class="pct-sign">%</span>
+				</Tooltip.Trigger>
+				<Tooltip.Content>
+					{m.overview_support_count({ support: overall.support, total: overall.total })}
+				</Tooltip.Content>
+			</Tooltip.Root>
 		{/if}
 	</div>
 	{#if overall.total > 0}
 		<div class="self-center">
 			<OverviewSegmentBar {counts} height="h-9 text-sm" labelled {theme} {palette} />
-			<p
-				class="mt-1.5 font-mono text-xs text-ink-3 tabular-nums"
-				aria-label={m.overview_support_levels_label()}
-				data-assessment-counts
-			>
-				<OverviewLevelCounts {counts} all />
-			</p>
 		</div>
 	{/if}
 </section>
@@ -89,14 +111,14 @@
 <section class="panel" aria-label={m.domain_committee_coverage()}>
 	<div>
 		<h2 class="section-title">{m.domain_committee_coverage()}</h2>
-		<div class="mt-1 flex items-center gap-2.5">
-			<span
-				class="text-[clamp(1.25rem,10cqw,1.75rem)] leading-none font-semibold tracking-headline tabular-nums"
-				>{m.overview_coverage_units({
-					leaders: coverage.leaders,
-					needed: coverage.needed
-				})}</span
-			>
+		<div class="mt-2 flex items-center gap-2.5" data-coverage-figure>
+			<CoverageMarks
+				leaders={coverage.leaders}
+				needed={coverage.needed}
+				size="size-5"
+				label={coverageLabel}
+				detail={coverageBasis}
+			/>
 			{#if coverage.needed > 0 && coverage.gap >= 0}
 				<CheckIcon
 					class="size-5 shrink-0 text-state-success"
@@ -105,27 +127,10 @@
 				/>
 			{/if}
 		</div>
-		<div class="mt-1.5 text-sm text-ink-2">
-			{#if coverage.gap < 0}
-				<span class="coverage-warning block"
-					>{m.overview_coverage_short({
-						leaders:
-							coverage.leaders === 1 ? assessmentLabel('Leader') : assessmentGroupLabel('Leader'),
-						count: -coverage.gap
-					})}</span
-				>
-			{/if}
-			{leaderTarget(target) === 1
-				? m.overview_coverage_basis_one()
-				: m.overview_coverage_basis_other({ count: leaderTarget(target) })}
-		</div>
 	</div>
 </section>
 
 <style>
-	.coverage-warning {
-		color: var(--ink-2);
-	}
 	/* The sign rides at the figure's cap height, a step down, so the number leads. */
 	.pct-sign {
 		font-size: 0.55em;
