@@ -445,9 +445,14 @@
 			// The first frame is placed at once, so no animation is still moving under
 			// the pointer when the organizer starts to interact. Later frames travel to
 			// the predicted resting extent; reduced motion frames the real rendered box
-			// once the static pass has painted it.
+			// once the static pass has painted it. A composed drawing is the exception: its
+			// names and headings were placed at the camera that frames the packet's own
+			// frame, so every framing of it, the first or a re-solve's, goes there. The
+			// rendered box also holds the names drawn before the re-solve, and framing it
+			// pans the drawing away from the camera the packet was solved for, which can
+			// leave a reused name under a floating key (#210).
 			// Whichever way it arrives, the whole-map framing is the view's 100%.
-			if (isInitial) {
+			if (isInitial || (staticFrame && framed && hasPacket && target)) {
 				const named = target && !framed ? withNames(target) : undefined;
 				const camera = target
 					? panZoom.fitTo(named?.frame ?? target, 28, named?.zoom ?? fitCap)
