@@ -980,12 +980,17 @@ test('Free draws the same names at the same places with motion allowed as with r
 			top: (box.top - dot.y) * drawing.scale
 		};
 	};
-	for (const id of reduced.keys()) {
+	const moved = [...reduced.keys()].flatMap((id) => {
 		const was = standing(reducedDrawing, id);
 		const now = standing(animatedDrawing, id);
-		expect(Math.abs(now.left - was.left), `name ${id} holds its place`).toBeLessThanOrEqual(1);
-		expect(Math.abs(now.top - was.top), `name ${id} holds its place`).toBeLessThanOrEqual(1);
-	}
+		const left = Math.abs(now.left - was.left);
+		const top = Math.abs(now.top - was.top);
+		return left > 1 || top > 1 ? [{ id, left, top, was, now }] : [];
+	});
+	expect(
+		moved,
+		`names that moved between the loads (scales ${reducedDrawing.scale} and ${animatedDrawing.scale}, ${reducedDrawing.dots.length} dots)`
+	).toEqual([]);
 });
 
 test('reaches the same final drawing with motion allowed as with reduced motion', async ({
