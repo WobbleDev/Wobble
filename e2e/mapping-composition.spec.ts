@@ -18,6 +18,7 @@ import {
 import { evaluateDrawing } from '../src/lib/features/mapping/layout/graph-layout-quality.ts';
 import { answerId } from './answer-wire.ts';
 import { captureRoutineImage } from './evidence.ts';
+import { clippedNames, readNames } from './mapping-name-framing.ts';
 
 /** The region key a Worker's answer draws under: its answer id, or '' when blank. */
 function answerKey(attributeId: string | undefined, text: string | undefined): string {
@@ -443,6 +444,46 @@ test('measured name boxes agree with the rendered text within one CSS pixel', as
 	expect(texts.filter((text) => text === 'Marie Curie').length).toBe(2);
 	expect(texts).toContain('Zoë Åkesson');
 });
+
+for (const nested of [false, true]) {
+	test(`no name stands under a key when the fonts arrive late (${nested ? 'sub-grouped' : 'grouped'}) (#210)`, async ({
+		page,
+		request
+	}) => {
+		test.setTimeout(60_000);
+		const populated = await populateWorksite(request, ringWorksite());
+		// Held back past the first layout's one-second font window: the map is first laid out on
+		// estimated text and re-solved on measured text once the faces land.
+		await page.route(/\.woff2/, async (route) => {
+			await new Promise((res) => setTimeout(res, 3000));
+			await route.continue();
+		});
+		await openMapping(
+			page,
+			viewports.floor,
+			populated.attributeIds.get('Department'),
+			nested ? populated.attributeIds.get('Role') : undefined
+		);
+		const surface = page.getByTestId('relationship-map-surface');
+		await expect(surface).toHaveAttribute('data-composition-text', 'measured', {
+			timeout: 20_000
+		});
+		await waitForSceneReady(page);
+		const reading = await readNames(page);
+		expect(reading.names.length, 'the map shows names').toBeGreaterThan(0);
+		expect(reading.chrome.length, 'the floating keys are on the page').toBeGreaterThan(0);
+		const clipped = clippedNames(reading);
+		expect(
+			clipped,
+			`names clipped or under a key: ${JSON.stringify({
+				chrome: reading.chrome,
+				usable: reading.usable,
+				camera: reading.camera,
+				names: reading.names.filter((name) => clipped.includes(name.text))
+			})}`
+		).toEqual([]);
+	});
+}
 
 test('selection, hover, search, the card, panning and zooming leave positions and paths alone', async ({
 	page,
