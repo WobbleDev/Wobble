@@ -52,6 +52,7 @@
 	"overview_group_coverage": "{group}: Leaders {leaders} of {needed}",
 	"overview_focus_bullseye": "Focus bullseye",
 	"overview_show_dashboard": "Show dashboard",
+	"overview_focus_tooltip": "My Committee",
 	"overview_agitations_summary": "Worker counts by {attribute}. Select a count to view Workers.",
 	"overview_agitations_help_label": "How to read Agitations",
 	"overview_agitations_help": "The All column shows worksite totals. Shading uses the same count scale on every page.",

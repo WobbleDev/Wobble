@@ -46,6 +46,7 @@
 	"overview_group_coverage": "{group}: líderes {leaders} de {needed}",
 	"overview_focus_bullseye": "Enfocar la diana",
 	"overview_show_dashboard": "Mostrar el panel",
+	"overview_focus_tooltip": "Mi comité",
 	"overview_agitations_summary": "Trabajadores por {attribute}. Selecciona una cifra para ver a los trabajadores.",
 	"overview_agitations_help_label": "Cómo leer las agitaciones",
 	"overview_agitations_help": "La columna Todos muestra los totales del lugar de trabajo. Los tonos usan la misma escala de cantidades en cada página.",
