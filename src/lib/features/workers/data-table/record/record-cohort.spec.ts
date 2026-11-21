@@ -100,6 +100,21 @@ describe('the open record’s cohort', () => {
 		expect(record.cohort).toMatchObject({ hasPrevious: false, hasNext: true });
 	});
 
+	it('is guided only when the cohort is a list the table does not show as it stands', () => {
+		const { record, person } = setup();
+		// Opened from a row: the cohort is the rows, so the table beside the card walks it.
+		record.capture(null);
+		person.workersSelectedId = 'b';
+		expect(record.cohort.guided).toBe(false);
+		// An import opens only the Workers it made, in file order.
+		person.workersCohort = ['c', 'a'];
+		person.workersSelectedId = 'c';
+		expect(record.cohort.guided).toBe(true);
+		// Nothing open and no cohort is not a guided walk.
+		person.workersCohort = [];
+		expect(record.cohort.guided).toBe(false);
+	});
+
 	it('drops the record, the cohort and the return context together', () => {
 		const { record, person } = setup();
 		record.capture({ workerId: 'a', columnId: 'name' });

@@ -8,7 +8,6 @@ import {
 	resolutionsFromPreview,
 	type PreviewHolderChoices
 } from './preview-resolutions.ts';
-import { fieldExampleOptions } from './field-example.ts';
 import { workerImpact } from './worker-impact.ts';
 
 const department: WorkerAttributeDefinition = {
@@ -92,53 +91,5 @@ describe('worker impact', () => {
 		);
 		const imports = [...source.matchAll(/from '([^']+)'/g)].map((match) => match[1]);
 		expect(imports).toEqual(['#lib/paraglide/messages.js', './preview-resolutions.ts']);
-	});
-});
-
-describe('field example', () => {
-	const forbidden = [
-		'updateWorkerField',
-		'updateWorkerAttribute',
-		'updateWorkerLanguages',
-		'createWorker',
-		'worker-writes-api',
-		'worker-drafts-api',
-		'worker-import-api',
-		'worker-merge-api',
-		'configuration-api'
-	];
-
-	function closure(entry: string, seen = new Set<string>()): Set<string> {
-		const path = new URL(entry, import.meta.url);
-		if (seen.has(path.pathname)) return seen;
-		seen.add(path.pathname);
-		const source = readFileSync(path, 'utf8');
-		for (const [, spec] of source.matchAll(/from '(\.[^']+)'/g)) {
-			closure(new URL(spec, path).pathname, seen);
-		}
-		return seen;
-	}
-
-	it('has no worker writer in its dependency closure', () => {
-		const files = closure('./field-example.svelte');
-		files.add(new URL('./field-example.ts', import.meta.url).pathname);
-		for (const file of closure('./field-example.ts')) files.add(file);
-		for (const file of files) {
-			const source = readFileSync(file, 'utf8');
-			for (const word of forbidden) expect(source, `${file} ${word}`).not.toContain(word);
-		}
-	});
-
-	it('takes no write callback props', () => {
-		const source = readFileSync(new URL('./field-example.svelte', import.meta.url), 'utf8');
-		const props = source.match(/type Props = \{([^}]*)\}/)?.[1] ?? '';
-		expect(props).not.toMatch(/=>|\bon[A-Z]/);
-	});
-
-	it('offers the draft leaf answers', () => {
-		expect(fieldExampleOptions(department).map((option) => option.label)).toEqual([
-			'Packing',
-			'Delivery'
-		]);
 	});
 });

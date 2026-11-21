@@ -480,6 +480,21 @@ for (const colorScheme of ['light', 'dark'] as const) {
 					`segment "${segment.text}" ${segment.background} / ${segment.color} in ${colorScheme}`
 				).toBeGreaterThanOrEqual(floor);
 			}
+
+			// The 3:1 floor is only earned by large print: 18.66px bold or 24px regular.
+			const print = await overallCard(page)
+				.locator('.seg')
+				.evaluateAll((elements) =>
+					elements
+						.filter((element) => (element.textContent ?? '').trim().length > 0)
+						.map((element) => {
+							const style = getComputedStyle(element);
+							return { size: parseFloat(style.fontSize), weight: Number(style.fontWeight) };
+						})
+				);
+			for (const { size, weight } of print) {
+				expect(size >= 24 || (size >= 18.66 && weight >= 700), `${size}px at ${weight}`).toBe(true);
+			}
 		});
 	}
 }

@@ -56,7 +56,7 @@
 						type={href ? undefined : 'button'}
 						class="seg {isSupportAssessment(s.option) ? 'support' : ''} {s.option === 'Unassessed'
 							? 'unassessed'
-							: ''} flex h-full min-w-0 items-center justify-center font-mono font-medium tabular-nums
+							: ''} flex h-full min-w-0 items-center justify-center font-mono font-bold tabular-nums
 							{i === 0 ? 'rounded-l-[3px]' : ''} {last ? 'rounded-r-[3px]' : ''}
 							{toneClass(segmentLabelTone(s.option, theme, palette), 'text-ink')}"
 						style="flex: {s.count} 0 0; --seg: {segmentFill(s.option)}"

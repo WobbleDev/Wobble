@@ -109,7 +109,7 @@
 		<div class="self-center">
 			<OverviewSegmentBar
 				{counts}
-				height="h-9 text-sm"
+				height="h-9 text-xl"
 				labelled
 				hrefFor={(option) => segmentHref(undefined, option)}
 				linkLabel={(option, count) =>

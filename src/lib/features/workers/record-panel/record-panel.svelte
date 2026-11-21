@@ -52,6 +52,8 @@
 		hasNext: boolean;
 		/** The open Worker is not among the rows the filters show. */
 		outsideFilters: boolean;
+		/** The list is one the table does not show, so the desktop card walks it itself. */
+		guided: boolean;
 		/** Every Worker of the list is gone. */
 		empty: boolean;
 		onPrevious: () => void;
@@ -371,36 +373,40 @@
 				{actions}
 			/>
 			{#if cohort && (cohort.total > 0 || cohort.outsideFilters)}
-				<nav
-					aria-label={m.workers_cohort_nav()}
-					class="flex shrink-0 items-center gap-2 border-b border-rule px-4 py-1.5 text-sm"
-				>
-					<Button
-						type="button"
-						variant="ghost"
-						size="xs"
-						disabled={!cohort.hasPrevious}
-						onclick={cohort.onPrevious}
+				<!-- The rail sits beside the table, which walks the list itself; the sheet, which
+				     covers the table, and a list the table does not show carry Previous and Next. -->
+				{#if presentation === 'sheet' || cohort.guided}
+					<nav
+						aria-label={m.workers_cohort_nav()}
+						class="flex shrink-0 items-center gap-2 border-b border-rule px-4 py-1.5 text-sm"
 					>
-						<ChevronLeftIcon />
-						{m.workers_cohort_previous()}
-					</Button>
-					<span class="num min-w-0 flex-1 text-center text-ink-2">
-						{#if cohort.position !== null}
-							{m.workers_cohort_position({ position: cohort.position, total: cohort.total })}
-						{/if}
-					</span>
-					<Button
-						type="button"
-						variant="ghost"
-						size="xs"
-						disabled={!cohort.hasNext}
-						onclick={cohort.onNext}
-					>
-						{m.workers_cohort_next()}
-						<ChevronRightIcon />
-					</Button>
-				</nav>
+						<Button
+							type="button"
+							variant="ghost"
+							size="xs"
+							disabled={!cohort.hasPrevious}
+							onclick={cohort.onPrevious}
+						>
+							<ChevronLeftIcon />
+							{m.workers_cohort_previous()}
+						</Button>
+						<span class="num min-w-0 flex-1 text-center text-ink-2">
+							{#if cohort.position !== null}
+								{m.workers_cohort_position({ position: cohort.position, total: cohort.total })}
+							{/if}
+						</span>
+						<Button
+							type="button"
+							variant="ghost"
+							size="xs"
+							disabled={!cohort.hasNext}
+							onclick={cohort.onNext}
+						>
+							{m.workers_cohort_next()}
+							<ChevronRightIcon />
+						</Button>
+					</nav>
+				{/if}
 				{#if cohort.outsideFilters}
 					<p
 						data-testid="outside-filters"
