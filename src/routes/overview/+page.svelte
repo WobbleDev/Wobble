@@ -142,8 +142,6 @@
 			{grouping}
 			{categories}
 			{groups}
-			{matrix}
-			worksiteTotal={workers.length}
 			card={breakdown}
 			theme={rootState.theme}
 			palette={rootState.palette}

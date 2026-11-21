@@ -1,32 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import { worker } from '../../testing/builders.ts';
-import {
-	assessmentCounts,
-	contextualGroupReadings,
-	coverageReading,
-	supportReading
-} from './support-summary.ts';
-import { assessmentBreakdown, populationOf } from './overview-readings.ts';
+import { contextualGroupReadings, coverageReading, supportReading } from './support-summary.ts';
 import type { AssessmentOption } from '#lib/domain-vocabulary.ts';
 
 const w = (id: string, assessment: AssessmentOption, dept = 'a') =>
 	worker({ id, name: id, assessment, attributes: { dept } });
-
-describe('assessmentBreakdown', () => {
-	it('lists every level in order, zeros included, summing to the population', () => {
-		const counts = assessmentCounts([w('1', 'Leader'), w('2', 'Leader'), w('3', 'Unassessed')]);
-		const rows = assessmentBreakdown(counts);
-		expect(rows.map((row) => row.option)).toEqual([
-			'Leader',
-			'Activist',
-			'Supporter',
-			'Disengaged',
-			'Hostile',
-			'Unassessed'
-		]);
-		expect(rows.map((row) => row.count)).toEqual([2, 0, 0, 0, 0, 1]);
-	});
-});
 
 describe('pinned denominators', () => {
 	const everyone = [
@@ -60,12 +38,5 @@ describe('pinned denominators', () => {
 		const byId = Object.fromEntries(groups.map((g) => [g.answerId, g]));
 		expect(byId.a).toMatchObject({ total: 3, support: 2, leaders: 1, needed: 1 });
 		expect(byId.b).toMatchObject({ total: 4, support: 1, leaders: 1, needed: 1 });
-	});
-});
-
-describe('populationOf', () => {
-	it('names the Worksite or the group', () => {
-		expect(populationOf()).toEqual({ kind: 'worksite' });
-		expect(populationOf('Packing')).toEqual({ kind: 'filter', name: 'Packing' });
 	});
 });
