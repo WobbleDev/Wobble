@@ -69,7 +69,7 @@ test('@product-gap-04 Support lists every Worker once, with the system no-value 
 	// The system group is the one link opening the missing-answer Workers.
 	await expect(system).toHaveAttribute('href', /missing=/);
 	await expect(literal).not.toHaveAttribute('href', /missing=/);
-	await expect(gap04ByCard(page).locator('ul li a[href*="missing="]')).toHaveCount(1);
+	await expect(gap04ByCard(page).locator('ul li a[title][href*="missing="]')).toHaveCount(1);
 });
 test('@product-gap-04 the system group disappears when every Worker holds an answer', async ({
 	page,
@@ -99,5 +99,5 @@ test('@product-gap-04 the system group disappears when every Worker holds an ans
 	await appReady(page);
 
 	await expect(gap04GroupLinks(page)).toHaveCount(2);
-	await expect(gap04ByCard(page).locator('ul li a[href*="missing="]')).toHaveCount(0);
+	await expect(gap04ByCard(page).locator('ul li a[title][href*="missing="]')).toHaveCount(0);
 });

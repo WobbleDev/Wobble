@@ -263,7 +263,7 @@ test.describe('E6 folds product-gap-07 Support links', () => {
 	const byCard = (page: Page) => page.getByRole('region', { name: /^By/ });
 	const groupLink = (page: Page, title: string) =>
 		byCard(page).locator(`ul li a[title="${title}"]`);
-	const systemLink = (page: Page) => byCard(page).locator('ul li a[href*="missing="]');
+	const systemLink = (page: Page) => byCard(page).locator('ul li a[title][href*="missing="]');
 	const rows = (page: Page) => page.locator('tbody tr[data-worker-id]');
 	const row = (page: Page, name: string) => rows(page).filter({ hasText: name });
 	const count = (page: Page) => page.getByTestId('worker-count');

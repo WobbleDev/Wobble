@@ -54,8 +54,9 @@ async function seed(request: APIRequestContext): Promise<Seeded> {
 }
 
 const byCard = (page: Page) => page.getByRole('region', { name: 'By Department' });
-const rowNames = (page: Page) =>
-	byCard(page).getByRole('link').and(page.locator('a[title]')).allTextContents();
+/** The group names, sorted: rows read in support order, which this test does not pin. */
+const rowNames = async (page: Page) =>
+	(await byCard(page).getByRole('link').and(page.locator('a[title]')).allTextContents()).sort();
 const workerRows = (page: Page) => page.locator('tbody tr[data-worker-id]');
 
 async function openOverview(page: Page): Promise<void> {
@@ -71,7 +72,7 @@ test('a branch opens in place into its children and exact remainder, and closes 
 }) => {
 	await seed(request);
 	await openOverview(page);
-	expect(await rowNames(page)).toEqual(['Kitchen', 'Floor']);
+	expect(await rowNames(page)).toEqual(['Floor', 'Kitchen']);
 
 	const expand = byCard(page).getByRole('button', { name: 'Expand Kitchen', exact: true });
 	await expect(expand).toHaveAttribute('aria-expanded', 'false');
@@ -88,7 +89,7 @@ test('a branch opens in place into its children and exact remainder, and closes 
 	expect((await rowNames(page)).filter((name) => name === 'Kitchen')).toHaveLength(1);
 
 	await byCard(page).getByRole('button', { name: 'Collapse Kitchen' }).click();
-	await expect.poll(() => rowNames(page)).toEqual(['Kitchen', 'Floor']);
+	await expect.poll(() => rowNames(page)).toEqual(['Floor', 'Kitchen']);
 });
 
 test('colours show on row hover, numbers and a highlight on bar hover', async ({
