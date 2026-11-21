@@ -31,6 +31,21 @@ export function createOverviewGrouping<A extends { id: string; name: string }>(
 ) {
 	let groupBy = $state(host.initial());
 	const attribute = $derived(resolveGroupingAttribute(host.categories(), groupBy));
+	/* The branches the reader opened in place. They belong to one Attribute, so a
+	   different Attribute reads them as none rather than carrying ids across. */
+	let opened = $state<{ attributeId: string | undefined; ids: readonly string[] }>({
+		attributeId: undefined,
+		ids: []
+	});
+	const expandedIds = $derived(opened.attributeId === attribute?.id ? opened.ids : []);
+
+	/** Opens a collapsed branch or closes an open one; the remainder row closes its own branch. */
+	function toggleExpanded(answerId: string) {
+		const ids = expandedIds.includes(answerId)
+			? expandedIds.filter((id) => id !== answerId)
+			: [...expandedIds, answerId];
+		opened = { attributeId: attribute?.id, ids };
+	}
 
 	function change(next: string) {
 		if (!next) return;
@@ -50,6 +65,10 @@ export function createOverviewGrouping<A extends { id: string; name: string }>(
 		get attribute() {
 			return attribute;
 		},
+		get expandedIds() {
+			return expandedIds;
+		},
+		toggleExpanded,
 		change
 	};
 }

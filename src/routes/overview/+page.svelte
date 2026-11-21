@@ -19,6 +19,7 @@
 		assessmentCounts,
 		coverageReading,
 		groupReadings,
+		groupRowKey,
 		supportReading
 	} from '#lib/features/overview/support-summary.ts';
 	import { getLocale } from '#lib/paraglide/runtime.js';
@@ -69,7 +70,12 @@
 		replaceUrl: replaceCurrentUrl
 	});
 	const attribute = $derived(grouping.attribute);
-	const groups = $derived(groupReadings(workers, attribute, target));
+	const groups = $derived(groupReadings(workers, attribute, target, grouping.expandedIds));
+	// The reading's identity is its unexpanded groups: opening a branch changes the rows
+	// but not which reading this is, so the pager keeps its place.
+	const rootGroups = $derived(
+		grouping.expandedIds.length === 0 ? groups : groupReadings(workers, attribute, target)
+	);
 
 	// Agitations against the chosen Attribute's groups: one row per Agitation
 	// held, one column per group, each cell the holders in that group.
@@ -77,7 +83,8 @@
 
 	const breakdown = createOverviewBreakdownCard({
 		attributeId: () => attribute?.id,
-		groupIds: () => groups.map((group) => group.answerId)
+		groupIds: () => rootGroups.map((group) => group.answerId),
+		rowKeys: () => groups.map(groupRowKey)
 	});
 	const agitations = createOverviewAgitationsCard({
 		attribute: () => attribute,

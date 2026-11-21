@@ -1,6 +1,8 @@
 <script lang="ts">
+	import ChevronDownIcon from '@lucide/svelte/icons/chevron-down';
 	import * as Select from '#lib/components/ui/select/index.ts';
 	import type { WorkerAttributeDefinition } from '#lib/domain-vocabulary.ts';
+	import { assessmentGroupLabel, assessmentLabel } from '#lib/i18n/assessment.ts';
 	import { m } from '#lib/paraglide/messages.js';
 	import GroupPager from './group-pager.svelte';
 	import { pct, type DashboardTheme } from './overview-dashboard-presentation.ts';
@@ -8,8 +10,8 @@
 	import type { createOverviewGrouping } from './overview-grouping.svelte.ts';
 	import CoverageMarks from './coverage-marks.svelte';
 	import OverviewSegmentBar from './overview-segment-bar.svelte';
-	import { groupHref } from './summary-links.ts';
-	import type { GroupReading } from './support-summary.ts';
+	import { groupHref, segmentHref } from './summary-links.ts';
+	import { groupRowKey, type GroupReading } from './support-summary.ts';
 
 	let {
 		grouping,
@@ -29,6 +31,8 @@
 
 	const attribute = $derived(grouping.attribute);
 	const breakdownPaging = $derived(card.paging);
+	// A column for the chevrons only while some row can open, so names stay aligned.
+	const hasBranches = $derived(groups.some((group) => group.expandable || group.expanded));
 	let breakdownBody: HTMLElement | undefined = $state();
 	let breakdownFooter: HTMLElement | undefined = $state();
 	$effect(() => card.syncGrouping());
@@ -78,7 +82,7 @@
 					{m.overview_no_values({ attribute: attribute.name })}
 				</li>
 			{/if}
-			{#each groups as group, index (group.answerId)}
+			{#each groups as group, index (groupRowKey(group))}
 				{@const offPage = breakdownPaging.ready && !card.visibleRows.includes(index)}
 				<li
 					class="breakdown-row flex min-h-[5.5rem] flex-col justify-center border-t border-rule"
@@ -88,6 +92,24 @@
 					data-group-row
 				>
 					<div class="flex items-baseline gap-2">
+						{#if group.expandable || group.expanded}
+							<button
+								type="button"
+								class="-my-1 -ml-1 flex size-6 shrink-0 translate-y-1 items-center justify-center rounded-sm text-ink-2 hover:bg-hover hover:text-ink focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+								aria-expanded={group.expanded ? 'true' : 'false'}
+								aria-label={group.expanded
+									? m.mapping_collapse_branch({ answer: group.value })
+									: m.mapping_expand_branch({ answer: group.value })}
+								data-expand-group={group.answerId}
+								onclick={() => grouping.toggleExpanded(group.answerId)}
+							>
+								<ChevronDownIcon
+									class="size-4 transition-transform {group.expanded ? '' : '-rotate-90'}"
+								/>
+							</button>
+						{:else if hasBranches}
+							<span class="-ml-1 size-6 shrink-0" aria-hidden="true"></span>
+						{/if}
 						<a
 							href={groupHref(group)}
 							class="min-w-0 truncate text-base font-semibold text-inherit hover:underline focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
@@ -99,7 +121,21 @@
 						>
 					</div>
 					<div class="mt-1.5">
-						<OverviewSegmentBar counts={group.counts} height="h-2.5" neutral {theme} {palette} />
+						<OverviewSegmentBar
+							counts={group.counts}
+							height="h-4 text-[0.625rem]"
+							labelled
+							neutral
+							hrefFor={(option) => segmentHref(group, option)}
+							linkLabel={(option, count) =>
+								m.overview_segment_link_group({
+									count,
+									standing: count === 1 ? assessmentLabel(option) : assessmentGroupLabel(option),
+									group: group.value
+								})}
+							{theme}
+							{palette}
+						/>
 					</div>
 					<div class="mt-1.5">
 						<CoverageMarks

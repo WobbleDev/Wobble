@@ -17,6 +17,8 @@
 		height,
 		labelled = false,
 		neutral = false,
+		hrefFor,
+		linkLabel,
 		theme,
 		palette
 	}: {
@@ -24,6 +26,10 @@
 		height: string;
 		labelled?: boolean;
 		neutral?: boolean;
+		/** Each segment opens its Workers: the address that standing's segment leads to. */
+		hrefFor?: (option: AssessmentOption) => string;
+		/** What the segment's link opens, for its accessible name. */
+		linkLabel?: (option: AssessmentOption, count: number) => string;
 		theme: DashboardTheme;
 		palette: 'default' | 'colorblind';
 	} = $props();
@@ -35,17 +41,34 @@
 <div class="flex w-full gap-0.5 {height}" class:neutral-bar={neutral}>
 	{#each parts as s, i (s.option)}
 		{@const last = i === parts.length - 1}
+		{@const href = hrefFor?.(s.option)}
+		{@const name =
+			href && linkLabel
+				? linkLabel(s.option, s.count)
+				: `${s.count} ${assessmentGroupLabel(s.option)}`}
 		<Tooltip.Root>
-			<Tooltip.Trigger
-				class="seg {isSupportAssessment(s.option) ? 'support' : ''} {s.option === 'Unassessed'
-					? 'unassessed'
-					: ''} flex h-full min-w-0 items-center justify-center font-mono font-medium tabular-nums
-						{i === 0 ? 'rounded-l-[3px]' : ''} {last ? 'rounded-r-[3px]' : ''}
-						{toneClass(segmentLabelTone(s.option, theme, palette), 'text-ink')}"
-				style="flex: {s.count} 0 0; --seg: {segmentFill(s.option)}"
-				aria-label="{s.count} {assessmentGroupLabel(s.option)}"
-				>{labelled && showsSegmentCount(s.count, total) ? s.count : ''}</Tooltip.Trigger
-			>
+			<Tooltip.Trigger>
+				{#snippet child({ props })}
+					<svelte:element
+						this={href ? 'a' : 'button'}
+						{...props}
+						{href}
+						type={href ? undefined : 'button'}
+						class="seg {isSupportAssessment(s.option) ? 'support' : ''} {s.option === 'Unassessed'
+							? 'unassessed'
+							: ''} flex h-full min-w-0 items-center justify-center font-mono font-medium tabular-nums
+							{i === 0 ? 'rounded-l-[3px]' : ''} {last ? 'rounded-r-[3px]' : ''}
+							{toneClass(segmentLabelTone(s.option, theme, palette), 'text-ink')}"
+						style="flex: {s.count} 0 0; --seg: {segmentFill(s.option)}"
+						aria-label={name}
+						data-segment={s.option}
+					>
+						{#if labelled && showsSegmentCount(s.count, total)}<span class="seg-count"
+								>{s.count}</span
+							>{/if}
+					</svelte:element>
+				{/snippet}
+			</Tooltip.Trigger>
 			<Tooltip.Content>{s.count} {assessmentGroupLabel(s.option)}</Tooltip.Content>
 		</Tooltip.Root>
 	{/each}
@@ -60,6 +83,10 @@
 	:global(.seg:hover),
 	:global(.seg:focus-visible) {
 		filter: brightness(1.08);
+	}
+	:global(.seg:focus-visible) {
+		outline: 2px solid var(--ring);
+		outline-offset: -2px;
 	}
 	/* Every segment, including Unassessed, keeps its share of the same
 	   population in every state. Hover/focus changes paint only. Separators
@@ -87,13 +114,27 @@
 		pointer-events: none;
 	}
 	:global(.neutral-bar .seg.support + .seg:not(.support)::before),
+	/* A band reads in the standing colours while its row or its bar is hovered or
+	   focused; the counts appear only on the bar itself, over the segment under it. */
+	:global(.breakdown-row:hover .neutral-bar .seg + .seg::before),
+	:global(.breakdown-row:focus-within .neutral-bar .seg + .seg::before),
 	:global(.neutral-bar:hover .seg + .seg::before),
 	:global(.neutral-bar:focus-within .seg + .seg::before) {
 		opacity: 1;
 	}
+	:global(.breakdown-row:hover .neutral-bar .seg),
+	:global(.breakdown-row:focus-within .neutral-bar .seg),
 	:global(.neutral-bar:hover .seg),
 	:global(.neutral-bar:focus-within .seg) {
 		background-color: var(--seg);
+	}
+	:global(.neutral-bar .seg-count) {
+		opacity: 0;
+		transition: opacity 150ms;
+	}
+	:global(.neutral-bar:hover .seg-count),
+	:global(.neutral-bar:focus-within .seg-count) {
+		opacity: 1;
 	}
 	@media (pointer: coarse) {
 		:global(.neutral-bar) {

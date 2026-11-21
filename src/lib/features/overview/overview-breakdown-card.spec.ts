@@ -13,7 +13,11 @@ it('keys the grouping by Attribute and group ids, and pages once measured', () =
 	);
 	let attributeId: string | undefined = 'department';
 	let ids = ['north', 'south', 'east'];
-	const card = createOverviewBreakdownCard({ attributeId: () => attributeId, groupIds: () => ids });
+	const card = createOverviewBreakdownCard({
+		attributeId: () => attributeId,
+		groupIds: () => ids,
+		rowKeys: () => ids
+	});
 	expect(card.groupingKey).toBe('department|north,south,east');
 	expect(card.showFooter).toBe(false);
 

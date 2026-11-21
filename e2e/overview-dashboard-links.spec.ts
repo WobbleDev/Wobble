@@ -131,7 +131,7 @@ test("a group name opens exactly that department's Workers", async ({ page, requ
 	await openOverview(page);
 
 	const by = byCard(page, 'Department');
-	const nameLink = by.getByRole('link', { name: 'Front of House' });
+	const nameLink = by.getByRole('link', { name: 'Front of House', exact: true });
 	await expect(nameLink).toBeVisible();
 	// The group's size as Overview reads it: the total beside its name.
 	const size = Number(await nameLink.locator('xpath=..').locator('span.text-xs').textContent());
@@ -223,8 +223,10 @@ for (let index = 0; index < dashboardLinkCount; index += 1) {
 		await openOverview(page);
 
 		const hrefs = [
+			// The group names: each bar segment is a link too, covered in its own test.
 			...(await byCard(page, 'Department')
 				.getByRole('link')
+				.and(page.locator('a[title]'))
 				.evaluateAll((elements) => elements.map((el) => el.getAttribute('href')))),
 			...(await agitationsCard(page)
 				.getByRole('link')

@@ -387,7 +387,9 @@ test('keeps All fixed and left-aligns a short last page', async ({ page, request
 
 const breakdownCard = (page: Page) => byCard(page, 'Department');
 const breakdownPager = (page: Page) => breakdownCard(page).locator('[data-group-pager]');
-const visibleBreakdownLinks = (page: Page) => breakdownCard(page).getByRole('link');
+/** The group names; each bar segment is a link too and is not a row's name. */
+const visibleBreakdownLinks = (page: Page) =>
+	breakdownCard(page).getByRole('link').and(page.locator('a[title]'));
 
 async function expectWholeBreakdownRows(page: Page) {
 	const geometry = await breakdownCard(page)

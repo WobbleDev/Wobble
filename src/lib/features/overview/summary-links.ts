@@ -5,6 +5,7 @@ import { writeWorkerFilters, type WorkerFilters } from '#lib/shared/workers/work
 import { withQuery, withSearch } from '#lib/shared/app/navigation.ts';
 import { remainderIdentity } from '#lib/shared/workers/answer-hierarchy.ts';
 import { agitationDrilldownFilters, type GroupPredicate } from './group-drilldown.ts';
+import type { AssessmentOption } from '#lib/domain-vocabulary.ts';
 import type { AgitationMatrixRow } from './support-summary.ts';
 
 /**
@@ -19,6 +20,33 @@ export function groupHref(reading: GroupPredicate): ResolvedPathname {
 		? remainderIdentity(reading.attributeId, reading.answerId)
 		: reading.answerId;
 	return withQuery(resolve('/workers'), { f: `${reading.attributeId}:${value}` });
+}
+
+/**
+ * One bar segment's Workers: the group's cohort (as `groupHref` reads it) narrowed to one
+ * standing through the Workers table's Assessment facet. With no group the segment spans
+ * the whole Worksite, so only the standing remains.
+ */
+export function segmentHref(
+	group: GroupPredicate | undefined,
+	assessment: AssessmentOption
+): ResolvedPathname {
+	const answers = new Map<string, readonly string[]>();
+	const exactAnswers = new Map<string, readonly string[]>();
+	const missing = new Set<string>();
+	if (group?.noValue) missing.add(group.attributeId);
+	else if (group && group.remainder) exactAnswers.set(group.attributeId, [group.answerId]);
+	else if (group) answers.set(group.attributeId, [group.answerId]);
+	return withSearch(
+		resolve('/workers'),
+		writeWorkerFilters(new URLSearchParams(), {
+			answers,
+			missing,
+			exactAnswers,
+			columns: new Map([['assessment', [assessment]]]),
+			agitations: new Set()
+		})
+	);
 }
 
 /** What an Agitation link needs: the Agitation and, for a matrix cell, its group. */
