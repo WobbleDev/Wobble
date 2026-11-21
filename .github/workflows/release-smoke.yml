@@ -1,0 +1,50 @@
+name: Release smoke test
+# Builds the release app on macOS and launches it to confirm it starts and stays up. Not a
+# required check (the aggregate `verify` job in ci.yml does not wait for it). It does not tag,
+# sign, notarize or publish anything; the app stays local.
+on:
+  pull_request:
+    paths:
+      - 'src/**'
+      - 'static/**'
+      - 'messages/**'
+      - 'crates/**'
+      - 'src-tauri/**'
+      - 'contract/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'Cargo.toml'
+      - 'Cargo.lock'
+      - 'svelte.config.js'
+      - 'vite.config.ts'
+      - 'scripts/smoke-release-app.sh'
+      - '.github/workflows/release-smoke.yml'
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: release-smoke-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  smoke:
+    runs-on: macos-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - uses: dtolnay/rust-toolchain@b725eda525362e7cf34af9a7243cac1e3f01a7ec # stable
+      - uses: Swatinem/rust-cache@d1527c8f67ef9af357290475d4af4b0fab8f12e0 # v2
+        with:
+          workspaces: . -> target
+          # The release profile is a separate build from the e2e job's debug one.
+          key: release-smoke
+      - run: npm ci
+      - name: Build the release app bundle
+        run: npx tauri build --bundles app --ci
+      - name: Launch it and confirm it stays up
+        run: scripts/smoke-release-app.sh

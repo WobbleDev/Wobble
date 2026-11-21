@@ -123,6 +123,10 @@ The fast loop while you work (timings from a 4-core machine; a warm laptop is si
   the PR e2e job runs only the affected areas unless the change touches dependencies, build or
   test config, the Rust core or shared test helpers. The nightly run covers everything, including
   WebKit.
+- Release smoke test: `.github/workflows/release-smoke.yml` builds the release app on macOS
+  (`npx tauri build --bundles app`) and runs `scripts/smoke-release-app.sh`, which launches it and
+  checks it stays up before quitting it. It is not a required check. Publishing, tagging, signing
+  and notarization are not set up (issue 37 keeps that part for later).
 - Denylist check: `.github/workflows/denylist.yml` runs `scripts/check-denylist-hashes.mjs` on every
   PR and push to main. It scans tracked files, their paths and the PR's commit metadata against
   hashes of the private denylist, which live only in the `DENYLIST_HASHES` Actions secret (never in
