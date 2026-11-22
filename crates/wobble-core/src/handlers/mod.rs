@@ -3,6 +3,7 @@
 //! to a response.
 
 pub(crate) mod attributes;
+pub(crate) mod auto_backup;
 pub(crate) mod backup;
 pub(crate) mod configuration;
 pub(crate) mod data;

@@ -537,7 +537,7 @@ fn remove_staging(staging: &Path) -> std::io::Result<()> {
 }
 
 /// `<database>.pre-<label>-<yyyymmddThhmmss>.sqlite`, beside the database.
-fn safety_copy_path(target: &Path, label: &str, stamp: &str) -> PathBuf {
+pub(crate) fn safety_copy_path(target: &Path, label: &str, stamp: &str) -> PathBuf {
     let mut path = target.as_os_str().to_owned();
     path.push(format!(".{label}-{stamp}.sqlite"));
     PathBuf::from(path)
@@ -545,7 +545,7 @@ fn safety_copy_path(target: &Path, label: &str, stamp: &str) -> PathBuf {
 
 /// The timestamp in the safety copy's name, in UTC, taken from SQLite so the core needs no
 /// date library.
-fn timestamp(conn: &Connection) -> Result<String> {
+pub(crate) fn timestamp(conn: &Connection) -> Result<String> {
     Ok(
         conn.query_row("SELECT strftime('%Y%m%dT%H%M%S', 'now')", [], |row| {
             row.get(0)

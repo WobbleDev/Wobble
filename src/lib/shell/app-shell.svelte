@@ -9,6 +9,10 @@
 	} from '#lib/client/tauri-window.ts';
 	import * as Sidebar from '#lib/components/ui/sidebar/index.ts';
 	import { createSettingsSync } from '#lib/shell/settings-sync.svelte.ts';
+	import {
+		autoBackupContextKey,
+		createAutoBackup
+	} from '#lib/features/settings/auto-backup.svelte.ts';
 	import { createShortcutHandler } from '#lib/shell/shortcuts.svelte.ts';
 	import NavigationRail from '#lib/shell/navigation-rail.svelte';
 	import {
@@ -244,6 +248,10 @@
 	const settingsSync = createSettingsSync(untrack(() => data.settings));
 	const settingsContext = settingsSync.context;
 	setContext(appSettingsContextKey, settingsContext);
+	/* The scheduled backup: the keeper prompts the core to copy when one is due, and a failed
+	   copy shows in the banner below until a later copy works. */
+	const autoBackup = createAutoBackup();
+	setContext(autoBackupContextKey, autoBackup);
 
 	onMount(() => {
 		// One native handoff per document initialization. A preference save never runs
@@ -253,7 +261,12 @@
 			window: m.native_menu_window(),
 			quit: m.native_menu_quit()
 		}).catch((error) => console.error('Could not initialize the native menu language.', error));
-		return settingsSync.start();
+		const stopSettingsSync = settingsSync.start();
+		const stopAutoBackup = autoBackup.start();
+		return () => {
+			stopSettingsSync();
+			stopAutoBackup();
+		};
 	});
 </script>
 
@@ -306,6 +319,11 @@
 			{:else if settingsContext.syncError}
 				<p role="status" class="bg-inset px-4 py-2 text-sm text-ink-2 lg:px-6">
 					{m.shell_settings_stale()}
+				</p>
+			{/if}
+			{#if autoBackup.status?.failure && !isSettingsPage}
+				<p role="alert" class="bg-inset px-4 py-2 text-sm text-state-error lg:px-6">
+					{m.shell_auto_backup_failed()}
 				</p>
 			{/if}
 

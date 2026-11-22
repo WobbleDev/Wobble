@@ -23,6 +23,28 @@ non-empty `{message}` naming the schema version and never panics:
 These are the four steps the B02 Node scenario `database/non-v12-500` used to run; B04 moved the
 expectation here.
 
+## Automatic backup: `GET`/`PUT /api/auto-backup`, `POST /api/auto-backup/run`
+
+Node cannot record these: the scheduled backup is new with the Rust core. The Rust handler tests
+cover them end to end on an encrypted database file; the Settings e2e drives the controls.
+
+The settings are stored in `app_settings` but are not in the typed registry, so `GET /api/settings`
+never carries them. The page asks `POST /api/auto-backup/run` while the app is open and the core
+decides whether a copy is due, so a restart or a second window never doubles up. Each copy is
+`<database>.pre-auto-<yyyymmddThhmmss>.sqlite`, written like the manual export (verified and keyed),
+and the newest three survive (`safety_copies::prune`). A copy that cannot be written is answered as
+a 200 whose `autoBackup.failure` is `{at, code: "auto_backup_failed", message}`: fixed copy, no
+path, no operating-system text. It is not retried on its own for an hour; `{force: true}` ignores
+that, and the schedule.
+
+| Request                                          | Expected                                                                                       |
+| ------------------------------------------------ | ---------------------------------------------------------------------------------------------- |
+| `GET /api/auto-backup`                           | 200 `{autoBackup}`; off, `daily`, no copy yet by default; `available: false` for `:memory:`    |
+| `PUT /api/auto-backup` with `{enabled: true}`    | 200 `{autoBackup}` with `enabled: true`; nothing is written until a run                        |
+| `PUT /api/auto-backup` with anything else        | 400 `{message}` for no key, an unknown key, a non-boolean `enabled` or a frequency not offered |
+| `POST /api/auto-backup/run`                      | 200 `{autoBackup, ran}`; `ran` is true only when a copy was attempted                          |
+| `POST /api/auto-backup/run` with `{force: true}` | 200; copies now, even when off or not due                                                      |
+
 ## `DELETE /api/settings` (ticket 01)
 
 Node cannot record this: the route arrives with the v17 typed settings registry. It deletes
