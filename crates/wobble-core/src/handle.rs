@@ -923,7 +923,7 @@ mod tests {
     fn the_diagnostics_log_never_holds_names_emails_phone_numbers_notes_or_paths() {
         const SECRETS: [&str; 7] = [
             "Zed Testname",
-            "zed.testname@example.invalid",
+            "zed.testname@example.test",
             "+1 555 010 0199",
             "Zed asked about the night shift",
             "zed-testname-folder",
@@ -940,7 +940,7 @@ mod tests {
 
         let person = json!({
             "name": "Zed Testname",
-            "email": "zed.testname@example.invalid",
+            "email": "zed.testname@example.test",
             "phone": "+1 555 010 0199",
             "notes": [{ "text": "Zed asked about the night shift" }],
             "worksite": "Zed Worksite",
@@ -949,8 +949,8 @@ mod tests {
         let requests = vec![
             post("/api/workers", person.clone()),
             req("PUT", "/api/workers/Zed%20Testname"),
-            req("DELETE", "/api/workers/zed.testname@example.invalid"),
-            post("/api/zed.testname@example.invalid", person.clone()),
+            req("DELETE", "/api/workers/zed.testname@example.test"),
+            post("/api/zed.testname@example.test", person.clone()),
             post("/api/settings", person.clone()),
             post(
                 "/api/restore",

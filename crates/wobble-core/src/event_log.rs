@@ -297,7 +297,7 @@ mod tests {
             36
         );
         for hostile in [
-            "zed.testname@example.invalid",
+            "zed.testname@example.test",
             "Zed Testname",
             "zed\nERROR forged_line",
             "/Users/zed/backup.sqlite",
@@ -318,7 +318,7 @@ mod tests {
             ("/api/workers/:id", Some("abc-123"))
         );
         assert_eq!(
-            route_of("/api/zed.testname@example.invalid"),
+            route_of("/api/zed.testname@example.test"),
             ("unknown", None)
         );
         assert_eq!(route_of("/somewhere/else"), ("unknown", None));

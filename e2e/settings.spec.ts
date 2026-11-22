@@ -1422,8 +1422,8 @@ test('Diagnostics copies recent log lines that hold events and codes, never name
 }) => {
 	// Requests that carry a synthetic name, email and path, and fail.
 	const failures = [
-		await request.put('/api/workers/zed.testname@example.invalid', {
-			data: { name: 'Zed Testname', email: 'zed.testname@example.invalid' }
+		await request.put('/api/workers/zed.testname@example.test', {
+			data: { name: 'Zed Testname', email: 'zed.testname@example.test' }
 		}),
 		await request.post('/api/restore', { data: { path: '/tmp/zed-testname-folder/none.sqlite' } })
 	];
@@ -1443,7 +1443,7 @@ test('Diagnostics copies recent log lines that hold events and codes, never name
 	expect(copied).toContain(' INFO app_started ');
 	expect(copied).toMatch(/ WARN request method=PUT route=\/api\/workers\/:id status=\d+/);
 	expect(copied).toMatch(/ route=\/api\/restore status=4\d\d/);
-	for (const secret of ['Zed', 'zed', 'testname', 'example.invalid', '/tmp/']) {
+	for (const secret of ['Zed', 'zed', 'testname', 'example.test', '/tmp/']) {
 		expect(copied).not.toContain(secret);
 	}
 });
