@@ -8,6 +8,7 @@ pub(crate) mod backup;
 pub(crate) mod configuration;
 pub(crate) mod data;
 pub(crate) mod datasets;
+pub(crate) mod diagnostics;
 pub(crate) mod drafts;
 pub(crate) mod runtime;
 pub(crate) mod settings;

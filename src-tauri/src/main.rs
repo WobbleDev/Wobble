@@ -216,6 +216,52 @@ fn reveal_data_file(path: String) -> Result<(), String> {
         .map_err(|error| format!("Could not reveal {path}: {error}"))
 }
 
+/// Where the diagnostics log lives: `~/Library/Logs/<identifier>` on macOS, the usual place for
+/// an app's logs, and a `logs` folder in the local data directory elsewhere. `WOBBLE_LOG_DIR`
+/// overrides it for throwaway dev runs.
+fn log_dir(identifier: &str) -> PathBuf {
+    if let Some(dir) = std::env::var_os("WOBBLE_LOG_DIR") {
+        return PathBuf::from(dir);
+    }
+    #[cfg(target_os = "macos")]
+    {
+        dirs::home_dir()
+            .expect("the home directory")
+            .join("Library")
+            .join("Logs")
+            .join(identifier)
+    }
+    #[cfg(not(target_os = "macos"))]
+    {
+        dirs::data_local_dir()
+            .expect("the operating system data directory")
+            .join(identifier)
+            .join("logs")
+    }
+}
+
+/// Shows the diagnostics log folder in the platform's file manager (Finder on macOS). The page
+/// passes nothing: the shell knows the folder, so no path crosses from the page.
+#[tauri::command]
+fn reveal_log_folder(app: tauri::AppHandle) -> Result<(), String> {
+    let folder = log_dir(app.config().identifier.as_str());
+    std::fs::create_dir_all(&folder)
+        .map_err(|error| format!("Could not open the log folder: {error}"))?;
+
+    #[cfg(target_os = "macos")]
+    let mut command = std::process::Command::new("open");
+    #[cfg(target_os = "windows")]
+    let mut command = std::process::Command::new("explorer");
+    #[cfg(not(any(target_os = "macos", target_os = "windows")))]
+    let mut command = std::process::Command::new("xdg-open");
+
+    command
+        .arg(&folder)
+        .spawn()
+        .map(|_| ())
+        .map_err(|error| format!("Could not open the log folder: {error}"))
+}
+
 /// Clears the saved window state and puts the window back at the size and place
 /// tauri.conf.json starts it at. The page disables this while Remember window is off.
 #[tauri::command]
@@ -269,6 +315,8 @@ fn main() {
                 .join("workers.sqlite")
         });
 
+    let logs = log_dir(context.config().identifier.as_str());
+
     // Remembers size, position and maximized/fullscreen across launches. VISIBLE is
     // left out on purpose: restoring it would show the window before its first themed
     // paint, which is what `visible: false` in tauri.conf.json prevents.
@@ -281,7 +329,9 @@ fn main() {
         .plugin(window_state.build())
         .setup(move |app| {
             // No database open or preference read occurs before explicit authentication.
-            app.manage(Mutex::new(App::locked(&db_path.to_string_lossy())));
+            let mut core = App::locked(&db_path.to_string_lossy());
+            core.set_event_log(&logs);
+            app.manage(Mutex::new(core));
             app.manage(WindowRestoration {
                 applied: AtomicBool::new(false),
                 snapshot: remembered_window::RememberedWindow::snapshot(app.handle()),
@@ -344,7 +394,8 @@ fn main() {
             exit_app,
             quit_ack,
             reset_window,
-            reveal_data_file
+            reveal_data_file,
+            reveal_log_folder
         ])
         .build(context)
         .expect("error while building tauri application")

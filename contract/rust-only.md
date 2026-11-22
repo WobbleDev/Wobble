@@ -23,6 +23,25 @@ non-empty `{message}` naming the schema version and never panics:
 These are the four steps the B02 Node scenario `database/non-v12-500` used to run; B04 moved the
 expectation here.
 
+## Diagnostics log: `GET /api/logs`
+
+Node cannot record this: the diagnostics log is new with the Rust core. It is answered by
+`App::handle` itself, before the boot state is consulted, so a locked or failed database can
+still be diagnosed. `lines` is the newest lines of the rotating `wobble.log`, oldest first;
+`available` is false when the app keeps no log.
+
+A line is `<UTC timestamp> <INFO|WARN|ERROR> <event> [key=value ...]`. The only events are
+`app_started` and `request` (a lifecycle route always, anything else when it answered 4xx or 5xx,
+except the 423 a locked database gives every poll) and `auto_backup_failed`. A `request` line
+carries the method, the route pattern (`/api/workers/:id`, or `unknown`), the status, the error
+`code` and an id, and nothing else. Free text cannot be logged: see `crates/wobble-core/src/event_log.rs`,
+and the `the_diagnostics_log_never_holds_names_emails_phone_numbers_notes_or_paths` test.
+
+| Request                 | Expected                                        |
+| ----------------------- | ----------------------------------------------- |
+| `GET /api/logs`         | 200 `{available, lines}` with at most 200 lines |
+| `GET /api/logs?lines=5` | 200 with the newest 5 lines                     |
+
 ## Automatic backup: `GET`/`PUT /api/auto-backup`, `POST /api/auto-backup/run`
 
 Node cannot record these: the scheduled backup is new with the Rust core. The Rust handler tests

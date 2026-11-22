@@ -1415,6 +1415,39 @@ test('Automatic backup turns on, copies beside the database, and Back up now add
 	for (const name of copies()) rmSync(join(dirname(configured), name), { force: true });
 });
 
+test('Diagnostics copies recent log lines that hold events and codes, never names or emails', async ({
+	page,
+	request,
+	context
+}) => {
+	// Requests that carry a synthetic name, email and path, and fail.
+	const failures = [
+		await request.put('/api/workers/zed.testname@example.test', {
+			data: { name: 'Zed Testname', email: 'zed.testname@example.test' }
+		}),
+		await request.post('/api/restore', { data: { path: '/tmp/zed-testname-folder/none.sqlite' } })
+	];
+	for (const response of failures) expect(response.status()).toBeGreaterThanOrEqual(400);
+
+	await page.goto('/settings');
+	await appReady(page);
+
+	const diagnostics = page.locator('#diagnostics');
+	// The log folder is a desktop-shell action; the shim never renders it.
+	await expect(diagnostics.getByRole('button', { name: 'Open log folder' })).toHaveCount(0);
+	await context.grantPermissions(['clipboard-read', 'clipboard-write']);
+	await diagnostics.getByRole('button', { name: 'Copy recent logs' }).click();
+	await expect(diagnostics.getByRole('button', { name: 'Copied' })).toBeVisible();
+	const copied = await page.evaluate(() => navigator.clipboard.readText());
+
+	expect(copied).toContain(' INFO app_started ');
+	expect(copied).toMatch(/ WARN request method=PUT route=\/api\/workers\/:id status=\d+/);
+	expect(copied).toMatch(/ route=\/api\/restore status=4\d\d/);
+	for (const secret of ['Zed', 'zed', 'testname', 'example.test', '/tmp/']) {
+		expect(copied).not.toContain(secret);
+	}
+});
+
 test('@product-gap-14 disables unfinished operations and leaves live settings working', async ({
 	page
 }) => {
@@ -1433,7 +1466,7 @@ test('@product-gap-14 disables unfinished operations and leaves live settings wo
 	expect(sectionIds.slice(-2)).toEqual(['unavailable', 'reset']);
 	await expect(page.locator('#unavailable details')).not.toHaveAttribute('open', '');
 	await expect(page.locator('#unavailable button, #unavailable input')).toHaveCount(0);
-	for (const row of ['upd', 'prv-lock', 'dx-logs']) {
+	for (const row of ['upd', 'prv-lock']) {
 		await expect(settingsRow(page, row)).toHaveAttribute('data-unavailable', 'true');
 	}
 	for (const name of ['Check for updates', 'Automatic locking', 'Open log folder']) {

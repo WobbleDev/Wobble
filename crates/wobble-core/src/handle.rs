@@ -49,6 +49,7 @@ enum AppState {
 pub struct App {
     state: std::cell::RefCell<AppState>,
     path: String,
+    log: Option<crate::event_log::EventLog>,
 }
 
 #[derive(serde::Deserialize)]
@@ -128,6 +129,7 @@ impl App {
         Self {
             state: std::cell::RefCell::new(AppState::Legacy(Db::open(path))),
             path: path.to_owned(),
+            log: None,
         }
     }
     /// LEGACY-PLAINTEXT-FIXTURE: explicit historical reader, excluded from production.
@@ -136,6 +138,7 @@ impl App {
         Self {
             state: std::cell::RefCell::new(AppState::Legacy(Db::open_legacy_fixture(path))),
             path: path.to_owned(),
+            log: None,
         }
     }
 
@@ -145,6 +148,7 @@ impl App {
                 path,
             ))),
             path: path.to_owned(),
+            log: None,
         }
     }
     pub fn open_keyed(path: &str, credential: Option<&crate::key::Secret>) -> App {
@@ -169,6 +173,7 @@ impl App {
                 Self {
                     state: std::cell::RefCell::new(state),
                     path: path.to_owned(),
+                    log: None,
                 }
             }
         }
@@ -326,7 +331,55 @@ impl App {
         response
     }
 
+    /// Starts the diagnostics log in `dir` and records that the app started. See
+    /// [`crate::event_log`] for what a log line can and cannot hold.
+    pub fn set_event_log(&mut self, dir: impl Into<std::path::PathBuf>) {
+        let log = crate::event_log::EventLog::new(dir);
+        log.record(
+            crate::event_log::Level::Info,
+            "app_started",
+            &[crate::event_log::Field::word(
+                "version",
+                env!("CARGO_PKG_VERSION"),
+            )],
+        );
+        self.log = Some(log);
+    }
+
+    /// `GET /api/logs`: the newest lines of the diagnostics log (`?lines=`, default 200).
+    /// Answered in any boot state, since a locked or failed database is when the log matters.
+    fn recent_log(&self, request: &Request) -> Response {
+        let count = request
+            .query
+            .trim_start_matches('?')
+            .split('&')
+            .find_map(|pair| pair.strip_prefix("lines="))
+            .and_then(|value| value.parse::<usize>().ok())
+            .unwrap_or(200);
+        let lines = self
+            .log
+            .as_ref()
+            .map(|log| log.recent(count))
+            .unwrap_or_default();
+        Response {
+            status: 200,
+            headers: crate::router::no_store_headers(),
+            body: json!({ "available": self.log.is_some(), "lines": lines }),
+        }
+    }
+
     pub fn handle(&self, request: &Request, id_source: &impl IdSource) -> Response {
+        if request.method == "GET" && request.path == "/api/logs" {
+            return self.recent_log(request);
+        }
+        let response = self.handle_request(request, id_source);
+        if let Some(log) = &self.log {
+            crate::handlers::diagnostics::log_exchange(log, request, &response);
+        }
+        response
+    }
+
+    fn handle_request(&self, request: &Request, id_source: &impl IdSource) -> Response {
         let mut state = self.state.borrow_mut();
         if request.method == "GET" && request.path == crate::key::BOOT_STATUS_PATH {
             return crate::router::json_response(200, Self::status_value(&state));
@@ -862,5 +915,114 @@ mod tests {
             crate::key::file_hash_hex(std::path::Path::new(&path)).unwrap(),
             before
         );
+    }
+    /// The diagnostics log holds events, routes, statuses, codes and ids, and nothing a person
+    /// typed. Every request below carries a synthetic name, email, phone number, note and path;
+    /// none of them may appear anywhere in the log folder, and every line has the fixed shape.
+    #[test]
+    fn the_diagnostics_log_never_holds_names_emails_phone_numbers_notes_or_paths() {
+        const SECRETS: [&str; 7] = [
+            "Zed Testname",
+            "zed.testname@example.test",
+            "+1 555 010 0199",
+            "Zed asked about the night shift",
+            "zed-testname-folder",
+            "passphrase for zed",
+            "Zed Worksite",
+        ];
+        let files = Files::new();
+        let path = files.path();
+        let logs = files.0.join("logs");
+        let ids = CounterId::new();
+        let key = crate::key::Secret::from_passphrase("passphrase for zed").unwrap();
+        let mut app = App::open_keyed(&path, Some(&key));
+        app.set_event_log(&logs);
+
+        let person = json!({
+            "name": "Zed Testname",
+            "email": "zed.testname@example.test",
+            "phone": "+1 555 010 0199",
+            "notes": [{ "text": "Zed asked about the night shift" }],
+            "worksite": "Zed Worksite",
+        });
+        let backup_path = files.0.join("zed-testname-folder").join("backup.sqlite");
+        let requests = vec![
+            post("/api/workers", person.clone()),
+            req("PUT", "/api/workers/Zed%20Testname"),
+            req("DELETE", "/api/workers/zed.testname@example.test"),
+            post("/api/zed.testname@example.test", person.clone()),
+            post("/api/settings", person.clone()),
+            post(
+                "/api/restore",
+                json!({ "path": backup_path, "sourcePassphrase": "passphrase for zed" }),
+            ),
+            post("/api/backup", json!({ "path": backup_path })),
+            post(
+                "/api/boot-unlock",
+                json!({ "passphrase": "passphrase for zed" }),
+            ),
+            post("/api/auto-backup/run", json!({ "force": true })),
+            post("/api/erase", json!({ "confirm": "Zed Testname" })),
+        ];
+        for request in &requests {
+            app.handle(request, &ids);
+        }
+
+        // Something was logged (the log works), and the reader sees it through the route.
+        let served = app.handle(&req("GET", "/api/logs"), &ids);
+        assert_eq!(served.status, 200);
+        assert_eq!(served.body["available"], json!(true));
+        let served_lines = served.body["lines"].as_array().unwrap();
+        assert!(served_lines.len() >= 4, "{served_lines:?}");
+
+        let mut seen = 0;
+        for entry in std::fs::read_dir(&logs).unwrap().flatten() {
+            let text = std::fs::read_to_string(entry.path()).unwrap();
+            for secret in SECRETS {
+                assert!(!text.contains(secret), "{secret} reached the log:\n{text}");
+                assert!(
+                    !text.to_lowercase().contains(&secret.to_lowercase()),
+                    "{secret} reached the log"
+                );
+            }
+            for line in text.lines() {
+                seen += 1;
+                let mut parts = line.split(' ');
+                let stamp = parts.next().unwrap();
+                assert!(
+                    stamp.len() == 20 && stamp.ends_with('Z') && stamp.as_bytes()[10] == b'T',
+                    "{line}"
+                );
+                assert!(
+                    ["INFO", "WARN", "ERROR"].contains(&parts.next().unwrap()),
+                    "{line}"
+                );
+                let event = parts.next().unwrap();
+                assert!(
+                    event.bytes().all(|b| b.is_ascii_lowercase() || b == b'_'),
+                    "{line}"
+                );
+                for field in parts {
+                    let (key, value) = field.split_once('=').expect(line);
+                    assert!(key.bytes().all(|b| b.is_ascii_lowercase()), "{line}");
+                    assert!(
+                        value
+                            .bytes()
+                            .all(|b| b.is_ascii_alphanumeric() || b"_.-/:".contains(&b)),
+                        "{line}"
+                    );
+                }
+            }
+        }
+        assert!(seen >= 4);
+        // The same holds for what the Copy button reads.
+        let copied = served_lines
+            .iter()
+            .filter_map(Value::as_str)
+            .collect::<Vec<_>>()
+            .join("\n");
+        for secret in SECRETS {
+            assert!(!copied.contains(secret));
+        }
     }
 }

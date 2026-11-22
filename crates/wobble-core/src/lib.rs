@@ -10,6 +10,7 @@ pub mod configuration_preview;
 pub mod configuration_resolution;
 pub mod db;
 pub mod error;
+pub mod event_log;
 pub mod handle;
 pub(crate) mod handlers;
 pub mod id;
