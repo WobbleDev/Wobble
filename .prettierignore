@@ -18,6 +18,7 @@ skills-lock.json
 build/
 test-results/
 /src/lib/paraglide/
+/src/lib/features/settings/licences.generated.json
 /project.inlang/.lix/
 /project.inlang/cache/
 /project.inlang/README.md

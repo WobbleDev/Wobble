@@ -6,11 +6,13 @@
 	import { m } from '#lib/paraglide/messages.js';
 	import { CopyFeedback } from '../copy-feedback.svelte.ts';
 	import DataErrorNotice from '../data-error-notice.svelte';
+	import LicencesDialog from '../licences-dialog.svelte';
 	import {
 		aboutRows as buildAboutRows,
 		diagnosticText,
 		type RuntimeReading
 	} from '../runtime-details.ts';
+	import SettingsRow from '../settings-row.svelte';
 	import SettingsWell from '../settings-well.svelte';
 
 	let { runtime }: { runtime: RuntimeReading } = $props();
@@ -18,6 +20,7 @@
 	const aboutRows = $derived(buildAboutRows(runtime.value, m.settings_unavailable_value()));
 	/* Copy reads the running identity, so it waits for the read and stays off when it failed. */
 	const canCopy = $derived(!runtime.loading && runtime.error === null);
+	let licencesOpen = $state(false);
 	const copy = new CopyFeedback();
 	onDestroy(() => copy.dispose());
 </script>
@@ -40,6 +43,20 @@
 			{/each}
 		</dl>
 	{/if}
+	<SettingsRow
+		id="about-licences"
+		title={m.settings_licences()}
+		description={m.settings_licences_description()}
+	>
+		<Button
+			type="button"
+			variant="outline"
+			class="min-h-tap md:min-h-9"
+			onclick={() => (licencesOpen = true)}
+		>
+			{m.settings_licences_button()}
+		</Button>
+	</SettingsRow>
 	<div class="flex flex-wrap items-center gap-2 border-t border-rule px-6 py-4">
 		<Button
 			type="button"
@@ -61,3 +78,5 @@
 		{/if}
 	</div>
 </SettingsWell>
+
+<LicencesDialog bind:open={licencesOpen} />

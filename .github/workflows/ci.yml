@@ -81,6 +81,8 @@ jobs:
       - run: npm ci
       - run: npm run check
       - run: npm test
+      # The Settings > About licence list is generated from the lockfiles' packages; a stale copy fails here.
+      - run: npm run licences:check
   rust:
     needs: changes
     if: needs.changes.outputs.code == 'true'
