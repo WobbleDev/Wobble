@@ -67,7 +67,12 @@ fn main() -> ExitCode {
     };
 
     // Match native startup: key establishment is explicit through the boot API.
-    let app = App::locked(&path);
+    let mut app = App::locked(&path);
+    // The diagnostics log sits beside the database unless `WOBBLE_LOG_DIR` names a folder.
+    app.set_event_log(
+        std::env::var_os("WOBBLE_LOG_DIR")
+            .map_or_else(|| PathBuf::from(format!("{path}-logs")), PathBuf::from),
+    );
     eprintln!(
         "wobble-dev-shim: listening on http://{address} (WOBBLE_DB_PATH={path}, \
          WOBBLE_STATIC_DIR={})",

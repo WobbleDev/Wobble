@@ -1,0 +1,31 @@
+name: Node dependencies
+description: >-
+  Set up Node and restore node_modules from a cache keyed on the lockfile, so `npm ci` runs only
+  when the lockfile (or Node version, OS or architecture) changed instead of in every job.
+runs:
+  using: composite
+  steps:
+    - id: node
+      uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+      with:
+        node-version-file: .nvmrc
+        # The npm download cache still speeds up the install on a node_modules cache miss.
+        cache: npm
+    # Tool caches under node_modules (prettier, vite) are excluded: the lint job keeps its own,
+    # and nothing a job writes there should leak into the shared dependency cache.
+    - id: modules
+      uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+      with:
+        path: |
+          node_modules
+          !node_modules/.cache
+          !node_modules/.vite
+        key: node-modules-${{ runner.os }}-${{ runner.arch }}-${{ steps.node.outputs.node-version }}-${{ hashFiles('package-lock.json') }}
+    - if: steps.modules.outputs.cache-hit != 'true'
+      shell: bash
+      run: npm ci
+    # `npm ci` runs the prepare script, which compiles the i18n messages and generates the
+    # SvelteKit types (both gitignored). A restored node_modules skips it, so run it here.
+    - if: steps.modules.outputs.cache-hit == 'true'
+      shell: bash
+      run: npm run prepare
