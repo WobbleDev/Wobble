@@ -130,28 +130,7 @@ jobs:
       - uses: Swatinem/rust-cache@d1527c8f67ef9af357290475d4af4b0fab8f12e0 # v2
         with:
           workspaces: . -> target
-      # The Tauri system packages come from a cache of their .deb files, keyed on the runner image
-      # (the set apt downloads depends on what the image already has) and on this file (the package
-      # list). A hit installs them with dpkg and skips `apt-get update` and the download; a miss, or
-      # a dpkg that refuses the cached set, falls back to a normal install and refreshes the cache.
-      - id: image
-        run: echo "version=${ImageVersion:-unknown}" >> "$GITHUB_OUTPUT"
-      - id: apt
-        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
-        with:
-          path: /tmp/apt-debs/*.deb
-          key: apt-${{ runner.os }}-${{ steps.image.outputs.version }}-${{ hashFiles('.github/workflows/ci.yml') }}
-      - name: Install system packages
-        env:
-          APT_CACHE_HIT: ${{ steps.apt.outputs.cache-hit }}
-        run: |
-          if [ "$APT_CACHE_HIT" = "true" ] && sudo dpkg -i /tmp/apt-debs/*.deb; then
-            echo "Installed system packages from the cache."
-          else
-            rm -rf /tmp/apt-debs; mkdir -p /tmp/apt-debs
-            sudo apt-get update
-            sudo apt-get install -y -o Dir::Cache::archives=/tmp/apt-debs -o APT::Keep-Downloaded-Packages=true libwebkit2gtk-4.1-dev libxdo-dev libssl-dev libayatana-appindicator3-dev librsvg2-dev build-essential
-          fi
+      - run: sudo apt-get update && sudo apt-get install -y libwebkit2gtk-4.1-dev libxdo-dev libssl-dev libayatana-appindicator3-dev librsvg2-dev build-essential
       - run: npm run test:rust
   verify:
     needs: [changes, lint, types-and-unit, guards, rust]
