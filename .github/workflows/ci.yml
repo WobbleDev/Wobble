@@ -9,12 +9,18 @@ concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
 jobs:
-  # Docs-only PRs skip the heavy jobs (gitleaks runs in its own workflow).
-  # Dependabot and lockfile PRs always count as code changes.
+  # Docs-only PRs skip the heavy jobs (gitleaks runs in its own workflow). Dependabot and
+  # lockfile PRs always count as code changes. Among code changes, the blocking jobs follow the
+  # paths: a PR that only touches Rust source skips the Node jobs (the repo-wide guards from
+  # `npm run lint` still run, in `guards`), and a PR that touches nothing the Rust job reads
+  # skips the Rust job. Pushes to main run everything, which also keeps the caches warm.
   changes:
     runs-on: ubuntu-latest
     outputs:
       code: ${{ steps.f.outputs.code }}
+      frontend: ${{ steps.f.outputs.frontend }}
+      rust: ${{ steps.f.outputs.rust }}
+      guards: ${{ steps.f.outputs.guards }}
       e2e_full: ${{ steps.f.outputs.e2e_full }}
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
@@ -25,37 +31,54 @@ jobs:
           # e2e_full: run the whole merge set. Anything that is not a plain feature or spec change
           # (dependencies, build and test config, the Rust core, shared test helpers) does, as do
           # pushes to main. Other PRs run only the areas scripts/verify-routing.ts picks.
+          all_on() {
+            for name in code frontend rust e2e_full; do echo "$name=true" >> "$GITHUB_OUTPUT"; done
+            echo "guards=false" >> "$GITHUB_OUTPUT"
+          }
           if [ "${{ github.event_name }}" != "pull_request" ] || [ "${{ github.actor }}" = "dependabot[bot]" ]; then
-            echo "code=true" >> "$GITHUB_OUTPUT"; echo "e2e_full=true" >> "$GITHUB_OUTPUT"; exit 0
+            all_on; exit 0
           fi
           files=$(git diff --name-only "origin/${{ github.base_ref }}...HEAD")
-          if echo "$files" | grep -qE '(^|/)(package-lock\.json|Cargo\.lock)$'; then
-            echo "code=true" >> "$GITHUB_OUTPUT"; echo "e2e_full=true" >> "$GITHUB_OUTPUT"; exit 0
+          if grep -qE '(^|/)(package-lock\.json|Cargo\.lock)$' <<<"$files"; then
+            all_on; exit 0
           fi
-          if echo "$files" | grep -vE '^(docs/|\.github/ISSUE_TEMPLATE/)|\.md$|^(LICENSE|NOTICE)$' | grep -q .; then
-            echo "code=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "code=false" >> "$GITHUB_OUTPUT"
+          code=false frontend=false rust=false guards=false
+          if grep -vE '^(docs/|\.github/ISSUE_TEMPLATE/)|\.md$|^(LICENSE|NOTICE)$' <<<"$files" | grep -q .; then
+            code=true
+            # Rust-only: Rust source and Cargo manifests. Everything else (JSON, Markdown and
+            # fixtures under crates/ included) is read by prettier, knip or the guard scripts.
+            if grep -vE '\.rs$|(^|/)Cargo\.toml$|^(deny\.toml|rust-toolchain(\.toml)?)$|^\.cargo/' <<<"$files" | grep -q .; then
+              frontend=true
+            else
+              guards=true
+            fi
+            # What `npm run test:rust` reads: the crates, the Tauri shell, the contract fixtures the
+            # core replays, the generated types, the toolchain files, and the CI definition itself.
+            if grep -qE '^(crates|src-tauri|contract)/|(^|/)Cargo\.toml$|^(deny\.toml|rust-toolchain(\.toml)?|package\.json)$|^\.cargo/|^src/lib/client/generated/|^\.github/(workflows/ci\.yml|actions/)' <<<"$files"; then
+              rust=true
+            fi
           fi
-          if echo "$files" | grep -qE '(^|/)(package\.json|Cargo\.toml)$|^(playwright\.config\.ts|vite\.config\.ts|svelte\.config\.js|tsconfig\.json)$|^(crates|src-tauri|contract|messages)/|^scripts/(e2e|verify|heavy)|^\.github/workflows/ci\.yml$' \
-            || echo "$files" | grep -E '^e2e/' | grep -vqE '^e2e/[^/]+\.spec\.ts$'; then
+          echo "code=$code" >> "$GITHUB_OUTPUT"
+          echo "frontend=$frontend" >> "$GITHUB_OUTPUT"
+          echo "rust=$rust" >> "$GITHUB_OUTPUT"
+          echo "guards=$guards" >> "$GITHUB_OUTPUT"
+          if grep -qE '(^|/)(package\.json|Cargo\.toml)$|^(playwright\.config\.ts|vite\.config\.ts|svelte\.config\.js|tsconfig\.json)$|^(crates|src-tauri|contract|messages)/|^scripts/(e2e|verify|heavy)|^\.github/(workflows/ci\.yml|actions/)' <<<"$files" \
+            || grep -E '^e2e/' <<<"$files" | grep -vqE '^e2e/[^/]+\.spec\.ts$'; then
             echo "e2e_full=true" >> "$GITHUB_OUTPUT"
           else
             echo "e2e_full=false" >> "$GITHUB_OUTPUT"
           fi
   # Blocking: lint, types, unit, Rust. The checks run as parallel jobs so the slowest one sets
   # the wall time; the `verify` job at the end is the single required check (branch protection
-  # points at it) and passes when every job it needs passed or was skipped (docs-only PRs).
+  # points at it) and passes when every job it needs passed or was skipped (docs-only PRs, and
+  # the Node or Rust jobs a PR's paths do not touch).
   lint:
     needs: changes
-    if: needs.changes.outputs.code == 'true'
+    if: needs.changes.outputs.code == 'true' && needs.changes.outputs.frontend == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
-        with:
-          node-version-file: .nvmrc
-          cache: npm
+      - uses: ./.github/actions/node-deps
       # ESLint and Prettier skip files whose content they already checked (a fresh checkout has
       # new file times, so the lint script compares content).
       - uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
@@ -66,24 +89,32 @@ jobs:
           key: lint-${{ runner.os }}-${{ hashFiles('package-lock.json', 'eslint.config.js', 'prettier.config.js') }}-${{ github.sha }}
           restore-keys: |
             lint-${{ runner.os }}-${{ hashFiles('package-lock.json', 'eslint.config.js', 'prettier.config.js') }}-
-      - run: npm ci
       - run: npm run lint
   types-and-unit:
     needs: changes
-    if: needs.changes.outputs.code == 'true'
+    if: needs.changes.outputs.code == 'true' && needs.changes.outputs.frontend == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: ./.github/actions/node-deps
+      - run: npm run check
+      - run: npm test
+  # A PR that only touches Rust source skips lint and types-and-unit; the guard scripts that
+  # `npm run lint` starts with read every tracked file (old names, fixture PII, e2e settings
+  # writes), so they still run. They use no npm packages.
+  guards:
+    needs: changes
+    if: needs.changes.outputs.guards == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version-file: .nvmrc
-          cache: npm
-      - run: npm ci
-      - run: npm run check
-      - run: npm test
+      - run: node scripts/check-e2e-settings-writes.mjs && node scripts/check-fixture-pii.mjs && node scripts/check-old-names.mjs
   rust:
     needs: changes
-    if: needs.changes.outputs.code == 'true'
+    if: needs.changes.outputs.code == 'true' && needs.changes.outputs.rust == 'true'
     runs-on: ubuntu-latest
     # The GitHub runner has 4 cores and 16 GB; `test:rust` defaults to one job at a time for
     # small laptops, so lift that here.
@@ -98,16 +129,37 @@ jobs:
       - uses: Swatinem/rust-cache@d1527c8f67ef9af357290475d4af4b0fab8f12e0 # v2
         with:
           workspaces: . -> target
-      - run: sudo apt-get update && sudo apt-get install -y libwebkit2gtk-4.1-dev libxdo-dev libssl-dev libayatana-appindicator3-dev librsvg2-dev build-essential
+      # The Tauri system packages come from a cache of their .deb files, keyed on the runner image
+      # (the set apt downloads depends on what the image already has) and on this file (the package
+      # list). A hit installs them with dpkg and skips `apt-get update` and the download; a miss, or
+      # a dpkg that refuses the cached set, falls back to a normal install and refreshes the cache.
+      - id: image
+        run: echo "version=${ImageVersion:-unknown}" >> "$GITHUB_OUTPUT"
+      - id: apt
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: /tmp/apt-debs/*.deb
+          key: apt-${{ runner.os }}-${{ steps.image.outputs.version }}-${{ hashFiles('.github/workflows/ci.yml') }}
+      - name: Install system packages
+        env:
+          APT_CACHE_HIT: ${{ steps.apt.outputs.cache-hit }}
+        run: |
+          if [ "$APT_CACHE_HIT" = "true" ] && sudo dpkg -i /tmp/apt-debs/*.deb; then
+            echo "Installed system packages from the cache."
+          else
+            rm -rf /tmp/apt-debs; mkdir -p /tmp/apt-debs
+            sudo apt-get update
+            sudo apt-get install -y -o Dir::Cache::archives=/tmp/apt-debs -o APT::Keep-Downloaded-Packages=true libwebkit2gtk-4.1-dev libxdo-dev libssl-dev libayatana-appindicator3-dev librsvg2-dev build-essential
+          fi
       - run: npm run test:rust
   verify:
-    needs: [changes, lint, types-and-unit, rust]
+    needs: [changes, lint, types-and-unit, guards, rust]
     if: always()
     runs-on: ubuntu-latest
     steps:
       - run: |
-          echo "changes=${{ needs.changes.result }} lint=${{ needs.lint.result }} types-and-unit=${{ needs.types-and-unit.result }} rust=${{ needs.rust.result }}"
-          case "${{ needs.changes.result }}${{ needs.lint.result }}${{ needs.types-and-unit.result }}${{ needs.rust.result }}" in
+          echo "changes=${{ needs.changes.result }} lint=${{ needs.lint.result }} types-and-unit=${{ needs.types-and-unit.result }} guards=${{ needs.guards.result }} rust=${{ needs.rust.result }}"
+          case "${{ needs.changes.result }}${{ needs.lint.result }}${{ needs.types-and-unit.result }}${{ needs.guards.result }}${{ needs.rust.result }}" in
             *failure*|*cancelled*) exit 1 ;;
           esac
   # Non-blocking on PRs; the full run is nightly (nightly-e2e.yml).
@@ -128,16 +180,21 @@ jobs:
         with:
           # Two commits so HEAD^1 (the PR's base) is there for the affected-area diff.
           fetch-depth: 2
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
-        with:
-          node-version-file: .nvmrc
-          cache: npm
+      - uses: ./.github/actions/node-deps
       - uses: dtolnay/rust-toolchain@b725eda525362e7cf34af9a7243cac1e3f01a7ec # stable
       - uses: Swatinem/rust-cache@d1527c8f67ef9af357290475d4af4b0fab8f12e0 # v2
         with:
           workspaces: . -> target
-      - run: npm ci
       - run: npx playwright install chromium
+      # The suites' databases are throwaway, but the app (rightly) forces a full drive flush after
+      # every commit, which is slow on a CI disk. Put them on a RAM disk so the app code under test
+      # stays exactly as shipped. If the disk cannot be made the suites use the runner's disk.
+      - name: RAM disk for test databases
+        continue-on-error: true
+        run: |
+          device=$(hdiutil attach -nomount ram://1048576 | awk '{print $1}')
+          diskutil erasevolume HFS+ wobble-ram "$device"
+          echo "WOBBLE_E2E_DB=/Volumes/wobble-ram/e2e.sqlite" >> "$GITHUB_ENV"
       - name: Run e2e
         env:
           # Write every suite's results under one directory so the JSON reports can be collected;
