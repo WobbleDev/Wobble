@@ -98,6 +98,8 @@ jobs:
       - uses: ./.github/actions/node-deps
       - run: npm run check
       - run: npm test
+      # The Settings > About licence list is generated from the lockfiles' packages; a stale copy fails here.
+      - run: npm run licences:check
   # A PR that only touches Rust source skips lint and types-and-unit; the guard scripts that
   # `npm run lint` starts with read every tracked file (old names, fixture PII, e2e settings
   # writes), so they still run. They use no npm packages.
