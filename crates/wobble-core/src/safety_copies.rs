@@ -87,6 +87,12 @@ fn prune_keeping(database: &Path, keep: usize) -> usize {
 /// The kind of a safety copy file, or `None` when `file_name` is not one of the copies for the
 /// database called `database_name`: `<database>.pre-<kind>-<anything>.sqlite`.
 fn kind_of(database_name: &str, file_name: &str) -> Option<String> {
+    split_copy_name(database_name, file_name).map(|(kind, _)| kind)
+}
+
+/// The kind and the text after it (`<tail>` in `<database>.pre-<kind>-<tail>.sqlite`), or
+/// `None` when `file_name` is not a safety copy of the database called `database_name`.
+fn split_copy_name(database_name: &str, file_name: &str) -> Option<(String, String)> {
     let rest = file_name
         .strip_prefix(database_name)?
         .strip_prefix(".pre-")?;
@@ -99,8 +105,34 @@ fn kind_of(database_name: &str, file_name: &str) -> Option<String> {
         "rotation",
         "conversion",
         "create",
+        AUTO_KIND,
     ];
-    (known.contains(&kind) && !tail.is_empty()).then(|| kind.to_owned())
+    (known.contains(&kind) && !tail.is_empty()).then(|| (kind.to_owned(), tail.to_owned()))
+}
+
+/// The kind of the copies the scheduled backup writes: `<database>.pre-auto-<stamp>.sqlite`.
+pub const AUTO_KIND: &str = "auto";
+
+/// The stamp (`yyyymmddThhmmss`, UTC) of the newest copy of `kind` beside `database`, or
+/// `None` when there is none. The stamp, not the file's modified time, decides which is
+/// newest, so a copy that was touched or restored from elsewhere is not mistaken for fresh.
+pub fn newest_stamp(database: &Path, kind: &str) -> Option<String> {
+    let parent = database.parent()?;
+    let parent = if parent.as_os_str().is_empty() {
+        Path::new(".")
+    } else {
+        parent
+    };
+    let name = database.file_name()?.to_string_lossy().into_owned();
+    std::fs::read_dir(parent)
+        .ok()?
+        .flatten()
+        .filter_map(|entry| {
+            let file_name = entry.file_name().to_string_lossy().into_owned();
+            let (found, tail) = split_copy_name(&name, &file_name)?;
+            (found == kind && entry.metadata().ok()?.is_file()).then_some(tail)
+        })
+        .max()
 }
 
 fn pending_recovery_path(database: &Path) -> Option<PathBuf> {

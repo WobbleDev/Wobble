@@ -243,6 +243,24 @@ export const test = base.extend<{
 						body: await response.text()
 					});
 				} catch (error) {
+					// The shell reads the automatic backup status on every page load, and no
+					// recording was made before that existed. Off is what a fresh install answers.
+					if (request.method() === 'GET' && url.pathname === '/api/auto-backup') {
+						await route.fulfill({
+							status: 200,
+							contentType: 'application/json',
+							body: JSON.stringify({
+								autoBackup: {
+									available: true,
+									enabled: false,
+									frequency: 'daily',
+									lastBackupAt: null,
+									failure: null
+								}
+							})
+						});
+						return;
+					}
 					misses.add(error instanceof Error ? error.message : String(error));
 					await route.fulfill({ status: 599, body: '' });
 				}

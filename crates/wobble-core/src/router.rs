@@ -6,8 +6,8 @@ use serde_json::{json, Value};
 use crate::db::Db;
 use crate::handle::{Request, Response};
 use crate::handlers::{
-    attributes, backup, configuration, data, datasets, drafts, runtime, settings, views,
-    vocabulary, worker_merge, workers, worksite,
+    attributes, auto_backup, backup, configuration, data, datasets, drafts, runtime, settings,
+    views, vocabulary, worker_merge, workers, worksite,
 };
 use crate::id::IdSource;
 use crate::read_json_request::read_json_request;
@@ -66,6 +66,9 @@ pub(crate) fn dispatch_keyed(
         ("PUT", "/api/settings") => settings::put_settings(db, request),
         ("DELETE", "/api/settings") => settings::delete_settings(db),
         ("POST", "/api/backup") => backup::post_backup_keyed(db, request, secret),
+        ("GET", "/api/auto-backup") => auto_backup::get_status(db),
+        ("PUT", "/api/auto-backup") => auto_backup::put_auto_backup(db, request),
+        ("POST", "/api/auto-backup/run") => auto_backup::post_run(db, request, secret),
         ("GET", "/api/data-file") => data::get_data_file(db),
         ("POST", "/api/restore") if secret.is_some() => Err(Error::coded(
             "database_recovery_required",

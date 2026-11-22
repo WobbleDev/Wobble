@@ -30,6 +30,7 @@
 	"shell_settings_save_failed": "Could not save settings. The last saved value has been restored.",
 	"shell_settings_reset_failed": "Could not reset settings. The last saved settings have been restored.",
 	"shell_settings_stale": "Settings may be out of date. Reconnecting…",
+	"shell_auto_backup_failed": "The last automatic backup failed. Open Settings to try again.",
 	"empty_create_worksite_title": "Create a worksite to get started",
 	"empty_create_worksite_body": "Your workers and configuration will live inside a worksite.",
 	"empty_new_worksite": "New Worksite",

@@ -1,6 +1,8 @@
 <script lang="ts">
 	import FileDown from '@lucide/svelte/icons/file-down';
 	import Upload from '@lucide/svelte/icons/upload';
+	import { getContext, onMount } from 'svelte';
+	import { autoBackupFrequencies, type AutoBackupFrequency } from '#lib/client/auto-backup-api.ts';
 	import { exportBackup, pickBackupPath } from '#lib/client/backup-api.ts';
 	import { dataErrorCopy, pickRestorePath, restoreBackup } from '#lib/client/data-api.ts';
 	import { isTauriTransport } from '#lib/client/transport.ts';
@@ -10,6 +12,11 @@
 	import { Label } from '#lib/components/ui/label/index.ts';
 	import { Checkbox } from '#lib/components/ui/checkbox/index.ts';
 	import { createRestoreFlow } from '../restore-flow.svelte.ts';
+	import { autoBackupContextKey, type AutoBackup } from '../auto-backup.svelte.ts';
+	import { appSettingsContextKey, type AppSettingsContext } from '#lib/shared/app/app-settings.ts';
+	import { formatTimestamp } from '#lib/shared/text/format.ts';
+	import Picker from '../picker.svelte';
+	import SettingsSwitch from '../settings-switch.svelte';
 	import { clearLanguage } from '#lib/i18n/language-cache.ts';
 	import { m } from '#lib/paraglide/messages.js';
 	import DataErrorNotice from '../data-error-notice.svelte';
@@ -17,6 +24,23 @@
 	import { reloadPage } from '../reload-page.ts';
 	import SettingsRow from '../settings-row.svelte';
 	import SettingsWell from '../settings-well.svelte';
+
+	const settings = getContext<AppSettingsContext>(appSettingsContextKey);
+	const autoBackup = getContext<AutoBackup>(autoBackupContextKey);
+	onMount(() => void autoBackup.refresh());
+
+	const autoStatus = $derived(autoBackup.status);
+	const frequencyChoices = $derived(
+		autoBackupFrequencies.map((value) => ({
+			value,
+			label:
+				value === 'daily'
+					? m.settings_backup_frequency_daily()
+					: m.settings_backup_frequency_weekly()
+		}))
+	);
+	const when = (iso: string): string =>
+		formatTimestamp(iso, { dateFormat: settings.dateFormat, timeFormat: settings.timeFormat });
 
 	let exporting = $state(false);
 	let exportError = $state('');
@@ -84,6 +108,53 @@
 			</div>
 		</SettingsRow>
 	{/if}
+	<SettingsRow
+		id="bak-auto"
+		title={m.settings_auto_backup_title()}
+		description={m.settings_auto_backup_description()}
+	>
+		<Button
+			type="button"
+			variant="outline"
+			class="min-h-tap md:min-h-9"
+			disabled={!autoStatus?.available || autoBackup.busy}
+			onclick={() => void autoBackup.backUpNow()}
+		>
+			{autoBackup.busy ? m.settings_auto_backup_running() : m.settings_auto_backup_now()}
+		</Button>
+		<SettingsSwitch
+			checked={autoStatus?.enabled ?? false}
+			disabled={!autoStatus?.available || autoBackup.busy}
+			onchange={(checked) => void autoBackup.change({ enabled: checked })}
+			labelledby="bak-auto-title"
+		/>
+	</SettingsRow>
+	<SettingsRow id="bak-auto-frequency" title={m.settings_backup_frequency_title()}>
+		<Picker
+			rowId="bak-auto-frequency"
+			choices={frequencyChoices}
+			value={autoStatus?.frequency ?? 'daily'}
+			onChange={(value) => void autoBackup.change({ frequency: value as AutoBackupFrequency })}
+			disabled={!autoStatus?.enabled || autoBackup.busy}
+		/>
+	</SettingsRow>
+	<div class="grid gap-1 px-6 pb-4 text-sm" aria-live="polite" data-testid="auto-backup-status">
+		{#if autoStatus?.lastBackupAt}
+			<p class="text-ink-2">
+				{m.settings_auto_backup_last({ when: when(autoStatus.lastBackupAt) })}
+			</p>
+		{:else if autoStatus?.available}
+			<p class="text-ink-2">{m.settings_no_auto_backup()}</p>
+		{/if}
+		{#if autoStatus?.failure}
+			<p class="text-state-error" role="alert">
+				{m.settings_auto_backup_failed({ when: when(autoStatus.failure.at) })}
+			</p>
+		{/if}
+		{#if autoBackup.error}
+			<p class="text-state-error" role="alert">{autoBackup.error}</p>
+		{/if}
+	</div>
 	<SettingsRow
 		id="bak-restore"
 		title={m.settings_restore_title()}

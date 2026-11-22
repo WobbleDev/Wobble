@@ -1,6 +1,7 @@
 import {
 	copyFileSync,
 	existsSync,
+	readdirSync,
 	readFileSync,
 	realpathSync,
 	rmSync,
@@ -8,7 +9,7 @@ import {
 	writeFileSync
 } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { join, resolve } from 'node:path';
+import { basename, dirname, join, resolve } from 'node:path';
 import { DatabaseSync } from 'node:sqlite';
 import { expect, test, TEST_PASSPHRASE } from './fixtures.ts';
 import { activateWorksite, createWorker, readStoredActiveWorksiteId } from './api.ts';
@@ -1367,6 +1368,53 @@ test('@product-gap-15 shows and copies the running installation details', async 
 	expect(copiedInfo).toContain(`Platform: ${runtime.platform}`);
 });
 
+test('Automatic backup turns on, copies beside the database, and Back up now adds another', async ({
+	page
+}) => {
+	const configured = databasePath();
+	const copies = (): string[] =>
+		readdirSync(dirname(configured)).filter((name) =>
+			name.startsWith(`${basename(configured)}.pre-auto-`)
+		);
+	for (const name of copies()) rmSync(join(dirname(configured), name), { force: true });
+
+	await page.goto('/settings');
+	await appReady(page);
+
+	const toggle = settingsRow(page, 'bak-auto').getByRole('switch', {
+		name: 'Back up automatically'
+	});
+	const status = page.getByTestId('auto-backup-status');
+	await expect(toggle).toBeEnabled();
+	await expect(toggle).toHaveAttribute('aria-checked', 'false');
+	await expect(status).toContainText('No automatic backup has run yet.');
+	await expect(page.getByRole('button', { name: 'How often' })).toBeDisabled();
+	expect(copies()).toEqual([]);
+
+	// Turning it on writes the first copy at once, and the status says when.
+	await toggle.click();
+	await expect(toggle).toHaveAttribute('aria-checked', 'true');
+	await expect(status).toContainText('Last automatic backup:');
+	await expect.poll(() => copies().length).toBe(1);
+	await expect(status.getByRole('alert')).toHaveCount(0);
+
+	// The frequency is a real choice, and Back up now ignores the schedule.
+	await pick(page, 'How often', 'Once a week');
+	await expect(page.getByRole('button', { name: 'How often' })).toContainText('Once a week');
+	await page.getByRole('button', { name: 'Back up now' }).click();
+	await expect.poll(() => copies().length).toBe(2);
+
+	// It survives a reload, and turning it off stops the schedule but keeps the copies.
+	await page.reload();
+	await appReady(page);
+	await expect(toggle).toHaveAttribute('aria-checked', 'true');
+	await toggle.click();
+	await expect(toggle).toHaveAttribute('aria-checked', 'false');
+	expect(copies().length).toBe(2);
+
+	for (const name of copies()) rmSync(join(dirname(configured), name), { force: true });
+});
+
 test('@product-gap-14 disables unfinished operations and leaves live settings working', async ({
 	page
 }) => {
@@ -1385,15 +1433,10 @@ test('@product-gap-14 disables unfinished operations and leaves live settings wo
 	expect(sectionIds.slice(-2)).toEqual(['unavailable', 'reset']);
 	await expect(page.locator('#unavailable details')).not.toHaveAttribute('open', '');
 	await expect(page.locator('#unavailable button, #unavailable input')).toHaveCount(0);
-	for (const row of ['upd', 'bak-auto', 'prv-lock', 'dx-logs']) {
+	for (const row of ['upd', 'prv-lock', 'dx-logs']) {
 		await expect(settingsRow(page, row)).toHaveAttribute('data-unavailable', 'true');
 	}
-	for (const name of [
-		'Check for updates',
-		'Back up automatically',
-		'Automatic locking',
-		'Open log folder'
-	]) {
+	for (const name of ['Check for updates', 'Automatic locking', 'Open log folder']) {
 		await expect(page.getByRole('button', { name })).toHaveCount(0);
 		await expect(page.getByRole('switch', { name })).toHaveCount(0);
 	}
