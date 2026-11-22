@@ -23,7 +23,7 @@ jobs:
       guards: ${{ steps.f.outputs.guards }}
       e2e_full: ${{ steps.f.outputs.e2e_full }}
     steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
       - id: f
@@ -76,7 +76,7 @@ jobs:
     if: needs.changes.outputs.code == 'true' && needs.changes.outputs.frontend == 'true'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: ./.github/actions/node-deps
       # ESLint and Prettier skip files whose content they already checked (a fresh checkout has
       # new file times, so the lint script compares content).
@@ -94,7 +94,7 @@ jobs:
     if: needs.changes.outputs.code == 'true' && needs.changes.outputs.frontend == 'true'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: ./.github/actions/node-deps
       - run: npm run check
       - run: npm test
@@ -108,7 +108,7 @@ jobs:
     if: needs.changes.outputs.guards == 'true'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version-file: .nvmrc
@@ -123,7 +123,7 @@ jobs:
       CARGO_BUILD_JOBS: 4
       RUST_TEST_THREADS: 4
     steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: dtolnay/rust-toolchain@b725eda525362e7cf34af9a7243cac1e3f01a7ec # stable
         with:
           components: rustfmt, clippy
@@ -156,7 +156,7 @@ jobs:
       cancel-in-progress: false
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           # Two commits so HEAD^1 (the PR's base) is there for the affected-area diff.
           fetch-depth: 2
