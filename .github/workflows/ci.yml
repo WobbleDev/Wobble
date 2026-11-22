@@ -58,10 +58,9 @@ jobs:
               rust=true
             fi
           fi
-          echo "code=$code" >> "$GITHUB_OUTPUT"
-          echo "frontend=$frontend" >> "$GITHUB_OUTPUT"
-          echo "rust=$rust" >> "$GITHUB_OUTPUT"
-          echo "guards=$guards" >> "$GITHUB_OUTPUT"
+          {
+            echo "code=$code"; echo "frontend=$frontend"; echo "rust=$rust"; echo "guards=$guards"
+          } >> "$GITHUB_OUTPUT"
           if grep -qE '(^|/)(package\.json|Cargo\.toml)$|^(playwright\.config\.ts|vite\.config\.ts|svelte\.config\.js|tsconfig\.json)$|^(crates|src-tauri|contract|messages)/|^scripts/(e2e|verify|heavy)|^\.github/(workflows/ci\.yml|actions/)' <<<"$files" \
             || grep -E '^e2e/' <<<"$files" | grep -vqE '^e2e/[^/]+\.spec\.ts$'; then
             echo "e2e_full=true" >> "$GITHUB_OUTPUT"
