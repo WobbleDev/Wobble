@@ -300,7 +300,7 @@ mod tests {
             "zed.testname@example.test",
             "Zed Testname",
             "zed\nERROR forged_line",
-            "/Users/zed/backup.sqlite",
+            "/Users/example/backup.sqlite",
             "",
             &"a".repeat(65),
         ] {
