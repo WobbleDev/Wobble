@@ -6,8 +6,7 @@
 	const items = $derived([
 		{ id: 'upd', label: m.settings_updates_title() },
 		{ id: 'prv-lock', label: m.settings_lock_title() },
-		{ id: 'dx-logs', label: m.settings_log_files_title() },
-		{ id: 'about-licences', label: m.settings_licences() }
+		{ id: 'dx-logs', label: m.settings_log_files_title() }
 	]);
 
 	let { open = $bindable(false) }: { open?: boolean } = $props();

@@ -1433,15 +1433,10 @@ test('@product-gap-14 disables unfinished operations and leaves live settings wo
 	expect(sectionIds.slice(-2)).toEqual(['unavailable', 'reset']);
 	await expect(page.locator('#unavailable details')).not.toHaveAttribute('open', '');
 	await expect(page.locator('#unavailable button, #unavailable input')).toHaveCount(0);
-	for (const row of ['upd', 'prv-lock', 'dx-logs', 'about-licences']) {
+	for (const row of ['upd', 'prv-lock', 'dx-logs']) {
 		await expect(settingsRow(page, row)).toHaveAttribute('data-unavailable', 'true');
 	}
-	for (const name of [
-		'Check for updates',
-		'Automatic locking',
-		'Open log folder',
-		'Open-source licences'
-	]) {
+	for (const name of ['Check for updates', 'Automatic locking', 'Open log folder']) {
 		await expect(page.getByRole('button', { name })).toHaveCount(0);
 		await expect(page.getByRole('switch', { name })).toHaveCount(0);
 	}
@@ -1579,6 +1574,25 @@ test('pre-erase recovery is encrypted and restores the complete prior dataset', 
 	expect(await (await request.get('/api/dataset')).json()).toEqual(before);
 });
 
+test('About lists the open-source licences and filters them', async ({ page }) => {
+	await page.goto('/settings');
+	await appReady(page);
+
+	await expect(settingsRow(page, 'about-licences')).not.toHaveAttribute('data-unavailable', 'true');
+	await settingsRow(page, 'about-licences').getByRole('button', { name: 'View licences…' }).click();
+
+	const dialog = page.getByRole('dialog', { name: 'Open-source licences' });
+	await expect(dialog).toContainText('each with its licence text');
+	await dialog.getByRole('searchbox', { name: 'Search packages and licences' }).fill('svelte');
+	const entry = dialog.locator('[data-licence="svelte"]');
+	await expect(entry).toBeVisible();
+	await entry.locator('summary').click();
+	await expect(entry.locator('pre').first()).toContainText('Permission is hereby granted');
+
+	await dialog.getByRole('searchbox').fill('zzzz-no-such-package');
+	await expect(dialog).toContainText('No match.');
+});
+
 test('search narrows the index and Enter jumps to the first match', async ({ page }) => {
 	await page.setViewportSize({ width: 1400, height: 800 });
 	await page.goto('/settings');
@@ -1591,10 +1605,9 @@ test('search narrows the index and Enter jumps to the first match', async ({ pag
 	await expect(index.getByRole('link')).toHaveText(['Privacy']);
 
 	await search.fill('licences');
-	await expect(index.getByRole('link')).toHaveText(['Not available yet']);
+	await expect(index.getByRole('link')).toHaveText(['About']);
 	await search.press('Enter');
-	await expect(page.locator('#unavailable details')).toHaveAttribute('open', '');
-	await expect(index.getByRole('link', { name: 'Not available yet' })).toHaveAttribute(
+	await expect(index.getByRole('link', { name: 'About' })).toHaveAttribute(
 		'aria-current',
 		'location'
 	);
