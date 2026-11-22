@@ -8,6 +8,8 @@
 	},
 	"scripts": {
 		"dev": "vite dev",
+		"licences:generate": "node scripts/generate-licences.mjs",
+		"licences:check": "node scripts/generate-licences.mjs --check",
 		"i18n:pseudo": "node scripts/generate-pseudo-locale.mjs",
 		"i18n:compile": "node scripts/generate-pseudo-locale.mjs && paraglide-js compile --project ./project.inlang --outdir ./src/lib/paraglide",
 		"i18n:check": "npm run i18n:compile && inlang check --project ./project.inlang --missing-translations --empty-translations --empty-variants --missing-variables --unknown-variables --missing-variants --missing-selectors",

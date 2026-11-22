@@ -7,7 +7,7 @@
 		"frontendDist": "../build",
 		"devUrl": "http://localhost:5173",
 		"beforeDevCommand": "npm run dev",
-		"beforeBuildCommand": "npm run build"
+		"beforeBuildCommand": "npm run licences:generate && npm run build"
 	},
 	"app": {
 		"windows": [
