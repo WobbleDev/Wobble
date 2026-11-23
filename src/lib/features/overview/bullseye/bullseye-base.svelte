@@ -53,7 +53,7 @@
 	let chartBackdrop = $state<HTMLElement>();
 	/* A click centres a Worker and dims the rest of the chart to their ties; clicking
 	   them again, the chart's empty area, or Escape clears it. */
-	let selectedId = $state<string | null>(null);
+	const selectedId = $derived(focus.pinnedWorkerId);
 	/** The selected worker and their ties, named for as long as the selection stands. */
 	let nameTags = $state<NameTag[]>([]);
 
@@ -130,16 +130,15 @@
 	}
 
 	/** A click selects the Worker and glides their dot to the middle; a second click clears it. */
-	function toggleDot(worker: Worker, element: SVGCircleElement) {
-		selectedId = selectedId === worker.id ? null : worker.id;
-		if (selectedId) pan.snapIntoView(element);
+	function toggleDot(worker: Worker) {
+		focus.togglePin(worker.id);
 	}
 
 	function onKeydown(event: KeyboardEvent) {
 		/* Clearing a pin consumes the Escape, so leaving focus does not also fire:
 		   the dot's own Escape wins. */
 		if (event.key === 'Escape' && selectedId && !event.defaultPrevented) {
-			selectedId = null;
+			focus.pin(null);
 			event.preventDefault();
 		}
 		focus.handleKeydown(event);
@@ -169,6 +168,19 @@
 			window.removeEventListener('pointercancel', pan.end);
 			pan.cancel();
 		};
+	});
+
+	/* Whoever pins a Worker (a dot, or a row in the Committee column) the chart glides to
+	   their dot. */
+	$effect(() => {
+		const id = focus.pinnedWorkerId;
+		if (!id || !focus.focused) return;
+		untrack(() => {
+			const dot = chartBackdrop?.querySelector<SVGCircleElement>(
+				`circle[data-worker-id="${CSS.escape(id)}"]`
+			);
+			if (dot) pan.snapIntoView(dot);
+		});
 	});
 
 	/* The scale is the layer's size, so a new scale is a new resting box: re-measure
@@ -207,7 +219,7 @@
 		if (pan.takeDragTail()) return;
 		if (!target?.closest('[data-worker-id]')) tooltip.hide();
 		// Only the chart's own chart backdrop clears a selection; the page's panels leave it.
-		if (target?.closest('[data-bullseye-pan-surface]')) selectedId = null;
+		if (target?.closest('[data-bullseye-pan-surface]')) focus.pin(null);
 	}}
 	onkeydown={onKeydown}
 />

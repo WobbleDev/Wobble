@@ -70,5 +70,9 @@
 	"overview_coverage_units": "{leaders} / {needed} líderes",
 	"overview_coverage_tooltip": "Líderes: {leaders} de {needed}",
 	"overview_segment_link_all": "{count} {standing}, de todos los trabajadores. Abrir en Trabajadores",
-	"overview_segment_link_group": "{count} {standing} en {group}. Abrir en Trabajadores"
+	"overview_segment_link_group": "{count} {standing} en {group}. Abrir en Trabajadores",
+	"overview_committee_title": "Mi Comité",
+	"overview_committee_empty": "Aún no hay Líderes.",
+	"overview_committee_short_one": "Falta 1 más",
+	"overview_committee_short_many": "Faltan {count} más"
 }

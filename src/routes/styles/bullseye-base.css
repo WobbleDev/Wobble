@@ -22,8 +22,10 @@
 }
 
 /* The focus tab and the focused chart backdrop's reset sit above both layers and answer
-   in either state, so they take the pointer back where they sit. */
+   in either state, so they take the pointer back where they sit; so does the My
+   Committee column, which is inert (and so takes none) until the bullseye is focused. */
 [data-bullseye-base-surface] [data-focus-edge],
-[data-bullseye-base-surface] [data-focus-reset] {
+[data-bullseye-base-surface] [data-focus-reset],
+[data-bullseye-base-surface] [data-committee-column] {
 	pointer-events: auto;
 }

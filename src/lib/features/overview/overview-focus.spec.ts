@@ -40,6 +40,38 @@ describe('createOverviewFocus', () => {
 		expect(focus.focused).toBe(false);
 	});
 
+	it('pins a Worker, toggles the same pin off, and moves it to another', () => {
+		const { focus } = setup();
+		focus.toggle();
+		focus.togglePin('ana');
+		expect(focus.pinnedWorkerId).toBe('ana');
+		focus.togglePin('beto');
+		expect(focus.pinnedWorkerId).toBe('beto');
+		focus.togglePin('beto');
+		expect(focus.pinnedWorkerId).toBeNull();
+	});
+
+	it('drops the pin whenever focus ends', () => {
+		const { focus, arrive } = setup();
+		focus.toggle();
+		focus.pin('ana');
+		focus.toggle();
+		expect(focus.pinnedWorkerId).toBeNull();
+		focus.toggle();
+		focus.pin('ana');
+		focus.blur();
+		expect(focus.pinnedWorkerId).toBeNull();
+		focus.toggle();
+		focus.pin('ana');
+		focus.handleKeydown(key('Escape'));
+		expect(focus.pinnedWorkerId).toBeNull();
+		focus.toggle();
+		focus.pin('ana');
+		arrive();
+		focus.resetOnEntranceAnimation();
+		expect(focus.pinnedWorkerId).toBeNull();
+	});
+
 	it('blurs back to rest', () => {
 		const { focus } = setup();
 		focus.toggle();

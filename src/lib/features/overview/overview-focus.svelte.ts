@@ -13,6 +13,15 @@ export interface OverviewFocusHost {
 
 export interface OverviewFocus {
 	readonly focused: boolean;
+	/**
+	 * The Worker pinned on the chart, whether by a click on their dot or on their row in the
+	 * Committee column. Both read and write the one id, so the two never disagree.
+	 */
+	readonly pinnedWorkerId: string | null;
+	/** Pins a Worker, or clears the pin with null. */
+	pin(id: string | null): void;
+	/** Pins a Worker, or clears the pin when they are already the one pinned. */
+	togglePin(id: string): void;
 	/** The edge control's flip between rest and focus. */
 	toggle(): void;
 	/** The return to rest: Escape, or the chart backdrop going away. */
@@ -33,23 +42,38 @@ export interface OverviewFocus {
 
 export function createOverviewFocus(host: OverviewFocusHost): OverviewFocus {
 	let focused = $state(false);
+	let pinnedWorkerId = $state<string | null>(null);
 
 	return {
 		get focused() {
 			return focused;
 		},
+		get pinnedWorkerId() {
+			return pinnedWorkerId;
+		},
+		pin(id) {
+			pinnedWorkerId = id;
+		},
+		togglePin(id) {
+			pinnedWorkerId = pinnedWorkerId === id ? null : id;
+		},
 		toggle() {
 			focused = !focused;
+			if (!focused) pinnedWorkerId = null;
 		},
 		blur() {
 			focused = false;
+			pinnedWorkerId = null;
 		},
 		resetOnEntranceAnimation() {
-			if (host.isOverview()) focused = false;
+			if (!host.isOverview()) return;
+			focused = false;
+			pinnedWorkerId = null;
 		},
 		handleKeydown(event: KeyboardEvent) {
 			if (event.key !== 'Escape' || !focused || event.defaultPrevented) return;
 			focused = false;
+			pinnedWorkerId = null;
 		}
 	};
 }
