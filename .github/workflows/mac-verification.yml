@@ -29,7 +29,6 @@ jobs:
       GH_TOKEN: ${{ github.token }}
       REPO: ${{ github.repository }}
       PR: ${{ github.event.pull_request.number }}
-      ACTION: ${{ github.event.action }}
       PUSHED_AT: ${{ github.event.pull_request.updated_at }}
     steps:
       - name: Ensure labels exist
@@ -43,7 +42,7 @@ jobs:
         if: github.event.action == 'synchronize'
         run: |
           labeled_at=$(gh api "repos/$REPO/issues/$PR/timeline" --paginate \
-            --jq '[.[] | select(.event == "labeled" and .label.name == "mac-verified") | .created_at] | last // empty')
+            --jq '[.[] | select(.event == "labeled" and .label.name == "mac-verified") | .created_at] | last // empty' | tail -n 1)
           if [ -z "$labeled_at" ]; then
             echo "No mac-verified label to drop."
           elif [[ "$labeled_at" > "$PUSHED_AT" ]]; then
