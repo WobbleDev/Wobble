@@ -168,10 +168,11 @@
 					<ul class="flex flex-col gap-px">
 						{#each section.members as member (member.id)}
 							{@const pinned = focus.pinnedWorkerId === member.id}
-							<li>
+							<!-- The pinned row and the step it opens share one band. -->
+							<li class="rounded-control" class:bg-inset={pinned}>
 								<button
 									type="button"
-									class="flex w-full min-w-0 items-center gap-3 rounded-control px-2.5 py-2 text-start transition-colors hover:bg-inset focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none aria-pressed:bg-inset motion-reduce:transition-none"
+									class="flex w-full min-w-0 items-center gap-3 rounded-control px-2.5 py-2 text-start transition-colors hover:bg-inset focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none motion-reduce:transition-none"
 									aria-pressed={pinned}
 									aria-expanded={member.ties > 0 ? pinned : undefined}
 									data-committee-member={member.id}
@@ -179,8 +180,9 @@
 								>
 									<SwatchDot color={assessmentColorFor('Leader')} class="size-2.5" />
 									<span class="min-w-0 flex-1">
-										<span class="block truncate text-sm leading-5 font-medium text-ink"
-											>{member.name}</span
+										<span
+											class="block truncate text-sm leading-5 font-medium text-ink"
+											title={member.name}>{member.name}</span
 										>
 										{#if member.reach.length > 0}
 											<!-- Who the ties reach, as the chart's own colours: a count per ring. -->
@@ -189,11 +191,11 @@
 												data-committee-reach
 											>
 												{#each member.reach as ring (ring.assessment)}
-													<span class="inline-flex items-center gap-1">
-														<SwatchDot
-															color={assessmentColorFor(ring.assessment)}
-															class="size-1.5"
-														/>
+													<span
+														class="inline-flex items-center gap-1"
+														title={ringCount(ring.assessment, ring.count)}
+													>
+														<SwatchDot color={assessmentColorFor(ring.assessment)} class="size-2" />
 														<span class="sr-only">{ringCount(ring.assessment, ring.count)}</span>
 														<span aria-hidden="true">{ring.count}</span>
 													</span>
@@ -205,6 +207,9 @@
 										<span
 											class="flex shrink-0 items-center gap-1 text-xs text-ink-3 tabular-nums"
 											data-committee-ties={member.ties}
+											title={member.ties === 1
+												? m.overview_committee_ties_one()
+												: m.overview_committee_ties_many({ count: member.ties })}
 										>
 											<Link2Icon class="size-3.5" aria-hidden="true" />
 											<span class="sr-only">
