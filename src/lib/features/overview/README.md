@@ -30,7 +30,11 @@ The shell owns the bullseye chart backdrop behind the page: at rest it is large,
 blurred and inert on the floor at the lower right; an edge tab brings it into focus
 (`overview-focus.svelte.ts`), where it grows slightly in place and becomes
 interactive (drag, zoom, Reset zoom). Esc or the tab returns. Focus resets on each
-entrance animation, as zoom does. Where the chart backdrop cannot be dragged (below the floor, reduced
+entrance animation, as zoom does. Focused, the My Committee column (`committee-column.svelte`, listing from `committee-members.ts`)
+stands over the slid strip: the Leaders by name with their first Category answer, beside the
+coverage reading. A row pins that Leader on the chart, as a click on their dot does; the pin
+lives in the focus state (`pinnedWorkerId`) so the dots and the rows share it, and it ends with focus.
+Where the chart backdrop cannot be dragged (below the floor, reduced
 motion, coarse pointer), the fitted chart is drawn in the page flow instead.
 `overview-entrance-animation.svelte.ts` and `overview-entrance-animation-lifecycle.ts` own the entrance animation;
 `overview-scroll-hint.ts` owns the fade at clipped card edges.

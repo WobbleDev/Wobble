@@ -32,6 +32,7 @@
 		createOverviewFocus,
 		setOverviewFocus
 	} from '#lib/features/overview/overview-focus.svelte.ts';
+	import CommitteeColumn from '#lib/features/overview/committee-column.svelte';
 	import OverviewEdgeControl from '#lib/features/overview/overview-edge-control.svelte';
 	import { createFirstWorksiteSetup } from '#lib/features/overview/first-worksite.svelte.ts';
 	import {
@@ -447,6 +448,11 @@
 					zoom={chartBackdrop.zoom}
 					entranceAnimationState={isOverview ? overviewEntranceAnimation.state : 'idle'}
 					entranceAnimationElapsed={overviewEntranceAnimation.elapsed}
+				/>
+				<CommitteeColumn
+					workers={data.workers}
+					attributes={data.attributes}
+					target={data.worksite?.committeeGoal ?? 5}
 				/>
 				<OverviewEdgeControl />
 			{/if}

@@ -70,5 +70,9 @@
 	"overview_coverage_units": "{leaders} / {needed} Leaders",
 	"overview_coverage_tooltip": "Leaders: {leaders} of {needed}",
 	"overview_segment_link_all": "{count} {standing}, of all Workers. Open in Workers",
-	"overview_segment_link_group": "{count} {standing} in {group}. Open in Workers"
+	"overview_segment_link_group": "{count} {standing} in {group}. Open in Workers",
+	"overview_committee_title": "My Committee",
+	"overview_committee_empty": "No Leaders yet.",
+	"overview_committee_short_one": "1 more needed",
+	"overview_committee_short_many": "{count} more needed"
 }
