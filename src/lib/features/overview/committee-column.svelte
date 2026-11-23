@@ -231,12 +231,12 @@
 												})}
 											</p>
 										{/if}
-										<p class="mt-0.5 text-ink-3">
+										<p class="mt-0.5 text-pretty text-ink-3">
 											{member.tied
 												.slice(0, NAMED)
 												.map((tied) => tied.name)
 												.join(', ')}{#if member.tied.length > NAMED}
-												<span class="tabular-nums"> +{member.tied.length - NAMED}</span>{/if}
+												<span class="ms-1 tabular-nums">+{member.tied.length - NAMED}</span>{/if}
 										</p>
 									</div>
 								{/if}
