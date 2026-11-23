@@ -7,14 +7,17 @@
 	 */
 	import CheckIcon from '@lucide/svelte/icons/check';
 	import Link2Icon from '@lucide/svelte/icons/link-2';
+	import { page } from '$app/state';
 	import type { Worker, WorkerAttributeDefinition } from '#lib/domain-vocabulary.ts';
+	import { assessmentGroupLabel, assessmentLabel } from '#lib/i18n/assessment.ts';
 	import { m } from '#lib/paraglide/messages.js';
 	import { getLocale } from '#lib/paraglide/runtime.js';
 	import SwatchDot from '#lib/shared/ui/swatch-dot.svelte';
 	import { assessmentColorFor } from '#lib/shared/workers/assessment.ts';
 	import CoverageMarks from './coverage-marks.svelte';
 	import { overviewFocus } from './overview-focus.svelte.ts';
-	import { committeeMembers } from './committee-members.ts';
+	import { committeeReading } from './committee-members.ts';
+	import { resolveGroupingAttribute } from './overview-grouping.svelte.ts';
 
 	let {
 		workers,
@@ -27,8 +30,21 @@
 	} = $props();
 
 	const focus = overviewFocus();
-	const reading = $derived(committeeMembers(workers, attributes, target, getLocale()));
+	/* The column groups by the Attribute the dashboard reads, named by the same address. */
+	const attribute = $derived(
+		resolveGroupingAttribute(
+			attributes.filter((candidate) => candidate.kind === 'category'),
+			page.url.searchParams.get('by') ?? ''
+		)
+	);
+	const reading = $derived(committeeReading(workers, attribute, target, getLocale()));
 	const short = $derived(-reading.coverage.gap);
+	const noLeaders = $derived(reading.coverage.leaders === 0);
+	/** How many of a Leader's ties stand in one ring, in words: "2 Supporters". */
+	const ringCount = (assessment: Parameters<typeof assessmentLabel>[0], count: number) =>
+		`${count} ${count === 1 ? assessmentLabel(assessment) : assessmentGroupLabel(assessment)}`;
+	/** The most names the pinned row spells out before the rest are a count. */
+	const NAMED = 6;
 
 	/* The column sits over the dashboard's own box, so it is measured from it: the
 	   dashboard root's top and left, and the room under the cards' padding. */
@@ -78,8 +94,8 @@
 	     at its size, then the marks. -->
 	<header
 		class="flex flex-col gap-2 pb-4"
-		class:border-b={reading.members.length > 0}
-		class:border-rule={reading.members.length > 0}
+		class:border-b={!noLeaders}
+		class:border-rule={!noLeaders}
 	>
 		<h2 id="committee-title" class="section-title">{m.overview_committee_title()}</h2>
 		<div class="flex items-center gap-2.5" data-committee-coverage>
@@ -119,54 +135,121 @@
 		{/if}
 	</header>
 
-	{#if reading.members.length === 0}
+	{#if noLeaders}
 		<p class="mt-4 text-sm text-ink-2" data-committee-empty>{m.overview_committee_empty()}</p>
 	{:else}
 		<!-- The rows are buttons, so the list has tab stops already and needs none of its own. -->
-		<ul
+		<div
 			data-scroll-region
-			class="-mx-2.5 flex min-h-0 flex-1 flex-col gap-px overflow-y-auto pt-2 pb-0.5"
+			class="-mx-2.5 flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto pt-2 pb-0.5"
 		>
-			{#each reading.members as member (member.id)}
-				{@const pinned = focus.pinnedWorkerId === member.id}
-				<li>
-					<button
-						type="button"
-						class="flex w-full min-w-0 items-center gap-3 rounded-control px-2.5 py-2 text-start transition-colors hover:bg-inset focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none aria-pressed:bg-inset motion-reduce:transition-none"
-						aria-pressed={pinned}
-						data-committee-member={member.id}
-						onclick={() => focus.togglePin(member.id)}
-					>
-						<SwatchDot color={assessmentColorFor('Leader')} class="size-2.5" />
-						<span class="min-w-0 flex-1">
-							<span class="block truncate text-sm leading-5 font-medium text-ink"
-								>{member.name}</span
-							>
-							{#if member.detail}
-								<span class="block truncate text-xs leading-4 text-ink-3">{member.detail}</span>
-							{/if}
-						</span>
-						{#if member.ties > 0}
+			{#each reading.sections as section (section.key)}
+				<section aria-label={section.label ?? m.overview_committee_title()} data-committee-section>
+					{#if section.label !== null}
+						<h3
+							class="flex items-center justify-between gap-3 px-2.5 pb-1 font-mono text-2xs tracking-key text-ink-2 uppercase"
+						>
+							<span class="truncate">{section.label}</span>
 							<span
-								class="flex shrink-0 items-center gap-1 text-xs text-ink-3 tabular-nums"
-								title={member.ties === 1
-									? m.overview_committee_ties_one()
-									: m.overview_committee_ties_many({ count: member.ties })}
-								data-committee-ties={member.ties}
+								class="flex shrink-0 items-center gap-1 tabular-nums"
+								data-committee-group-coverage
+								aria-label={m.overview_coverage_tooltip({
+									leaders: section.leaders,
+									needed: section.needed
+								})}
 							>
-								<Link2Icon class="size-3.5" aria-hidden="true" />
-								<span class="sr-only">
-									{member.ties === 1
-										? m.overview_committee_ties_one()
-										: m.overview_committee_ties_many({ count: member.ties })}
-								</span>
-								<span aria-hidden="true">{member.ties}</span>
+								<span aria-hidden="true">{section.leaders} / {section.needed}</span>
+								{#if section.needed > 0 && section.leaders >= section.needed}
+									<CheckIcon class="size-3 text-state-success" aria-hidden="true" />
+								{/if}
 							</span>
-						{/if}
-					</button>
-				</li>
+						</h3>
+					{/if}
+					<ul class="flex flex-col gap-px">
+						{#each section.members as member (member.id)}
+							{@const pinned = focus.pinnedWorkerId === member.id}
+							<li>
+								<button
+									type="button"
+									class="flex w-full min-w-0 items-center gap-3 rounded-control px-2.5 py-2 text-start transition-colors hover:bg-inset focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none aria-pressed:bg-inset motion-reduce:transition-none"
+									aria-pressed={pinned}
+									aria-expanded={member.ties > 0 ? pinned : undefined}
+									data-committee-member={member.id}
+									onclick={() => focus.togglePin(member.id)}
+								>
+									<SwatchDot color={assessmentColorFor('Leader')} class="size-2.5" />
+									<span class="min-w-0 flex-1">
+										<span class="block truncate text-sm leading-5 font-medium text-ink"
+											>{member.name}</span
+										>
+										{#if member.reach.length > 0}
+											<!-- Who the ties reach, as the chart's own colours: a count per ring. -->
+											<span
+												class="flex items-center gap-2.5 text-xs leading-4 text-ink-3 tabular-nums"
+												data-committee-reach
+											>
+												{#each member.reach as ring (ring.assessment)}
+													<span class="inline-flex items-center gap-1">
+														<SwatchDot
+															color={assessmentColorFor(ring.assessment)}
+															class="size-1.5"
+														/>
+														<span class="sr-only">{ringCount(ring.assessment, ring.count)}</span>
+														<span aria-hidden="true">{ring.count}</span>
+													</span>
+												{/each}
+											</span>
+										{/if}
+									</span>
+									{#if member.ties > 0}
+										<span
+											class="flex shrink-0 items-center gap-1 text-xs text-ink-3 tabular-nums"
+											data-committee-ties={member.ties}
+										>
+											<Link2Icon class="size-3.5" aria-hidden="true" />
+											<span class="sr-only">
+												{member.ties === 1
+													? m.overview_committee_ties_one()
+													: m.overview_committee_ties_many({ count: member.ties })}
+											</span>
+											<span aria-hidden="true">{member.ties}</span>
+										</span>
+									{/if}
+								</button>
+								{#if pinned && member.ties > 0}
+									<!-- The pinned Leader opens one step: how far the ties reach, and who. -->
+									<div class="pr-2.5 pb-2 pl-8 text-xs leading-4 text-ink-2" data-committee-detail>
+										{#if member.furthest}
+											<p>
+												{m.overview_committee_reach({
+													assessment: assessmentGroupLabel(member.furthest)
+												})}
+											</p>
+										{/if}
+										<p class="mt-0.5 text-ink-3">
+											{member.tied
+												.slice(0, NAMED)
+												.map((tied) => tied.name)
+												.join(', ')}{#if member.tied.length > NAMED}
+												<span class="tabular-nums"> +{member.tied.length - NAMED}</span>{/if}
+										</p>
+									</div>
+								{/if}
+							</li>
+						{:else}
+							<li
+								class="flex items-center gap-3 px-2.5 py-1.5 text-xs text-ink-3"
+								data-committee-gap
+							>
+								<span class="size-2.5 shrink-0 rounded-full border border-ink-3" aria-hidden="true"
+								></span>
+								{m.overview_committee_gap()}
+							</li>
+						{/each}
+					</ul>
+				</section>
 			{/each}
-		</ul>
+		</div>
 	{/if}
 </aside>
 

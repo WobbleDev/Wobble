@@ -30,10 +30,14 @@ The shell owns the bullseye chart backdrop behind the page: at rest it is large,
 blurred and inert on the floor at the lower right; an edge tab brings it into focus
 (`overview-focus.svelte.ts`), where it grows slightly in place and becomes
 interactive (drag, zoom, Reset zoom). Esc or the tab returns. Focus resets on each
-entrance animation, as zoom does. Focused, the My Committee column (`committee-column.svelte`, listing from `committee-members.ts`)
-stands over the slid strip: the Leaders by name with their first Category answer and a muted
-count of their ties, under the coverage reading as the Committee coverage card sets it. A row pins that Leader on the chart, as a click on their dot does; the pin
-lives in the focus state (`pinnedWorkerId`) so the dots and the rows share it, and it ends with focus.
+entrance animation, as zoom does. Focused, the My Committee column (`committee-column.svelte`, read by `committee-members.ts`)
+stands over the slid strip: the coverage reading in the Committee coverage card's voice, then the
+Leaders under the groups of the Attribute the dashboard reads (the same `by` address), each group with
+its own coverage and an empty "No Leader yet" row where Workers have no Leader. Each Leader shows
+a count of their ties and, in the chart's colours, how many stand in each ring. A row pins that
+Leader on the chart, as a click on their dot does, and opens one step: the furthest ring their ties
+reach and who they are. The pin lives in the focus state (`pinnedWorkerId`) so the dots and the
+rows share it, and it ends with focus.
 Where the chart backdrop cannot be dragged (below the floor, reduced
 motion, coarse pointer), the fitted chart is drawn in the page flow instead.
 `overview-entrance-animation.svelte.ts` and `overview-entrance-animation-lifecycle.ts` own the entrance animation;

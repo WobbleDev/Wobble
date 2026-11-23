@@ -18,7 +18,7 @@ async function seedCommittee(request: APIRequestContext) {
 				id: deptId,
 				name: 'Department',
 				kind: 'category',
-				options: ['Front of House', 'Back of House']
+				options: ['Front of House', 'Back of House', 'Kitchen']
 			}
 		])
 	});
@@ -34,7 +34,7 @@ async function seedCommittee(request: APIRequestContext) {
 		['Gloria', 'Unassessed', 'Back of House'],
 		['Hugo', 'Supporter', 'Back of House'],
 		['Ines', 'Supporter', 'Front of House'],
-		['Joel', 'Supporter', 'Front of House']
+		['Joel', 'Supporter', 'Kitchen']
 	];
 	// The Leaders come last, so their ties can name the Workers made before them: Ana knows
 	// Beto, Carla and Diego; Zara knows only Beto.
@@ -78,11 +78,18 @@ test('lists the Leaders beside the focused bullseye, and hides at rest', async (
 	await expect(column(page)).toHaveCSS('opacity', '1');
 	await expect(column(page).getByRole('heading', { name: 'My Committee' })).toBeVisible();
 
-	// Two Leaders, by name, each with their Department.
+	// Two Leaders, by name, under the Departments the dashboard groups by; the Department
+	// with Workers and no Leader still stands there, saying so.
 	await expect(members(page)).toHaveCount(2);
 	await expect(members(page).first()).toContainText('Ana');
-	await expect(members(page).first()).toContainText('Front of House');
 	await expect(members(page).last()).toContainText('Zara');
+	const sections = column(page).locator('[data-committee-section]');
+	await expect(sections).toHaveCount(3);
+	await expect(sections.nth(0).getByRole('heading')).toContainText('Front of House');
+	await expect(sections.nth(0).getByRole('heading')).toContainText('1 / 1');
+	await expect(sections.nth(1)).toContainText('Zara');
+	await expect(sections.nth(2).getByRole('heading')).toContainText('Kitchen');
+	await expect(sections.nth(2).locator('[data-committee-gap]')).toHaveText('No Leader yet');
 
 	// Each row says how many Workers it knows, in words for a screen reader.
 	await expect(members(page).first().locator('[data-committee-ties]')).toHaveText(/3 ties/);
@@ -104,8 +111,13 @@ test('a row pins that Leader on the chart, and a second press clears it', async 
 	await edge(page).click();
 
 	const row = members(page).first();
+	await expect(column(page).locator('[data-committee-detail]')).toHaveCount(0);
 	await row.click();
 	await expect(row).toHaveAttribute('aria-pressed', 'true');
+	// The pinned Leader opens: how far their ties reach, and who they are, nearest ring first.
+	const detail = column(page).locator('[data-committee-detail]');
+	await expect(detail).toContainText('Out to Disengaged');
+	await expect(detail).toContainText('Carla, Beto, Diego');
 	const id = (await row.getAttribute('data-committee-member'))!;
 	await expect(page.locator('circle[data-worker-id][data-selected]')).toHaveAttribute(
 		'data-worker-id',
