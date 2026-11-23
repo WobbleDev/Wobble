@@ -164,16 +164,20 @@
 		<div
 			bind:this={region}
 			data-scroll-region
-			class="-mx-2.5 flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto pt-2 pb-0.5"
+			class="-mx-2.5 flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto pt-2 pb-0.5"
 			style:mask-image={more
 				? 'linear-gradient(to bottom, #000 calc(100% - 2rem), transparent)'
 				: undefined}
 		>
-			{#each reading.sections as section (section.key)}
+			{#each reading.sections as section, index (section.key)}
+				{#if index > 0}
+					<!-- A hairline between groups, as under the head. -->
+					<div class="mx-2.5 border-t border-rule" aria-hidden="true"></div>
+				{/if}
 				<section aria-label={section.label ?? m.overview_committee_title()} data-committee-section>
 					{#if section.label !== null}
 						<h3
-							class="flex items-center justify-between gap-3 px-2.5 pb-1 font-mono text-2xs tracking-key text-ink-2 uppercase"
+							class="flex items-center justify-between gap-3 px-2.5 pb-1.5 font-mono text-2xs tracking-key text-ink-2 uppercase"
 						>
 							<span class="truncate">{section.label}</span>
 							<span
