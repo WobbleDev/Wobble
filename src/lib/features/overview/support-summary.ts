@@ -338,6 +338,24 @@ export function contextualGroupReadings(
 }
 
 /**
+ * Each group's Leaders, in the Attribute's configured order (the No value group last), with the
+ * group's own coverage reading. Groups read the same memberships as `groupReadings`, so a
+ * group with Workers and no Leader is here too, with an empty list.
+ */
+export function leaderGroups(
+	workers: readonly Worker[],
+	attribute: WorkerAttributeDefinition | undefined,
+	target = defaultTarget
+): { reading: GroupReading; leaders: Worker[] }[] {
+	if (!attribute) return [];
+	const perLeader = leaderTarget(target);
+	return membershipsFor({ workers: [...workers] }, attribute, []).map((membership) => ({
+		reading: readingOf(attribute, membership, perLeader),
+		leaders: membership.members.filter((worker) => worker.assessment === 'Leader')
+	}));
+}
+
+/**
  * Every Agitation someone holds, by holder count descending, then configured
  * order. Agitations nobody holds are left out.
  */
