@@ -430,8 +430,8 @@ test.describe('in the expanded pseudo-locale', () => {
 for (const colorScheme of ['light', 'dark'] as const) {
 	for (const palette of ['default', 'colorblind'] as const) {
 		// The title names the recording file, so it keeps its wording: printed segment counts on the
-		// default Light fills are white by the organizer's choice and only owe 3:1.
-		const floor = colorScheme === 'light' && palette === 'default' ? 3 : 4.5;
+		// default palette's fills (both themes) are white by the organizer's choice and only owe 3:1.
+		const floor = palette === 'default' ? 3 : 4.5;
 		test(`every cell number and printed segment count reaches 4.5:1 in ${colorScheme} with ${palette} palette`, async ({
 			page,
 			request
