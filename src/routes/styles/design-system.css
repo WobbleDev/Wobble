@@ -240,5 +240,13 @@
 	--assess-disengaged: #ffbb49;
 	--assess-hostile: #ff646f;
 
+	/* The Overview's count bars print white counts, so on the dark theme they keep the
+	   light theme's mid-tone fills (the lifted ones above stay for dots and marks). */
+	--assess-leader-bar: #00a461;
+	--assess-activist-bar: #337aef;
+	--assess-supporter-bar: #b865cb;
+	--assess-disengaged-bar: #c17000;
+	--assess-hostile-bar: #e23248;
+
 	color-scheme: dark;
 }

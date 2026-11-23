@@ -156,14 +156,21 @@ describe('segmentLabelTone', () => {
 				)
 			].map((match) => match[1]);
 			expect(fills).toHaveLength(contexts.length);
+			// The default dark bars are drawn on the bar fills, not on the lifted dot colours.
+			const barFill = css.match(
+				new RegExp(`--assess-${assessment.toLowerCase()}-bar:\\s*(#[a-fA-F0-9]{6})`)
+			)?.[1];
+			expect(barFill, `${assessment} bar fill`).toBeDefined();
 			contexts.forEach(([theme, palette], index) => {
 				const tone = segmentLabelTone(assessment, theme, palette);
-				const background = luminance(fills[index]);
+				const background = luminance(
+					theme === 'dark' && palette === 'default' ? barFill! : fills[index]
+				);
 				const foreground = tone === 'white' ? 1 : 0;
 				const ratio =
 					(Math.max(background, foreground) + 0.05) / (Math.min(background, foreground) + 0.05);
-				// The default Light fills carry white counts in large bold print, which owes 3:1.
-				const floor = theme === 'light' && palette === 'default' ? 3 : 4.5;
+				// The default palette's fills carry white counts in large bold print, which owes 3:1.
+				const floor = palette === 'default' ? 3 : 4.5;
 				expect(ratio, `${assessment} ${theme} ${palette} ${tone}`).toBeGreaterThanOrEqual(floor);
 			});
 		}
@@ -199,5 +206,19 @@ describe('bar helpers', () => {
 	it('fills Unassessed with the neutral mix and other options with their colour', () => {
 		expect(segmentFill('Unassessed')).toContain('--assessment-unassessed');
 		expect(segmentFill('Leader')).toBe(assessmentColorFor('Leader'));
+	});
+
+	it('draws the default palette on the dark theme with white counts on the bar fills', () => {
+		expect(segmentFill('Leader', 'dark')).toBe('var(--assess-leader-bar)');
+		expect(segmentFill('Leader', 'dark', 'colorblind')).toBe(assessmentColorFor('Leader'));
+		for (const assessment of [
+			'Leader',
+			'Activist',
+			'Supporter',
+			'Disengaged',
+			'Hostile'
+		] as const) {
+			expect(segmentLabelTone(assessment, 'dark')).toBe('white');
+		}
 	});
 });

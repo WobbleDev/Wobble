@@ -102,10 +102,11 @@ export function segmentLabelTone(
 	palette: 'default' | 'colorblind' = 'default'
 ): CellTone {
 	if (assessment === 'Unassessed') return 'default';
-	// The default Light fills carry white counts: white on them reads 3.2 to 4.4:1, which only
-	// large print earns. The printed counts are text-xl bold (20px, 700), WCAG's large text,
-	// so the 3:1 floor applies (the spec pins it); the other contexts meet 4.5:1.
-	if (theme === 'light' && palette === 'default') return 'white';
+	// The default palette's bars carry white counts in both themes (the dark theme draws them
+	// on the light theme's mid-tone fills, see segmentFill): white on them reads 3.2 to 4.4:1,
+	// which only large print earns. The printed counts are text-xl bold (20px, 700), WCAG's
+	// large text, so the 3:1 floor applies (the spec pins it); the other contexts meet 4.5:1.
+	if (palette === 'default') return 'white';
 	if (
 		palette === 'colorblind' &&
 		((theme === 'light' && assessment === 'Leader') ||
@@ -141,9 +142,19 @@ export function segments(
 		.map((option) => ({ option, count: counts[option] }));
 }
 
-/** A segment's fill: the Assessment colour, or Unassessed's neutral mix into the panel. */
-export function segmentFill(option: AssessmentOption): string {
-	return option === 'Unassessed'
-		? 'color-mix(in oklab, var(--assessment-unassessed) 35%, var(--panel))'
-		: assessmentColorFor(option);
+/**
+ * A segment's fill: the Assessment colour, or Unassessed's neutral mix into the panel. The
+ * default palette on the dark theme uses the bar fills (the light theme's mid tones) so its
+ * counts print white; every other context uses the theme's own Assessment colour.
+ */
+export function segmentFill(
+	option: AssessmentOption,
+	theme: DashboardTheme = 'light',
+	palette: 'default' | 'colorblind' = 'default'
+): string {
+	if (option === 'Unassessed') {
+		return 'color-mix(in oklab, var(--assessment-unassessed) 35%, var(--panel))';
+	}
+	if (theme === 'dark' && palette === 'default') return `var(--assess-${option.toLowerCase()}-bar)`;
+	return assessmentColorFor(option);
 }
