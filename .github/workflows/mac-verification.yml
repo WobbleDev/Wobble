@@ -1,0 +1,80 @@
+name: Mac verification
+
+# Fails any PR that changes files under src-tauri/ or carries the `needs-mac`
+# label, unless the PR also carries the `mac-verified` label.
+#
+# A new push (synchronize) removes `mac-verified`, so the label only ever vouches
+# for the commit that was checked on the Mac. Add the label again after the
+# re-check; the `labeled` event re-runs this check.
+#
+# Add the job name `mac-verification` as a required status check in branch
+# protection to make it block merges.
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, labeled, unlabeled]
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+concurrency:
+  group: mac-verification-${{ github.event.pull_request.number }}
+  cancel-in-progress: false
+
+jobs:
+  mac-verification:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      REPO: ${{ github.repository }}
+      PR: ${{ github.event.pull_request.number }}
+      PUSHED_AT: ${{ github.event.pull_request.updated_at }}
+    steps:
+      - name: Ensure labels exist
+        run: |
+          gh label create needs-mac --repo "$REPO" --color FBCA04 \
+            --description "Needs a hand check or proof run on the Mac before merge" 2>/dev/null || true
+          gh label create mac-verified --repo "$REPO" --color 0E8A16 \
+            --description "Mac check done for the current head commit" 2>/dev/null || true
+
+      - name: Drop stale mac-verified after a new push
+        if: github.event.action == 'synchronize'
+        run: |
+          labeled_at=$(gh api "repos/$REPO/issues/$PR/timeline" --paginate \
+            --jq '[.[] | select(.event == "labeled" and .label.name == "mac-verified") | .created_at] | last // empty' | tail -n 1)
+          if [ -z "$labeled_at" ]; then
+            echo "No mac-verified label to drop."
+          elif [[ "$labeled_at" > "$PUSHED_AT" ]]; then
+            echo "mac-verified was added after this push; keeping it."
+          else
+            gh api -X DELETE "repos/$REPO/issues/$PR/labels/mac-verified" >/dev/null 2>&1 || true
+            echo "New push: removed stale mac-verified."
+          fi
+
+      - name: Check Mac verification
+        run: |
+          labels=$(gh api "repos/$REPO/issues/$PR/labels" --paginate --jq '.[].name')
+          files=$(gh api "repos/$REPO/pulls/$PR/files" --paginate \
+            --jq '.[] | .filename, (.previous_filename // empty)')
+
+          needs_mac=""
+          if grep -qx 'needs-mac' <<<"$labels"; then
+            needs_mac="it carries the needs-mac label"
+          fi
+          if grep -q '^src-tauri/' <<<"$files"; then
+            needs_mac="${needs_mac:+$needs_mac and }it changes files under src-tauri/"
+          fi
+
+          if [ -z "$needs_mac" ]; then
+            echo "Mac verification not required."
+            exit 0
+          fi
+
+          if grep -qx 'mac-verified' <<<"$labels"; then
+            echo "Mac verification required ($needs_mac) and the mac-verified label is present."
+            exit 0
+          fi
+
+          echo "::error title=Mac verification required::This PR needs a Mac check because $needs_mac. After the check passes on the current head commit, add the mac-verified label. A new push removes the label."
+          exit 1
