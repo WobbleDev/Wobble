@@ -135,3 +135,32 @@ test('a row pins that Leader on the chart, and a second press clears it', async 
 	await edge(page).click();
 	await expect(row).toHaveAttribute('aria-pressed', 'false');
 });
+
+test('a long list fades at its foot until it is scrolled to the end', async ({ page, request }) => {
+	expect((await request.put('/api/attributes', { data: wireDefinitions([]) })).ok()).toBeTruthy();
+	for (const name of [
+		'Ana',
+		'Nico',
+		'Olga',
+		'Pablo',
+		'Quinn',
+		'Rosa',
+		'Sam',
+		'Tess',
+		'Uma',
+		'Vera',
+		'Wes',
+		'Xena'
+	]) {
+		await createWorker(request, { name, assessment: 'Leader' });
+	}
+	await page.setViewportSize({ width: 1024, height: 640 });
+	await page.goto('/overview');
+	await appReady(page);
+	await edge(page).click();
+
+	const region = column(page).locator('[data-scroll-region]');
+	await expect(region).toHaveCSS('mask-image', /linear-gradient/);
+	await region.evaluate((node) => node.scrollTo({ top: node.scrollHeight }));
+	await expect(region).toHaveCSS('mask-image', 'none');
+});
