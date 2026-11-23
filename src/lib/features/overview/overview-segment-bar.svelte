@@ -58,7 +58,7 @@
 							? 'unassessed'
 							: ''} flex h-full min-w-0 items-center justify-center font-mono font-bold tabular-nums
 							{i === 0 ? 'rounded-l-[3px]' : ''} {last ? 'rounded-r-[3px]' : ''}
-							{toneClass(segmentLabelTone(s.option, theme, palette), 'text-ink')}"
+							{toneClass(segmentLabelTone(s.option), 'text-ink')}"
 						style="flex: {s.count} 0 0; --seg: {segmentFill(s.option, theme, palette)}"
 						aria-label={name}
 						data-segment={s.option}

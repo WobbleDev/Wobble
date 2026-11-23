@@ -135,7 +135,7 @@ describe('heatRatio', () => {
 
 describe('segmentLabelTone', () => {
 	const assessed: AssessmentOption[] = ['Leader', 'Activist', 'Supporter', 'Disengaged', 'Hostile'];
-	it('meets 4.5:1 on every shipped theme and palette fill, and 3:1 on the default Light fills', () => {
+	it('prints white on every shipped bar fill: 3:1 on the default palette, 4.5:1 on the colour-blind one', () => {
 		const css = readLayoutCss();
 		const luminance = (hex: string) => {
 			const channels = [1, 3, 5]
@@ -143,41 +143,30 @@ describe('segmentLabelTone', () => {
 				.map((v) => (v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4));
 			return channels[0] * 0.2126 + channels[1] * 0.7152 + channels[2] * 0.0722;
 		};
-		const contexts = [
-			['light', 'default'],
-			['dark', 'default'],
-			['light', 'colorblind'],
-			['dark', 'colorblind']
-		] as const;
+		const hexes = (token: string) => [
+			...css.matchAll(new RegExp(`${token}:\\s*(#[a-fA-F0-9]{6})`, 'g')).map((match) => match[1])
+		];
 		for (const assessment of assessed) {
+			const key = assessment.toLowerCase();
+			// The light default draws its dot colour; the dark default and the colour-blind
+			// palette (both themes) draw their `-bar` fills, declared in that order.
+			const dots = hexes(`--assess-${key}`);
+			const bars = hexes(`--assess-${key}-bar`);
+			expect(bars, `${assessment} bar fills`).toHaveLength(2);
 			const fills = [
-				...css.matchAll(
-					new RegExp(`--assess-${assessment.toLowerCase()}:\\s*(#[a-fA-F0-9]{6})`, 'g')
-				)
-			].map((match) => match[1]);
-			expect(fills).toHaveLength(contexts.length);
-			// The default dark bars are drawn on the bar fills, not on the lifted dot colours.
-			const barFill = css.match(
-				new RegExp(`--assess-${assessment.toLowerCase()}-bar:\\s*(#[a-fA-F0-9]{6})`)
-			)?.[1];
-			expect(barFill, `${assessment} bar fill`).toBeDefined();
-			contexts.forEach(([theme, palette], index) => {
-				const tone = segmentLabelTone(assessment, theme, palette);
-				const background = luminance(
-					theme === 'dark' && palette === 'default' ? barFill! : fills[index]
-				);
-				const foreground = tone === 'white' ? 1 : 0;
-				const ratio =
-					(Math.max(background, foreground) + 0.05) / (Math.min(background, foreground) + 0.05);
-				// The default palette's fills carry white counts in large bold print, which owes 3:1.
-				const floor = palette === 'default' ? 3 : 4.5;
-				expect(ratio, `${assessment} ${theme} ${palette} ${tone}`).toBeGreaterThanOrEqual(floor);
-			});
+				['default Light', dots[0], 3],
+				['default Dark', bars[0], 3],
+				['colour-blind', bars[1], 4.5]
+			] as const;
+			expect(segmentLabelTone(assessment)).toBe('white');
+			for (const [context, fill, floor] of fills) {
+				const ratio = 1.05 / (luminance(fill) + 0.05);
+				expect(ratio, `${assessment} ${context}`).toBeGreaterThanOrEqual(floor);
+			}
 		}
 	});
-	it('keeps Unassessed on theme ink in both themes', () => {
-		expect(segmentLabelTone('Unassessed', 'light')).toBe('default');
-		expect(segmentLabelTone('Unassessed', 'dark')).toBe('default');
+	it('keeps Unassessed on theme ink', () => {
+		expect(segmentLabelTone('Unassessed')).toBe('default');
 	});
 });
 
@@ -208,17 +197,9 @@ describe('bar helpers', () => {
 		expect(segmentFill('Leader')).toBe(assessmentColorFor('Leader'));
 	});
 
-	it('draws the default palette on the dark theme with white counts on the bar fills', () => {
+	it('draws the dark theme and the colour-blind palette on the bar fills', () => {
 		expect(segmentFill('Leader', 'dark')).toBe('var(--assess-leader-bar)');
-		expect(segmentFill('Leader', 'dark', 'colorblind')).toBe(assessmentColorFor('Leader'));
-		for (const assessment of [
-			'Leader',
-			'Activist',
-			'Supporter',
-			'Disengaged',
-			'Hostile'
-		] as const) {
-			expect(segmentLabelTone(assessment, 'dark')).toBe('white');
-		}
+		expect(segmentFill('Leader', 'light', 'colorblind')).toBe('var(--assess-leader-bar)');
+		expect(segmentFill('Leader', 'dark', 'colorblind')).toBe('var(--assess-leader-bar)');
 	});
 });

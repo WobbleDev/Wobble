@@ -95,25 +95,15 @@ export function cellTone(ratio: number, theme: DashboardTheme = 'light'): CellTo
 	return 'default';
 }
 
-/** Choose label ink for the shipped Assessment fills without changing their meaning or hue. */
-export function segmentLabelTone(
-	assessment: AssessmentOption,
-	theme: DashboardTheme = 'light',
-	palette: 'default' | 'colorblind' = 'default'
-): CellTone {
-	if (assessment === 'Unassessed') return 'default';
-	// The default palette's bars carry white counts in both themes (the dark theme draws them
-	// on the light theme's mid-tone fills, see segmentFill): white on them reads 3.2 to 4.4:1,
-	// which only large print earns. The printed counts are text-xl bold (20px, 700), WCAG's
-	// large text, so the 3:1 floor applies (the spec pins it); the other contexts meet 4.5:1.
-	if (palette === 'default') return 'white';
-	if (
-		palette === 'colorblind' &&
-		((theme === 'light' && assessment === 'Leader') ||
-			(theme === 'dark' && assessment === 'Supporter'))
-	)
-		return 'white';
-	return 'black';
+/**
+ * Choose label ink for a bar segment: every assessed standing prints white on its bar fill
+ * (see segmentFill), in both themes and both palettes; Unassessed keeps theme ink on its
+ * neutral mix. The default palette's fills read white at 3.2 to 4.4:1, which only large print
+ * earns: the Overall counts are text-xl bold (20px, 700), WCAG's large text, so the 3:1 floor
+ * applies there (the spec pins it). The colour-blind bar fills clear 4.5:1.
+ */
+export function segmentLabelTone(assessment: AssessmentOption): CellTone {
+	return assessment === 'Unassessed' ? 'default' : 'white';
 }
 
 /**
@@ -144,8 +134,9 @@ export function segments(
 
 /**
  * A segment's fill: the Assessment colour, or Unassessed's neutral mix into the panel. The
- * default palette on the dark theme uses the bar fills (the light theme's mid tones) so its
- * counts print white; every other context uses the theme's own Assessment colour.
+ * dark theme's default palette and the colour-blind palette draw their bars on `--assess-*-bar`
+ * fills (the light theme's mid tones, and a darker ramp of the same ordering) so counts print
+ * white; the light theme's default palette is already mid-tone.
  */
 export function segmentFill(
 	option: AssessmentOption,
@@ -155,6 +146,7 @@ export function segmentFill(
 	if (option === 'Unassessed') {
 		return 'color-mix(in oklab, var(--assessment-unassessed) 35%, var(--panel))';
 	}
-	if (theme === 'dark' && palette === 'default') return `var(--assess-${option.toLowerCase()}-bar)`;
+	if (palette === 'colorblind' || theme === 'dark')
+		return `var(--assess-${option.toLowerCase()}-bar)`;
 	return assessmentColorFor(option);
 }
