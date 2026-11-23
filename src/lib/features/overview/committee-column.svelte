@@ -50,6 +50,27 @@
 	   dashboard root's top and left, and the room under the cards' padding. */
 	let box = $state<{ top: number; left: number; height: number } | null>(null);
 	let column = $state<HTMLElement>();
+	let region = $state<HTMLElement>();
+	/* The list scrolls when the column is short: fade its foot while more lies below. */
+	let more = $state(false);
+
+	$effect(() => {
+		// Rows open and close with the pin, so the measure is redone with it.
+		void [reading, focus.pinnedWorkerId];
+		if (!region) return;
+		const node = region;
+		function measure() {
+			more = node.scrollTop + node.clientHeight < node.scrollHeight - 1;
+		}
+		measure();
+		node.addEventListener('scroll', measure, { passive: true });
+		const observer = new ResizeObserver(measure);
+		observer.observe(node);
+		return () => {
+			node.removeEventListener('scroll', measure);
+			observer.disconnect();
+		};
+	});
 
 	$effect(() => {
 		const parent = column?.offsetParent;
@@ -119,6 +140,7 @@
 					leaders={reading.coverage.leaders}
 					needed={reading.coverage.needed}
 					size="size-3.5"
+					cap={10}
 					label={m.overview_coverage_tooltip({
 						leaders: reading.coverage.leaders,
 						needed: reading.coverage.needed
@@ -140,8 +162,12 @@
 	{:else}
 		<!-- The rows are buttons, so the list has tab stops already and needs none of its own. -->
 		<div
+			bind:this={region}
 			data-scroll-region
 			class="-mx-2.5 flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto pt-2 pb-0.5"
+			style:mask-image={more
+				? 'linear-gradient(to bottom, #000 calc(100% - 2rem), transparent)'
+				: undefined}
 		>
 			{#each reading.sections as section (section.key)}
 				<section aria-label={section.label ?? m.overview_committee_title()} data-committee-section>
@@ -172,7 +198,7 @@
 							<li class="rounded-control" class:bg-inset={pinned}>
 								<button
 									type="button"
-									class="flex w-full min-w-0 items-center gap-3 rounded-control px-2.5 py-2 text-start transition-colors hover:bg-inset focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none motion-reduce:transition-none"
+									class="flex w-full min-w-0 items-center gap-3 rounded-control px-2.5 py-2 text-start transition-colors hover:bg-inset focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring focus-visible:outline-none motion-reduce:transition-none"
 									aria-pressed={pinned}
 									aria-expanded={member.ties > 0 ? pinned : undefined}
 									data-committee-member={member.id}
