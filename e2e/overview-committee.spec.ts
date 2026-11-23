@@ -36,8 +36,23 @@ async function seedCommittee(request: APIRequestContext) {
 		['Ines', 'Supporter', 'Front of House'],
 		['Joel', 'Supporter', 'Front of House']
 	];
-	for (const [name, assessment, dept] of crew) {
-		await createWorker(request, { name, assessment, attributes: { [deptId]: dept } });
+	// The Leaders come last, so their ties can name the Workers made before them: Ana knows
+	// Beto, Carla and Diego; Zara knows only Beto.
+	const ids = new Map<string, string>();
+	for (const [name, assessment, dept] of crew.filter(([, kind]) => kind !== 'Leader')) {
+		ids.set(
+			name,
+			await createWorker(request, { name, assessment, attributes: { [deptId]: dept } })
+		);
+	}
+	const ties: Record<string, string[]> = { Ana: ['Beto', 'Carla', 'Diego'], Zara: ['Beto'] };
+	for (const [name, assessment, dept] of crew.filter(([, kind]) => kind === 'Leader')) {
+		await createWorker(request, {
+			name,
+			assessment,
+			attributes: { [deptId]: dept },
+			relationships: ties[name].map((tied) => ids.get(tied)!)
+		});
 	}
 }
 
@@ -68,6 +83,10 @@ test('lists the Leaders beside the focused bullseye, and hides at rest', async (
 	await expect(members(page).first()).toContainText('Ana');
 	await expect(members(page).first()).toContainText('Front of House');
 	await expect(members(page).last()).toContainText('Zara');
+
+	// Each row says how many Workers it knows, in words for a screen reader.
+	await expect(members(page).first().locator('[data-committee-ties]')).toHaveText(/3 ties/);
+	await expect(members(page).last().locator('[data-committee-ties]')).toHaveText(/1 tie/);
 
 	// Eleven Workers at 1 Leader per 5 need three Leaders: one is still missing.
 	await expect(column(page).locator('[data-committee-coverage]')).toContainText('2 / 3 Leaders');

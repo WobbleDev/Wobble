@@ -7,6 +7,8 @@ export interface CommitteeMember {
 	name: string;
 	/** The Worker's answer to the first Category Attribute, or empty when they hold none. */
 	detail: string;
+	/** How many other Workers they are tied to, counting a tie from either side. */
+	ties: number;
 }
 
 /**
@@ -20,16 +22,21 @@ export function committeeMembers(
 	target: number,
 	locale: string
 ): { members: CommitteeMember[]; coverage: ReturnType<typeof coverageReading> } {
+	const known = new Set(workers.map((worker) => worker.id));
 	const context = attributes.find((attribute) => attribute.kind === 'category');
 	const collator = new Intl.Collator(locale, { sensitivity: 'base' });
 	const members = workers
 		.filter((worker) => worker.assessment === 'Leader')
 		.map((worker) => {
 			const label = context ? answerLabels(worker, context) : '';
+			const tied = new Set(worker.relationships.filter((id) => known.has(id)));
+			for (const other of workers) if (other.relationships.includes(worker.id)) tied.add(other.id);
+			tied.delete(worker.id);
 			return {
 				id: worker.id,
 				name: worker.name,
-				detail: Array.isArray(label) ? label.join(', ') : label
+				detail: Array.isArray(label) ? label.join(', ') : label,
+				ties: tied.size
 			};
 		})
 		.sort((a, b) => collator.compare(a.name, b.name));

@@ -74,5 +74,7 @@
 	"overview_committee_title": "Mi Comité",
 	"overview_committee_empty": "Aún no hay Líderes.",
 	"overview_committee_short_one": "Falta 1 más",
-	"overview_committee_short_many": "Faltan {count} más"
+	"overview_committee_short_many": "Faltan {count} más",
+	"overview_committee_ties_one": "1 relación",
+	"overview_committee_ties_many": "{count} relaciones"
 }

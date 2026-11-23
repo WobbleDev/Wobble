@@ -29,8 +29,8 @@ describe('committeeMembers', () => {
 			'en'
 		);
 		expect(members).toEqual([
-			{ id: 'ana', name: 'Ana', detail: 'Front of House' },
-			{ id: 'zed', name: 'Zed', detail: 'Back of House' }
+			{ id: 'ana', name: 'Ana', detail: 'Front of House', ties: 0 },
+			{ id: 'zed', name: 'Zed', detail: 'Back of House', ties: 0 }
 		]);
 	});
 
@@ -38,6 +38,24 @@ describe('committeeMembers', () => {
 		const leader = worker('Ana', 'Leader');
 		expect(committeeMembers([leader], [], 5, 'en').members[0].detail).toBe('');
 		expect(committeeMembers([leader], [department], 5, 'en').members[0].detail).toBe('');
+	});
+
+	it("counts a Leader's ties from either side, once, and ignores Workers no longer there", () => {
+		const ana = baseWorker({
+			id: 'ana',
+			name: 'Ana',
+			assessment: 'Leader',
+			relationships: ['bo', 'gone', 'ana']
+		});
+		const bo = baseWorker({
+			id: 'bo',
+			name: 'Bo',
+			assessment: 'Supporter',
+			relationships: ['ana']
+		});
+		const cy = baseWorker({ id: 'cy', name: 'Cy', assessment: 'Activist', relationships: ['ana'] });
+		const { members } = committeeMembers([ana, bo, cy], [], 5, 'en');
+		expect(members[0].ties).toBe(2);
 	});
 
 	it('carries the coverage reading the dashboard shows', () => {

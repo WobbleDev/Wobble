@@ -70,6 +70,8 @@ export type WorkerSeed = {
 	assessment?: string;
 	attributes?: Record<string, string | string[]>;
 	agitations?: string[];
+	/** Ids of Workers this one is tied to, as `createWorker` returned them. */
+	relationships?: string[];
 	notes?: { id: string; text: string; timestamp: string }[];
 };
 
@@ -91,7 +93,7 @@ export function workerUpdateFrom<T extends { id: string }>(worker: T): Omit<T, '
 export async function createWorker(
 	request: APIRequestContext,
 	worker: WorkerSeed = {}
-): Promise<void> {
+): Promise<string> {
 	const created = await request.post('/api/workers', {
 		data: {
 			name: worker.name ?? 'A Worker',
@@ -101,11 +103,12 @@ export async function createWorker(
 			attributes: wireWorkerAttributes(worker.attributes ?? {}),
 			agitations: worker.agitations ?? [],
 			languages: [],
-			relationships: [],
+			relationships: worker.relationships ?? [],
 			notes: worker.notes ?? []
 		}
 	});
 	expect(created.status(), await created.text()).toBe(201);
+	return ((await created.json()) as { worker: { id: string } }).worker.id;
 }
 
 /**
