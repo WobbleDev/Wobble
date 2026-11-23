@@ -116,7 +116,10 @@
 		<p class="text-sm text-ink-2" data-committee-empty>{m.overview_committee_empty()}</p>
 	{:else}
 		<!-- A scroller needs a tab stop; the rows are buttons, so the list has them already. -->
-		<ul class="-mx-2 flex min-h-0 flex-1 flex-col gap-0.5 overflow-y-auto px-2 py-0.5">
+		<ul
+			data-scroll-region
+			class="-mx-2 flex min-h-0 flex-1 flex-col gap-0.5 overflow-y-auto px-2 py-0.5"
+		>
 			{#each reading.members as member (member.id)}
 				{@const pinned = focus.pinnedWorkerId === member.id}
 				<li>
