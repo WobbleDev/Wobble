@@ -120,7 +120,7 @@
 	>
 		<h2 id="committee-title" class="section-title">{m.overview_committee_title()}</h2>
 		<div class="flex items-center gap-2.5" data-committee-coverage>
-			<span class="text-[1.75rem] leading-none font-semibold tracking-headline tabular-nums">
+			<span class="text-xl leading-none font-semibold tracking-headline tabular-nums">
 				{m.overview_coverage_units({
 					leaders: reading.coverage.leaders,
 					needed: reading.coverage.needed
@@ -128,7 +128,7 @@
 			</span>
 			{#if reading.coverage.needed > 0 && reading.coverage.gap >= 0}
 				<CheckIcon
-					class="size-5 shrink-0 text-state-success"
+					class="size-4 shrink-0 text-state-success"
 					role="img"
 					aria-label={m.overview_target_met()}
 				/>
@@ -139,7 +139,7 @@
 				<CoverageMarks
 					leaders={reading.coverage.leaders}
 					needed={reading.coverage.needed}
-					size="size-3.5"
+					size="size-3"
 					cap={10}
 					label={m.overview_coverage_tooltip({
 						leaders: reading.coverage.leaders,
@@ -164,7 +164,7 @@
 		<div
 			bind:this={region}
 			data-scroll-region
-			class="-mx-2.5 flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto pt-2 pb-0.5"
+			class="-mx-2.5 flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto pt-2 pb-0.5"
 			style:mask-image={more
 				? 'linear-gradient(to bottom, #000 calc(100% - 2rem), transparent)'
 				: undefined}
