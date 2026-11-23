@@ -17,6 +17,14 @@ html[data-assessment-palette='colorblind'] {
 	--assess-disengaged: #8a877e;
 	--assess-hostile: #e34948;
 
+	/* The count bars print white counts, so they take a darker step of the same ordering
+	   in both themes: the blue ramp deepens toward Leader, and every fill holds white at 4.5:1. */
+	--assess-leader-bar: #0a2c5e;
+	--assess-activist-bar: #1b4f9c;
+	--assess-supporter-bar: #3a76c4;
+	--assess-disengaged-bar: #6f6a62;
+	--assess-hostile-bar: #c2363a;
+
 	--assessment-unassessed: var(--assess-unassessed);
 	--assessment-leader: var(--assess-leader);
 	--assessment-activist: var(--assess-activist);
