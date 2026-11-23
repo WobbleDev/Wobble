@@ -31,8 +31,8 @@ blurred and inert on the floor at the lower right; an edge tab brings it into fo
 (`overview-focus.svelte.ts`), where it grows slightly in place and becomes
 interactive (drag, zoom, Reset zoom). Esc or the tab returns. Focus resets on each
 entrance animation, as zoom does. Focused, the My Committee column (`committee-column.svelte`, listing from `committee-members.ts`)
-stands over the slid strip: the Leaders by name with their first Category answer, beside the
-coverage reading. A row pins that Leader on the chart, as a click on their dot does; the pin
+stands over the slid strip: the Leaders by name with their first Category answer and a muted
+count of their ties, under the coverage reading as the Committee coverage card sets it. A row pins that Leader on the chart, as a click on their dot does; the pin
 lives in the focus state (`pinnedWorkerId`) so the dots and the rows share it, and it ends with focus.
 Where the chart backdrop cannot be dragged (below the floor, reduced
 motion, coarse pointer), the fitted chart is drawn in the page flow instead.

@@ -6,6 +6,7 @@
 	 * and the chart glides to them.
 	 */
 	import CheckIcon from '@lucide/svelte/icons/check';
+	import Link2Icon from '@lucide/svelte/icons/link-2';
 	import type { Worker, WorkerAttributeDefinition } from '#lib/domain-vocabulary.ts';
 	import { m } from '#lib/paraglide/messages.js';
 	import { getLocale } from '#lib/paraglide/runtime.js';
@@ -63,7 +64,7 @@
 
 <aside
 	bind:this={column}
-	class="committee-column absolute z-[4] flex w-[min(21rem,calc(100%-2rem))] flex-col gap-4 rounded-[0.625rem] border border-rule bg-panel/80 p-4 backdrop-blur-md"
+	class="committee-column absolute z-[4] flex w-[min(21rem,calc(100%-2rem))] flex-col rounded-[0.625rem] border border-rule bg-panel/92 px-[1.125rem] py-4 backdrop-blur-lg"
 	class:is-focused={focus.focused}
 	style={box
 		? `top: ${box.top}px; left: ${box.left}px; max-height: ${box.height}px`
@@ -73,10 +74,16 @@
 	inert={!focus.focused}
 	aria-hidden={!focus.focused}
 >
-	<header>
+	<!-- The head reads as the Committee coverage card does: the title, then the figure
+	     at its size, then the marks. -->
+	<header
+		class="flex flex-col gap-2 pb-4"
+		class:border-b={reading.members.length > 0}
+		class:border-rule={reading.members.length > 0}
+	>
 		<h2 id="committee-title" class="section-title">{m.overview_committee_title()}</h2>
-		<div class="mt-2 flex items-center gap-2.5" data-committee-coverage>
-			<span class="text-sm font-semibold text-ink tabular-nums">
+		<div class="flex items-center gap-2.5" data-committee-coverage>
+			<span class="text-[1.75rem] leading-none font-semibold tracking-headline tabular-nums">
 				{m.overview_coverage_units({
 					leaders: reading.coverage.leaders,
 					needed: reading.coverage.needed
@@ -84,14 +91,14 @@
 			</span>
 			{#if reading.coverage.needed > 0 && reading.coverage.gap >= 0}
 				<CheckIcon
-					class="size-4 shrink-0 text-state-success"
+					class="size-5 shrink-0 text-state-success"
 					role="img"
 					aria-label={m.overview_target_met()}
 				/>
 			{/if}
 		</div>
 		{#if reading.coverage.needed > 0}
-			<div class="mt-2">
+			<div class="flex items-center justify-between gap-3">
 				<CoverageMarks
 					leaders={reading.coverage.leaders}
 					needed={reading.coverage.needed}
@@ -101,42 +108,61 @@
 						needed: reading.coverage.needed
 					})}
 				/>
+				{#if short > 0}
+					<p class="shrink-0 text-xs text-ink-3" data-committee-short>
+						{short === 1
+							? m.overview_committee_short_one()
+							: m.overview_committee_short_many({ count: short })}
+					</p>
+				{/if}
 			</div>
-		{/if}
-		{#if short > 0}
-			<p class="mt-2 text-xs text-ink-3" data-committee-short>
-				{short === 1
-					? m.overview_committee_short_one()
-					: m.overview_committee_short_many({ count: short })}
-			</p>
 		{/if}
 	</header>
 
 	{#if reading.members.length === 0}
-		<p class="text-sm text-ink-2" data-committee-empty>{m.overview_committee_empty()}</p>
+		<p class="mt-4 text-sm text-ink-2" data-committee-empty>{m.overview_committee_empty()}</p>
 	{:else}
-		<!-- A scroller needs a tab stop; the rows are buttons, so the list has them already. -->
+		<!-- The rows are buttons, so the list has tab stops already and needs none of its own. -->
 		<ul
 			data-scroll-region
-			class="-mx-2 flex min-h-0 flex-1 flex-col gap-0.5 overflow-y-auto px-2 py-0.5"
+			class="-mx-2.5 flex min-h-0 flex-1 flex-col gap-px overflow-y-auto pt-2 pb-0.5"
 		>
 			{#each reading.members as member (member.id)}
 				{@const pinned = focus.pinnedWorkerId === member.id}
 				<li>
 					<button
 						type="button"
-						class="flex w-full min-w-0 items-center gap-3 rounded-control px-2 py-2 text-start transition-colors hover:bg-inset focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none aria-pressed:bg-inset motion-reduce:transition-none"
+						class="flex w-full min-w-0 items-center gap-3 rounded-control px-2.5 py-2 text-start transition-colors hover:bg-inset focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none aria-pressed:bg-inset motion-reduce:transition-none"
 						aria-pressed={pinned}
 						data-committee-member={member.id}
 						onclick={() => focus.togglePin(member.id)}
 					>
 						<SwatchDot color={assessmentColorFor('Leader')} class="size-2.5" />
 						<span class="min-w-0 flex-1">
-							<span class="block truncate text-sm font-medium text-ink">{member.name}</span>
+							<span class="block truncate text-sm leading-5 font-medium text-ink"
+								>{member.name}</span
+							>
 							{#if member.detail}
-								<span class="block truncate text-xs text-ink-3">{member.detail}</span>
+								<span class="block truncate text-xs leading-4 text-ink-3">{member.detail}</span>
 							{/if}
 						</span>
+						{#if member.ties > 0}
+							<span
+								class="flex shrink-0 items-center gap-1 text-xs text-ink-3 tabular-nums"
+								title={member.ties === 1
+									? m.overview_committee_ties_one()
+									: m.overview_committee_ties_many({ count: member.ties })}
+								data-committee-ties={member.ties}
+							>
+								<Link2Icon class="size-3.5" aria-hidden="true" />
+								<span class="sr-only">
+									{member.ties === 1
+										? m.overview_committee_ties_one()
+										: m.overview_committee_ties_many({ count: member.ties })}
+								</span>
+								<span aria-hidden="true">{member.ties}</span>
+							</span>
+						{/if}
 					</button>
 				</li>
 			{/each}

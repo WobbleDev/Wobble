@@ -74,5 +74,7 @@
 	"overview_committee_title": "My Committee",
 	"overview_committee_empty": "No Leaders yet.",
 	"overview_committee_short_one": "1 more needed",
-	"overview_committee_short_many": "{count} more needed"
+	"overview_committee_short_many": "{count} more needed",
+	"overview_committee_ties_one": "1 tie",
+	"overview_committee_ties_many": "{count} ties"
 }
