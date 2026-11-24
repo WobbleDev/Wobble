@@ -45,8 +45,6 @@
 		onRestore?: (value: string) => Promise<void>;
 		/** Name: the value is the panel's level-2 heading, and the editor larger. */
 		title?: boolean;
-		/** Shows the value on one line that ends in an ellipsis; the full value is its tooltip. */
-		oneLine?: boolean;
 		/** Whose record this is, for the status line's message. */
 		workerName: string;
 		/** Writes the trimmed value. The core validates it. */
@@ -74,7 +72,6 @@
 		type = 'text',
 		mask,
 		title = false,
-		oneLine = false,
 		workerName,
 		onSave,
 		onRestore,
@@ -403,7 +400,7 @@
 	<span
 		class={cn(
 			'prose-value min-w-0',
-			oneLine ? 'truncate' : 'break-words',
+			'break-words',
 			title ? 'text-xl font-semibold tracking-title text-pretty' : 'text-sm',
 			empty && 'font-normal text-ink-3 underline decoration-dotted underline-offset-4'
 		)}
@@ -440,7 +437,6 @@
 					editing && 'bg-hover'
 				)}
 				aria-label={editing ? undefined : valueLabel}
-				title={oneLine && value ? value : undefined}
 			>
 				{@render reading()}
 			</Popover.Trigger>

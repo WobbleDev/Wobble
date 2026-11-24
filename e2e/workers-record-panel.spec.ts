@@ -2300,28 +2300,41 @@ test('a malformed Email is refused in the panel and the stored address stays', a
 	);
 });
 
-test('a long Email stays on one line, ends in an ellipsis and keeps its full text', async ({
+test('an Email shows in full on one line when it fits and wraps, never cut, when it cannot', async ({
 	page,
 	request
 }) => {
 	await openWorkersTable(page, request, { seed: seedInspectorWorkers });
 	await selectWorker(page, 'Ada Lovelace');
 	const ada = inspector(page, 'Ada Lovelace');
-	const longEmail = 'harlan.ostrander-whitfield@harbourside-logistics.example.test';
-	await ada.getByRole('button', { name: 'Edit email' }).click();
-	await editor(page).getByLabel('Email').fill(longEmail);
-	await editor(page).getByLabel('Email').press('Enter');
-
+	const setEmail = async (email: string) => {
+		await ada.getByRole('button', { name: 'Edit email' }).click();
+		await editor(page).getByLabel('Email').fill(email);
+		await editor(page).getByLabel('Email').press('Enter');
+	};
 	const value = ada.getByRole('button', { name: 'Edit email' });
-	await expect(value).toHaveAttribute('title', longEmail);
-	const line = await value.boundingBox();
-	const phone = await ada.getByRole('button', { name: 'Edit phone' }).boundingBox();
-	// One line: as tall as the phone line beside it, never two.
-	expect(Math.abs(line!.height - phone!.height)).toBeLessThanOrEqual(1);
+	const lineHeight = async () =>
+		(await ada.getByRole('button', { name: 'Edit phone' }).boundingBox())!.height;
+
+	// A usual address fits beside its icon with room to spare: whole, on one line.
+	await setEmail('dana.osei@example.test');
+	await expect(value).toHaveText('dana.osei@example.test');
+	expect(Math.abs((await value.boundingBox())!.height - (await lineHeight()))).toBeLessThanOrEqual(
+		1
+	);
+
+	// One that cannot fit breaks across lines instead of ending in an ellipsis, and stays in the panel.
+	const longEmail = 'harlan.ostrander-whitfield@harbourside-logistics.example.test';
+	await setEmail(longEmail);
+	await expect(value).toHaveText(longEmail);
+	expect((await value.boundingBox())!.height).toBeGreaterThan((await lineHeight()) + 1);
 	const overflow = await page.evaluate(
 		() => document.documentElement.scrollWidth - document.documentElement.clientWidth
 	);
 	expect(overflow).toBeLessThanOrEqual(1);
+	const panel = await ada.boundingBox();
+	const box = await value.boundingBox();
+	expect(box!.x + box!.width).toBeLessThanOrEqual(panel!.x + panel!.width);
 });
 
 test('saving for a Worker deleted elsewhere says so and keeps the typing', async ({
