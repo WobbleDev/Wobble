@@ -166,15 +166,6 @@ jobs:
         with:
           workspaces: . -> target
       - run: npx playwright install chromium
-      # The suites' databases are throwaway, but the app (rightly) forces a full drive flush after
-      # every commit, which is slow on a CI disk. Put them on a RAM disk so the app code under test
-      # stays exactly as shipped. If the disk cannot be made the suites use the runner's disk.
-      - name: RAM disk for test databases
-        continue-on-error: true
-        run: |
-          device=$(hdiutil attach -nomount ram://1048576 | awk '{print $1}')
-          diskutil erasevolume HFS+ wobble-ram "$device"
-          echo "WOBBLE_E2E_DB=/Volumes/wobble-ram/e2e.sqlite" >> "$GITHUB_ENV"
       - name: Run e2e
         env:
           # Write every suite's results under one directory so the JSON reports can be collected;
