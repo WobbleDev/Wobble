@@ -144,8 +144,9 @@ test('a long unbroken record stays inside its widths at every size', async ({ pa
 		// An unbroken value must wrap rather than widen the page or be clipped
 		// inside its own box. The Workers table's own horizontal scroll, where the
 		// viewport is too narrow for the columns, is permitted and not measured here.
+		// A screen-reader-only term (the Contact icons' Email and Phone) is clipped by design.
 		const clipped = await page.evaluate(() =>
-			[...document.querySelectorAll('main dd, main dt, main h2')]
+			[...document.querySelectorAll('main dd, main dt:not(.sr-only), main h2')]
 				.filter((element) => element.scrollWidth > element.clientWidth + 1)
 				.map((element) => `${element.tagName.toLowerCase()} ${element.textContent?.slice(0, 30)}`)
 		);

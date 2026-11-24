@@ -46,22 +46,36 @@ const open = async (page: Page, name: string) => {
 	return page.getByRole('complementary', { name: `Worker details: ${name}` });
 };
 
-test('Languages toggle and save from the record, with the status line reporting', async ({
+test('Languages show only the ones spoken; add and remove save from the record', async ({
 	page,
 	request
 }) => {
 	await openWorkersTable(page, request, { seed });
 	const record = await open(page, 'Ada Lovelace');
+	const languages = record.locator('section[aria-labelledby="record-languages"]');
 
-	const spanish = record.getByRole('button', { name: 'Spanish' });
-	await expect(record.getByRole('button', { name: 'English' })).toHaveAttribute(
-		'aria-pressed',
-		'true'
-	);
-	await expect(spanish).toHaveAttribute('aria-pressed', 'false');
-	await spanish.click();
-	await expect(spanish).toHaveAttribute('aria-pressed', 'true');
+	// Only a spoken Language appears; the rest wait in the Add menu.
+	await expect(languages.getByText('English', { exact: true })).toBeVisible();
+	await expect(languages.getByText('Spanish', { exact: true })).toHaveCount(0);
+
+	// Opening the menu moves nothing: the section keeps its height.
+	const before = (await languages.boundingBox())!;
+	await languages.getByRole('button', { name: 'Add language' }).click();
+	const menu = page.getByRole('menu');
+	await expect(menu.getByRole('menuitem', { name: 'English' })).toHaveCount(0);
+	expect((await languages.boundingBox())!.height).toBe(before.height);
+	await menu.getByRole('menuitem', { name: 'Spanish' }).click();
+
+	await expect(languages.getByText('Spanish', { exact: true })).toBeVisible();
 	await expect(page.getByText('Languages saved for Ada Lovelace')).toBeVisible();
+	// Everything is spoken now, so there is nothing left to add.
+	await expect(languages.getByRole('button', { name: 'Add language' })).toHaveCount(0);
+
+	await languages.getByRole('button', { name: 'Remove language Spanish' }).click();
+	await expect(languages.getByText('Spanish', { exact: true })).toHaveCount(0);
+	await expect(languages.getByRole('button', { name: 'Add language' })).toBeVisible();
+	await page.getByTestId('status-line').getByRole('button', { name: 'Undo' }).click();
+	await expect(languages.getByText('Spanish', { exact: true })).toBeVisible();
 });
 
 test('contact values copy', async ({ page, request, context, browserName }) => {

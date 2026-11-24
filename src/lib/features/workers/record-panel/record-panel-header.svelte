@@ -1,7 +1,8 @@
 <script lang="ts">
 	/**
 	 * The panel header: the Worker's Name as the region's h2, made editable where it
-	 * is shown, and the Assessment under it as the same dropdown the table cell uses.
+	 * is shown, and the Assessment under it as the same dropdown the table cell uses,
+	 * then the Worker's Email and Phone as two lines.
 	 */
 	import { assessmentColorFor } from '#lib/shared/workers/assessment.ts';
 	import { assessmentOptions, type AssessmentOption } from '#lib/domain-vocabulary.ts';
@@ -9,6 +10,7 @@
 	import type { Worker, WorkerTextField } from '#lib/domain-vocabulary.ts';
 	import DataTableOptionCell from '../data-table/columns/option-cell.svelte';
 	import RecordPanelField from './record-panel-field.svelte';
+	import RecordPanelContact from './record-panel-contact.svelte';
 	import { getEditModel } from '../edit-model.svelte.ts';
 	import type { DataTableEditReport } from '../data-table/features.ts';
 	import { assessmentChoices } from '../answers.ts';
@@ -48,7 +50,7 @@
 </script>
 
 <header class="flex shrink-0 items-start justify-between gap-2 border-b border-rule px-4 pt-4 pb-3">
-	<div class="grid min-w-0 gap-1">
+	<div class="grid min-w-0 flex-1 grid-cols-[minmax(0,1fr)] gap-1">
 		<!-- One editor per Worker: a selection change closes whoever's was open. -->
 		{#key worker.id}
 			<RecordPanelField
@@ -87,6 +89,7 @@
 				/>
 			</div>
 		{/key}
+		<RecordPanelContact {worker} {onUpdateField} {refresh} {onSaved} />
 	</div>
 	<div class="flex shrink-0 items-center gap-1">
 		{@render actions?.()}

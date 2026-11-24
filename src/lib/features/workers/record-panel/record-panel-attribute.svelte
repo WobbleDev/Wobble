@@ -1,8 +1,9 @@
 <script lang="ts">
 	/**
 	 * One ordinary Attribute in the record panel: its label, the current reading, and
-	 * an editor opened where the reading is shown. Single-Select holds one answer or
-	 * none; Multi-Select holds several distinct answers or none. Answers save one
+	 * an editor that opens as a popover from the reading, so the rows around it never
+	 * move. Single-Select holds one answer or none; Multi-Select holds several
+	 * distinct answers or none. Answers save one
 	 * Attribute through `PATCH /api/workers/:id` and report through the status line,
 	 * with Undo. An open editor's choices are part of the Worker draft (ADR-0023), so
 	 * moving off the record keeps them and coming back reopens them.
@@ -11,7 +12,9 @@
 	 * create request will send, rather than writing a record that does not exist yet.
 	 */
 	import { onMount, tick } from 'svelte';
+	import CheckIcon from '@lucide/svelte/icons/check';
 	import { Button } from '#lib/components/ui/button/index.ts';
+	import * as Popover from '#lib/components/ui/popover/index.ts';
 	import { cn } from '#lib/utils.ts';
 	import { pickAnswer, storesList } from '#lib/shared/workers/select-mode.ts';
 	import type {
@@ -58,8 +61,9 @@
 	let errorMessage = $state('');
 	let saving = $state(false);
 	let trigger = $state<HTMLButtonElement | null>(null);
-	let select = $state<HTMLSelectElement | null>(null);
 	let form = $state<HTMLFormElement | null>(null);
+	/** Restored drafts reopen the popover without taking focus from where the organizer is. */
+	let restoredOpen = $state(false);
 
 	/** What the record holds, in the shape this row's editor uses. */
 	function savedValue(): WorkerAttributeValue {
@@ -75,6 +79,7 @@
 		const restored = panelDraft.restored.attributes[attribute.id];
 		if (restored === undefined) return;
 		draft = copyAttributeValue(restored);
+		restoredOpen = true;
 		editing = true;
 	});
 
@@ -90,11 +95,13 @@
 		void tick().then(() => trigger?.focus());
 	}
 
-	/** The first control an editor focuses: the select, or the first checkbox. */
+	/** The first control an editor focuses: the chosen radio, else the first radio or checkbox. */
 	function focusEditor() {
 		void tick().then(() => {
 			const control =
-				select ?? form?.querySelector<HTMLInputElement>('input[type="checkbox"]') ?? null;
+				form?.querySelector<HTMLInputElement>('input:checked') ??
+				form?.querySelector<HTMLInputElement>('input') ??
+				null;
 			control?.focus();
 		});
 	}
@@ -102,8 +109,14 @@
 	function startEditing() {
 		draft = savedValue();
 		errorMessage = '';
+		restoredOpen = false;
 		editing = true;
-		focusEditor();
+	}
+
+	/** The popover's own open and close (Escape, a click elsewhere) reach the same paths as the buttons. */
+	function setOpen(open: boolean) {
+		if (open) startEditing();
+		else if (editing) cancel();
 	}
 
 	function cancel() {
@@ -190,95 +203,113 @@
 	}
 </script>
 
-<div
-	class={cn('grid min-w-0 gap-1', !editing && 'grid-cols-[6rem_minmax(0,1fr)] items-start gap-x-2')}
->
-	<dt class={cn('text-sm text-ink-3', !editing && 'py-1 wrap-anywhere')}>{attribute.name}</dt>
+<div class="grid min-w-0 grid-cols-[6rem_minmax(0,1fr)] items-start gap-x-2 gap-y-1">
+	<dt class="py-1 text-sm wrap-anywhere text-ink-3">{attribute.name}</dt>
 	<dd class="min-w-0 text-sm">
-		{#if editing}
-			<!-- Escape is caught on the way up from the form's own controls. -->
-			<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
-			<form
-				bind:this={form}
-				class="grid gap-2"
-				novalidate
-				onkeydown={(event) => {
-					if (event.key !== 'Escape') return;
-					event.preventDefault();
-					event.stopPropagation();
-					cancel();
-				}}
-				onsubmit={(event) => {
-					event.preventDefault();
-					void commit();
-				}}
-			>
-				<fieldset class="grid min-w-0 gap-1.5">
-					<legend class="sr-only">{attribute.name}</legend>
-					{#if !storesList(attribute)}
-						<select
-							bind:this={select}
-							class="min-h-tap w-full min-w-0 rounded-item border border-rule bg-panel px-2 text-sm focus-visible:outline-2 focus-visible:outline-ring lg:h-8"
-							aria-label={attribute.name}
-							value={typeof draft === 'string' ? draft : ''}
-							onchange={(event) => (draft = event.currentTarget.value)}
-						>
-							<option value="">{m.common_none()}</option>
-							{#each choices as choice (choice.value)}
-								<option value={choice.value}>{choice.label}</option>
-							{/each}
-						</select>
-					{:else}
-						<div
-							class="grid max-h-48 gap-0.5 overflow-y-auto rounded-control border border-rule p-1.5"
-						>
-							{#each choices as choice (choice.value)}
-								<label class="flex min-h-tap items-center gap-2 rounded-item px-1 text-sm">
-									<input
-										type="checkbox"
-										class="size-4 shrink-0 accent-action"
-										checked={Array.isArray(draft) && draft.includes(choice.value)}
-										onchange={(event) => toggle(choice.value, event.currentTarget.checked)}
-									/>
-									<span class="min-w-0 break-words">{choice.label}</span>
-								</label>
-							{/each}
-						</div>
-					{/if}
-				</fieldset>
-				{#if errorMessage}
-					<p role="alert" class="text-sm text-state-error">{errorMessage}</p>
-				{/if}
-				<div class="flex items-center gap-2">
-					<Button type="submit" size="sm" class="min-h-tap lg:min-h-8" disabled={saving}
-						>{m.common_save()}</Button
-					>
-					<Button
-						type="button"
-						size="sm"
-						variant="ghost"
-						class="min-h-tap lg:min-h-8"
-						onclick={cancel}
-						disabled={saving}
-					>
-						{m.common_cancel()}
-					</Button>
-				</div>
-			</form>
-		{:else}
-			<!-- Kept raw: the reading is shown as text and edited in place; the ui Button would restyle it. -->
-			<button
-				type="button"
-				bind:this={trigger}
+		<Popover.Root open={editing} onOpenChange={setOpen}>
+			<!-- Kept raw: the reading is shown as text and edited from it; the ui Button would restyle it. -->
+			<Popover.Trigger
+				bind:ref={trigger}
 				class={cn(
 					'flex w-full min-w-0 items-center rounded-item px-2 py-1 text-left transition-colors duration-150 outline-none',
-					'hover:bg-hover focus-visible:outline-2 focus-visible:outline-ring motion-reduce:transition-none'
+					'hover:bg-hover focus-visible:outline-2 focus-visible:outline-ring motion-reduce:transition-none',
+					editing && 'bg-hover'
 				)}
 				aria-label={m.workers_edit_attribute({ field: attribute.name })}
-				onclick={startEditing}
 			>
 				<span class="prose-value min-w-0 text-sm break-words">{reading}</span>
-			</button>
-		{/if}
+			</Popover.Trigger>
+			<Popover.Content
+				align="start"
+				collisionPadding={8}
+				class="w-64 gap-2 p-2"
+				onOpenAutoFocus={(event) => {
+					event.preventDefault();
+					if (!restoredOpen) focusEditor();
+				}}
+				onCloseAutoFocus={(event) => event.preventDefault()}
+			>
+				<!-- Escape is caught on the way up from the form's own controls. -->
+				<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+				<form
+					bind:this={form}
+					class="grid gap-2"
+					novalidate
+					onkeydown={(event) => {
+						if (event.key !== 'Escape') return;
+						event.preventDefault();
+						event.stopPropagation();
+						cancel();
+					}}
+					onsubmit={(event) => {
+						event.preventDefault();
+						void commit();
+					}}
+				>
+					<fieldset class="grid min-w-0 gap-1.5">
+						<legend class="sr-only">{attribute.name}</legend>
+						{#if !storesList(attribute)}
+							<div
+								role="radiogroup"
+								aria-label={attribute.name}
+								class="grid max-h-56 gap-0.5 overflow-y-auto"
+							>
+								{#each [{ value: '', label: m.common_none() }, ...choices] as choice (choice.value)}
+									<!-- A native radio laid transparently over its row: arrow keys and checked state come with it. -->
+									<label
+										class="relative flex min-h-tap cursor-pointer items-center gap-2 rounded-item px-2 text-sm hover:bg-hover has-[:checked]:bg-inset has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-ring lg:min-h-8"
+									>
+										<input
+											type="radio"
+											class="absolute inset-0 m-0 cursor-pointer opacity-0"
+											name={`${attribute.id}-answer`}
+											value={choice.value}
+											checked={(typeof draft === 'string' ? draft : '') === choice.value}
+											onchange={() => (draft = choice.value)}
+										/>
+										<span class="min-w-0 flex-1 break-words">{choice.label}</span>
+										{#if (typeof draft === 'string' ? draft : '') === choice.value}
+											<CheckIcon class="size-4 shrink-0" aria-hidden="true" />
+										{/if}
+									</label>
+								{/each}
+							</div>
+						{:else}
+							<div class="grid max-h-56 gap-0.5 overflow-y-auto">
+								{#each choices as choice (choice.value)}
+									<label class="flex min-h-tap items-center gap-2 rounded-item px-1 text-sm">
+										<input
+											type="checkbox"
+											class="size-4 shrink-0 accent-action"
+											checked={Array.isArray(draft) && draft.includes(choice.value)}
+											onchange={(event) => toggle(choice.value, event.currentTarget.checked)}
+										/>
+										<span class="min-w-0 break-words">{choice.label}</span>
+									</label>
+								{/each}
+							</div>
+						{/if}
+					</fieldset>
+					{#if errorMessage}
+						<p role="alert" class="text-sm text-state-error">{errorMessage}</p>
+					{/if}
+					<div class="flex items-center gap-2 border-t border-rule pt-2">
+						<Button type="submit" size="sm" class="min-h-tap lg:min-h-8" disabled={saving}
+							>{m.common_save()}</Button
+						>
+						<Button
+							type="button"
+							size="sm"
+							variant="ghost"
+							class="min-h-tap lg:min-h-8"
+							onclick={cancel}
+							disabled={saving}
+						>
+							{m.common_cancel()}
+						</Button>
+					</div>
+				</form>
+			</Popover.Content>
+		</Popover.Root>
 	</dd>
 </div>

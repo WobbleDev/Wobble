@@ -396,7 +396,7 @@ test('a batch that fails part-way reloads, counts what saved and undoes only tha
 	expect(await storedAssessment('Grace Hopper')).toBe('Supporter');
 });
 
-test('the record panel reads Contact, Notes, Relationships and Agitations in the rail and in the narrow sheet', async ({
+test('the record panel reads Notes, Relationships and Agitations in the rail and in the narrow sheet', async ({
 	page,
 	request
 }) => {
@@ -407,7 +407,7 @@ test('the record panel reads Contact, Notes, Relationships and Agitations in the
 		.getByRole('gridcell', { name: 'Name for Ada Lovelace: Ada Lovelace', exact: true })
 		.click();
 
-	const sections = ['Contact', 'Notes', 'Relationships', 'Agitations'];
+	const sections = ['Notes', 'Relationships', 'Agitations'];
 	const rail = page.getByRole('complementary', { name: 'Worker details: Ada Lovelace' });
 	for (const name of sections) {
 		await expect(rail.getByRole('heading', { level: 3, name })).toBeVisible();

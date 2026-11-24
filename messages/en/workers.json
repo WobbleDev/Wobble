@@ -275,6 +275,8 @@
 	"workers_languages_done": "Done",
 	"workers_languages_saved": "Languages saved for {name}",
 	"workers_languages_failed": "Could not save languages",
+	"workers_language_add": "Add language",
+	"workers_language_remove": "Remove language {name}",
 	"workers_copied": "Copied {field}",
 	"workers_copy_failed": "Could not copy",
 	"workers_draft_state_unsaved": "Unsaved changes",

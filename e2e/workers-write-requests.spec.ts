@@ -67,12 +67,16 @@ test('an edit still saves when the remembered Worksite id is gone from the datab
 	);
 	await page.reload();
 	await appReady(page);
-	await expect(page.locator('tbody tr[data-worker-id]')).toHaveCount(8);
+	// The fallback is the installation's first Worksite, which is whichever Worksite the run made first,
+	// so nothing here may depend on what it holds: edit its first Worker whatever that is.
+	const rows = page.locator('tbody tr[data-worker-id]');
+	await expect(rows.first()).toBeVisible();
 
-	const ada = page.locator('tbody tr[data-worker-id]').filter({ hasText: 'Ada Lovelace' });
-	const assessment = ada.locator('td').nth(2);
+	const assessment = rows.first().locator('td').nth(2);
 	await assessment.click();
-	await page.getByRole('menuitemradio', { name: 'Leader' }).click();
-	await expect(assessment).toHaveText('Leader');
+	const other = page.getByRole('menuitemradio', { checked: false }).first();
+	const name = (await other.textContent())?.trim() ?? '';
+	await other.click();
+	await expect(assessment).toHaveText(name);
 	await expect(page.getByText(/Could not save/)).toHaveCount(0);
 });
