@@ -25,6 +25,9 @@ async function workerId(request: APIRequestContext, name: string): Promise<strin
 }
 
 const row = (page: Page, name: string) => page.getByRole('row', { name: new RegExp(name) });
+/** The Attribute editor popover, wherever it opens inside the panel or sheet. */
+const editor = (page: Page) => page.locator('[data-slot="popover-content"]');
+
 const select = (page: Page, name: string) =>
 	row(page, name)
 		.getByRole('gridcell', { name: `Name for ${name}: ${name}`, exact: true })
@@ -196,9 +199,7 @@ test('a recovered Attribute edit reopens with the draft choice and can be saved 
 			.locator('section[aria-labelledby="record-attributes"] dl > div')
 			.filter({ hasText: 'Department' });
 	await department().getByRole('button', { name: 'Edit Department', exact: true }).click();
-	await department()
-		.getByRole('combobox', { name: 'Department' })
-		.selectOption({ label: 'Back of House' });
+	await editor(page).getByRole('radio', { name: 'Back of House' }).check();
 	await waitForDraft(request, draftKeeper);
 	const draft = (await storedDraft(request, draftKeeper)) as {
 		update: { attributes: Record<string, string | string[]> };
@@ -208,10 +209,11 @@ test('a recovered Attribute edit reopens with the draft choice and can be saved 
 	await page.reload();
 	await select(page, 'Draft Keeper');
 	await expect(page.getByTestId('restored-draft')).toBeVisible();
-	const restored = panel.getByRole('combobox', { name: 'Department' });
-	await expect(restored).toHaveValue(draft.update.attributes[departmentId] as string);
+	const restored = editor(page).getByRole('radio', { name: 'Back of House' });
+	expect(answerId(departmentId, 'Back of House')).toBe(draft.update.attributes[departmentId]);
+	await expect(restored).toBeChecked();
 	await expect(restored).not.toBeFocused();
-	await panel.getByRole('button', { name: 'Save', exact: true }).click();
+	await editor(page).getByRole('button', { name: 'Save', exact: true }).click();
 
 	await expect(page.getByTestId('status-line')).toContainText("Saved Draft Keeper's Department");
 	await expect(department().locator('dd')).toContainText('Back of House');

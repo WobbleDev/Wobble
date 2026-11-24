@@ -275,6 +275,8 @@
 	"workers_languages_done": "Listo",
 	"workers_languages_saved": "Idiomas guardados para {name}",
 	"workers_languages_failed": "No se pudieron guardar los idiomas",
+	"workers_language_add": "Agregar idioma",
+	"workers_language_remove": "Quitar el idioma {name}",
 	"workers_copied": "Se copió {field}",
 	"workers_copy_failed": "No se pudo copiar",
 	"workers_draft_state_unsaved": "Cambios sin guardar",

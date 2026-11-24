@@ -59,6 +59,9 @@ const inspector = (page: Page, name: string) =>
 	page.getByRole('complementary', { name: `Worker details: ${name}` });
 
 /** The record panel's Attributes section, and one Attribute's row and reading inside it. */
+/** The Attribute editor popover, wherever it opens inside the panel or sheet. */
+const editor = (page: Page) => page.locator('[data-slot="popover-content"]');
+
 const attributeRow = (region: Locator, name: string) =>
 	region
 		.locator('section[aria-labelledby="record-attributes"]')
@@ -93,10 +96,10 @@ test('checking several sub-values of a Multi-Select group keeps them all, and a 
 	// The editor lists every value as a checkbox. Host and Busser join Server: both stay checked.
 	const row = attributeRow(panel, 'Department');
 	await row.getByRole('button', { name: 'Edit Department', exact: true }).click();
-	await expect(row.getByRole('checkbox', { name: 'Server', exact: true })).toBeChecked();
-	await row.getByRole('checkbox', { name: 'Host', exact: true }).check();
-	await row.getByRole('checkbox', { name: 'Busser', exact: true }).check();
-	await row.getByRole('button', { name: 'Save', exact: true }).click();
+	await expect(editor(page).getByRole('checkbox', { name: 'Server', exact: true })).toBeChecked();
+	await editor(page).getByRole('checkbox', { name: 'Host', exact: true }).check();
+	await editor(page).getByRole('checkbox', { name: 'Busser', exact: true }).check();
+	await editor(page).getByRole('button', { name: 'Save', exact: true }).click();
 
 	await expect(attributeReading(panel, 'Department')).toContainText('Server, Host, Busser');
 	expect(await storedDepartment(request, ada, department)).toEqual([
@@ -108,15 +111,19 @@ test('checking several sub-values of a Multi-Select group keeps them all, and a 
 	// Cook sits under Back of House, a different top-level branch: the Attribute is single
 	// at the top level, so Server, Host and Busser all come off and only Cook remains.
 	await row.getByRole('button', { name: 'Edit Department', exact: true }).click();
-	await expect(row.getByRole('checkbox', { name: 'Server', exact: true })).toBeChecked();
-	await expect(row.getByRole('checkbox', { name: 'Host', exact: true })).toBeChecked();
-	await expect(row.getByRole('checkbox', { name: 'Busser', exact: true })).toBeChecked();
-	await row.getByRole('checkbox', { name: 'Cook', exact: true }).check();
-	await expect(row.getByRole('checkbox', { name: 'Cook', exact: true })).toBeChecked();
-	await expect(row.getByRole('checkbox', { name: 'Server', exact: true })).not.toBeChecked();
-	await expect(row.getByRole('checkbox', { name: 'Host', exact: true })).not.toBeChecked();
-	await expect(row.getByRole('checkbox', { name: 'Busser', exact: true })).not.toBeChecked();
-	await row.getByRole('button', { name: 'Save', exact: true }).click();
+	await expect(editor(page).getByRole('checkbox', { name: 'Server', exact: true })).toBeChecked();
+	await expect(editor(page).getByRole('checkbox', { name: 'Host', exact: true })).toBeChecked();
+	await expect(editor(page).getByRole('checkbox', { name: 'Busser', exact: true })).toBeChecked();
+	await editor(page).getByRole('checkbox', { name: 'Cook', exact: true }).check();
+	await expect(editor(page).getByRole('checkbox', { name: 'Cook', exact: true })).toBeChecked();
+	await expect(
+		editor(page).getByRole('checkbox', { name: 'Server', exact: true })
+	).not.toBeChecked();
+	await expect(editor(page).getByRole('checkbox', { name: 'Host', exact: true })).not.toBeChecked();
+	await expect(
+		editor(page).getByRole('checkbox', { name: 'Busser', exact: true })
+	).not.toBeChecked();
+	await editor(page).getByRole('button', { name: 'Save', exact: true }).click();
 
 	await expect(attributeReading(panel, 'Department')).toContainText('Cook');
 	await expect(attributeReading(panel, 'Department')).not.toContainText('Server');

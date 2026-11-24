@@ -60,6 +60,9 @@ const noteItems = (region: Locator) =>
 /** The ordinary Attributes section, and one Attribute's row and reading inside it. */
 const attributesSection = (region: Locator, id = 'record-attributes') =>
 	region.locator(`section[aria-labelledby="${id}"]`);
+/** The Attribute editor popover, wherever it opens inside the panel or sheet. */
+const editor = (page: Page) => page.locator('[data-slot="popover-content"]');
+
 const attributeRow = (region: Locator, name: string, id = 'record-attributes') =>
 	attributesSection(region, id).locator('dl > div').filter({ hasText: name });
 const attributeReading = (region: Locator, name: string) =>
@@ -1106,15 +1109,20 @@ test.describe('ordinary Attribute editing in the record panel (ticket 05)', () =
 
 		// Escape closes the editor without writing and hands focus back to the reading.
 		await trigger.click();
-		await row.getByRole('combobox', { name: 'Department' }).press('Escape');
+		await editor(page).getByRole('radio', { name: 'Front of House' }).press('Escape');
 		await expect(trigger).toBeFocused();
 
+		// The editor is a popover over the panel: opening it moves no row.
+		const rowBefore = (await row.boundingBox())!;
+		const nextBefore = (await attributeRow(ada, 'Shifts').boundingBox())!;
 		await trigger.click();
-		const select = row.getByRole('combobox', { name: 'Department' });
-		await expect(select).toBeFocused();
-		await expect(select).toHaveValue(await answerIdFor(request, 'Department', 'Front of House'));
-		await select.selectOption({ label: 'Back of House' });
-		await row.getByRole('button', { name: 'Save', exact: true }).click();
+		const front = editor(page).getByRole('radio', { name: 'Front of House' });
+		await expect(front).toBeFocused();
+		await expect(front).toBeChecked();
+		expect((await row.boundingBox())!.height).toBe(rowBefore.height);
+		expect((await attributeRow(ada, 'Shifts').boundingBox())!.y).toBe(nextBefore.y);
+		await editor(page).getByRole('radio', { name: 'Back of House' }).check();
+		await editor(page).getByRole('button', { name: 'Save', exact: true }).click();
 
 		await expect(page.getByTestId('status-line')).toContainText("Saved Ada Lovelace's Department");
 		await expect(row.locator('dd')).toContainText('Back of House');
@@ -1137,8 +1145,8 @@ test.describe('ordinary Attribute editing in the record panel (ticket 05)', () =
 		// A Single-Select holds one answer or none: None clears it.
 		const reopened = attributeRow(inspector(page, 'Ada Lovelace'), 'Department');
 		await reopened.getByRole('button', { name: 'Edit Department', exact: true }).click();
-		await reopened.getByRole('combobox', { name: 'Department' }).selectOption({ label: 'None' });
-		await reopened.getByRole('button', { name: 'Save', exact: true }).click();
+		await editor(page).getByRole('radio', { name: 'None' }).check();
+		await editor(page).getByRole('button', { name: 'Save', exact: true }).click();
 		await expect(reopened.locator('dd')).toContainText('No Department');
 		expect(await storedAttribute(request, 'Ada Lovelace', departmentId)).toBe('');
 	});
@@ -1155,10 +1163,10 @@ test.describe('ordinary Attribute editing in the record panel (ticket 05)', () =
 		const trigger = row.getByRole('button', { name: 'Edit Shifts', exact: true });
 
 		await trigger.click();
-		const brunch = row.getByRole('checkbox', { name: 'Brunch', exact: true });
+		const brunch = editor(page).getByRole('checkbox', { name: 'Brunch', exact: true });
 		await expect(brunch).not.toBeChecked();
 		await brunch.check();
-		await row.getByRole('button', { name: 'Save', exact: true }).click();
+		await editor(page).getByRole('button', { name: 'Save', exact: true }).click();
 
 		await expect(row.locator('dd')).toContainText('Dinner, Brunch');
 		expect(await storedAttribute(request, 'Ada Lovelace', shiftsId)).toEqual([
@@ -1168,8 +1176,8 @@ test.describe('ordinary Attribute editing in the record panel (ticket 05)', () =
 
 		// Removing one answer keeps the other; Undo restores the pair.
 		await trigger.click();
-		await row.getByRole('checkbox', { name: 'Dinner', exact: true }).uncheck();
-		await row.getByRole('button', { name: 'Save', exact: true }).click();
+		await editor(page).getByRole('checkbox', { name: 'Dinner', exact: true }).uncheck();
+		await editor(page).getByRole('button', { name: 'Save', exact: true }).click();
 		await expect(row.locator('dd')).toContainText('Brunch');
 		await expect(row.locator('dd')).not.toContainText('Dinner');
 		await page.getByTestId('status-line').getByRole('button', { name: 'Undo' }).click();
@@ -1177,9 +1185,9 @@ test.describe('ordinary Attribute editing in the record panel (ticket 05)', () =
 
 		// Clearing the last answer is the same removal, and reads as the shared no-value line.
 		await trigger.click();
-		await row.getByRole('checkbox', { name: 'Dinner', exact: true }).uncheck();
-		await row.getByRole('checkbox', { name: 'Brunch', exact: true }).uncheck();
-		await row.getByRole('button', { name: 'Save', exact: true }).click();
+		await editor(page).getByRole('checkbox', { name: 'Dinner', exact: true }).uncheck();
+		await editor(page).getByRole('checkbox', { name: 'Brunch', exact: true }).uncheck();
+		await editor(page).getByRole('button', { name: 'Save', exact: true }).click();
 		await expect(row.locator('dd')).toContainText('No Shifts');
 		expect(await storedAttribute(request, 'Ada Lovelace', shiftsId)).toEqual([]);
 	});
@@ -1204,18 +1212,15 @@ test.describe('ordinary Attribute editing in the record panel (ticket 05)', () =
 		});
 
 		await row.getByRole('button', { name: 'Edit Department', exact: true }).click();
-		await row
-			.getByRole('combobox', { name: 'Department' })
-			.selectOption({ label: 'Back of House' });
-		await row.getByRole('button', { name: 'Save', exact: true }).click();
+		await editor(page).getByRole('radio', { name: 'Back of House' }).check();
+		await editor(page).getByRole('button', { name: 'Save', exact: true }).click();
 
 		// The editor stays open holding the choice, says so in the UI's own words, and
 		// the core's diagnostic never reaches the screen. The stored value is unchanged.
-		await expect(row.getByRole('alert')).toHaveText('Could not save the Department. Try again.');
-		await expect(row.getByRole('combobox', { name: 'Department' })).toBeFocused();
-		await expect(row.getByRole('combobox', { name: 'Department' })).toHaveValue(
-			await answerIdFor(request, 'Department', 'Back of House')
+		await expect(editor(page).getByRole('alert')).toHaveText(
+			'Could not save the Department. Try again.'
 		);
+		await expect(editor(page).getByRole('radio', { name: 'Back of House' })).toBeChecked();
 		await expect(page.getByTestId('status-line').getByRole('button', { name: 'Undo' })).toHaveCount(
 			0
 		);
@@ -1223,7 +1228,7 @@ test.describe('ordinary Attribute editing in the record panel (ticket 05)', () =
 
 		// A retry writes it and closes the editor.
 		await page.unroute('**/api/workers/*');
-		await row.getByRole('button', { name: 'Save', exact: true }).click();
+		await editor(page).getByRole('button', { name: 'Save', exact: true }).click();
 		await expect(row.locator('dd')).toContainText('Back of House');
 		expect(await storedAttribute(request, 'Ada Lovelace', departmentId)).toBe(
 			await answerIdFor(request, 'Department', 'Back of House')
@@ -1337,8 +1342,8 @@ test.describe('ordinary Attribute editing in the record panel (ticket 05)', () =
 		// Selecting the parent records its id alone, never the descendants it covers.
 		const row = attributeRow(bea, 'Location');
 		await row.getByRole('button', { name: 'Edit Location', exact: true }).click();
-		await row.getByRole('checkbox', { name: 'North', exact: true }).check();
-		await row.getByRole('button', { name: 'Save', exact: true }).click();
+		await editor(page).getByRole('checkbox', { name: 'North', exact: true }).check();
+		await editor(page).getByRole('button', { name: 'Save', exact: true }).click();
 		await expect(row.locator('dd')).toContainText('North');
 		expect(await storedAttribute(request, 'Emmy Noether', locationId)).toEqual([answers.north]);
 	});
@@ -2185,16 +2190,14 @@ test('New Worker creates a named Worker in name order and keeps it selected', as
 	// The creating panel offers every Attribute before the record exists.
 	const creatingDepartment = attributeRow(creating, 'Department', 'record-create-attributes');
 	await creatingDepartment.getByRole('button', { name: 'Edit Department', exact: true }).click();
-	await creatingDepartment
-		.getByRole('combobox', { name: 'Department' })
-		.selectOption({ label: 'Back of House' });
-	await creatingDepartment.getByRole('button', { name: 'Save', exact: true }).click();
+	await editor(page).getByRole('radio', { name: 'Back of House' }).check();
+	await editor(page).getByRole('button', { name: 'Save', exact: true }).click();
 	await expect(creatingDepartment.locator('dd')).toContainText('Back of House');
 
 	const creatingShifts = attributeRow(creating, 'Shifts', 'record-create-attributes');
 	await creatingShifts.getByRole('button', { name: 'Edit Shifts', exact: true }).click();
-	await creatingShifts.getByRole('checkbox', { name: 'Brunch', exact: true }).check();
-	await creatingShifts.getByRole('button', { name: 'Save', exact: true }).click();
+	await editor(page).getByRole('checkbox', { name: 'Brunch', exact: true }).check();
+	await editor(page).getByRole('button', { name: 'Save', exact: true }).click();
 	await expect(creatingShifts.locator('dd')).toContainText('Brunch');
 
 	await name.fill('Ada Test');
