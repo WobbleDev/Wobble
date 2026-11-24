@@ -16,7 +16,8 @@ import { createWorker } from './api.ts';
 const entranceAnimation = (page: Page) => page.locator('[data-overview-entrance-animation]');
 const overall = (page: Page) => page.getByRole('region', { name: 'Overall support' });
 const dashboardRoot = (page: Page) => page.locator('[data-dashboard-root]');
-const edge = (page: Page) => page.locator('[data-focus-edge]');
+const edge = (page: Page) =>
+	page.locator('[data-focus-toggle]:not([inert] *), [data-focus-back]:not([inert] *)');
 
 /**
  * The entrance animation runs 2400ms, so a single read can only ever catch one phase.

@@ -12,7 +12,7 @@ import {
 } from '../src/lib/features/overview/bullseye/pan-mappings.ts';
 
 /**
- * The Overview's focus control (ticket 02): the edge tab slides the dashboard
+ * The Overview's focus control (ticket 02): the Committee coverage card's toggle slides the dashboard
  * aside and wakes the bullseye chart backdrop where it lies. Focused, the dashboard is
  * inert beneath the chart and the rail; at rest the chart backdrop is inert instead.
  * Gestures — drag, wheel, zoom keys, Reset — answer only while focused.
@@ -126,7 +126,8 @@ const layer = (page: Page) => page.locator('[data-bullseye-layer]');
 const dots = (page: Page) => page.locator('[data-bullseye-base] circle[data-worker-id]');
 const dot = (page: Page, id: string) => page.locator('circle[data-worker-id="' + id + '"]');
 const dashboard = (page: Page) => page.locator('[data-dashboard]');
-const edge = (page: Page) => page.locator('[data-focus-edge]');
+const edge = (page: Page) =>
+	page.locator('[data-focus-toggle]:not([inert] *), [data-focus-back]:not([inert] *)');
 const resetZoom = (page: Page) => page.getByRole('button', { name: 'Reset zoom' });
 
 async function dotIds(page: Page): Promise<string[]> {
@@ -135,12 +136,15 @@ async function dotIds(page: Page): Promise<string[]> {
 	);
 }
 
-/** Bring the bullseye into focus and wait for the 650ms slide to land via page state. */
+/**
+ * Bring the bullseye into focus and wait for the motion to land via page state: the
+ * dashboard clears first, and the chart finishes last, 150ms behind the slide.
+ */
 async function focusBullseye(page: Page) {
 	await edge(page).click();
-	await expect(edge(page)).toHaveAttribute('aria-pressed', 'true');
 	await expect(page.locator('[data-dashboard-root]')).toHaveAttribute('data-focused', 'true');
-	await expect(dashboard(page)).toHaveCSS('opacity', '0.3');
+	await expect(dashboard(page)).toHaveCSS('opacity', '0');
+	await expect(page.locator('.focus-scale')).toHaveCSS('scale', '1.12');
 }
 
 /** The layer's screen width: zoom times rest size times the focus growth. */
@@ -184,32 +188,35 @@ async function frameCentre(page: Page) {
 }
 test('toggles the bullseye focus from the edge control, and Escape returns', async ({
 	page,
-	request,
-	browserName
+	request
 }) => {
 	await seedDashboard(request);
 	await page.setViewportSize({ width: 1440, height: 874 });
 	await page.goto('/overview');
 	await appReady(page);
 
-	// At rest the tab reads Focus bullseye and the dashboard holds the frame.
-	await expect(edge(page)).toHaveAttribute('aria-pressed', 'false');
+	// At rest the toggle on the Committee coverage card reads Focus bullseye and the dashboard
+	// holds the frame.
 	await expect(edge(page)).toHaveAccessibleName('Focus bullseye');
 	await expect(page.locator('[data-dashboard-root]')).toHaveAttribute('data-focused', 'false');
 
 	await edge(page).click();
-	await expect(edge(page)).toHaveAttribute('aria-pressed', 'true');
+	// Focused, the way back is the button in the column's head, and the dashboard has cleared.
 	await expect(edge(page)).toHaveAccessibleName('Show dashboard');
 	await expect(page.locator('[data-dashboard-root]')).toHaveAttribute('data-focused', 'true');
-	await expect(dashboard(page)).toHaveCSS('opacity', '0.3');
-	// Toggling keeps keyboard focus on the control itself. WebKit never focuses a button on a
-	// mouse click (macOS convention), so there is no focus to keep after a click there.
-	if (browserName !== 'webkit') await expect(edge(page)).toBeFocused();
-
+	await expect(dashboard(page)).toHaveCSS('opacity', '0');
 	// Escape returns to the dashboard.
 	await page.keyboard.press('Escape');
-	await expect(edge(page)).toHaveAttribute('aria-pressed', 'false');
 	await expect(edge(page)).toHaveAccessibleName('Focus bullseye');
+	await expect(page.locator('[data-dashboard-root]')).toHaveAttribute('data-focused', 'false');
+
+	// A keyboard reader's focus follows the switch: the toggle hands it to the column's back
+	// button, and the back button hands it to the toggle again.
+	await edge(page).focus();
+	await page.keyboard.press('Enter');
+	await expect(page.locator('[data-focus-back]')).toBeFocused();
+	await page.keyboard.press('Enter');
+	await expect(page.locator('[data-focus-toggle]')).toBeFocused();
 	await expect(page.locator('[data-dashboard-root]')).toHaveAttribute('data-focused', 'false');
 });
 
@@ -628,10 +635,10 @@ test('matches the reference focused state at 1440x874', async ({ page, request }
 	expect(scale.origin[1]).toBeCloseTo(scale.layer, 0);
 	expect(scale.art / scale.layer).toBeCloseTo(1.12, 2);
 
-	// The edge tab rides the right edge, above both layers.
-	const tab = (await edge(page).boundingBox())!;
-	expect(tab.width).toBeCloseTo(24, 1);
-	expect(tab.height).toBeCloseTo(80, 1);
+	// The way back stands in the column's head, above both layers, where the card's toggle was.
+	const back = (await edge(page).boundingBox())!;
+	expect(back.width).toBeCloseTo(32, 1);
+	expect(back.height).toBeCloseTo(32, 1);
 
 	await page.screenshot({ path: 'test-results/overview-focus-1440x874.png' });
 });

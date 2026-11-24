@@ -360,7 +360,11 @@ test('clicks through the inert floor and keeps dots out of the tab order', async
 			const el = document.elementFromPoint(p.x, p.y);
 			if (!el) return 'none';
 			if (el.closest('[data-worker-id]')) return 'dot';
-			if (el.closest('a, button, [role="button"], [data-focus-edge], [data-focus-reset]'))
+			if (
+				el.closest(
+					'a, button, [role="button"], [data-focus-toggle], [data-focus-back], [data-focus-reset]'
+				)
+			)
 				return 'interactive';
 			return 'background';
 		}, at);

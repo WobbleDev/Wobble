@@ -6,10 +6,13 @@
 	 * and the chart glides to them.
 	 */
 	import CheckIcon from '@lucide/svelte/icons/check';
+	import LayoutDashboardIcon from '@lucide/svelte/icons/layout-dashboard';
 	import Link2Icon from '@lucide/svelte/icons/link-2';
+	import { tick } from 'svelte';
 	import { page } from '$app/state';
 	import type { Worker, WorkerAttributeDefinition } from '#lib/domain-vocabulary.ts';
 	import { assessmentGroupLabel, assessmentLabel } from '#lib/i18n/assessment.ts';
+	import * as Tooltip from '#lib/components/ui/tooltip/index.ts';
 	import { m } from '#lib/paraglide/messages.js';
 	import { getLocale } from '#lib/paraglide/runtime.js';
 	import SwatchDot from '#lib/shared/ui/swatch-dot.svelte';
@@ -18,6 +21,7 @@
 	import { overviewFocus } from './overview-focus.svelte.ts';
 	import { committeeReading } from './committee-members.ts';
 	import { resolveGroupingAttribute } from './overview-grouping.svelte.ts';
+	import { flightFrames, motionReduced, travelOf } from './committee-flight.ts';
 
 	let {
 		workers,
@@ -51,6 +55,7 @@
 	let box = $state<{ top: number; left: number; height: number } | null>(null);
 	let column = $state<HTMLElement>();
 	let region = $state<HTMLElement>();
+	let head = $state<HTMLElement>();
 	/* The list scrolls when the column is short: fade its foot while more lies below. */
 	let more = $state(false);
 
@@ -70,6 +75,62 @@
 			node.removeEventListener('scroll', measure);
 			observer.disconnect();
 		};
+	});
+
+	/* The Committee coverage card flies in to be this column's head, and back out on leaving.
+	   The column's own box is the card grown: a clipped copy of it starts on the card's rect
+	   and opens to its place, on transform, clip-path and opacity alone. The dashboard has
+	   already faded by then, so nothing shows twice. Under reduced motion there is no flight,
+	   only the plain fade the stylesheet leaves. */
+	let flight: Animation | undefined;
+	let seen: boolean | undefined;
+	let focusTarget: string | null = null;
+	$effect.pre(() => {
+		const focused = focus.focused;
+		// The first run is the page arriving, not a change of focus.
+		if (seen === undefined || seen === focused || !column || !head) {
+			seen = focused;
+			return;
+		}
+		seen = focused;
+		flight?.cancel();
+		flight = undefined;
+		// Keyboard focus follows the control that took it: the card's toggle and the head's
+		// back button are two stops on one switch, and the one that was pressed goes inert.
+		const active = document.activeElement;
+		// Only a keyboard reader needs it: after a click the pointer has said where it is.
+		const keyboard = active?.matches(':focus-visible') ?? false;
+		focusTarget = !keyboard
+			? null
+			: active?.matches('[data-focus-toggle]')
+				? '[data-focus-back]'
+				: active && column.contains(active)
+					? '[data-focus-toggle]'
+					: null;
+		const card = document.querySelector('[data-coverage-card]');
+		const dashboard = document.querySelector('[data-dashboard]');
+		if (!card || motionReduced()) return;
+		const travel = travelOf({
+			card: card.getBoundingClientRect(),
+			column: column.getBoundingClientRect(),
+			slide: dashboard ? new DOMMatrixReadOnly(getComputedStyle(dashboard).transform).m41 : 0
+		});
+		const node = column;
+		void tick().then(() => {
+			if (seen !== focused) return;
+			flight = node.animate(flightFrames(travel, focused), {
+				duration: 650,
+				easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
+				fill: 'both'
+			});
+		});
+	});
+	$effect(() => {
+		void focus.focused;
+		const selector = focusTarget;
+		focusTarget = null;
+		if (!selector) return;
+		document.querySelector<HTMLElement>(selector)?.focus();
 	});
 
 	$effect(() => {
@@ -114,11 +175,32 @@
 	<!-- The head reads as the Committee coverage card does: the title, then the figure
 	     at its size, then the marks. -->
 	<header
+		bind:this={head}
 		class="flex flex-col gap-2 pb-4"
 		class:border-b={!noLeaders}
 		class:border-rule={!noLeaders}
 	>
-		<h2 id="committee-title" class="section-title">{m.overview_committee_title()}</h2>
+		<div class="flex items-start justify-between gap-2">
+			<h2 id="committee-title" class="section-title">{m.overview_committee_title()}</h2>
+			<!-- The way back, where the card's way in stood, so the two read as one control. -->
+			<Tooltip.Root>
+				<Tooltip.Trigger
+					type="button"
+					data-focus-back
+					class="-mt-1.5 -mr-2 grid size-8 shrink-0 place-items-center rounded-control text-ink-3 transition-colors hover:bg-inset hover:text-ink focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none motion-reduce:transition-none"
+					aria-label={m.overview_show_dashboard()}
+					onclick={() => focus.blur()}
+					onkeydown={(event) => {
+						/* The tooltip trigger swallows Escape to close its own tip; here Escape
+						   also leaves, as it does from anywhere else on the focused Overview. */
+						if (event.key === 'Escape') focus.blur();
+					}}
+				>
+					<LayoutDashboardIcon class="size-4" />
+				</Tooltip.Trigger>
+				<Tooltip.Content side="top">{m.overview_show_dashboard()}</Tooltip.Content>
+			</Tooltip.Root>
+		</div>
 		<div class="flex items-center gap-2.5" data-committee-coverage>
 			<span class="text-xl leading-none font-semibold tracking-headline tabular-nums">
 				{m.overview_coverage_units({
@@ -164,6 +246,7 @@
 		<div
 			bind:this={region}
 			data-scroll-region
+			data-committee-rows
 			class="-mx-2.5 flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto pt-2 pb-0.5"
 			style:mask-image={more
 				? 'linear-gradient(to bottom, #000 calc(100% - 2rem), transparent)'
@@ -289,17 +372,22 @@
 </aside>
 
 <style>
-	/* The column arrives with the slide, on its curve, and leaves the same way. */
+	/* The column's own fade runs on the dashboard's curve; the flight, when it runs, draws
+	   over it. The Leaders arrive after the head has landed and leave before it flies. */
 	.committee-column {
 		opacity: 0;
-		transform: translateX(-1.5rem);
-		transition:
-			opacity 650ms cubic-bezier(0.22, 1, 0.36, 1),
-			transform 650ms cubic-bezier(0.22, 1, 0.36, 1);
+		transition: opacity 650ms cubic-bezier(0.22, 1, 0.36, 1);
 	}
 	.committee-column.is-focused {
 		opacity: 1;
-		transform: none;
+	}
+	[data-committee-rows] {
+		opacity: 0;
+		transition: opacity 160ms ease-out;
+	}
+	.is-focused [data-committee-rows] {
+		opacity: 1;
+		transition: opacity 320ms ease-out 320ms;
 	}
 	@media (prefers-reduced-transparency: reduce), (forced-colors: active) {
 		.committee-column {
@@ -308,11 +396,15 @@
 		}
 	}
 	@media (prefers-reduced-motion: reduce) {
-		:global(html:not([data-motion='full'])) .committee-column {
+		:global(html:not([data-motion='full'])) .committee-column,
+		:global(html:not([data-motion='full'])) [data-committee-rows] {
 			transition-duration: 1ms;
+			transition-delay: 0s;
 		}
 	}
-	:global(html[data-motion='reduce']) .committee-column {
+	:global(html[data-motion='reduce']) .committee-column,
+	:global(html[data-motion='reduce']) [data-committee-rows] {
 		transition-duration: 1ms;
+		transition-delay: 0s;
 	}
 </style>
