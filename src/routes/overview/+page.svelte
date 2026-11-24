@@ -210,7 +210,10 @@
 <style>
 	.dashboard :global(.panel) {
 		container-type: inline-size;
-		border: 1px solid var(--rule);
+		/* The card is translucent over the bullseye's rings, which are white where the card
+		   ends, so a plain rule hairline washes out there; a step toward the ink keeps the
+		   edge whole at the right of the page, where the rings reach it. */
+		border: 1px solid color-mix(in oklab, var(--ink) 12%, var(--rule));
 		border-radius: 0.625rem;
 		background: color-mix(in oklab, var(--panel) 62%, transparent);
 		backdrop-filter: blur(8px);

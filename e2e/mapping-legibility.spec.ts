@@ -203,10 +203,7 @@ async function selectWorker(page: Page, name: string) {
 	await worker.click();
 }
 
-test('selection emphasizes ego ties, draws a ring and states both Isolate degrees', async ({
-	page,
-	request
-}) => {
+test('selection emphasizes ego ties and draws a ring', async ({ page, request }) => {
 	await seedLegibleWorksite(request);
 	await openMap(page, 6);
 	const map = page.getByTestId('relationship-map-layer');
@@ -251,7 +248,7 @@ test('selection emphasizes ego ties, draws a ring and states both Isolate degree
 		.toBeGreaterThan(0.85);
 
 	await page.getByRole('button', { name: 'Isolate' }).click();
-	await expect(page.getByText('2 direct · 0 through them')).toBeVisible();
+	await expect(page.getByText('direct ·')).toHaveCount(0);
 });
 
 test('card lists neighbours alphabetically with relationship counts', async ({ page, request }) => {

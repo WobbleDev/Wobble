@@ -3,7 +3,7 @@
  * map into a box.
  */
 import { untrack } from 'svelte';
-import { cubicOut } from 'svelte/easing';
+import { cubicInOut, cubicOut } from 'svelte/easing';
 import { fitFloor } from '../composition/graph-composition-layout.ts';
 import { easeStopThreshold, nodeEase } from '../layout/graph-group-physics.ts';
 
@@ -390,6 +390,33 @@ export function createPanZoom() {
 		animation = requestAnimationFrame(step);
 	}
 
+	/**
+	 * Travels the camera to `target` on a clock the caller shares with the dots, so a
+	 * move that changes both (Isolate) runs as one: the same start, duration and
+	 * ease-in-out curve. A fixed duration means the same motion at any frame rate, and
+	 * the ease-in-out start has no first-frame jump. `start` may already have passed.
+	 */
+	function glideTo(
+		target: { zoom: number; panX: number; panY: number },
+		clock: { start: number; duration: number }
+	) {
+		cancelAnimation();
+		const startZoom = zoom;
+		const startX = panX;
+		const startY = panY;
+
+		const step = (now: number) => {
+			const progress = Math.min(1, Math.max(0, (now - clock.start) / clock.duration));
+			const eased = cubicInOut(progress);
+			zoom = startZoom + (target.zoom - startZoom) * eased;
+			panX = startX + (target.panX - startX) * eased;
+			panY = startY + (target.panY - startY) * eased;
+			animation = progress < 1 ? requestAnimationFrame(step) : undefined;
+		};
+
+		animation = requestAnimationFrame(step);
+	}
+
 	return {
 		toMapPoint,
 		get zoom() {
@@ -454,6 +481,7 @@ export function createPanZoom() {
 		fitTo,
 		animateFit,
 		easeTo,
+		glideTo,
 		targetFor
 	};
 }

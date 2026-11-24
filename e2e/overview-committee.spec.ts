@@ -204,6 +204,29 @@ test('the coverage card carries the way in, flies in as the column head, and the
 	await expect(page.locator('[data-focus-toggle]')).toHaveCount(1);
 	await expect(page.getByRole('heading', { level: 1 })).toHaveText('Overview');
 
+	// The card's figure and marks keep their size in the column head, so the type does not
+	// change under the reader's eye while the card becomes the head.
+	const look = () =>
+		page.evaluate(() => {
+			const size = (selector: string, within: string) => {
+				const el = document.querySelector(`${within} ${selector}`);
+				return el ? getComputedStyle(el).fontSize + '/' + el.getBoundingClientRect().width : null;
+			};
+			return {
+				card: [
+					size('[data-coverage-units]', '[data-coverage-card]'),
+					size('[data-mark]', '[data-coverage-card]')
+				],
+				head: [
+					size('span', '[data-committee-coverage]'),
+					size('[data-mark]', '[data-committee-column]')
+				]
+			};
+		});
+	const before = await look();
+	expect(before.card[0]!.split('/')[0]).toBe(before.head[0]!.split('/')[0]);
+	expect(before.card[1]).toBe(before.head[1]);
+
 	await page.locator('[data-focus-toggle]').click();
 	// The column's own flight is running: a script animation, not just the fade's transition.
 	const flights = await column(page).evaluate(
@@ -215,6 +238,17 @@ test('the coverage card carries the way in, flies in as the column head, and the
 	// The page names where it is, and the trail's Overview crumb is a way back.
 	await expect(page.getByRole('heading', { level: 1 })).toHaveText('My Committee');
 	await expect(page.locator('[data-focus-back]')).toBeVisible();
+	// Every crumb speaks in the same voice: the Overview crumb is a button, and still reads in
+	// the trail's upper-case mono like its neighbours.
+	const voice = (selector: string) =>
+		page.locator(selector).evaluate((el) => {
+			const style = getComputedStyle(el);
+			return [style.textTransform, style.fontFamily, style.fontSize, style.letterSpacing];
+		});
+	expect(await voice('[data-breadcrumb-back]')).toEqual(
+		await voice('[data-slot="breadcrumb-page"]')
+	);
+	await expect(page.locator('[data-breadcrumb-back]')).toHaveCSS('text-transform', 'uppercase');
 	await page.locator('[data-breadcrumb-back]').click();
 	await expect(page.getByRole('heading', { level: 1 })).toHaveText('Overview');
 	await expect(page.locator('[data-dashboard-root]')).toHaveAttribute('data-focused', 'false');

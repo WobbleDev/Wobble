@@ -18,6 +18,7 @@ import {
 	type AbbreviationOrigin
 } from '#lib/shared/text/abbreviation.ts';
 import { decodeAgitation, decodeLanguage, decodeWorker, isRecord } from './api-decode.ts';
+import { readStoredActiveWorksiteId, storeActiveWorksiteId } from './active-worksite-storage.ts';
 import { requestJson } from './request-json.ts';
 
 export type WorksiteDataset = {
@@ -153,11 +154,23 @@ export function decodeWorksiteDataset(value: unknown): WorksiteDataset {
 	};
 }
 
+/**
+ * Reads fall back to the first Worksite when the remembered id names one that is gone (a
+ * deleted Worksite, a swapped or restored database), but a write naming that id is refused.
+ * The dataset says which Worksite it really loaded, so remember that one: otherwise the page
+ * looks healthy while every edit fails with "could not save".
+ */
+function rememberLoadedWorksite(dataset: WorksiteDataset): WorksiteDataset {
+	const loadedId = dataset.worksite?.id ?? null;
+	if (readStoredActiveWorksiteId() !== loadedId) storeActiveWorksiteId(loadedId);
+	return dataset;
+}
+
 export function getWorksiteDataset(): Promise<WorksiteDataset> {
 	return requestJson(
 		'/api/dataset',
 		{ cache: 'no-store' },
 		(status) => `Could not load the worksite (HTTP ${status}).`,
-		decodeWorksiteDataset
+		(value) => rememberLoadedWorksite(decodeWorksiteDataset(value))
 	);
 }

@@ -53,6 +53,10 @@
 	/* The column sits over the dashboard's own box, so it is measured from it: the
 	   dashboard root's top and left, and the room under the cards' padding. */
 	let box = $state<{ top: number; left: number; height: number } | null>(null);
+	/* The figure keeps the size it has on the Committee coverage card, so nothing changes
+	   typeface under the reader's eye while the card becomes this head. The card sizes it
+	   by its own width, so it is read from the card rather than declared a second time. */
+	let figureSize = $state<string | undefined>();
 	let column = $state<HTMLElement>();
 	let region = $state<HTMLElement>();
 	let head = $state<HTMLElement>();
@@ -143,6 +147,8 @@
 				box = null;
 				return;
 			}
+			const units = root.querySelector('[data-coverage-units]');
+			figureSize = units ? getComputedStyle(units).fontSize : undefined;
 			const rect = root.getBoundingClientRect();
 			const inset = parseFloat(getComputedStyle(document.documentElement).fontSize) * 1.25;
 			box = {
@@ -176,7 +182,7 @@
 	     at its size, then the marks. -->
 	<header
 		bind:this={head}
-		class="flex flex-col gap-2 pb-4"
+		class="flex flex-col pb-4"
 		class:border-b={!noLeaders}
 		class:border-rule={!noLeaders}
 	>
@@ -201,8 +207,11 @@
 				<Tooltip.Content side="top">{m.overview_show_dashboard()}</Tooltip.Content>
 			</Tooltip.Root>
 		</div>
-		<div class="flex items-center gap-2.5" data-committee-coverage>
-			<span class="text-xl leading-none font-semibold tracking-headline tabular-nums">
+		<div class="mt-1 flex items-center gap-2.5" data-committee-coverage>
+			<span
+				class="leading-none font-semibold tracking-headline tabular-nums"
+				style:font-size={figureSize}
+			>
 				{m.overview_coverage_units({
 					leaders: reading.coverage.leaders,
 					needed: reading.coverage.needed
@@ -210,19 +219,18 @@
 			</span>
 			{#if reading.coverage.needed > 0 && reading.coverage.gap >= 0}
 				<CheckIcon
-					class="size-4 shrink-0 text-state-success"
+					class="size-5 shrink-0 text-state-success"
 					role="img"
 					aria-label={m.overview_target_met()}
 				/>
 			{/if}
 		</div>
 		{#if reading.coverage.needed > 0}
-			<div class="flex items-center justify-between gap-3">
+			<div class="mt-2 flex items-center justify-between gap-3">
 				<CoverageMarks
 					leaders={reading.coverage.leaders}
 					needed={reading.coverage.needed}
-					size="size-3"
-					cap={10}
+					size="size-4"
 					label={m.overview_coverage_tooltip({
 						leaders: reading.coverage.leaders,
 						needed: reading.coverage.needed
