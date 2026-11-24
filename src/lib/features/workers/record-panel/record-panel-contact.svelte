@@ -7,6 +7,7 @@
 	import { m } from '#lib/paraglide/messages.js';
 	import CopyIcon from '@lucide/svelte/icons/copy';
 	import { Button } from '#lib/components/ui/button/index.ts';
+	import { cn } from '#lib/utils.ts';
 	import { getPanelDraft } from './panel-draft-state.svelte.ts';
 	import { getEditModel } from '#lib/features/workers/edit-model.svelte.ts';
 
@@ -24,6 +25,10 @@
 		refresh: () => Promise<void>;
 		onSaved?: (report: DataTableEditReport) => void;
 	} = $props();
+
+	/** The copy buttons wait for hover or focus where a pointer exists, and always show on touch. */
+	const copyReveal =
+		'[@media(hover:hover)]:opacity-0 group-hover/kv:opacity-100 focus-visible:opacity-100';
 
 	const editModel = getEditModel();
 	const panelDraft = getPanelDraft();
@@ -46,11 +51,19 @@
 
 <section aria-labelledby={headingId} class="grid gap-3">
 	<h3 id={headingId} class="label">{m.workers_contact_heading()}</h3>
-	<dl class="grid gap-3">
+	<dl class="grid gap-1">
 		<!-- One editor per Worker: a selection change closes whoever's was open. -->
 		{#key worker.id}
-			<div class="grid min-w-0 gap-1">
-				<dt class="key">{m.workers_field_email()}</dt>
+			<div
+				class={cn(
+					'group/kv grid min-w-0 gap-1',
+					panelDraft.open.email === undefined &&
+						'grid-cols-[6rem_minmax(0,1fr)] items-start gap-x-2'
+				)}
+			>
+				<dt class={cn('text-sm text-ink-3', panelDraft.open.email === undefined && 'py-1')}>
+					{m.workers_field_email()}
+				</dt>
 				<dd class="prose-value flex min-w-0 items-center gap-1 text-sm">
 					<div class="min-w-0 flex-1">
 						<RecordPanelField
@@ -72,6 +85,7 @@
 							type="button"
 							variant="ghost"
 							size="icon-xs"
+							class={copyReveal}
 							aria-label={m.workers_copy_email()}
 							onclick={() => void copy(m.workers_field_email(), worker.email)}
 						>
@@ -80,8 +94,16 @@
 					{/if}
 				</dd>
 			</div>
-			<div class="grid min-w-0 gap-1">
-				<dt class="key">{m.workers_field_phone()}</dt>
+			<div
+				class={cn(
+					'group/kv grid min-w-0 gap-1',
+					panelDraft.open.phone === undefined &&
+						'grid-cols-[6rem_minmax(0,1fr)] items-start gap-x-2'
+				)}
+			>
+				<dt class={cn('text-sm text-ink-3', panelDraft.open.phone === undefined && 'py-1')}>
+					{m.workers_field_phone()}
+				</dt>
 				<dd class="num prose-value flex min-w-0 items-center gap-1 text-sm">
 					<div class="min-w-0 flex-1">
 						<RecordPanelField
@@ -108,6 +130,7 @@
 							type="button"
 							variant="ghost"
 							size="icon-xs"
+							class={copyReveal}
 							aria-label={m.workers_copy_phone()}
 							onclick={() => void copy(m.workers_field_phone(), worker.phone)}
 						>

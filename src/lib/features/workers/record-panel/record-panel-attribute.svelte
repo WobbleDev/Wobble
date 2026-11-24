@@ -190,8 +190,10 @@
 	}
 </script>
 
-<div class="grid min-w-0 gap-1">
-	<dt class="key">{attribute.name}</dt>
+<div
+	class={cn('grid min-w-0 gap-1', !editing && 'grid-cols-[6rem_minmax(0,1fr)] items-start gap-x-2')}
+>
+	<dt class={cn('text-sm text-ink-3', !editing && 'py-1 wrap-anywhere')}>{attribute.name}</dt>
 	<dd class="min-w-0 text-sm">
 		{#if editing}
 			<!-- Escape is caught on the way up from the form's own controls. -->

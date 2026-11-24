@@ -467,7 +467,7 @@
 			{/if}
 			<div
 				data-scrollbar-stable
-				class="grid min-h-0 flex-1 grid-cols-[minmax(0,1fr)] content-start gap-6 overflow-y-auto mask-[linear-gradient(to_bottom,transparent,black_0.75rem)] px-4 py-6"
+				class="grid min-h-0 flex-1 grid-cols-[minmax(0,1fr)] content-start gap-4 overflow-y-auto mask-[linear-gradient(to_bottom,transparent,black_0.75rem)] px-4 py-6 [&>section]:border-t [&>section]:border-rule [&>section]:pt-4 [&>section:first-child]:border-t-0 [&>section:first-child]:pt-0"
 			>
 				<RecordPanelContact
 					{worker}

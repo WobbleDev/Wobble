@@ -172,9 +172,14 @@
 </script>
 
 <section aria-labelledby={headingId} class="grid grid-cols-[minmax(0,1fr)] gap-3">
-	<h3 id={headingId} bind:this={heading} tabindex="-1" class="label">
-		{m.workers_agitations_heading()}
-	</h3>
+	<div class="flex items-center justify-between gap-2">
+		<h3 id={headingId} bind:this={heading} tabindex="-1" class="label">
+			{m.workers_agitations_heading()}
+		</h3>
+		{#if texts.length}
+			<span class="num text-xs text-ink-3" aria-hidden="true">{texts.length}</span>
+		{/if}
+	</div>
 	{#if texts.length}
 		<ul class="flex flex-wrap gap-2">
 			{#each texts as agitation (agitation.id)}
