@@ -148,7 +148,7 @@
 			<CoverageMarks
 				leaders={coverage.leaders}
 				needed={coverage.needed}
-				size="size-5"
+				size="size-4"
 				label={coverageLabel}
 				tooltip={coverageTooltip}
 				detail={coverageBasis}

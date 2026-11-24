@@ -35,7 +35,7 @@
 
 <Tooltip.Root>
 	<Tooltip.Trigger
-		class="inline-flex min-h-4 min-w-0 items-center gap-1 rounded-sm focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+		class="inline-flex min-h-4 max-w-full min-w-0 flex-wrap items-center gap-1 rounded-sm focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
 		aria-label={label}
 		data-coverage-marks
 		data-leaders={leaders}

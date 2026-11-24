@@ -164,3 +164,27 @@ test('a long list fades at its foot until it is scrolled to the end', async ({ p
 	await region.evaluate((node) => node.scrollTo({ top: node.scrollHeight }));
 	await expect(region).toHaveCSS('mask-image', 'none');
 });
+
+test('coverage marks stay inside their card at the narrow floor', async ({ page, request }) => {
+	expect((await request.put('/api/attributes', { data: wireDefinitions([]) })).ok()).toBeTruthy();
+	// Sixty Workers need twelve Leaders: more marks than the narrow card's row can hold.
+	for (let index = 0; index < 60; index++) {
+		await createWorker(request, {
+			name: `Worker ${index}`,
+			assessment: index < 8 ? 'Leader' : 'Supporter'
+		});
+	}
+	await page.setViewportSize({ width: 1024, height: 640 });
+	await page.goto('/overview');
+	await appReady(page);
+
+	const outside = await page.evaluate(
+		() =>
+			[...document.querySelectorAll('[data-dashboard] [data-coverage-marks]')].filter((marks) => {
+				const card = marks.closest('section')!.getBoundingClientRect();
+				const box = marks.getBoundingClientRect();
+				return box.right > card.right - 1 || box.bottom > card.bottom + 1;
+			}).length
+	);
+	expect(outside).toBe(0);
+});
