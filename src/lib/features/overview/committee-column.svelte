@@ -120,7 +120,7 @@
 	>
 		<h2 id="committee-title" class="section-title">{m.overview_committee_title()}</h2>
 		<div class="flex items-center gap-2.5" data-committee-coverage>
-			<span class="text-[1.75rem] leading-none font-semibold tracking-headline tabular-nums">
+			<span class="text-xl leading-none font-semibold tracking-headline tabular-nums">
 				{m.overview_coverage_units({
 					leaders: reading.coverage.leaders,
 					needed: reading.coverage.needed
@@ -128,7 +128,7 @@
 			</span>
 			{#if reading.coverage.needed > 0 && reading.coverage.gap >= 0}
 				<CheckIcon
-					class="size-5 shrink-0 text-state-success"
+					class="size-4 shrink-0 text-state-success"
 					role="img"
 					aria-label={m.overview_target_met()}
 				/>
@@ -139,7 +139,7 @@
 				<CoverageMarks
 					leaders={reading.coverage.leaders}
 					needed={reading.coverage.needed}
-					size="size-3.5"
+					size="size-3"
 					cap={10}
 					label={m.overview_coverage_tooltip({
 						leaders: reading.coverage.leaders,
@@ -169,11 +169,15 @@
 				? 'linear-gradient(to bottom, #000 calc(100% - 2rem), transparent)'
 				: undefined}
 		>
-			{#each reading.sections as section (section.key)}
+			{#each reading.sections as section, index (section.key)}
+				{#if index > 0}
+					<!-- A hairline between groups, as under the head. -->
+					<div class="mx-2.5 border-t border-rule" aria-hidden="true"></div>
+				{/if}
 				<section aria-label={section.label ?? m.overview_committee_title()} data-committee-section>
 					{#if section.label !== null}
 						<h3
-							class="flex items-center justify-between gap-3 px-2.5 pb-1 font-mono text-2xs tracking-key text-ink-2 uppercase"
+							class="flex items-center justify-between gap-3 px-2.5 pb-1.5 font-mono text-2xs tracking-key text-ink-2 uppercase"
 						>
 							<span class="truncate">{section.label}</span>
 							<span
