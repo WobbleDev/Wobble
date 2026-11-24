@@ -44,6 +44,8 @@
 		onRestore?: (value: string) => Promise<void>;
 		/** Name: the value is the panel's level-2 heading, and the editor larger. */
 		title?: boolean;
+		/** Shows the value on one line that ends in an ellipsis; the full value is its tooltip. */
+		oneLine?: boolean;
 		/** Whose record this is, for the status line's message. */
 		workerName: string;
 		/** Writes the trimmed value. The core validates it. */
@@ -71,6 +73,7 @@
 		type = 'text',
 		mask,
 		title = false,
+		oneLine = false,
 		workerName,
 		onSave,
 		onRestore,
@@ -386,11 +389,13 @@
 			bind:this={trigger}
 			class="flex w-full min-w-0 items-center rounded-item px-2 py-1 text-left transition-colors duration-150 outline-none hover:bg-hover focus-visible:outline-2 focus-visible:outline-ring motion-reduce:transition-none"
 			aria-label={valueLabel}
+			title={oneLine && value ? value : undefined}
 			onclick={startEditing}
 		>
 			<span
 				class={cn(
-					'prose-value min-w-0 break-words',
+					'prose-value min-w-0',
+					oneLine ? 'truncate' : 'break-words',
 					title ? 'text-xl font-semibold tracking-title text-pretty' : 'text-sm',
 					empty && 'font-normal text-ink-3 underline decoration-dotted underline-offset-4'
 				)}

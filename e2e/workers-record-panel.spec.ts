@@ -828,10 +828,10 @@ test('a long email is edited in a full-width input, not a clipped inline one', a
 	const input = ada.getByLabel('Email');
 	await input.fill('ada.lovelace.king.byron@a-very-long-domain.example.test');
 
-	// The editor takes the record's whole content width, so a long address is
-	// readable in place rather than cut off beside its label.
+	// The editor takes the Contact lines' whole width, so a long address is
+	// readable in place rather than cut off beside its icon.
 	const inputBox = await input.boundingBox();
-	const contactBox = await ada.locator('section').first().boundingBox();
+	const contactBox = await ada.getByRole('group', { name: 'Contact' }).boundingBox();
 	expect(Math.abs((inputBox?.width ?? 0) - (contactBox?.width ?? 0))).toBeLessThanOrEqual(1);
 	expect(inputBox?.width ?? 0).toBeGreaterThan(200);
 });
@@ -1021,8 +1021,12 @@ test('the inspector reads the whole record and the page never overflows sideways
 	await expect(name).toHaveCSS('font-weight', '600');
 	await expect(name).toHaveCSS('letter-spacing', '-0.2px');
 	await expect(ada.getByText('Supporter', { exact: true })).toBeVisible();
+	// Contact reads as two lines under the Assessment, ahead of the sections.
+	const contact = ada.getByRole('group', { name: 'Contact' });
+	await expect(contact).toContainText('ada@example.test');
+	await expect(contact).toContainText('555-0100');
+	await expect(ada.locator('header').getByRole('group', { name: 'Contact' })).toBeVisible();
 	await expect(ada.locator('h3')).toHaveText([
-		'Contact',
 		'Attributes',
 		'Languages',
 		'Notes',
@@ -1032,15 +1036,13 @@ test('the inspector reads the whole record and the page never overflows sideways
 	// Both ordinary kinds read their stored answer in the configured order.
 	await expect(attributeReading(ada, 'Department')).toContainText('Front of House');
 	await expect(attributeReading(ada, 'Shifts')).toContainText('Dinner');
-	for (const label of ['Email', 'Phone']) {
+	for (const label of ['Department', 'Shifts']) {
 		const key = term(ada, label);
 		// The key sits beside its value in the body scale, quieter by tone, not by a mono label.
 		await expect(key).toHaveCSS('font-size', '14px');
 		await expect(key).not.toHaveCSS('font-family', /Roboto Mono Variable/);
 		await expect(key).toHaveCSS('text-transform', 'none');
 	}
-	await expect(ada).toContainText('ada@example.test');
-	await expect(ada).toContainText('555-0100');
 	await expect(ada.getByRole('button', { name: 'Add relationship' })).toBeVisible();
 	await expect(ada.getByText('No relationships')).toHaveCount(0);
 	await expect(ada.getByText('Pay')).toBeVisible();
@@ -2290,6 +2292,30 @@ test('a malformed Email is refused in the panel and the stored address stays', a
 	expect(stored.workers.find((worker) => worker.name === 'Ada Lovelace')?.email).toBe(
 		'ada@example.test'
 	);
+});
+
+test('a long Email stays on one line, ends in an ellipsis and keeps its full text', async ({
+	page,
+	request
+}) => {
+	await openWorkersTable(page, request, { seed: seedInspectorWorkers });
+	await selectWorker(page, 'Ada Lovelace');
+	const ada = inspector(page, 'Ada Lovelace');
+	const longEmail = 'harlan.ostrander-whitfield@harbourside-logistics.example.test';
+	await ada.getByRole('button', { name: 'Edit email' }).click();
+	await ada.getByLabel('Email').fill(longEmail);
+	await ada.getByLabel('Email').press('Enter');
+
+	const value = ada.getByRole('button', { name: 'Edit email' });
+	await expect(value).toHaveAttribute('title', longEmail);
+	const line = await value.boundingBox();
+	const phone = await ada.getByRole('button', { name: 'Edit phone' }).boundingBox();
+	// One line: as tall as the phone line beside it, never two.
+	expect(Math.abs(line!.height - phone!.height)).toBeLessThanOrEqual(1);
+	const overflow = await page.evaluate(
+		() => document.documentElement.scrollWidth - document.documentElement.clientWidth
+	);
+	expect(overflow).toBeLessThanOrEqual(1);
 });
 
 test('saving for a Worker deleted elsewhere says so and keeps the typing', async ({
