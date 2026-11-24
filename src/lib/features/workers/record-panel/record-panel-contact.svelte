@@ -53,89 +53,98 @@
 	}
 </script>
 
-<div role="group" aria-label={m.workers_contact_heading()} class="grid gap-0.5">
-	<!-- One editor per Worker: a selection change closes whoever's was open. -->
-	{#key worker.id}
-		<div
-			class={cn(
-				'group/kv grid min-w-0 items-center gap-x-1',
-				panelDraft.open.email === undefined ? 'grid-cols-[1rem_minmax(0,1fr)_auto]' : 'gap-1'
-			)}
-		>
-			{#if panelDraft.open.email === undefined}
-				<MailIcon class="ml-2 size-3.5 text-ink-3" aria-hidden="true" />
-			{/if}
-			<div class="min-w-0">
-				<RecordPanelField
-					label={m.workers_field_email()}
-					fieldKind="email"
-					editLabel={m.workers_edit_email()}
-					type="email"
-					oneLine
-					value={worker.email}
-					placeholder={m.workers_add_email()}
-					workerName={worker.name}
-					draftKey="email"
-					onSave={saveField(worker.id, 'email')}
-					{refresh}
-					{onSaved}
-				/>
+<div role="group" aria-label={m.workers_contact_heading()}>
+	<dl class="grid gap-0.5">
+		<!-- One editor per Worker: a selection change closes whoever's was open. -->
+		{#key worker.id}
+			<div
+				class={cn(
+					'group/kv grid min-w-0 items-center gap-x-1',
+					panelDraft.open.email === undefined && 'grid-cols-[1rem_minmax(0,1fr)]'
+				)}
+			>
+				{#if panelDraft.open.email === undefined}
+					<MailIcon class="ml-2 size-3.5 text-ink-3" aria-hidden="true" />
+				{/if}
+				<!-- The icon says it to the eye; the term says it to a screen reader. -->
+				<dt class="sr-only">{m.workers_field_email()}</dt>
+				<dd class="flex min-w-0 items-center gap-1">
+					<div class="min-w-0 flex-1">
+						<RecordPanelField
+							label={m.workers_field_email()}
+							fieldKind="email"
+							editLabel={m.workers_edit_email()}
+							type="email"
+							oneLine
+							value={worker.email}
+							placeholder={m.workers_add_email()}
+							workerName={worker.name}
+							draftKey="email"
+							onSave={saveField(worker.id, 'email')}
+							{refresh}
+							{onSaved}
+						/>
+					</div>
+					{#if worker.email && panelDraft.open.email === undefined}
+						<Button
+							type="button"
+							variant="ghost"
+							size="icon-xs"
+							class={copyReveal}
+							aria-label={m.workers_copy_email()}
+							onclick={() => void copy(m.workers_field_email(), worker.email)}
+						>
+							<CopyIcon />
+						</Button>
+					{/if}
+				</dd>
 			</div>
-			{#if worker.email && panelDraft.open.email === undefined}
-				<Button
-					type="button"
-					variant="ghost"
-					size="icon-xs"
-					class={copyReveal}
-					aria-label={m.workers_copy_email()}
-					onclick={() => void copy(m.workers_field_email(), worker.email)}
-				>
-					<CopyIcon />
-				</Button>
-			{/if}
-		</div>
-		<div
-			class={cn(
-				'group/kv num grid min-w-0 items-center gap-x-1',
-				panelDraft.open.phone === undefined ? 'grid-cols-[1rem_minmax(0,1fr)_auto]' : 'gap-1'
-			)}
-		>
-			{#if panelDraft.open.phone === undefined}
-				<PhoneIcon class="ml-2 size-3.5 text-ink-3" aria-hidden="true" />
-			{/if}
-			<div class="min-w-0">
-				<RecordPanelField
-					label={m.workers_field_phone()}
-					fieldKind="phone"
-					editLabel={m.workers_edit_phone()}
-					type="tel"
-					mask="phone"
-					oneLine
-					value={worker.phone}
-					placeholder={m.workers_add_phone()}
-					inputPlaceholder={m.workers_phone_placeholder()}
-					workerName={worker.name}
-					draftKey="phone"
-					onSave={saveField(worker.id, 'phone')}
-					onRestore={async (value) => {
-						await restoreWorkerField(worker.id, 'phone', value);
-					}}
-					{refresh}
-					{onSaved}
-				/>
+			<div
+				class={cn(
+					'group/kv num grid min-w-0 items-center gap-x-1',
+					panelDraft.open.phone === undefined && 'grid-cols-[1rem_minmax(0,1fr)]'
+				)}
+			>
+				{#if panelDraft.open.phone === undefined}
+					<PhoneIcon class="ml-2 size-3.5 text-ink-3" aria-hidden="true" />
+				{/if}
+				<dt class="sr-only">{m.workers_field_phone()}</dt>
+				<dd class="flex min-w-0 items-center gap-1">
+					<div class="min-w-0 flex-1">
+						<RecordPanelField
+							label={m.workers_field_phone()}
+							fieldKind="phone"
+							editLabel={m.workers_edit_phone()}
+							type="tel"
+							mask="phone"
+							oneLine
+							value={worker.phone}
+							placeholder={m.workers_add_phone()}
+							inputPlaceholder={m.workers_phone_placeholder()}
+							workerName={worker.name}
+							draftKey="phone"
+							onSave={saveField(worker.id, 'phone')}
+							onRestore={async (value) => {
+								await restoreWorkerField(worker.id, 'phone', value);
+							}}
+							{refresh}
+							{onSaved}
+						/>
+					</div>
+					{#if worker.phone && panelDraft.open.phone === undefined}
+						<Button
+							type="button"
+							variant="ghost"
+							size="icon-xs"
+							class={copyReveal}
+							aria-label={m.workers_copy_phone()}
+							onclick={() => void copy(m.workers_field_phone(), worker.phone)}
+						>
+							<CopyIcon />
+						</Button>
+					{/if}
+				</dd>
 			</div>
-			{#if worker.phone && panelDraft.open.phone === undefined}
-				<Button
-					type="button"
-					variant="ghost"
-					size="icon-xs"
-					class={copyReveal}
-					aria-label={m.workers_copy_phone()}
-					onclick={() => void copy(m.workers_field_phone(), worker.phone)}
-				>
-					<CopyIcon />
-				</Button>
-			{/if}
-		</div>
-	{/key}
+		{/key}
+	</dl>
 </div>

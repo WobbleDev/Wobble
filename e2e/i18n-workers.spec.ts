@@ -69,15 +69,16 @@ test('the table and record read in Spanish while names and Worksite vocabulary s
 	await selectWorker(page, 'Ada Lovelace');
 	const ada = page.getByRole('complementary', { name: 'Detalles del trabajador: Ada Lovelace' });
 	await expect(ada.locator('h3')).toHaveText([
-		'Contacto',
 		'Atributos',
 		'Idiomas',
 		'Notas',
 		'Relaciones',
 		'Asuntos laborales'
 	]);
-	await expect(ada.getByText('Correo electrónico', { exact: true })).toBeVisible();
-	await expect(ada.getByText('Teléfono', { exact: true })).toBeVisible();
+	// Contact sits in the header as a named group; its terms are read by a screen reader.
+	const contact = ada.getByRole('group', { name: 'Contacto' });
+	await expect(contact).toBeVisible();
+	await expect(contact.locator('dt')).toHaveText(['Correo electrónico', 'Teléfono']);
 
 	// Assessment labels come from the one shared mapping: individual in the picker,
 	// with Sin evaluar distinct from the five-level scale.
