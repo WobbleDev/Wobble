@@ -288,3 +288,26 @@ test('the coverage card does not fly when motion is reduced, and the column stil
 	await expect(column(page)).toHaveCSS('opacity', '0');
 	await expect(column(page)).toHaveCSS('transform', 'none');
 });
+
+test('the scroll viewport does not clip the cards: no overflow clip over their blur', async ({
+	page,
+	request
+}) => {
+	await seedCommittee(request);
+	await page.setViewportSize({ width: 1440, height: 874 });
+	await page.goto('/overview');
+	await appReady(page);
+	// An `overflow: clip` on the viewport cut the cards' 1px right border where it met their
+	// backdrop blur in WebKit; the no-scroll surface's own `hidden` leaves the border whole.
+	const viewport = page.locator('[data-scroll-viewport]');
+	await expect(viewport).not.toHaveCSS('overflow-y', 'clip');
+	await expect(viewport).not.toHaveCSS('overflow-x', 'visible');
+	// And the cards still end a gutter inside it, so nothing of them is outside to clip.
+	const edge = await page.evaluate(() => {
+		const root = document.querySelector('[data-dashboard-root]')!.getBoundingClientRect();
+		return [...document.querySelectorAll('[data-dashboard] .panel')].map(
+			(panel) => root.right - panel.getBoundingClientRect().right
+		);
+	});
+	for (const gap of edge) expect(gap).toBeGreaterThanOrEqual(1);
+});

@@ -287,12 +287,10 @@
 				transform 650ms cubic-bezier(0.22, 1, 0.36, 1),
 				opacity 220ms ease-out;
 		}
-		/* The slid strip paints under the navigation rail's glass: the scroll
-		   viewport gives up its clip on this route, as the shell's card does. */
-		:global([data-scroll-viewport]:has([data-dashboard-root])) {
-			overflow-x: visible;
-			overflow-y: clip;
-		}
+		/* The scroll viewport keeps the clip the no-scroll surface gives it. It once gave that
+		   up (overflow-x visible, overflow-y clip) so the slid strip could paint under the
+		   rail's glass. The strip is faded out now, so nothing paints there, and that clip cut
+		   the cards' 1px right border where it met their backdrop blur in WebKit. */
 	}
 	/* The focus change is instant under reduced motion. */
 	@media (prefers-reduced-motion: reduce) {
