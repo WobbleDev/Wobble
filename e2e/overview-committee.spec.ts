@@ -56,7 +56,8 @@ async function seedCommittee(request: APIRequestContext) {
 	}
 }
 
-const edge = (page: Page) => page.locator('[data-focus-edge]');
+const edge = (page: Page) =>
+	page.locator('[data-focus-toggle]:not([inert] *), [data-focus-back]:not([inert] *)');
 const column = (page: Page) => page.locator('[data-committee-column]');
 const members = (page: Page) => page.locator('[data-committee-member]');
 
@@ -187,4 +188,69 @@ test('coverage marks stay inside their card at the narrow floor', async ({ page,
 			}).length
 	);
 	expect(outside).toBe(0);
+});
+
+test('the coverage card carries the way in, flies in as the column head, and the page title follows', async ({
+	page,
+	request
+}) => {
+	await seedCommittee(request);
+	await page.setViewportSize({ width: 1440, height: 874 });
+	await page.goto('/overview');
+	await appReady(page);
+
+	// The toggle stands on the Committee coverage card, and nowhere else at rest.
+	await expect(page.locator('[data-coverage-card] [data-focus-toggle]')).toBeVisible();
+	await expect(page.locator('[data-focus-toggle]')).toHaveCount(1);
+	await expect(page.getByRole('heading', { level: 1 })).toHaveText('Overview');
+
+	await page.locator('[data-focus-toggle]').click();
+	// The column's own flight is running: a script animation, not just the fade's transition.
+	const flights = await column(page).evaluate(
+		(el) => el.getAnimations().filter((animation) => !(animation instanceof CSSTransition)).length
+	);
+	expect(flights).toBe(1);
+	await expect(column(page)).toHaveCSS('opacity', '1');
+
+	// The page names where it is, and the trail's Overview crumb is a way back.
+	await expect(page.getByRole('heading', { level: 1 })).toHaveText('My Committee');
+	await expect(page.locator('[data-focus-back]')).toBeVisible();
+	await page.locator('[data-breadcrumb-back]').click();
+	await expect(page.getByRole('heading', { level: 1 })).toHaveText('Overview');
+	await expect(page.locator('[data-dashboard-root]')).toHaveAttribute('data-focused', 'false');
+	await expect(page.locator('[data-coverage-card] [data-focus-toggle]')).toBeVisible();
+
+	// The head's own button leaves too.
+	await page.locator('[data-focus-toggle]').click();
+	await page.locator('[data-focus-back]').click();
+	await expect(page.locator('[data-dashboard-root]')).toHaveAttribute('data-focused', 'false');
+});
+
+test('the coverage card does not fly when motion is reduced, and the column still arrives', async ({
+	page,
+	request
+}) => {
+	await seedCommittee(request);
+	await page.setViewportSize({ width: 1440, height: 874 });
+	await page.goto('/overview');
+	await appReady(page);
+	// The Reduce motion setting writes this attribute on the root; set here, after the chart
+	// backdrop is up, so the focus still runs and only the flight's own guard is under test.
+	await page.evaluate(() => (document.documentElement.dataset.motion = 'reduce'));
+
+	await page.locator('[data-focus-toggle]').click();
+	await expect(column(page)).not.toHaveAttribute('inert', '');
+	// No script animation: the column's plain fade is all that runs, and it collapses to 1ms.
+	const flights = await column(page).evaluate(
+		(el) => el.getAnimations().filter((animation) => !(animation instanceof CSSTransition)).length
+	);
+	expect(flights).toBe(0);
+	await expect(column(page)).toHaveCSS('opacity', '1');
+	await expect(column(page)).toHaveCSS('transform', 'none');
+	await expect(column(page).locator('[data-committee-rows]')).toHaveCSS('opacity', '1');
+
+	// And back: the column goes without a flight too.
+	await page.locator('[data-focus-back]').click();
+	await expect(column(page)).toHaveCSS('opacity', '0');
+	await expect(column(page)).toHaveCSS('transform', 'none');
 });

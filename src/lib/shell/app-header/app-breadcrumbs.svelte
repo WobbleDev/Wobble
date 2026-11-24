@@ -6,6 +6,12 @@
 	import * as Breadcrumb from '#lib/components/ui/breadcrumb/index.ts';
 	import { m } from '#lib/paraglide/messages.js';
 	import { routeTitle } from '#lib/i18n/route-copy.ts';
+	import { overviewFocus } from '#lib/features/overview/overview-focus.svelte.ts';
+
+	/* On the focused Overview the trail reads Worksite > Overview > My Committee, and the
+	   Overview crumb is the way back, as the column's own button is. */
+	const focus = overviewFocus();
+	const onCommittee = $derived(page.url.pathname === '/overview' && focus.focused);
 
 	const currentTitle = $derived(routeTitle(page.data.titleKey));
 	const worksiteName = $derived(
@@ -24,8 +30,25 @@
 			>
 		</Breadcrumb.Item>
 		<Breadcrumb.Separator />
-		<Breadcrumb.Item>
-			<Breadcrumb.Page>{currentTitle}</Breadcrumb.Page>
-		</Breadcrumb.Item>
+		{#if onCommittee}
+			<Breadcrumb.Item>
+				<button
+					type="button"
+					data-breadcrumb-back
+					class="inline-flex min-h-tap items-center rounded-item transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none md:min-h-0"
+					onclick={() => focus.blur()}
+				>
+					{currentTitle}
+				</button>
+			</Breadcrumb.Item>
+			<Breadcrumb.Separator />
+			<Breadcrumb.Item>
+				<Breadcrumb.Page>{m.overview_committee_title()}</Breadcrumb.Page>
+			</Breadcrumb.Item>
+		{:else}
+			<Breadcrumb.Item>
+				<Breadcrumb.Page>{currentTitle}</Breadcrumb.Page>
+			</Breadcrumb.Item>
+		{/if}
 	</Breadcrumb.List>
 </Breadcrumb.Root>

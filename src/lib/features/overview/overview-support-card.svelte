@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
 	import CheckIcon from '@lucide/svelte/icons/check';
+	import TargetIcon from '@lucide/svelte/icons/target';
 	import { Button } from '#lib/components/ui/button/index.ts';
 	import type { AssessmentOption } from '#lib/domain-vocabulary.ts';
 	import { assessmentGroupLabel, assessmentLabel } from '#lib/i18n/assessment.ts';
@@ -13,6 +14,7 @@
 	import CoverageMarks from './coverage-marks.svelte';
 	import * as Tooltip from '#lib/components/ui/tooltip/index.ts';
 	import OverviewSegmentBar from './overview-segment-bar.svelte';
+	import { overviewFocus } from './overview-focus.svelte.ts';
 	import { segmentHref } from './summary-links.ts';
 
 	let {
@@ -23,7 +25,8 @@
 		entranceAnimationState,
 		entranceAnimationElapsed,
 		theme,
-		palette
+		palette,
+		canFocus = false
 	}: {
 		overall: { rate: number; total: number; support: number };
 		counts: Record<AssessmentOption, number>;
@@ -33,7 +36,13 @@
 		entranceAnimationElapsed: number;
 		theme: DashboardTheme;
 		palette: 'default' | 'colorblind';
+		/** Whether the bullseye can take focus here: the chart backdrop is drawn behind the page. */
+		canFocus?: boolean;
 	} = $props();
+
+	/* The way into My Committee stands on the coverage card, which then flies to the
+	   column's head; the column's own head holds the way back. */
+	const focus = overviewFocus();
 
 	/* The Overall support figure counts up along the support band's timing curve
 	   while the entrance animation runs, then reads the exact value. */
@@ -124,9 +133,25 @@
 	{/if}
 </section>
 
-<section class="panel" aria-label={m.domain_committee_coverage()}>
+<section class="panel" aria-label={m.domain_committee_coverage()} data-coverage-card>
 	<div>
-		<h2 class="section-title">{m.domain_committee_coverage()}</h2>
+		<div class="flex items-start justify-between gap-2">
+			<h2 class="section-title">{m.domain_committee_coverage()}</h2>
+			{#if canFocus}
+				<Tooltip.Root>
+					<Tooltip.Trigger
+						type="button"
+						data-focus-toggle
+						class="-mt-1.5 -mr-2 grid size-8 shrink-0 place-items-center rounded-control text-ink-3 transition-colors hover:bg-inset hover:text-ink focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none motion-reduce:transition-none"
+						aria-label={m.overview_focus_bullseye()}
+						onclick={() => focus.toggle()}
+					>
+						<TargetIcon class="size-4" />
+					</Tooltip.Trigger>
+					<Tooltip.Content side="top">{m.overview_focus_tooltip()}</Tooltip.Content>
+				</Tooltip.Root>
+			{/if}
+		</div>
 		<div class="mt-1 flex items-center gap-2.5" data-coverage-figure>
 			<span
 				class="text-[clamp(1.25rem,10cqw,1.75rem)] leading-none font-semibold tracking-headline tabular-nums"

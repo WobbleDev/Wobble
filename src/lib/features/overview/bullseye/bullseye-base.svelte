@@ -278,6 +278,7 @@
 		     animates, so a drag or a glide never lags a transform transition. -->
 		<div
 			class="focus-scale absolute inset-0"
+			class:is-focusing={focus.focused}
 			style="scale: {placement.scale}; transform-origin: {placement.origin}"
 		>
 			<BullseyeChart
@@ -335,7 +336,8 @@
 <TooltipCallout active={tooltip.active} {attributes} />
 
 <style>
-	/* The focus growth and the drawing's fade share the dashboard's 650ms curve.
+	/* The focus growth and the drawing's fade share the dashboard's 650ms curve, and follow
+	   the dashboard by 150ms going in so the chart answers it rather than moving with it.
 	   The blur switches without animating: animating it was measured as too slow. */
 	.focus-scale {
 		transition: scale 650ms cubic-bezier(0.22, 1, 0.36, 1);
@@ -343,15 +345,21 @@
 	.chart-drawing {
 		transition: opacity 650ms cubic-bezier(0.22, 1, 0.36, 1);
 	}
+	.focus-scale.is-focusing,
+	.focus-scale.is-focusing :global(.chart-drawing) {
+		transition-delay: 150ms;
+	}
 	/* The focus change is instant under reduced motion. */
 	@media (prefers-reduced-motion: reduce) {
 		:global(html:not([data-motion='full'])) .focus-scale,
 		:global(html:not([data-motion='full'])) .chart-drawing {
 			transition-duration: 1ms;
+			transition-delay: 0s;
 		}
 	}
 	:global(html[data-motion='reduce']) .focus-scale,
 	:global(html[data-motion='reduce']) .chart-drawing {
 		transition-duration: 1ms;
+		transition-delay: 0s;
 	}
 </style>

@@ -147,6 +147,7 @@
 			entranceAnimationElapsed={claim.entranceAnimationElapsed}
 			theme={rootState.theme}
 			palette={rootState.palette}
+			canFocus={view.shown}
 		/>
 		<OverviewBreakdownCard
 			{grouping}
@@ -264,21 +265,24 @@
 			background: var(--panel);
 		}
 	}
+	/* Returning, the dashboard waits for the column to fold away, then fades back in. */
 	.dashboard {
 		transition:
 			transform 650ms cubic-bezier(0.22, 1, 0.36, 1),
-			opacity 650ms cubic-bezier(0.22, 1, 0.36, 1),
-			filter 650ms cubic-bezier(0.22, 1, 0.36, 1);
+			opacity 360ms ease-out 290ms;
 	}
 	/* The slide runs only on the no-scroll surface: below the floor the fitted
 	   chart is drawn instead, the edge control is gone, and the page scrolls. */
 	@media (min-width: 64rem) and (min-height: 40rem) {
-		/* Focused, the dashboard runs left to a 34rem strip, faded and blurred,
-		   beneath the bullseye. */
+		/* Focused, the dashboard goes first: it clears in 220ms, so the Committee coverage
+		   card has the frame to itself while it flies, and what stays is a strip the chart
+		   is measured from and the column stands over. */
 		[data-focused='true'] .dashboard {
 			transform: translateX(calc(-100% + 34rem));
-			opacity: 0.3;
-			filter: blur(2px);
+			opacity: 0;
+			transition:
+				transform 650ms cubic-bezier(0.22, 1, 0.36, 1),
+				opacity 220ms ease-out;
 		}
 		/* The slid strip paints under the navigation rail's glass: the scroll
 		   viewport gives up its clip on this route, as the shell's card does. */
@@ -291,9 +295,11 @@
 	@media (prefers-reduced-motion: reduce) {
 		:global(html:not([data-motion='full'])) .dashboard {
 			transition-duration: 1ms;
+			transition-delay: 0s;
 		}
 	}
 	:global(html[data-motion='reduce']) .dashboard {
 		transition-duration: 1ms;
+		transition-delay: 0s;
 	}
 </style>
