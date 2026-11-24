@@ -190,7 +190,6 @@
 						size="sm"
 						class="shrink-0 coarse:min-h-tap"
 						data-testid="add-attribute"
-						aria-label={m.configuration_add_attribute_to({ column: attributeColumnTitle })}
 						disabled={draftState.saving}
 						onclick={() => draftState.openAddForm()}
 					>
@@ -202,7 +201,6 @@
 			<Field.Description id={descriptionId}
 				>{m.configuration_worker_column_description()}</Field.Description
 			>
-			<h3 class="sr-only">{m.configuration_attributes_title()}</h3>
 
 			{#if draftState.addFormOpen}
 				<AddAttributeForm

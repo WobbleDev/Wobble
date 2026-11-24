@@ -53,7 +53,7 @@ test('the Worksite card, the one Attributes list and the danger zone read in ord
 	await expect(card.getByRole('button', { name: 'Delete Worksite' })).toHaveCount(0);
 
 	const column = workerColumn(page);
-	await expect(column.getByRole('heading', { name: 'About each Worker' })).toBeVisible();
+	await expect(column.getByRole('heading', { name: 'Attributes', exact: true })).toBeVisible();
 	await expect(column.getByTestId('add-attribute')).toContainText('Add attribute');
 	await expect(page.getByTestId('assignment-column')).toHaveCount(0);
 	await expect(page.getByText('About each Work Assignment')).toHaveCount(0);

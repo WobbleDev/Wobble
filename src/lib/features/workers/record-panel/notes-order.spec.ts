@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { WorkerNote } from '#lib/domain-vocabulary.ts';
-import { matchingEntries, sortedEntries } from './notes-order.ts';
+import { sortedEntries } from './notes-order.ts';
 
 function note(overrides: Partial<WorkerNote> & Pick<WorkerNote, 'id' | 'timestamp'>): WorkerNote {
 	return { text: 'A note.', ...overrides };
@@ -15,21 +15,5 @@ describe('sortedEntries', () => {
 		];
 
 		expect(sortedEntries(entries).map((entry) => entry.id)).toEqual(['newest', 'older', 'oldest']);
-	});
-});
-
-describe('matchingEntries', () => {
-	const entries = [
-		note({ id: 'a', timestamp: '2026-10-01T09:00:00.000Z', text: 'Called about Shifts' }),
-		note({ id: 'b', timestamp: '2026-10-02T09:00:00.000Z', text: 'Met at the door' })
-	];
-
-	it('keeps every entry for a blank query', () => {
-		expect(matchingEntries(entries, '  ')).toEqual(entries);
-	});
-
-	it('matches text ignoring case and keeps order', () => {
-		expect(matchingEntries(entries, 'shifts').map((entry) => entry.id)).toEqual(['a']);
-		expect(matchingEntries(entries, 'zzz')).toEqual([]);
 	});
 });

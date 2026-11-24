@@ -17,7 +17,7 @@ test('shows Spanish Configuration controls and keeps an entered Worksite name ve
 	await appReady(page);
 
 	await expect(page.getByRole('heading', { name: 'Configuración', level: 1 })).toBeVisible();
-	await expect(page.getByRole('heading', { name: 'Sobre cada Trabajador' })).toBeVisible();
+	await expect(page.getByRole('heading', { name: 'Atributos', exact: true })).toBeVisible();
 	await expect(page.getByRole('heading', { name: 'Sobre cada Asignación de trabajo' })).toHaveCount(
 		0
 	);
@@ -66,7 +66,9 @@ test('edits an Attribute through Spanish labels and validation', async ({ page }
 	).toBeVisible();
 	await expect(form.getByRole('button', { name: /Alcance:/ })).toHaveCount(0);
 	await expect(
-		page.getByText('Calificaciones, tipo de empleo y otros datos personales.')
+		page.getByText(
+			'Define áreas de trabajo, roles y cualquier otro elemento que categorice a las personas en tu lugar de trabajo.'
+		)
 	).toBeVisible();
 
 	// An empty name is rejected with the Spanish inline error.

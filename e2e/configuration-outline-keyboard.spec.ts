@@ -95,7 +95,7 @@ async function seed(request: APIRequestContext, settings: Ids): Promise<void> {
 	}
 }
 
-const workerTree = (page: Page) => page.getByRole('tree', { name: 'About each Worker' });
+const workerTree = (page: Page) => page.getByRole('tree', { name: 'Attributes' });
 
 test('exposes the outline as a tree with levels, expanded state and one tab stop', async ({
 	page,

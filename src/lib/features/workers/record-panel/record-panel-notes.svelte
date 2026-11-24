@@ -7,8 +7,7 @@
 	 * section's heading rather than on nothing. Undo lives in the status line
 	 * and brings the Note back exactly where it was.
 	 */
-	import { matchingEntries, sortedEntries } from './notes-order.ts';
-	import { Input } from '#lib/components/ui/input/index.ts';
+	import { sortedEntries } from './notes-order.ts';
 	import RecordPanelNoteEntry from './record-panel-note-entry.svelte';
 	import RecordPanelNoteComposer from './record-panel-note-composer.svelte';
 	import type { DataTableEditReport } from '../data-table/features.ts';
@@ -45,8 +44,7 @@
 	} = $props();
 
 	let heading = $state<HTMLHeadingElement | null>(null);
-	let query = $state('');
-	const shown = $derived(matchingEntries(sortedEntries(worker.notes), query));
+	const shown = $derived(sortedEntries(worker.notes));
 </script>
 
 <section aria-labelledby={headingId} class="grid gap-3">
@@ -59,17 +57,7 @@
 		{/if}
 	</div>
 	<RecordPanelNoteComposer {worker} onAdd={onAddNote} onDelete={onDeleteNote} {refresh} {onSaved} />
-	{#if worker.notes.length > 1}
-		<Input
-			type="search"
-			bind:value={query}
-			placeholder={m.workers_notes_search()}
-			aria-label={m.workers_notes_search()}
-		/>
-	{/if}
-	{#if worker.notes.length && shown.length === 0}
-		<p class="text-sm text-ink-3">{m.workers_notes_no_match()}</p>
-	{:else if worker.notes.length}
+	{#if worker.notes.length}
 		<ul class="grid gap-4">
 			{#each shown as note (note.id)}
 				<li>

@@ -173,7 +173,9 @@ test('an attribute card keeps its height when a row opens, pins its headings, an
 
 	// The card's title row and the column labels stay in view.
 	const top = (await card.boundingBox())!.y;
-	const title = (await card.getByRole('heading', { name: 'About each Worker' }).boundingBox())!;
+	const title = (await card
+		.getByRole('heading', { name: 'Attributes', exact: true })
+		.boundingBox())!;
 	expect(title.y - top).toBeLessThan(80);
 	const labels = (await card.getByTestId('worker-count-header').boundingBox())!;
 	expect(labels.y - top).toBeLessThan(120);

@@ -878,7 +878,6 @@
 					{agitations}
 					{languages}
 					{onUpdateLanguages}
-					onAddAnother={() => void newWorker.begin()}
 					{onShowOnMapping}
 					{onSelectWorker}
 					cohort={record.cohort}
@@ -918,7 +917,6 @@
 		{agitations}
 		{languages}
 		{onUpdateLanguages}
-		onAddAnother={() => void newWorker.begin()}
 		{onShowOnMapping}
 		{onSelectWorker}
 		cohort={record.cohort}
