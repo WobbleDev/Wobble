@@ -14,6 +14,7 @@
 	import XIcon from '@lucide/svelte/icons/x';
 	import { Button } from '#lib/components/ui/button/index.ts';
 	import { Input } from '#lib/components/ui/input/index.ts';
+	import * as Popover from '#lib/components/ui/popover/index.ts';
 	import { getEditModel } from '#lib/features/workers/edit-model.svelte.ts';
 	import { runSingleEdit } from '../data-table/bulk-actions/bulk-actions.ts';
 	import type { DataTableEditReport } from '../data-table/features.ts';
@@ -201,97 +202,123 @@
 			{/each}
 		</ul>
 	{/if}
-	{#if candidates}
-		<!-- A panel inside the section, not a floating popover, as Relationships. -->
-		<div class="grid grid-cols-[minmax(0,1fr)] gap-2 rounded-item bg-inset p-2">
-			<Input
-				bind:ref={search}
-				bind:value={query}
-				type="search"
-				aria-label={m.workers_agitation_input()}
-				placeholder={m.workers_agitation_search()}
-				disabled={saving}
-				oninput={() => (errorMessage = '')}
-				onkeydown={(event) => {
-					if (event.isComposing) return;
-					if (event.key === 'Escape') {
-						event.preventDefault();
-						event.stopPropagation();
-						void closeAdder();
-					} else if (event.key === 'Enter') {
-						event.preventDefault();
-						void addAgitation();
-					}
-				}}
-			/>
-			{#if !candidates.exact}
-				<!-- Kept raw: a full-width row with the add text, not a button variant. -->
-				<button
-					type="button"
-					class="flex min-h-tap w-full items-center rounded-item px-2 py-1 text-left text-sm text-ink-2 hover:bg-hover focus-visible:outline-2 focus-visible:outline-ring disabled:text-ink-3 disabled:opacity-60 lg:min-h-8"
-					disabled={saving || !query.trim()}
-					onclick={() => void addAgitation()}
-				>
-					{query.trim()
-						? m.workers_agitation_new({ text: query.trim() })
-						: m.workers_agitation_new_hint()}
-				</button>
-			{/if}
-			{#if candidates.matches.length}
-				<ul
-					aria-label={m.workers_agitation_list_aria()}
-					class="grid max-h-56 grid-cols-[minmax(0,1fr)] gap-0.5 overflow-y-auto overscroll-contain pb-1"
-				>
-					{#each candidates.matches as agitation (agitation.id)}
-						<li>
-							<!-- Kept raw: a full-width candidate row, not a button variant. -->
-							<button
-								type="button"
-								class="flex min-h-tap w-full items-center rounded-item px-2 py-1 text-left text-sm hover:bg-hover focus-visible:outline-2 focus-visible:outline-ring disabled:opacity-60 lg:min-h-8"
-								disabled={saving}
-								onclick={() => void addAgitation(agitation)}
-							>
-								<span class="prose-value min-w-0 flex-1 truncate" title={agitation.text}
-									>{agitation.text}</span
-								>
-							</button>
-						</li>
-					{/each}
-				</ul>
-			{:else}
-				<p class="px-2 text-sm text-ink-3">
-					{query.trim() ? m.workers_agitation_no_match() : m.workers_agitation_none()}
-				</p>
-			{/if}
-			{#if errorMessage}
-				<p role="alert" class="text-sm text-state-error">{errorMessage}</p>
-			{/if}
-			<!-- The footer sits below the scrolling list, never over it. -->
-			<div class="flex items-center justify-end gap-2 border-t border-rule pt-2">
+	<!-- The list is a popover over the panel, so opening it moves nothing around it. -->
+	<Popover.Root
+		open={adding}
+		onOpenChange={(open) => {
+			if (open) void openAdder();
+			else void closeAdder();
+		}}
+	>
+		<Popover.Trigger>
+			{#snippet child({ props })}
 				<Button
+					{...props}
 					type="button"
 					variant="ghost"
 					size="sm"
-					class="min-h-tap lg:min-h-8"
-					onclick={() => void closeAdder()}
+					class="min-h-tap justify-self-start lg:min-h-8"
+					bind:ref={addButton}
 				>
-					{m.common_done()}
+					<PlusIcon class="size-4" />
+					{m.workers_agitation_add()}
 				</Button>
-			</div>
-		</div>
-	{:else}
-		<Button
-			type="button"
-			variant="ghost"
-			size="sm"
-			class="min-h-tap justify-self-start lg:min-h-8"
-			bind:ref={addButton}
-			onclick={() => void openAdder()}
+			{/snippet}
+		</Popover.Trigger>
+		<Popover.Content
+			align="start"
+			collisionPadding={8}
+			class="w-72 gap-2 p-2"
+			onOpenAutoFocus={(event) => {
+				event.preventDefault();
+				search?.focus();
+			}}
+			onCloseAutoFocus={(event) => event.preventDefault()}
+			onInteractOutside={(event) => {
+				// Typed text is kept, as it is when the selection moves: Done or Escape closes it.
+				if (query.trim()) event.preventDefault();
+			}}
 		>
-			<PlusIcon class="size-4" />
-			{m.workers_agitation_add()}
-		</Button>
-	{/if}
+			{#if candidates}
+				<div class="grid grid-cols-[minmax(0,1fr)] gap-2">
+					<Input
+						bind:ref={search}
+						bind:value={query}
+						type="search"
+						aria-label={m.workers_agitation_input()}
+						placeholder={m.workers_agitation_search()}
+						disabled={saving}
+						oninput={() => (errorMessage = '')}
+						onkeydown={(event) => {
+							if (event.isComposing) return;
+							if (event.key === 'Escape') {
+								event.preventDefault();
+								event.stopPropagation();
+								void closeAdder();
+							} else if (event.key === 'Enter') {
+								event.preventDefault();
+								void addAgitation();
+							}
+						}}
+					/>
+					{#if !candidates.exact}
+						<!-- Kept raw: a full-width row with the add text, not a button variant. -->
+						<button
+							type="button"
+							class="flex min-h-tap w-full items-center rounded-item px-2 py-1 text-left text-sm text-ink-2 hover:bg-hover focus-visible:outline-2 focus-visible:outline-ring disabled:text-ink-3 disabled:opacity-60 lg:min-h-8"
+							disabled={saving || !query.trim()}
+							onclick={() => void addAgitation()}
+						>
+							{query.trim()
+								? m.workers_agitation_new({ text: query.trim() })
+								: m.workers_agitation_new_hint()}
+						</button>
+					{/if}
+					{#if candidates.matches.length}
+						<ul
+							aria-label={m.workers_agitation_list_aria()}
+							class="grid max-h-56 grid-cols-[minmax(0,1fr)] gap-0.5 overflow-y-auto overscroll-contain pb-1"
+						>
+							{#each candidates.matches as agitation (agitation.id)}
+								<li>
+									<!-- Kept raw: a full-width candidate row, not a button variant. -->
+									<button
+										type="button"
+										class="flex min-h-tap w-full items-center rounded-item px-2 py-1 text-left text-sm hover:bg-hover focus-visible:outline-2 focus-visible:outline-ring disabled:opacity-60 lg:min-h-8"
+										disabled={saving}
+										onclick={() => void addAgitation(agitation)}
+									>
+										<span class="prose-value min-w-0 flex-1 truncate" title={agitation.text}
+											>{agitation.text}</span
+										>
+									</button>
+								</li>
+							{/each}
+						</ul>
+					{:else}
+						<p class="px-2 text-sm text-ink-3">
+							{query.trim() ? m.workers_agitation_no_match() : m.workers_agitation_none()}
+						</p>
+					{/if}
+					{#if errorMessage}
+						<p role="alert" class="text-sm text-state-error">{errorMessage}</p>
+					{/if}
+					<!-- The footer sits below the scrolling list, never over it. -->
+					<div class="flex items-center justify-end gap-2 border-t border-rule pt-2">
+						<Button
+							type="button"
+							variant="ghost"
+							size="sm"
+							class="min-h-tap lg:min-h-8"
+							onclick={() => void closeAdder()}
+						>
+							{m.common_done()}
+						</Button>
+					</div>
+				</div>
+			{/if}
+		</Popover.Content>
+	</Popover.Root>
 	<!-- Below the section content, not tied to the panel: it outlives the panel's close. -->
 	{#if addedNotice}
 		<p class="text-xs text-muted-foreground">{m.workers_agitation_added_notice()}</p>

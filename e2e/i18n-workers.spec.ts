@@ -11,6 +11,9 @@ import { openWorkersTable, seedInspectorWorkers } from './workers-table-page.ts'
  */
 test.use({ locale: 'es-MX', viewport: { width: 1440, height: 900 } });
 
+/** The editor popover of a field, wherever it opens. */
+const editor = (page: Page) => page.locator('[data-slot="popover-content"]');
+
 const rows = (page: Page) => page.locator('tbody tr[data-worker-id]');
 
 /** The row for one Worker, by the name it keeps verbatim. */
@@ -94,8 +97,8 @@ test('the table and record read in Spanish while names and Worksite vocabulary s
 
 	// A contact edit saves under its Spanish label, and the canonical value is stored.
 	await ada.getByRole('button', { name: 'Editar correo electrónico' }).click();
-	await ada.getByLabel('Correo electrónico').fill('ada.es@example.test');
-	await ada.getByLabel('Correo electrónico').press('Enter');
+	await editor(page).getByLabel('Correo electrónico').fill('ada.es@example.test');
+	await editor(page).getByLabel('Correo electrónico').press('Enter');
 	await expect(page.getByTestId('status-line')).toContainText(
 		'Se guardó Correo electrónico de Ada Lovelace'
 	);
@@ -104,10 +107,10 @@ test('the table and record read in Spanish while names and Worksite vocabulary s
 	// A refused contact write stays open with Spanish copy and keeps the typed value.
 	await page.route('**/api/workers/*', (route) => route.abort());
 	await ada.getByRole('button', { name: 'Editar correo electrónico' }).click();
-	await ada.getByLabel('Correo electrónico').fill('not-an-email');
-	await ada.getByLabel('Correo electrónico').press('Enter');
-	await expect(ada.getByRole('alert')).toBeVisible();
-	await expect(ada.getByLabel('Correo electrónico')).toHaveValue('not-an-email');
+	await editor(page).getByLabel('Correo electrónico').fill('not-an-email');
+	await editor(page).getByLabel('Correo electrónico').press('Enter');
+	await expect(editor(page).getByRole('alert')).toBeVisible();
+	await expect(editor(page).getByLabel('Correo electrónico')).toHaveValue('not-an-email');
 	await page.unroute('**/api/workers/*');
 });
 
@@ -126,8 +129,12 @@ test('Notes, Relationships and Agitations are edited in Spanish', async ({ page,
 
 	// A Relationship is found through Spanish controls and reports in Spanish.
 	await ada.getByRole('button', { name: 'Agregar relación' }).click();
-	await ada.getByRole('searchbox', { name: 'Buscar trabajadores para relacionar' }).fill('grace');
-	const list = ada.getByRole('list', { name: 'Trabajadores con quienes puedes relacionar' });
+	await editor(page)
+		.getByRole('searchbox', { name: 'Buscar trabajadores para relacionar' })
+		.fill('grace');
+	const list = editor(page).getByRole('list', {
+		name: 'Trabajadores con quienes puedes relacionar'
+	});
 	await list.getByRole('button', { name: 'Grace Hopper, Simpatizante' }).click();
 	await expect(page.getByTestId('status-line')).toContainText(
 		'Se agregó una relación entre Ada Lovelace y Grace Hopper'
@@ -144,8 +151,8 @@ test('Notes, Relationships and Agitations are edited in Spanish', async ({ page,
 		'Se quitó un asunto laboral de Ada Lovelace'
 	);
 	await ada.getByRole('button', { name: 'Agregar asunto laboral' }).click();
-	await ada.getByRole('searchbox', { name: 'Asunto laboral' }).fill('Domingos libres');
-	await ada
+	await editor(page).getByRole('searchbox', { name: 'Asunto laboral' }).fill('Domingos libres');
+	await editor(page)
 		.getByRole('button', { name: 'Agregar "Domingos libres" como nuevo asunto laboral' })
 		.click();
 	await expect(page.getByTestId('status-line')).toContainText(
@@ -299,7 +306,7 @@ test('a restored draft banner reads in Spanish and Discard them forgets it', asy
 		name: 'Detalles del trabajador: Borrador Keeper'
 	});
 	await panel.getByRole('button', { name: 'Editar correo electrónico' }).click();
-	await panel.getByLabel('Correo electrónico').fill('borrador@example.test');
+	await editor(page).getByLabel('Correo electrónico').fill('borrador@example.test');
 
 	// The autosave lands about a second after the last keystroke.
 	await expect

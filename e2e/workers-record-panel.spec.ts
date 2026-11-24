@@ -420,7 +420,7 @@ test('editing Email saves it, offers Undo, and Undo puts the old address back', 
 	const ada = inspector(page, 'Ada Lovelace');
 
 	await ada.getByRole('button', { name: 'Edit email' }).click();
-	const input = ada.getByLabel('Email');
+	const input = editor(page).getByLabel('Email');
 	await expect(input).toHaveValue('ada@example.test');
 
 	await input.fill('ada.king@example.test');
@@ -447,8 +447,8 @@ test('a saved Email is still there after a reload', async ({ page, request }) =>
 	const ada = inspector(page, 'Ada Lovelace');
 
 	await ada.getByRole('button', { name: 'Edit email' }).click();
-	await ada.getByLabel('Email').fill('ada.king@example.test');
-	await ada.getByRole('button', { name: 'Save' }).click();
+	await editor(page).getByLabel('Email').fill('ada.king@example.test');
+	await editor(page).getByRole('button', { name: 'Save' }).click();
 	await expect(ada).toContainText('ada.king@example.test');
 
 	await page.reload();
@@ -467,7 +467,7 @@ test('Escape puts the Phone back and returns focus to its value button', async (
 	const phone = ada.getByRole('button', { name: 'Edit phone' });
 
 	await phone.click();
-	const input = ada.getByLabel('Phone');
+	const input = editor(page).getByLabel('Phone');
 	await input.fill('555-9999');
 	await input.press('Escape');
 
@@ -491,11 +491,11 @@ test('clearing the Name is refused with a message and the old name stays', async
 	const ada = inspector(page, 'Ada Lovelace');
 
 	await ada.getByRole('button', { name: 'Edit name' }).click();
-	const input = ada.getByLabel('Name');
+	const input = editor(page).getByLabel('Name');
 	await input.fill('');
 	await input.press('Enter');
 
-	await expect(ada.getByText(/needs a name/i)).toBeVisible();
+	await expect(editor(page).getByText(/needs a name/i)).toBeVisible();
 	await expect(input).toBeVisible();
 	await expect(page.getByTestId('status-line')).not.toContainText('Saved');
 
@@ -513,7 +513,7 @@ test('a commit that changes nothing writes nothing and reports nothing', async (
 	const ada = inspector(page, 'Ada Lovelace');
 
 	await ada.getByRole('button', { name: 'Edit email' }).click();
-	await ada.getByLabel('Email').press('Enter');
+	await editor(page).getByLabel('Email').press('Enter');
 
 	await expect(ada.getByRole('button', { name: 'Edit email' })).toBeFocused();
 	await expect(ada).toContainText('ada@example.test');
@@ -530,7 +530,7 @@ test.describe('Phone entry (ticket 01)', () => {
 	async function openPhone(page: Page) {
 		const ada = inspector(page, 'Ada Lovelace');
 		await ada.getByRole('button', { name: 'Edit phone' }).click();
-		return { ada, input: ada.getByLabel('Phone') };
+		return { ada, input: editor(page).getByLabel('Phone') };
 	}
 
 	/** Puts the caret in a masked input once its formatting tick has settled. */
@@ -657,7 +657,7 @@ test.describe('Phone entry (ticket 01)', () => {
 		await expect(input).toHaveValue('(555) 010-0');
 		await input.press('Enter');
 
-		await expect(ada.getByRole('alert')).toContainText(/10 digits/i);
+		await expect(editor(page).getByRole('alert')).toContainText(/10 digits/i);
 		await expect(input).toHaveValue('(555) 010-0');
 		await expect(page.getByTestId('status-line')).not.toContainText("Saved Ada Lovelace's Phone");
 		expect(await storedPhone(request)).toBe('555-0100');
@@ -707,7 +707,7 @@ test.describe('Phone entry (ticket 01)', () => {
 
 		const reopened = inspector(page, 'Ada Lovelace');
 		await reopened.getByRole('button', { name: 'Edit phone' }).click();
-		await reopened.getByLabel('Phone').press('Enter');
+		await editor(page).getByLabel('Phone').press('Enter');
 
 		// The editor closes without a write: the value already matched the record.
 		await expect(reopened.getByRole('button', { name: 'Edit phone' })).toBeFocused();
@@ -744,8 +744,8 @@ test.describe('Phone entry (ticket 01)', () => {
 		await expect(ada.getByRole('button', { name: 'Edit phone' })).toContainText('555-0100');
 
 		await ada.getByRole('button', { name: 'Edit email' }).click();
-		await ada.getByLabel('Email').fill('ada.corrected@example.test');
-		await ada.getByLabel('Email').press('Enter');
+		await editor(page).getByLabel('Email').fill('ada.corrected@example.test');
+		await editor(page).getByLabel('Email').press('Enter');
 		await expect(page.getByTestId('status-line')).toContainText("Saved Ada Lovelace's Email");
 
 		const { input } = await openPhone(page);
@@ -785,9 +785,7 @@ test.describe('Phone entry (ticket 01)', () => {
 
 		// Coming back reopens the Phone editor with what was typed.
 		await selectWorker(page, 'Ada Lovelace');
-		await expect(
-			inspector(page, 'Ada Lovelace').getByRole('textbox', { name: 'Phone' })
-		).toHaveValue('(555) 01');
+		await expect(editor(page).getByRole('textbox', { name: 'Phone' })).toHaveValue('(555) 01');
 	});
 
 	test('unsaved Phone typing is kept in the draft as shown', async ({ page, request }) => {
@@ -813,9 +811,7 @@ test.describe('Phone entry (ticket 01)', () => {
 		await page.reload();
 		await appReady(page);
 		await selectWorker(page, 'Ada Lovelace');
-		await expect(
-			inspector(page, 'Ada Lovelace').getByRole('textbox', { name: 'Phone' })
-		).toHaveValue('(555) 01');
+		await expect(editor(page).getByRole('textbox', { name: 'Phone' })).toHaveValue('(555) 01');
 	});
 });
 
@@ -828,15 +824,14 @@ test('a long email is edited in a full-width input, not a clipped inline one', a
 	const ada = inspector(page, 'Ada Lovelace');
 
 	await ada.getByRole('button', { name: 'Edit email' }).click();
-	const input = ada.getByLabel('Email');
+	const input = editor(page).getByLabel('Email');
 	await input.fill('ada.lovelace.king.byron@a-very-long-domain.example.test');
 
-	// The editor takes the Contact lines' whole width, so a long address is
-	// readable in place rather than cut off beside its icon.
+	// The editor opens over the panel at a width that reads a long address in place.
 	const inputBox = await input.boundingBox();
-	const contactBox = await ada.getByRole('group', { name: 'Contact' }).boundingBox();
-	expect(Math.abs((inputBox?.width ?? 0) - (contactBox?.width ?? 0))).toBeLessThanOrEqual(1);
 	expect(inputBox?.width ?? 0).toBeGreaterThan(200);
+	const viewport = page.viewportSize()!;
+	expect((inputBox?.x ?? 0) + (inputBox?.width ?? 0)).toBeLessThanOrEqual(viewport.width);
 });
 
 test('a half-typed Email is saved when another row is clicked', async ({ page, request }) => {
@@ -846,7 +841,7 @@ test('a half-typed Email is saved when another row is clicked', async ({ page, r
 
 	// Typed, never committed by hand: the row click must save it, not drop it.
 	await ada.getByRole('button', { name: 'Edit email' }).click();
-	await ada.getByLabel('Email').fill('ada.flush@example.test');
+	await editor(page).getByLabel('Email').fill('ada.flush@example.test');
 
 	await selectWorker(page, 'Grace Hopper');
 	await expect(inspector(page, 'Grace Hopper')).toBeVisible();
@@ -867,7 +862,7 @@ test('a refused Name keeps the selection when another row is clicked', async ({
 	const ada = inspector(page, 'Ada Lovelace');
 
 	await ada.getByRole('button', { name: 'Edit name' }).click();
-	const input = ada.getByLabel('Name');
+	const input = editor(page).getByLabel('Name');
 	await input.fill('');
 
 	await selectWorker(page, 'Grace Hopper');
@@ -875,7 +870,7 @@ test('a refused Name keeps the selection when another row is clicked', async ({
 	// The write was refused, so the organizer does not leave the Worker who
 	// needs the fix: same record, same editor, focus in the field.
 	await expect(input).toBeFocused();
-	await expect(ada.getByText(/needs a name/i)).toBeVisible();
+	await expect(editor(page).getByText(/needs a name/i)).toBeVisible();
 	await expect(inspector(page, 'Ada Lovelace')).toBeVisible();
 	await expect(workerRow(page, 'Ada Lovelace')).toHaveAttribute('aria-current', 'true');
 	await expect(workerRow(page, 'Grace Hopper')).not.toHaveAttribute('aria-current');
@@ -890,14 +885,14 @@ test('a refused Name keeps the selection when the Down arrow moves it', async ({
 	const ada = inspector(page, 'Ada Lovelace');
 
 	await ada.getByRole('button', { name: 'Edit name' }).click();
-	const input = ada.getByLabel('Name');
+	const input = editor(page).getByLabel('Name');
 	await input.fill('');
 
 	await nameCell(page, 'Ada Lovelace').focus();
 	await page.keyboard.press('ArrowDown');
 
 	await expect(input).toBeFocused();
-	await expect(ada.getByText(/needs a name/i)).toBeVisible();
+	await expect(editor(page).getByText(/needs a name/i)).toBeVisible();
 	await expect(workerRow(page, 'Ada Lovelace')).toHaveAttribute('aria-current', 'true');
 	await expect(workerRow(page, 'Grace Hopper')).not.toHaveAttribute('aria-current');
 });
@@ -907,12 +902,12 @@ test('a refused draft keeps the row unchecked and the editor open', async ({ pag
 	await selectWorker(page, 'Ada Lovelace');
 	const ada = inspector(page, 'Ada Lovelace');
 	await ada.getByRole('button', { name: 'Edit email' }).click();
-	await ada.getByLabel('Email').fill('not-an-email');
+	await editor(page).getByLabel('Email').fill('not-an-email');
 
 	const box = page.getByRole('checkbox', { name: 'Select Grace Hopper' });
 	await box.check({ force: true, noWaitAfter: true }).catch(() => {});
-	await expect(ada.getByRole('alert')).toBeVisible();
-	await expect(ada.getByLabel('Email')).toHaveValue('not-an-email');
+	await expect(editor(page).getByRole('alert')).toBeVisible();
+	await expect(editor(page).getByLabel('Email')).toHaveValue('not-an-email');
 	await expect(box).not.toBeChecked();
 	await expect(page.getByTestId('bulk-bar')).toHaveCount(0);
 });
@@ -923,7 +918,7 @@ test('a bulk edit saves what is being typed in the panel first', async ({ page, 
 	const ada = inspector(page, 'Ada Lovelace');
 
 	await ada.getByRole('button', { name: 'Edit email' }).click();
-	await ada.getByLabel('Email').fill('ada.bulk@example.test');
+	await editor(page).getByLabel('Email').fill('ada.bulk@example.test');
 
 	await page.getByRole('checkbox', { name: 'Select Ada Lovelace' }).check();
 	await page.getByTestId('bulk-bar').getByRole('button', { name: 'Edit', exact: true }).click();
@@ -1827,7 +1822,7 @@ test.describe('Undo reaches the Worker the edit started on (ticket 25)', () => {
 		await selectWorker(page, 'Ada Lovelace');
 		const ada = inspector(page, 'Ada Lovelace');
 		await ada.getByRole('button', { name: 'Edit email' }).click();
-		const input = ada.getByLabel('Email');
+		const input = editor(page).getByLabel('Email');
 		await input.fill('ada.king@example.test');
 		await input.press('Enter');
 		await expect(ada).toContainText('ada.king@example.test');
@@ -1882,8 +1877,8 @@ test('adding a Relationship shows on both workers, and Undo takes it off both', 
 	const ada = inspector(page, 'Ada Lovelace');
 
 	await ada.getByRole('button', { name: 'Add relationship' }).click();
-	const list = ada.getByRole('list', { name: 'Workers you can relate' });
-	await ada.getByRole('searchbox', { name: 'Search workers to relate' }).fill('grace');
+	const list = editor(page).getByRole('list', { name: 'Workers you can relate' });
+	await editor(page).getByRole('searchbox', { name: 'Search workers to relate' }).fill('grace');
 	await list.getByRole('button', { name: /^Grace Hopper/ }).click();
 
 	await expect(list).toBeHidden();
@@ -1912,7 +1907,7 @@ test('the add list leaves out the worker and their relationships, filters by nam
 	const ada = inspector(page, 'Ada Lovelace');
 
 	await ada.getByRole('button', { name: 'Add relationship' }).click();
-	const list = ada.getByRole('list', { name: 'Workers you can relate' });
+	const list = editor(page).getByRole('list', { name: 'Workers you can relate' });
 	// Not Ada herself.
 	await expect(list.getByRole('button')).toHaveCount(2);
 	await expect(list).not.toContainText('Ada Lovelace');
@@ -1920,7 +1915,7 @@ test('the add list leaves out the worker and their relationships, filters by nam
 	await expect(list.getByRole('button', { name: /^Grace Hopper/ })).toContainText('Front of House');
 
 	// Typing narrows by name.
-	await ada.getByRole('searchbox', { name: 'Search workers to relate' }).fill('kath');
+	await editor(page).getByRole('searchbox', { name: 'Search workers to relate' }).fill('kath');
 	await expect(list.getByRole('button')).toHaveCount(1);
 	await expect(list).toContainText('Katherine Johnson');
 
@@ -1935,7 +1930,7 @@ test('the add list leaves out the worker and their relationships, filters by nam
 	await ada.getByRole('button', { name: 'Add relationship' }).click();
 	await expect(list.getByRole('button')).toHaveCount(1);
 	await expect(list).not.toContainText('Grace Hopper');
-	await ada.getByRole('button', { name: 'Done' }).click();
+	await editor(page).getByRole('button', { name: 'Done' }).click();
 	await expect(list).toBeHidden();
 });
 
@@ -1962,12 +1957,12 @@ test('Add agitation lists the unheld worksite Agitations, and typing filters the
 	const ada = inspector(page, 'Ada Lovelace');
 
 	await ada.getByRole('button', { name: 'Add agitation' }).click();
-	const list = ada.getByRole('list', { name: 'Agitations you can add' });
+	const list = editor(page).getByRole('list', { name: 'Agitations you can add' });
 	// Pay is held by Ada, so only the other two are offered.
 	await expect(list.getByRole('button')).toHaveCount(2);
 	await expect(list).not.toContainText('Pay');
 
-	await ada.getByRole('searchbox', { name: 'Agitation' }).fill('sun');
+	await editor(page).getByRole('searchbox', { name: 'Agitation' }).fill('sun');
 	await expect(list.getByRole('button')).toHaveCount(1);
 	await expect(list).toContainText('Sundays off');
 
@@ -1986,29 +1981,31 @@ test('the top row is disabled while the box is empty, and absent on an exact mat
 	const ada = inspector(page, 'Ada Lovelace');
 
 	await ada.getByRole('button', { name: 'Add agitation' }).click();
-	const search = ada.getByRole('searchbox', { name: 'Agitation' });
+	const search = editor(page).getByRole('searchbox', { name: 'Agitation' });
 	await expect(
-		ada.getByRole('button', { name: 'Type a name to add a new agitation' })
+		editor(page).getByRole('button', { name: 'Type a name to add a new agitation' })
 	).toBeDisabled();
 
 	// Exact matches are existing Agitations, held or not, so no add row appears.
-	const addRow = ada.getByRole('button', { name: /as a new agitation/ });
+	const addRow = editor(page).getByRole('button', { name: /as a new agitation/ });
 	await search.fill('pay');
 	await expect(addRow).toHaveCount(0);
 	await search.fill('HOURS');
 	await expect(addRow).toHaveCount(0);
 	await expect(
-		ada.getByRole('list', { name: 'Agitations you can add' }).getByRole('button', { name: 'Hours' })
+		editor(page)
+			.getByRole('list', { name: 'Agitations you can add' })
+			.getByRole('button', { name: 'Hours' })
 	).toBeVisible();
 
 	// A new name offers the add row with the typed text, trimmed.
 	await search.fill('  Quiet hours ');
 	await expect(
-		ada.getByRole('button', { name: 'Add "Quiet hours" as a new agitation' })
+		editor(page).getByRole('button', { name: 'Add "Quiet hours" as a new agitation' })
 	).toBeVisible();
 
 	// Done closes the panel and focus returns to the opener.
-	await ada.getByRole('button', { name: 'Done' }).click();
+	await editor(page).getByRole('button', { name: 'Done' }).click();
 	await expect(search).toBeHidden();
 	await expect(ada.getByRole('button', { name: 'Add agitation' })).toBeFocused();
 });
@@ -2023,11 +2020,11 @@ test('choosing the top row creates the Agitation once, assigns it, and closes th
 	const countBefore = (await (await request.get('/api/dataset')).json()).agitations.length;
 
 	await ada.getByRole('button', { name: 'Add agitation' }).click();
-	await ada.getByRole('searchbox', { name: 'Agitation' }).fill('Quiet hours');
-	await ada.getByRole('button', { name: 'Add "Quiet hours" as a new agitation' }).click();
+	await editor(page).getByRole('searchbox', { name: 'Agitation' }).fill('Quiet hours');
+	await editor(page).getByRole('button', { name: 'Add "Quiet hours" as a new agitation' }).click();
 
 	await expect(ada.getByRole('button', { name: 'Remove agitation Quiet hours' })).toBeVisible();
-	await expect(ada.getByRole('searchbox', { name: 'Agitation' })).toBeHidden();
+	await expect(editor(page).getByRole('searchbox', { name: 'Agitation' })).toBeHidden();
 	await expect(ada.getByRole('button', { name: 'Add agitation' })).toBeFocused();
 	await expect(ada.getByText("Added to the worksite's agitations").first()).toBeVisible();
 	await expect(page.getByTestId('status-line')).toContainText('Added agitation for Ada Lovelace');
@@ -2044,15 +2041,19 @@ test('a refused create keeps the panel open with the retry message and the typed
 	const ada = inspector(page, 'Ada Lovelace');
 
 	await ada.getByRole('button', { name: 'Add agitation' }).click();
-	await ada.getByRole('searchbox', { name: 'Agitation' }).fill('Quiet hours');
+	await editor(page).getByRole('searchbox', { name: 'Agitation' }).fill('Quiet hours');
 	await page.route('**/api/agitations', async (route) => {
 		if (route.request().method() !== 'POST') return route.continue();
 		await route.fulfill({ status: 500, json: { message: 'Synthetic agitation create failure.' } });
 	});
-	await ada.getByRole('button', { name: 'Add "Quiet hours" as a new agitation' }).click();
+	await editor(page).getByRole('button', { name: 'Add "Quiet hours" as a new agitation' }).click();
 
-	await expect(ada.getByRole('alert')).toContainText('Could not add the Agitation. Try again.');
-	await expect(ada.getByRole('searchbox', { name: 'Agitation' })).toHaveValue('Quiet hours');
+	await expect(editor(page).getByRole('alert')).toContainText(
+		'Could not add the Agitation. Try again.'
+	);
+	await expect(editor(page).getByRole('searchbox', { name: 'Agitation' })).toHaveValue(
+		'Quiet hours'
+	);
 	await expect(ada.getByRole('button', { name: 'Remove agitation Quiet hours' })).toHaveCount(0);
 	await page.unroute('**/api/agitations');
 });
@@ -2082,10 +2083,12 @@ test('typing an existing Agitation assigns it without changing Configuration', a
 	const countBefore = dataset.agitations.length;
 
 	await ada.getByRole('button', { name: 'Add agitation' }).click();
-	const input = ada.getByRole('searchbox', { name: 'Agitation' });
+	const input = editor(page).getByRole('searchbox', { name: 'Agitation' });
 	await input.fill('  pAy  ');
 	await expect(
-		ada.getByRole('list', { name: 'Agitations you can add' }).getByRole('button', { name: 'Pay' })
+		editor(page)
+			.getByRole('list', { name: 'Agitations you can add' })
+			.getByRole('button', { name: 'Pay' })
 	).toBeVisible();
 	// Enter on a name that matches an existing Agitation assigns that one.
 	await input.press('Enter');
@@ -2104,7 +2107,7 @@ test('typing a new Agitation creates it once, reports shared vocabulary, and Und
 	await selectWorker(page, 'Ada Lovelace');
 	const ada = inspector(page, 'Ada Lovelace');
 	await ada.getByRole('button', { name: 'Add agitation' }).click();
-	const input = ada.getByRole('searchbox', { name: 'Agitation' });
+	const input = editor(page).getByRole('searchbox', { name: 'Agitation' });
 	await input.fill('Closed on Sundays');
 	await input.press('Enter');
 
@@ -2283,12 +2286,12 @@ test('a malformed Email is refused in the panel and the stored address stays', a
 	await selectWorker(page, 'Ada Lovelace');
 	const ada = inspector(page, 'Ada Lovelace');
 	await ada.getByRole('button', { name: 'Edit email' }).click();
-	await ada.getByLabel('Email').fill('not-an-email');
-	await ada.getByLabel('Email').press('Enter');
-	await expect(ada.getByRole('alert')).toHaveText(
+	await editor(page).getByLabel('Email').fill('not-an-email');
+	await editor(page).getByLabel('Email').press('Enter');
+	await expect(editor(page).getByRole('alert')).toHaveText(
 		"That doesn't look like an email address. Check it, then save."
 	);
-	await expect(ada.getByLabel('Email')).toHaveValue('not-an-email');
+	await expect(editor(page).getByLabel('Email')).toHaveValue('not-an-email');
 	const stored = (await (await request.get('/api/dataset')).json()) as {
 		workers: { name: string; email: string }[];
 	};
@@ -2306,8 +2309,8 @@ test('a long Email stays on one line, ends in an ellipsis and keeps its full tex
 	const ada = inspector(page, 'Ada Lovelace');
 	const longEmail = 'harlan.ostrander-whitfield@harbourside-logistics.example.test';
 	await ada.getByRole('button', { name: 'Edit email' }).click();
-	await ada.getByLabel('Email').fill(longEmail);
-	await ada.getByLabel('Email').press('Enter');
+	await editor(page).getByLabel('Email').fill(longEmail);
+	await editor(page).getByLabel('Email').press('Enter');
 
 	const value = ada.getByRole('button', { name: 'Edit email' });
 	await expect(value).toHaveAttribute('title', longEmail);
@@ -2338,12 +2341,12 @@ test('saving for a Worker deleted elsewhere says so and keeps the typing', async
 			: route.continue()
 	);
 	await ada.getByRole('button', { name: 'Edit email' }).click();
-	await ada.getByLabel('Email').fill('new@example.test');
-	await ada.getByLabel('Email').press('Enter');
-	await expect(ada.getByRole('alert')).toHaveText(
+	await editor(page).getByLabel('Email').fill('new@example.test');
+	await editor(page).getByLabel('Email').press('Enter');
+	await expect(editor(page).getByRole('alert')).toHaveText(
 		'This worker was deleted, so the change could not be saved.'
 	);
-	await expect(ada.getByLabel('Email')).toHaveValue('new@example.test');
+	await expect(editor(page).getByLabel('Email')).toHaveValue('new@example.test');
 });
 
 test('a legacy worker id in the URL is ignored and stripped; the open record survives in-app return and clears on reload', async ({

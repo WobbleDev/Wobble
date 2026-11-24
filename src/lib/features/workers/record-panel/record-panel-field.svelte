@@ -13,6 +13,7 @@
 	import { formatPhoneDigits, formatPhoneInput, phoneDigits } from '../phone.ts';
 	import { Button } from '#lib/components/ui/button/index.ts';
 	import { Input } from '#lib/components/ui/input/index.ts';
+	import * as Popover from '#lib/components/ui/popover/index.ts';
 	import { cn } from '#lib/utils.ts';
 	import { getEditModel } from '#lib/features/workers/edit-model.svelte.ts';
 	import { runSingleEdit } from '../data-table/bulk-actions/bulk-actions.ts';
@@ -90,6 +91,8 @@
 	let saving = $state(false);
 	let input = $state<HTMLInputElement | null>(null);
 	let trigger = $state<HTMLButtonElement | null>(null);
+	/** A restored draft reopens the editor without taking focus from where the organizer is. */
+	let restoredOpen = $state(false);
 
 	const editModel = getEditModel();
 	// The draft key names which editor this is for the whole life of the instance; it is
@@ -111,6 +114,7 @@
 		const restored = draftKey ? panelDraft?.restored[draftKey] : undefined;
 		if (restored !== undefined) {
 			draft = restored;
+			restoredOpen = true;
 			editing = true;
 		}
 	});
@@ -217,14 +221,26 @@
 		void tick().then(() => trigger?.focus());
 	}
 
-	function startEditing() {
-		draft = value;
-		errorMessage = '';
-		editing = true;
+	function focusInput() {
 		void tick().then(() => {
 			input?.focus();
 			input?.select();
 		});
+	}
+
+	function startEditing() {
+		draft = value;
+		errorMessage = '';
+		restoredOpen = false;
+		editing = true;
+		// New Worker edits in place, so its input exists at once; a popover focuses on open.
+		if (onCreate) focusInput();
+	}
+
+	/** The popover's own open and close (the value button, Escape) reach the same paths as the buttons. */
+	function setOpen(open: boolean) {
+		if (open) startEditing();
+		else if (editing) cancel();
 	}
 
 	function cancel() {
@@ -329,80 +345,125 @@
 	}
 </script>
 
-{#snippet field()}
-	{#if editing}
-		<!-- Escape is caught on the way up from the form's own controls. -->
-		<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
-		<form
-			class="grid gap-2"
-			novalidate
-			onkeydown={(event) => {
-				// Escape cancels from the input and from Save or Cancel alike.
-				if (event.key !== 'Escape') return;
-				event.preventDefault();
-				event.stopPropagation();
-				cancel();
-			}}
-			onsubmit={(event) => {
-				event.preventDefault();
-				void commit();
-			}}
-		>
-			<Input
-				bind:ref={input}
-				value={draft}
-				oninput={onInput}
-				onkeydown={onKeydown}
-				{type}
-				inputmode={phoneMask ? 'numeric' : undefined}
-				placeholder={inputPlaceholder ?? placeholder}
-				aria-label={label}
-				aria-busy={saving}
-				class={cn('w-full min-w-0', title && 'h-9 text-xl font-semibold tracking-title')}
-			/>
-			{#if errorMessage}
-				<p role="alert" class="text-sm text-state-error">{errorMessage}</p>
-			{/if}
-			<div class="flex items-center gap-2">
-				<Button
-					type="submit"
-					size="sm"
-					class="min-h-tap focus-visible:border-transparent lg:min-h-8"
-					disabled={saving}>{m.common_save()}</Button
-				>
-				<Button
-					type="button"
-					size="sm"
-					variant="ghost"
-					class="min-h-tap lg:min-h-8"
-					onclick={cancel}
-					disabled={saving}
-				>
-					{m.common_cancel()}
-				</Button>
-			</div>
-		</form>
-	{:else}
-		<!-- Kept raw: the field value is shown as text and edited in place; the ui Button would restyle it. -->
-		<button
-			type="button"
-			bind:this={trigger}
-			class="flex w-full min-w-0 items-center rounded-item px-2 py-1 text-left transition-colors duration-150 outline-none hover:bg-hover focus-visible:outline-2 focus-visible:outline-ring motion-reduce:transition-none"
-			aria-label={valueLabel}
-			title={oneLine && value ? value : undefined}
-			onclick={startEditing}
-		>
-			<span
-				class={cn(
-					'prose-value min-w-0',
-					oneLine ? 'truncate' : 'break-words',
-					title ? 'text-xl font-semibold tracking-title text-pretty' : 'text-sm',
-					empty && 'font-normal text-ink-3 underline decoration-dotted underline-offset-4'
-				)}
+{#snippet form()}
+	<!-- Escape is caught on the way up from the form's own controls. -->
+	<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+	<form
+		class="grid gap-2"
+		novalidate
+		onkeydown={(event) => {
+			// Escape cancels from the input and from Save or Cancel alike.
+			if (event.key !== 'Escape') return;
+			event.preventDefault();
+			event.stopPropagation();
+			cancel();
+		}}
+		onsubmit={(event) => {
+			event.preventDefault();
+			void commit();
+		}}
+	>
+		<Input
+			bind:ref={input}
+			value={draft}
+			oninput={onInput}
+			onkeydown={onKeydown}
+			{type}
+			inputmode={phoneMask ? 'numeric' : undefined}
+			placeholder={inputPlaceholder ?? placeholder}
+			aria-label={label}
+			aria-busy={saving}
+			class={cn('w-full min-w-0', title && 'h-9 text-xl font-semibold tracking-title')}
+		/>
+		{#if errorMessage}
+			<p role="alert" class="text-sm text-state-error">{errorMessage}</p>
+		{/if}
+		<div class="flex items-center gap-2">
+			<Button
+				type="submit"
+				size="sm"
+				class="min-h-tap focus-visible:border-transparent lg:min-h-8"
+				disabled={saving}>{m.common_save()}</Button
 			>
-				{value || placeholder}
-			</span>
-		</button>
+			<Button
+				type="button"
+				size="sm"
+				variant="ghost"
+				class="min-h-tap lg:min-h-8"
+				onclick={cancel}
+				disabled={saving}
+			>
+				{m.common_cancel()}
+			</Button>
+		</div>
+	</form>
+{/snippet}
+
+{#snippet reading()}
+	<span
+		class={cn(
+			'prose-value min-w-0',
+			oneLine ? 'truncate' : 'break-words',
+			title ? 'text-xl font-semibold tracking-title text-pretty' : 'text-sm',
+			empty && 'font-normal text-ink-3 underline decoration-dotted underline-offset-4'
+		)}
+	>
+		{value || placeholder}
+	</span>
+{/snippet}
+
+{#snippet field()}
+	{#if onCreate}
+		<!-- New Worker: the Name is typed where it will live, so the form stands in the row. -->
+		{#if editing}
+			{@render form()}
+		{:else}
+			<!-- Kept raw: the field value is shown as text and edited in place; the ui Button would restyle it. -->
+			<button
+				type="button"
+				bind:this={trigger}
+				class="flex w-full min-w-0 items-center rounded-item px-2 py-1 text-left transition-colors duration-150 outline-none hover:bg-hover focus-visible:outline-2 focus-visible:outline-ring motion-reduce:transition-none"
+				aria-label={valueLabel}
+				onclick={startEditing}
+			>
+				{@render reading()}
+			</button>
+		{/if}
+	{:else}
+		<!-- The editor is a popover over the panel, so opening it moves nothing around it. -->
+		<Popover.Root open={editing} onOpenChange={setOpen}>
+			<!-- Kept raw: the field value is shown as text and edited from it; the ui Button would restyle it. -->
+			<Popover.Trigger
+				bind:ref={trigger}
+				class={cn(
+					'flex w-full min-w-0 items-center rounded-item px-2 py-1 text-left transition-colors duration-150 outline-none hover:bg-hover focus-visible:outline-2 focus-visible:outline-ring motion-reduce:transition-none',
+					editing && 'bg-hover'
+				)}
+				aria-label={editing ? undefined : valueLabel}
+				title={oneLine && value ? value : undefined}
+			>
+				{@render reading()}
+			</Popover.Trigger>
+			<Popover.Content
+				align="start"
+				collisionPadding={8}
+				trapFocus={false}
+				class={cn('gap-2 p-2', title ? 'w-80' : 'w-72')}
+				onOpenAutoFocus={(event) => {
+					event.preventDefault();
+					if (!restoredOpen) focusInput();
+				}}
+				onCloseAutoFocus={(event) => event.preventDefault()}
+				onInteractOutside={(event) => {
+					// Clicking away saves what is typed, as moving to another Worker does; a refused
+					// write keeps the editor open with its message.
+					event.preventDefault();
+					void commit(false);
+				}}
+			>
+				{@render form()}
+			</Popover.Content>
+		</Popover.Root>
 	{/if}
 {/snippet}
 
