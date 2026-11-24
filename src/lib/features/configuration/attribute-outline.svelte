@@ -1,11 +1,12 @@
 <script lang="ts">
-	import { tick } from 'svelte';
+	import { tick, untrack } from 'svelte';
 	import type { AnswerReorder } from './answer-reorder.svelte.ts';
 	import type { AttributePlacement } from './attribute-placement.svelte.ts';
 	import GripVerticalIcon from '@lucide/svelte/icons/grip-vertical';
 	import ChevronDownIcon from '@lucide/svelte/icons/chevron-down';
 	import Trash2Icon from '@lucide/svelte/icons/trash-2';
 	import { Input } from '#lib/components/ui/input/index.ts';
+	import { cn } from '#lib/utils.ts';
 	import { m } from '#lib/paraglide/messages.js';
 	import type { Worker } from '#lib/domain-vocabulary.ts';
 	import { kindMode } from '#lib/shared/workers/select-mode.ts';
@@ -63,6 +64,14 @@
 		/** The Attribute drag in progress, shared so the target row can draw the drop line. */
 		reorder: { id: string; targetId: string | null; after: boolean } | null;
 		onStartReorder: (event: PointerEvent, id: string) => void;
+		/**
+		 * List and detail: this row sits in the list column and its values fill the detail
+		 * column beside it. Off, the values nest under the row as a tree (narrow widths,
+		 * or more than one Attribute unfolded).
+		 */
+		detail?: boolean;
+		/** Reports the detail block's height (0 when it is folded or not beside the list). */
+		onDetailHeight?: (id: string, height: number) => void;
 	};
 
 	let {
@@ -87,8 +96,22 @@
 		onDuplicateOption,
 		onMoveAnswer,
 		reorder,
-		onStartReorder
+		onStartReorder,
+		detail = false,
+		onDetailHeight
 	}: Props = $props();
+
+	/** The detail block floats beside the list, so the tree needs its height to make room. */
+	let detailHeight = $state(0);
+	$effect(() => {
+		const height = detail && expanded ? detailHeight : 0;
+		// The report writes the editor's own state: read nothing back from it here.
+		untrack(() => onDetailHeight?.(attribute.id, height));
+	});
+	$effect(() => {
+		const id = attribute.id;
+		return () => untrack(() => onDetailHeight?.(id, 0));
+	});
 
 	const answers = $derived(visibleValues(attribute.answers));
 	const roots = $derived(answers.filter((answer) => !answer.parentId));
@@ -216,23 +239,32 @@
 	data-attribute-id={attribute.id}
 	data-row-id={attribute.id}
 	data-level="1"
-	class="relative outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
+	class={cn(
+		'group/item relative outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring',
+		// List and detail: the item is just its row, one list column wide; the values are
+		// placed beside it from the tree's own corner (see the detail block below).
+		detail && '@2xl:static @2xl:w-64'
+	)}
 	class:opacity-40={reordering}
 	onfocus={() => onFocusRow(attribute.id)}
 >
-	{#if dropEdge}
-		<span
-			aria-hidden="true"
-			data-testid="placement-drop-indicator"
-			class={`pointer-events-none absolute right-2 left-[2.25rem] z-10 flex items-center gap-1 ${dropEdge === 'top' ? '-top-1' : '-bottom-1'}`}
-		>
-			<span class="size-1.5 shrink-0 rounded-full bg-action"></span>
-			<span class="h-px flex-1 bg-action"></span>
-		</span>
-	{/if}
 	<div
-		class={`group/row relative grid ${rowColumns} min-h-10 items-center gap-1 px-1 coarse:min-h-tap`}
+		class={cn(
+			`group/row relative grid ${rowColumns} min-h-10 items-center gap-1 px-1 coarse:min-h-tap`,
+			detail && '@2xl:rounded-item',
+			detail && expanded && '@2xl:bg-inset'
+		)}
 	>
+		{#if dropEdge}
+			<span
+				aria-hidden="true"
+				data-testid="placement-drop-indicator"
+				class={`pointer-events-none absolute right-2 left-[2.25rem] z-10 flex items-center gap-1 ${dropEdge === 'top' ? '-top-1' : '-bottom-1'}`}
+			>
+				<span class="size-1.5 shrink-0 rounded-full bg-action"></span>
+				<span class="h-px flex-1 bg-action"></span>
+			</span>
+		{/if}
 		<button
 			type="button"
 			class="group flex size-8 items-center justify-center rounded-item p-0 coarse:size-tap"
@@ -362,58 +394,71 @@
 	</div>
 
 	{#if expanded}
-		<!-- One guide line for the root answers' level. -->
+		<!-- In list and detail, the whole block fills the detail column beside the list. -->
 		<div
-			id={`${attribute.id}-answers`}
-			role="group"
-			data-testid="attribute-answers"
-			class="ml-4 border-l border-rule pl-2 @max-[28rem]:ml-1 @max-[28rem]:pl-1"
+			bind:clientHeight={detailHeight}
+			class={cn(detail && '@2xl:absolute @2xl:top-1.5 @2xl:right-0 @2xl:left-[17.5rem]')}
+			class:opacity-40={reordering}
 		>
-			{#each roots as answer (answer.id)}
-				<AnswerOutline
-					{answer}
-					{placement}
-					attributeId={attribute.id}
-					attributeType={attribute.type}
-					depth={2}
-					allAnswers={answers}
-					{expandedIds}
-					{counts}
-					disabled={saving}
-					{focusedId}
-					actions={answerActions}
-					{onToggleExpanded}
-					{onFocusRow}
-				/>
-			{/each}
-			{#if !roots.length}
-				<p class="px-2 py-1.5 text-sm text-ink-3">{m.configuration_no_answers()}</p>
-			{/if}
-		</div>
-		{#if placement.destination?.attributeId === attribute.id}
+			<!-- One guide line for the root answers' level (a tree only; the detail has its own column). -->
 			<div
-				class="sticky bottom-0 z-20 ml-4 grid min-w-0 gap-0.5 bg-panel py-1 pl-2 text-xs leading-4 text-ink-2"
-				data-testid="placement-preview"
+				id={`${attribute.id}-answers`}
+				role="group"
+				data-testid="attribute-answers"
+				class={cn(
+					'ml-4 border-l border-rule pl-2 @max-[28rem]:ml-1 @max-[28rem]:pl-1',
+					detail && '@2xl:ml-0 @2xl:border-l-0 @2xl:pl-0'
+				)}
 			>
-				<span class="truncate font-medium" title={placement.destinationLabel}
-					>{placement.destinationLabel}</span
-				>
-				<span class="min-w-0 pl-2 break-words"
-					>{m.configuration_placement_preview({ name: placement.sourceLeafLabel })}</span
-				>
+				{#each roots as answer (answer.id)}
+					<AnswerOutline
+						{answer}
+						{placement}
+						attributeId={attribute.id}
+						attributeType={attribute.type}
+						depth={2}
+						allAnswers={answers}
+						{expandedIds}
+						{counts}
+						disabled={saving}
+						{focusedId}
+						actions={answerActions}
+						{onToggleExpanded}
+						{onFocusRow}
+					/>
+				{/each}
+				{#if !roots.length}
+					<p class="px-2 py-1.5 text-sm text-ink-3">{m.configuration_no_answers()}</p>
+				{/if}
 			</div>
-		{/if}
-		{#if attribute.moveError}
-			<div class="ml-4 pl-2"><Field.Error>{attribute.moveError}</Field.Error></div>
-		{/if}
-		{#if attribute.removalError}
-			<div class="ml-4 pl-2"><Field.Error>{attribute.removalError}</Field.Error></div>
-		{/if}
-		<AttributeTools {attribute} {saving} {onAddOption} {placement} />
+			{#if placement.destination?.attributeId === attribute.id}
+				<div
+					class="sticky bottom-0 z-20 ml-4 grid min-w-0 gap-0.5 bg-panel py-1 pl-2 text-xs leading-4 text-ink-2"
+					data-testid="placement-preview"
+				>
+					<span class="truncate font-medium" title={placement.destinationLabel}
+						>{placement.destinationLabel}</span
+					>
+					<span class="min-w-0 pl-2 break-words"
+						>{m.configuration_placement_preview({ name: placement.sourceLeafLabel })}</span
+					>
+				</div>
+			{/if}
+			{#if attribute.moveError}
+				<div class="ml-4 pl-2"><Field.Error>{attribute.moveError}</Field.Error></div>
+			{/if}
+			{#if attribute.removalError}
+				<div class="ml-4 pl-2"><Field.Error>{attribute.removalError}</Field.Error></div>
+			{/if}
+			<AttributeTools {attribute} {saving} {onAddOption} {placement} />
+		</div>
 	{/if}
 	{#if !expanded && placement.destination?.attributeId === attribute.id}
 		<div
-			class="sticky bottom-0 z-20 ml-4 grid min-w-0 gap-0.5 bg-panel py-1 pl-2 text-xs leading-4 text-ink-2"
+			class={cn(
+				'sticky bottom-0 z-20 ml-4 grid min-w-0 gap-0.5 bg-panel py-1 pl-2 text-xs leading-4 text-ink-2',
+				detail && '@2xl:w-64'
+			)}
 			data-testid="placement-preview"
 		>
 			<span class="truncate font-medium" title={placement.destinationLabel}
