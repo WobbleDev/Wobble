@@ -35,7 +35,7 @@
 				<button
 					type="button"
 					data-breadcrumb-back
-					class="inline-flex min-h-tap items-center rounded-item transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none md:min-h-0"
+					class="inline-flex min-h-tap items-center rounded-item uppercase transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none md:min-h-0"
 					onclick={() => focus.blur()}
 				>
 					{currentTitle}
