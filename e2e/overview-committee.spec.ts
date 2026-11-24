@@ -225,3 +225,32 @@ test('the coverage card carries the way in, flies in as the column head, and the
 	await page.locator('[data-focus-back]').click();
 	await expect(page.locator('[data-dashboard-root]')).toHaveAttribute('data-focused', 'false');
 });
+
+test('the coverage card does not fly when motion is reduced, and the column still arrives', async ({
+	page,
+	request
+}) => {
+	await seedCommittee(request);
+	await page.setViewportSize({ width: 1440, height: 874 });
+	await page.goto('/overview');
+	await appReady(page);
+	// The Reduce motion setting writes this attribute on the root; set here, after the chart
+	// backdrop is up, so the focus still runs and only the flight's own guard is under test.
+	await page.evaluate(() => (document.documentElement.dataset.motion = 'reduce'));
+
+	await page.locator('[data-focus-toggle]').click();
+	await expect(column(page)).not.toHaveAttribute('inert', '');
+	// No script animation: the column's plain fade is all that runs, and it collapses to 1ms.
+	const flights = await column(page).evaluate(
+		(el) => el.getAnimations().filter((animation) => !(animation instanceof CSSTransition)).length
+	);
+	expect(flights).toBe(0);
+	await expect(column(page)).toHaveCSS('opacity', '1');
+	await expect(column(page)).toHaveCSS('transform', 'none');
+	await expect(column(page).locator('[data-committee-rows]')).toHaveCSS('opacity', '1');
+
+	// And back: the column goes without a flight too.
+	await page.locator('[data-focus-back]').click();
+	await expect(column(page)).toHaveCSS('opacity', '0');
+	await expect(column(page)).toHaveCSS('transform', 'none');
+});
