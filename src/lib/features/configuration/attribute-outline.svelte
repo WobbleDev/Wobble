@@ -214,6 +214,13 @@
 
 	const rowColumns =
 		'grid-cols-[1.5rem_minmax(0,1fr)_3.5rem_1.75rem] @max-[20rem]:grid-cols-[2.75rem_minmax(0,1fr)_3rem_1.75rem]';
+
+	/** List and detail: a click on the row's own space selects it; its controls keep their own clicks. */
+	function selectFromRow(event: MouseEvent) {
+		if (!detail || saving) return;
+		if ((event.target as HTMLElement).closest('button, input, a')) return;
+		onToggleExpanded(attribute.id);
+	}
 </script>
 
 {#snippet removalChoice(parent: AttributeAnswerDraft)}
@@ -248,12 +255,16 @@
 	class:opacity-40={reordering}
 	onfocus={() => onFocusRow(attribute.id)}
 >
+	<!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
 	<div
 		class={cn(
 			`group/row relative grid ${rowColumns} min-h-10 items-center gap-1 px-1 coarse:min-h-tap`,
-			detail && '@2xl:rounded-item',
-			detail && expanded && '@2xl:bg-inset'
+			// List and detail: no dropdown arrow; the whole row selects, and a slim bar marks the pick.
+			detail &&
+				'@2xl:cursor-pointer @2xl:grid-cols-[0.75rem_minmax(0,1fr)_3.5rem_1.75rem] @2xl:rounded-item',
+			detail && (expanded ? '@2xl:bg-inset' : '@2xl:hover:bg-hover')
 		)}
+		onclick={selectFromRow}
 	>
 		{#if dropEdge}
 			<span
@@ -267,16 +278,33 @@
 		{/if}
 		<button
 			type="button"
-			class="group flex size-8 items-center justify-center rounded-item p-0 coarse:size-tap"
+			class={cn(
+				'group flex size-8 items-center justify-center rounded-item p-0 coarse:size-tap',
+				detail && '@2xl:w-3!'
+			)}
 			aria-label={m.configuration_attribute_toggle({ name: displayName })}
 			aria-expanded={expanded}
 			aria-controls={`${attribute.id}-answers`}
 			disabled={saving}
 			onclick={() => onToggleExpanded(attribute.id)}
 		>
-			<span class="flex size-6 items-center justify-center rounded-sm group-hover:bg-hover">
+			<span
+				class={cn(
+					'flex size-6 items-center justify-center rounded-sm group-hover:bg-hover',
+					detail && '@2xl:hidden'
+				)}
+			>
 				<ChevronDownIcon class={`size-4 transition-transform ${expanded ? '' : '-rotate-90'}`} />
 			</span>
+			{#if detail}
+				<span
+					aria-hidden="true"
+					class={cn(
+						'hidden h-5 w-1 rounded-full @2xl:block',
+						expanded ? 'bg-action' : 'bg-transparent'
+					)}
+				></span>
+			{/if}
 		</button>
 
 		<div class="flex min-w-0 flex-wrap items-center gap-1">

@@ -73,8 +73,6 @@
 		languages?: readonly Language[];
 		/** Writes the Worker's whole Language list. */
 		onUpdateLanguages?: (workerId: string, languageIds: string[]) => Promise<void>;
-		/** Begins a new Worker after saving what is open here. */
-		onAddAnother?: () => void;
 		/** Opens the Worker on the Mapping. */
 		onShowOnMapping?: (workerId: string) => void;
 		/** The list the record was opened from: Previous and Next, and the way back. */
@@ -138,7 +136,6 @@
 		agitations,
 		languages = [],
 		onUpdateLanguages,
-		onAddAnother,
 		onShowOnMapping,
 		onSelectWorker,
 		cohort = null,
@@ -526,17 +523,6 @@
 					refresh={onRefresh}
 					onSaved={onEditSaved}
 				/>
-				{#if onAddAnother}
-					<Button
-						type="button"
-						variant="outline"
-						size="sm"
-						class="min-h-tap justify-self-start lg:min-h-8"
-						onclick={onAddAnother}
-					>
-						{m.workers_add_another()}
-					</Button>
-				{/if}
 				<RecordPanelDelete
 					{worker}
 					onDelete={onDeleteWorker}

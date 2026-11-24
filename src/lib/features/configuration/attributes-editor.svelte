@@ -247,7 +247,12 @@
 		)}
 		aria-hidden="true"
 	>
-		<div class={cn(`grid ${rowColumns} items-center gap-1`, detail && '@2xl:px-1')}>
+		<div
+			class={cn(
+				`grid ${rowColumns} items-center gap-1`,
+				detail && '@2xl:grid-cols-[0.75rem_minmax(0,1fr)_3.5rem_1.75rem] @2xl:px-1'
+			)}
+		>
 			<span></span>
 			<span class="flex min-w-0 items-center justify-between gap-2">
 				<span class="key min-w-0 truncate">{m.configuration_attribute_name()}</span>

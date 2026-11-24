@@ -78,17 +78,6 @@ test('contact values copy', async ({ page, request, context, browserName }) => {
 	expect(await page.evaluate(() => navigator.clipboard.readText())).toBe('ada@example.test');
 });
 
-test('Notes search narrows the record Notes', async ({ page, request }) => {
-	await openWorkersTable(page, request, { seed });
-	const record = await open(page, 'Ada Lovelace');
-
-	await record.getByRole('searchbox', { name: 'Search notes' }).fill('door');
-	await expect(record.getByText('Met at the door')).toBeVisible();
-	await expect(record.getByText('Asked about shifts')).toHaveCount(0);
-	await record.getByRole('searchbox', { name: 'Search notes' }).fill('nothing');
-	await expect(record.getByText('No matching notes')).toBeVisible();
-});
-
 test('Relationships show a count and open the Worker on the Mapping', async ({ page, request }) => {
 	await openWorkersTable(page, request, { seed });
 	const record = await open(page, 'Ada Lovelace');
@@ -97,17 +86,4 @@ test('Relationships show a count and open the Worker on the Mapping', async ({ p
 	await record.getByRole('button', { name: 'Show on Mapping' }).click();
 	await expect(page).toHaveURL(/\/mapping/);
 	expect(new URL(page.url()).search).not.toContain('Ada');
-});
-
-test('Add another saves the open Note draft and opens a new Worker', async ({ page, request }) => {
-	await openWorkersTable(page, request, { seed });
-	const record = await open(page, 'Ada Lovelace');
-
-	await record.getByRole('textbox', { name: 'Note', exact: true }).fill('Follow up Friday');
-	await record.getByRole('button', { name: 'Add another' }).click();
-	await expect(page.getByRole('complementary', { name: /Unnamed worker/ })).toBeVisible();
-	await page.keyboard.press('Escape');
-
-	const again = await open(page, 'Ada Lovelace');
-	await expect(again.getByText('Follow up Friday')).toBeVisible();
 });

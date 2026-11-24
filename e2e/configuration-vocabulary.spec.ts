@@ -14,9 +14,13 @@ test('the Configuration tab speaks Attributes', async ({ page }) => {
 	await page.goto('/configuration');
 	await appReady(page);
 
-	await expect(page.getByRole('heading', { name: 'About each Worker' })).toBeVisible();
 	await expect(
 		workerColumn(page).getByRole('heading', { name: 'Attributes', exact: true })
+	).toBeVisible();
+	await expect(
+		workerColumn(page).getByText(
+			'Define work areas, roles, and anything else that categorizes people in your workplace.'
+		)
 	).toBeVisible();
 	await expect(workerColumn(page).getByTestId('add-attribute')).toBeVisible();
 	await expect(workerColumn(page).getByTestId('add-attribute')).toContainText('Add attribute');
