@@ -210,7 +210,10 @@
 <style>
 	.dashboard :global(.panel) {
 		container-type: inline-size;
-		border: 1px solid var(--rule);
+		/* The card is translucent over the bullseye's rings, which are white where the card
+		   ends, so a plain rule hairline washes out there; a step toward the ink keeps the
+		   edge whole at the right of the page, where the rings reach it. */
+		border: 1px solid color-mix(in oklab, var(--ink) 12%, var(--rule));
 		border-radius: 0.625rem;
 		background: color-mix(in oklab, var(--panel) 62%, transparent);
 		backdrop-filter: blur(8px);
@@ -284,12 +287,10 @@
 				transform 650ms cubic-bezier(0.22, 1, 0.36, 1),
 				opacity 220ms ease-out;
 		}
-		/* The slid strip paints under the navigation rail's glass: the scroll
-		   viewport gives up its clip on this route, as the shell's card does. */
-		:global([data-scroll-viewport]:has([data-dashboard-root])) {
-			overflow-x: visible;
-			overflow-y: clip;
-		}
+		/* The scroll viewport keeps the clip the no-scroll surface gives it. It once gave that
+		   up (overflow-x visible, overflow-y clip) so the slid strip could paint under the
+		   rail's glass. The strip is faded out now, so nothing paints there, and that clip cut
+		   the cards' 1px right border where it met their backdrop blur in WebKit. */
 	}
 	/* The focus change is instant under reduced motion. */
 	@media (prefers-reduced-motion: reduce) {

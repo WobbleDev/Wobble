@@ -72,7 +72,6 @@
 	"mapping_key_shown_other": "{assessment}, {count} workers, shown",
 	"mapping_key_hidden_one": "{assessment}, {count} workers, hidden",
 	"mapping_key_hidden_other": "{assessment}, {count} workers, hidden",
-	"mapping_key_direct": "{direct} direct · {second} through them",
 	"mapping_dot_key_aria": "Dot size shows Relationships, from 0 to 5 or more",
 	"mapping_skip_to_table": "Skip to map data table",
 	"mapping_selected": "{name} selected",
@@ -110,6 +109,6 @@
 	"mapping_exit_isolate": "Exit Isolate",
 	"mapping_scope_drawn": "{drawn} of {total} workers",
 	"mapping_scope_hidden": "{hidden} hidden by filters",
-	"mapping_scope_isolated": "Isolate lists {listed}, {away} isolated away",
+	"mapping_scope_isolated": "{listed} of {total}",
 	"mapping_scope_grouped": "Grouped by {attribute}"
 }

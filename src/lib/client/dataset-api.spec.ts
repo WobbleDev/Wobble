@@ -1,6 +1,7 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { defaultAppSettings } from '#lib/shared/app/app-settings.ts';
-import { jsonResponse } from '#lib/testing/http.ts';
+import { jsonResponse, stubStorage } from '#lib/testing/http.ts';
+import { readStoredActiveWorksiteId, storeActiveWorksiteId } from './active-worksite-storage.ts';
 import {
 	decodeWorksiteDataset,
 	getWorksiteDataset,
@@ -127,6 +128,27 @@ describe('reading the worksite dataset', () => {
 			'/api/dataset',
 			expect.objectContaining({ cache: 'no-store' })
 		);
+	});
+
+	it('remembers the Worksite it loaded when the remembered id names one that is gone', async () => {
+		stubStorage();
+		storeActiveWorksiteId('ws-deleted');
+		vi.stubGlobal('fetch', vi.fn().mockResolvedValue(jsonResponse(populatedWire)));
+
+		await getWorksiteDataset();
+
+		// A write naming "ws-deleted" would be refused while reads fall back to "ws1".
+		expect(readStoredActiveWorksiteId()).toBe('ws1');
+	});
+
+	it('forgets the remembered id when the database holds no Worksite', async () => {
+		stubStorage();
+		storeActiveWorksiteId('ws-deleted');
+		vi.stubGlobal('fetch', vi.fn().mockResolvedValue(jsonResponse(emptyDataset)));
+
+		await getWorksiteDataset();
+
+		expect(readStoredActiveWorksiteId()).toBeNull();
 	});
 
 	it('accepts an empty worksite with a null worksite', () => {
