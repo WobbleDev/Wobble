@@ -14,6 +14,7 @@
 	import { reducedMotion as motionIsReduced } from '#lib/shell/motion.svelte.ts';
 	import { NARROW_BREAKPOINT } from '#lib/hooks/is-mobile.svelte.ts';
 	import { fade } from 'svelte/transition';
+	import { cubicInOut } from 'svelte/easing';
 	import type { WorkerAttributeDefinition } from '#lib/domain-vocabulary.ts';
 	import { assessmentLabel } from '#lib/i18n/assessment.ts';
 	import { m } from '#lib/paraglide/messages.js';
@@ -393,6 +394,8 @@
 	}
 
 	let fittedKey = '';
+	/** Whether the last framing was Isolate's, so the framing that leaves it glides back. */
+	let fitWasIsolated = false;
 	/**
 	 * What the camera was last framed for, readable by the drawing's readiness. Empty until
 	 * the first framing: until then the drawing waits unseen, because it would otherwise
@@ -417,8 +420,11 @@
 			return;
 
 		const isInitial = fittedKey === '';
+		// Leaving Isolate travels back on the same timed glide that went in.
+		const leavingIsolate = fitWasIsolated;
+		fitWasIsolated = viewModel.isolated;
 
-		// Isolate changes only the camera. Start its existing easing immediately.
+		// Isolate changes only the camera. Start its glide immediately, on the clock the dots share.
 		if (viewModel.isolated) {
 			fittedKey = key;
 			fittedMirror = key;
@@ -426,7 +432,7 @@
 			panZoom.framedZoom = 1;
 			freeAnchorCamera = undefined;
 			if (isInitial || reducedMotion) panZoom.resetView();
-			else panZoom.easeTo({ zoom: 1, panX: 0, panY: 0 });
+			else glideCameraTo({ zoom: 1, panX: 0, panY: 0 });
 			return afterMeasuredSurface(signalReady);
 		}
 
@@ -482,7 +488,8 @@
 					if (camera) {
 						panZoom.framedZoom = camera.zoom;
 						if (!framed) anchorFreeNames(camera);
-						panZoom.easeTo(camera);
+						if (leavingIsolate) glideCameraTo(camera);
+						else panZoom.easeTo(camera);
 					}
 				}
 			}
@@ -839,6 +846,69 @@
 
 	/** The drawn positions, published once per frame after the easing pass. */
 	let drawn = $state<Map<string, Point>>(new Map());
+
+	/** How long Isolate's glide takes, in ms: long enough to read as travel, short enough to feel direct. */
+	const glideDuration = 420;
+	/**
+	 * Isolate's glide is timed, not eased per frame: the dots and the camera read one
+	 * clock and one ease-in-out curve, so they move as a single motion that starts and
+	 * stops gently instead of starting at full speed and trailing off for a second.
+	 */
+	let glideClock = { start: 0, duration: glideDuration, dots: false, camera: false };
+	/** The clock the dots and the camera share: whichever claims it first starts it. */
+	function claimGlideClock(role: 'dots' | 'camera') {
+		const now = performance.now();
+		if (glideClock[role] || now - glideClock.start > 250) {
+			glideClock = { start: now, duration: glideDuration, dots: false, camera: false };
+		}
+		glideClock[role] = true;
+		return glideClock;
+	}
+	type CameraView = { zoom: number; panX: number; panY: number };
+	/**
+	 * The camera's timed glide, shared with the dots. Every frame, the camera and the dots
+	 * work out the camera at that frame's own timestamp from this, so they agree to the pixel
+	 * whichever runs first.
+	 */
+	let glideCamera: { from: CameraView; to: CameraView; clock: typeof glideClock } | undefined;
+	function cameraAt(glide: NonNullable<typeof glideCamera>, now: number): CameraView {
+		const progress = Math.min(1, Math.max(0, (now - glide.clock.start) / glide.clock.duration));
+		const eased = cubicInOut(progress);
+		const { from, to } = glide;
+		return {
+			zoom: from.zoom + (to.zoom - from.zoom) * eased,
+			panX: from.panX + (to.panX - from.panX) * eased,
+			panY: from.panY + (to.panY - from.panY) * eased
+		};
+	}
+	/** Glides the camera on the shared clock, and tells the dots which camera to move against. */
+	function glideCameraTo(to: CameraView) {
+		// Read the camera untracked: this runs inside an effect that must not follow it.
+		untrack(() => {
+			const clock = claimGlideClock('camera');
+			glideCamera = {
+				from: { zoom: panZoom.zoom, panX: panZoom.panX, panY: panZoom.panY },
+				to,
+				clock
+			};
+			panZoom.glideTo(to, clock);
+		});
+	}
+	/** Each dot's radius as the last scene left it, so a radius that changes with Isolate grows or shrinks. */
+	let restingRadii = new Map<string, number>();
+	/** While a timed glide runs: the radii it started from and how far along it is (0 to 1). */
+	let glideRadii = $state.raw<{ from: ReadonlyMap<string, number>; progress: number } | undefined>(
+		undefined
+	);
+	/** True while a timed glide runs; the standing names wait for it to land. */
+	let timedGliding = $state(false);
+	/** A dot's radius as drawn now: the scene's own, or blended from the last one mid-glide. */
+	function shownRadius(node: WorkerGraphNode): number {
+		const to = radiusFor(node);
+		const glide = glideRadii;
+		const from = glide?.from.get(node.id);
+		return glide && from !== undefined ? from + (to - from) * glide.progress : to;
+	}
 	/**
 	 * Whether the drawn dots rest exactly on the arrangement's positions. Final
 	 * paths are published for exactly those positions, so they draw only once the
@@ -1129,7 +1199,19 @@
 	 * selected or hovered name outside them attached beside its dot. Before the first
 	 * freeze the names are searched live, as the drawing is still being framed.
 	 */
+	/**
+	 * The names as last placed. While Isolate glides they are held, not searched again
+	 * every frame for dots that are still travelling, and drawn faded out; they are
+	 * placed once at the new scene when the glide lands.
+	 */
+	let heldPlacements: Map<string, PlacedName> | undefined;
 	const labelPlacements = $derived.by(() => {
+		if (timedGliding && heldPlacements) return heldPlacements;
+		const placed = placeNames();
+		heldPlacements = placed;
+		return placed;
+	});
+	function placeNames(): Map<string, PlacedName> {
 		const frozen = frozenNames;
 		if (!frozen || frozen.key !== nameSceneKey) {
 			return placeAllNames(nameScene, hasPacket ? settled.composition : undefined, freeKept);
@@ -1150,7 +1232,7 @@
 			}
 		}
 		return placed;
-	});
+	}
 
 	/** The frame loop's tick id, so a change into static mode stops the loop. */
 	let rafId: number | undefined;
@@ -1203,6 +1285,11 @@
 	function landOn(target: Map<string, Point>) {
 		drawn = new SvelteMap(target);
 		landed = true;
+		timedGliding = false;
+		glideRadii = undefined;
+		untrack(() => {
+			restingRadii = new Map(viewModel.visibleNodes.map((node) => [node.id, radiusFor(node)]));
+		});
 		if (readyPending && !fittingNames) {
 			readyPending = false;
 			announceReady();
@@ -1211,10 +1298,14 @@
 
 	/** The scene the dots were last drawn toward: a manual move keeps it and so never glides. */
 	let drawnScene = '';
+	let drawnIsolated = false;
 	$effect(() => {
 		const scene = `${settled.revision}|${viewModel.isolated ? viewModel.selectedId : ''}`;
 		const sameScene = untrack(() => scene === drawnScene && drawn.size > 0);
+		// Entering, leaving or changing Isolate glides on a clock; any other re-arrangement eases.
+		const timed = viewModel.isolated || drawnIsolated;
 		drawnScene = scene;
+		drawnIsolated = viewModel.isolated;
 		if (reducedMotion || sameScene) {
 			// The static path, and a manual move, land where the model says, with no travel.
 			landOn(targetPositions);
@@ -1224,8 +1315,64 @@
 		}
 
 		// A first drawing, with nowhere to glide from, lands where it is drawn.
-		if (untrack(() => drawn).size === 0) landOn(targetPositions);
-		else easeToward(targetPositions);
+		if (untrack(() => drawn).size === 0) {
+			landOn(targetPositions);
+		} else if (timed) {
+			const target = targetPositions;
+			const from = untrack(() => drawn);
+			const clock = claimGlideClock('dots');
+			const startCamera = untrack(() => ({
+				zoom: panZoom.zoom,
+				panX: panZoom.panX,
+				panY: panZoom.panY
+			}));
+			glideRadii = { from: restingRadii, progress: 0 };
+			timedGliding = true;
+			landed = false;
+			const timedStep = (now: number) => {
+				const progress = Math.min(1, Math.max(0, (now - clock.start) / clock.duration));
+				if (progress >= 1) {
+					landOn(target);
+					rafId = undefined;
+					return;
+				}
+				// The organizer took the camera over mid-glide: the dots stop where they are drawn to.
+				if (glideCamera?.clock === clock && !panZoom.animating) {
+					landOn(target);
+					rafId = undefined;
+					return;
+				}
+				const eased = cubicInOut(progress);
+				// The dots travel straight across the screen, whatever the camera does meanwhile: each
+				// goes from where it was drawn to where it will be drawn, and its map position is
+				// read back through the camera as it is at this frame. Moving them in map units
+				// instead would add the camera's motion to theirs and make the speed rise twice.
+				const camera = glideCamera?.clock === clock ? cameraAt(glideCamera, now) : startCamera;
+				const end = glideCamera?.clock === clock ? glideCamera.to : startCamera;
+				const next = new SvelteMap<string, Point>();
+				for (const [id, point] of target) {
+					const start = from.get(id) ?? point;
+					const fromX = startCamera.zoom * start.x + startCamera.panX;
+					const fromY = startCamera.zoom * start.y + startCamera.panY;
+					const toX = end.zoom * point.x + end.panX;
+					const toY = end.zoom * point.y + end.panY;
+					next.set(id, {
+						x: (fromX + (toX - fromX) * eased - camera.panX) / camera.zoom,
+						y: (fromY + (toY - fromY) * eased - camera.panY) / camera.zoom
+					});
+				}
+				drawn = next;
+				glideRadii = { from: restingRadii, progress: eased };
+				rafId = requestAnimationFrame(timedStep);
+			};
+			rafId = requestAnimationFrame(timedStep);
+			return () => {
+				if (rafId !== undefined) {
+					cancelAnimationFrame(rafId);
+					rafId = undefined;
+				}
+			};
+		} else easeToward(targetPositions);
 
 		const step = () => {
 			if (easeToward(targetPositions) < easeStopThreshold) {
@@ -1575,7 +1722,7 @@
 
 							{#each viewModel.visibleNodes as node (node.id)}
 								{@const point = drawn.get(node.id) ?? { x: 0, y: 0 }}
-								{@const radius = radiusFor(node)}
+								{@const radius = shownRadius(node)}
 								{@const labelPlacement = labelPlacements.get(node.id)}
 								{@const isActive =
 									viewModel.selectedId === node.id || viewModel.hoveredId === node.id}
@@ -1670,7 +1817,7 @@
 											stroke-dasharray="1 2.5"
 											stroke-linecap="round"
 											vector-effect="non-scaling-stroke"
-											opacity={nodeOpacity(node, viewModel)}
+											opacity={timedGliding ? 0 : nodeOpacity(node, viewModel)}
 											pointer-events="none"
 											aria-hidden="true"
 											data-name-leader={node.id}
@@ -1688,7 +1835,7 @@
 												? `${textSnapshot.names.get(node.id)?.width}x${textSnapshot.names.get(node.id)?.height}`
 												: undefined}
 											class="pointer-events-none fill-ink font-medium transition-opacity duration-150 ease-out"
-											opacity={nodeOpacity(node, viewModel)}
+											opacity={timedGliding ? 0 : nodeOpacity(node, viewModel)}
 											font-size={screenFixed(12, panZoom.zoom) + labelShapeEpoch * 0.0001}
 											paint-order="stroke"
 											stroke="var(--panel)"

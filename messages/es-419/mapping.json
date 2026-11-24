@@ -72,7 +72,6 @@
 	"mapping_key_shown_other": "{assessment}, {count} trabajadores, visibles",
 	"mapping_key_hidden_one": "{assessment}, {count} trabajador, oculto",
 	"mapping_key_hidden_other": "{assessment}, {count} trabajadores, ocultos",
-	"mapping_key_direct": "{direct} directos · {second} a través de ellos",
 	"mapping_dot_key_aria": "El tamaño del punto muestra las relaciones, de 0 a 5 o más",
 	"mapping_skip_to_table": "Ir a la tabla de datos del mapa",
 	"mapping_selected": "{name} seleccionado",
@@ -110,6 +109,6 @@
 	"mapping_exit_isolate": "Salir de Aislar",
 	"mapping_scope_drawn": "{drawn} de {total} trabajadores",
 	"mapping_scope_hidden": "{hidden} ocultos por filtros",
-	"mapping_scope_isolated": "Aislar lista {listed}, {away} aislados fuera",
+	"mapping_scope_isolated": "{listed} de {total}",
 	"mapping_scope_grouped": "Agrupado por {attribute}"
 }

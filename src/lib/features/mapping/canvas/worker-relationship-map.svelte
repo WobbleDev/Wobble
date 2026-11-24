@@ -675,14 +675,6 @@
 						</button>
 					</li>
 				{/each}
-				{#if isolatedNeighbourhood}
-					<li class="px-0 text-[0.6875rem] text-ink-3">
-						{m.mapping_key_direct({
-							direct: isolatedNeighbourhood.firstDegree.size,
-							second: isolatedNeighbourhood.secondDegree.size
-						})}
-					</li>
-				{/if}
 			</ul>
 		</div>
 		<!-- The dot-size key: one line along the bottom right, its circles in the map's
@@ -730,11 +722,10 @@
 			class="label num pointer-events-none absolute left-3 z-10 max-w-[calc(100%-1.5rem)] rounded-item px-2 py-1 text-ink-3"
 		>
 			{[
-				m.mapping_scope_drawn({ drawn: scope.drawn, total: scope.total }),
+				view.isolatedInEffect
+					? m.mapping_scope_isolated({ listed: scope.listed, total: scope.total })
+					: m.mapping_scope_drawn({ drawn: scope.drawn, total: scope.total }),
 				...(scope.hidden > 0 ? [m.mapping_scope_hidden({ hidden: scope.hidden })] : []),
-				...(view.isolatedInEffect
-					? [m.mapping_scope_isolated({ listed: scope.listed, away: scope.isolatedAway })]
-					: []),
 				...(grouping.groupingAttribute
 					? [m.mapping_scope_grouped({ attribute: grouping.groupingAttribute.name })]
 					: [])
