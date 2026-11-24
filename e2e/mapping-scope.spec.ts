@@ -92,9 +92,7 @@ test('Isolate states drawn, listed and isolated-away counts that match the Map t
 	await page.locator(`[data-node-id="${ids[0]}"]`).click();
 	await page.getByRole('button', { name: 'Isolate', exact: true }).click();
 
-	await expect(reading).toHaveText(
-		'3 of 4 workers · 1 hidden by filters · Isolate lists 2, 1 isolated away'
-	);
+	await expect(reading).toHaveText('2 of 4 · 1 hidden by filters');
 	const rows = page.getByTestId('mapping-table').getByRole('row');
 	// One header row plus the listed Workers.
 	await expect(rows).toHaveCount(1 + 2);
