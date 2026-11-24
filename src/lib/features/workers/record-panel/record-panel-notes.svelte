@@ -50,9 +50,14 @@
 </script>
 
 <section aria-labelledby={headingId} class="grid gap-3">
-	<h3 id={headingId} bind:this={heading} tabindex="-1" class="label">
-		{m.workers_notes_heading()}
-	</h3>
+	<div class="flex items-center justify-between gap-2">
+		<h3 id={headingId} bind:this={heading} tabindex="-1" class="label">
+			{m.workers_notes_heading()}
+		</h3>
+		{#if worker.notes.length}
+			<span class="num text-xs text-ink-3" aria-hidden="true">{worker.notes.length}</span>
+		{/if}
+	</div>
 	<RecordPanelNoteComposer {worker} onAdd={onAddNote} onDelete={onDeleteNote} {refresh} {onSaved} />
 	{#if worker.notes.length > 1}
 		<Input

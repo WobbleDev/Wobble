@@ -7,6 +7,7 @@
 	import { answerPathLabel } from '#lib/shared/workers/answer-path.ts';
 	import { visibleValues } from './configuration-draft.ts';
 	import { createOutlineTree } from './outline-tree.svelte.ts';
+	import { cn } from '#lib/utils.ts';
 	import type { Worker } from '#lib/domain-vocabulary.ts';
 	import { m } from '#lib/paraglide/messages.js';
 	import type { AttributeAnswerDraft, AttributeDraft } from './attribute-draft.ts';
@@ -85,6 +86,30 @@
 		onRestoreAnswerOrder
 	}: Props = $props();
 
+	/**
+	 * List and detail shows one Attribute's values beside the list. Unfolding a second
+	 * Attribute (a drag opening its target, or a value being placed) keeps both open and
+	 * the outline falls back to a tree, so nothing a move needs is ever hidden.
+	 */
+	const unfoldedCount = $derived(
+		attributes.filter((attribute) => expandedIds.has(attribute.id)).length
+	);
+	const detail = $derived(unfoldedCount <= 1);
+	/** A click or key on an Attribute row selects it: the open one folds away. */
+	function selectOrToggle(id: string) {
+		const isAttribute = attributes.some((attribute) => attribute.id === id);
+		if (isAttribute && !expandedIds.has(id) && !placement.source) {
+			for (const other of attributes) {
+				if (other.id !== id && expandedIds.has(other.id)) onToggleExpanded(other.id);
+			}
+		}
+		onToggleExpanded(id);
+	}
+
+	/** The detail block's height per Attribute (only one is beside the list at a time). */
+	let detailHeights = $state<Record<string, number>>({});
+	const detailHeight = $derived(Math.max(0, ...Object.values(detailHeights)));
+
 	let tree = $state<HTMLElement | null>(null);
 	/** The whole column, which holds the tree and the promote zone the placement listens on. */
 	let column = $state<HTMLElement | null>(null);
@@ -142,7 +167,7 @@
 		focus(id) {
 			tree?.querySelector<HTMLElement>(`[role="treeitem"][data-row-id="${id}"]`)?.focus();
 		},
-		toggleExpanded: (id) => onToggleExpanded(id),
+		toggleExpanded: (id) => selectOrToggle(id),
 		moveAttribute: (id, direction) => onMoveAttribute(id, direction),
 		attributeName: (id) => attributes.find((attribute) => attribute.id === id)?.name.trim() ?? '',
 		activate(id, action) {
@@ -160,6 +185,7 @@
 				.elementFromPoint(x, y)
 				?.closest<HTMLElement>('[role="treeitem"][data-level="1"]');
 			if (!row) return null;
+			// The row itself, not the item: in list and detail the item has no box of its own.
 			const box = row.getBoundingClientRect();
 			return { id: row.dataset.rowId ?? '', top: box.top, height: box.height };
 		},
@@ -214,25 +240,51 @@
 -->
 <div class="grid min-w-0 gap-0.5" bind:this={column}>
 	<div
-		class={`sticky top-[var(--outline-head,0px)] z-[8] -mx-6 grid ${rowColumns} items-center gap-1 border-b border-rule bg-panel px-7 pb-1`}
+		class={cn(
+			'sticky top-[var(--outline-head,0px)] z-[8] -mx-6 border-b border-rule bg-panel px-7 pb-1',
+			// List and detail: one heading over the list, one over the values.
+			detail && '@2xl:grid @2xl:grid-cols-[16rem_minmax(0,1fr)] @2xl:gap-x-6'
+		)}
 		aria-hidden="true"
 	>
-		<span></span>
-		<span class="flex min-w-0 items-center justify-between gap-2">
-			<span class="key min-w-0 truncate">{m.configuration_attribute_name()}</span>
-			<span class="key shrink-0 text-right whitespace-nowrap" data-testid="abbreviation-header"
-				>{m.configuration_column_abbreviation()}</span
+		<div class={cn(`grid ${rowColumns} items-center gap-1`, detail && '@2xl:px-1')}>
+			<span></span>
+			<span class="flex min-w-0 items-center justify-between gap-2">
+				<span class="key min-w-0 truncate">{m.configuration_attribute_name()}</span>
+				<span
+					class={cn('key shrink-0 text-right whitespace-nowrap', detail && '@2xl:hidden')}
+					data-testid={detail ? undefined : 'abbreviation-header'}
+					>{m.configuration_column_abbreviation()}</span
+				>
+			</span>
+			<span
+				class={cn('key text-right leading-tight hyphens-auto', detail && '@2xl:hidden')}
+				data-testid={detail ? undefined : 'worker-count-header'}
+				>{m.configuration_column_workers()}</span
 			>
-		</span>
-		<span class="key text-right leading-tight hyphens-auto" data-testid="worker-count-header"
-			>{m.configuration_column_workers()}</span
-		>
-		<span></span>
+			<span></span>
+		</div>
+		{#if detail}
+			<div class={`hidden ${rowColumns} items-center gap-1 px-1 @2xl:grid`}>
+				<span></span>
+				<span class="flex min-w-0 items-center justify-between gap-2">
+					<span class="key min-w-0 truncate">{m.configuration_values_heading()}</span>
+					<span class="key shrink-0 text-right whitespace-nowrap" data-testid="abbreviation-header"
+						>{m.configuration_column_abbreviation()}</span
+					>
+				</span>
+				<span class="key text-right leading-tight hyphens-auto" data-testid="worker-count-header"
+					>{m.configuration_column_workers()}</span
+				>
+				<span></span>
+			</div>
+		{/if}
 	</div>
 
 	<div
 		role="tree"
-		class="grid gap-1.5 pt-1.5"
+		class={cn('grid gap-1.5 pt-1.5', detail && '@2xl:relative')}
+		style:min-height={detail && detailHeight ? `${detailHeight + 6}px` : undefined}
 		class:cursor-grabbing={(placement.dragging && !placement.refusal) || reorder}
 		class:cursor-not-allowed={Boolean(placement.dragging && placement.refusal)}
 		tabindex="-1"
@@ -240,6 +292,14 @@
 		bind:this={tree}
 		onkeydown={outline.keydown}
 	>
+		{#if detail && unfoldedCount === 0 && attributes.length}
+			<p
+				aria-hidden="true"
+				class="hidden px-2 py-1.5 text-sm text-ink-3 @2xl:absolute @2xl:top-1.5 @2xl:left-[17.5rem] @2xl:block"
+			>
+				{m.configuration_pick_attribute()}
+			</p>
+		{/if}
 		{#each attributes as attribute (attribute.id)}
 			<AttributeOutline
 				{attribute}
@@ -250,7 +310,11 @@
 				{saving}
 				{workers}
 				focusedId={resolvedFocusId}
-				{onToggleExpanded}
+				onToggleExpanded={selectOrToggle}
+				{detail}
+				onDetailHeight={(id, height) => {
+					if ((detailHeights[id] ?? 0) !== height) detailHeights[id] = height;
+				}}
 				onFocusRow={outline.focusIn}
 				{allAttributes}
 				{onRequestDelete}

@@ -157,6 +157,8 @@
 	"configuration_count_workers_none": "Sin trabajadores",
 	"configuration_no_further_detail": "{name}, sin más detalle",
 	"configuration_no_answers": "Aún no hay valores",
+	"configuration_values_heading": "Valores",
+	"configuration_pick_attribute": "Selecciona un atributo para ver sus valores",
 	"configuration_no_attributes": "Aún no hay atributos",
 	"configuration_answer_toggle": "Mostrar u ocultar valores de {name}",
 	"configuration_preview_apply_all": "La misma resolución para los {count}…",

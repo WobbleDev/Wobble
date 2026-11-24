@@ -1034,9 +1034,10 @@ test('the inspector reads the whole record and the page never overflows sideways
 	await expect(attributeReading(ada, 'Shifts')).toContainText('Dinner');
 	for (const label of ['Email', 'Phone']) {
 		const key = term(ada, label);
-		await expect(key).toHaveCSS('font-size', '10.5px');
-		await expect(key).toHaveCSS('font-family', /Roboto Mono Variable/);
-		await expect(key).toHaveCSS('text-transform', 'uppercase');
+		// The key sits beside its value in the body scale, quieter by tone, not by a mono label.
+		await expect(key).toHaveCSS('font-size', '14px');
+		await expect(key).not.toHaveCSS('font-family', /Roboto Mono Variable/);
+		await expect(key).toHaveCSS('text-transform', 'none');
 	}
 	await expect(ada).toContainText('ada@example.test');
 	await expect(ada).toContainText('555-0100');
