@@ -157,6 +157,8 @@
 	"configuration_count_workers_none": "No Workers",
 	"configuration_no_further_detail": "{name}, no further detail",
 	"configuration_no_answers": "No values yet",
+	"configuration_values_heading": "Values",
+	"configuration_pick_attribute": "Select an Attribute to see its values",
 	"configuration_no_attributes": "No attributes yet",
 	"configuration_answer_toggle": "Toggle values for {name}",
 	"configuration_preview_apply_all": "Same resolution for all {count}…",
