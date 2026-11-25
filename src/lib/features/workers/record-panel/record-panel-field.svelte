@@ -218,15 +218,20 @@
 		void tick().then(() => trigger?.focus());
 	}
 
+	/** The text the editor opened with, so a late focus can tell whether anything was typed since. */
+	let openedWith = '';
+
 	function focusInput() {
 		void tick().then(() => {
 			input?.focus();
-			input?.select();
+			// Selecting after typing has begun would make the next keystroke replace it.
+			if (draft === openedWith) input?.select();
 		});
 	}
 
 	function startEditing() {
 		draft = value;
+		openedWith = value;
 		errorMessage = '';
 		restoredOpen = false;
 		editing = true;
