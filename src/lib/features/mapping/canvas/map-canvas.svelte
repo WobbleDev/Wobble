@@ -897,15 +897,23 @@
 	/** Each dot's radius as the last scene left it, so a radius that changes with Isolate grows or shrinks. */
 	let restingRadii = new Map<string, number>();
 	/** While a timed glide runs: the radii it started from and how far along it is (0 to 1). */
-	let glideRadii = $state.raw<{ from: ReadonlyMap<string, number>; progress: number } | undefined>(
-		undefined
-	);
+	let glideRadii = $state.raw<
+		| {
+				from: ReadonlyMap<string, number>;
+				progress: number;
+				/** The radius of a dot held still on screen, which keeps its drawn size while the camera zooms. */
+				held: ReadonlyMap<string, number>;
+		  }
+		| undefined
+	>(undefined);
 	/** True while a timed glide runs; the standing names wait for it to land. */
 	let timedGliding = $state(false);
 	/** A dot's radius as drawn now: the scene's own, or blended from the last one mid-glide. */
 	function shownRadius(node: WorkerGraphNode): number {
 		const to = radiusFor(node);
 		const glide = glideRadii;
+		const held = glide?.held.get(node.id);
+		if (held !== undefined) return held;
 		const from = glide?.from.get(node.id);
 		return glide && from !== undefined ? from + (to - from) * glide.progress : to;
 	}
@@ -1305,6 +1313,75 @@
 	}
 
 	/** The scene the dots were last drawn toward: a manual move keeps it and so never glides. */
+	type MapLink = (typeof viewModel.visibleLinks)[number];
+	/** Who was drawn before the change now being drawn, so a scene change knows who it adds and removes. */
+	let removedIds = new Set<string>();
+	let addedIds = new Set<string>();
+	let nodesBefore: readonly WorkerGraphNode[] = [];
+	let linksBefore: readonly MapLink[] = [];
+	let isolateBefore = '';
+	/**
+	 * The Workers and ties Isolate has just taken off the map. Svelte's own exit would freeze
+	 * them in map units while the camera moves, so they slide as they fade. They stay mounted
+	 * a moment instead, held where they stood on the screen by the glide, and fade by opacity.
+	 */
+	let fadingNodes = $state.raw<readonly WorkerGraphNode[]>([]);
+	let fadingLinks = $state.raw<readonly MapLink[]>([]);
+	/**
+	 * Everyone drawn before the change, in that order. The fading ones are drawn in their old places in
+	 * the list: moving a mounted element to the end of its parent restarts its styles, and with them
+	 * the fade, so a dot that moved would vanish at once instead.
+	 */
+	let orderNodes = $state.raw<readonly WorkerGraphNode[]>([]);
+	let orderLinks = $state.raw<readonly MapLink[]>([]);
+	function inOrder<T extends { id: string }>(before: readonly T[], now: readonly T[]): T[] {
+		const current = new Map(now.map((item) => [item.id, item]));
+		const kept = new Set(before.map((item) => item.id));
+		return [
+			...before.map((item) => current.get(item.id) ?? item),
+			...now.filter((item) => !kept.has(item.id))
+		];
+	}
+	const fadingIds = $derived(new Set(fadingNodes.map((node) => node.id)));
+	const fadingLinkIds = $derived(new Set(fadingLinks.map((link) => link.id)));
+	const shownNodes = $derived(
+		fadingNodes.length ? inOrder(orderNodes, viewModel.visibleNodes) : viewModel.visibleNodes
+	);
+	const shownLinks = $derived(
+		fadingLinks.length ? inOrder(orderLinks, viewModel.visibleLinks) : viewModel.visibleLinks
+	);
+	let fadeTimer: ReturnType<typeof setTimeout> | undefined;
+	onDestroy(() => clearTimeout(fadeTimer));
+	// Runs before the drawing updates, so the dots Isolate removes are still in it when it does.
+	$effect.pre(() => {
+		const nodes = viewModel.visibleNodes;
+		const links = viewModel.visibleLinks;
+		const isolate = viewModel.isolated ? viewModel.selectedId : '';
+		untrack(() => {
+			if (isolate !== isolateBefore && !reducedMotion && nodesBefore.length > 0) {
+				const now = new Set(nodes.map((node) => node.id));
+				const nowLinks = new Set(links.map((link) => link.id));
+				orderNodes = nodesBefore;
+				orderLinks = linksBefore;
+				fadingNodes = nodesBefore.filter((node) => !now.has(node.id));
+				fadingLinks = linksBefore.filter((link) => !nowLinks.has(link.id));
+				clearTimeout(fadeTimer);
+				fadeTimer = setTimeout(() => {
+					fadingNodes = [];
+					fadingLinks = [];
+					orderNodes = [];
+					orderLinks = [];
+				}, 260);
+			}
+			const was = new Set(nodesBefore.map((node) => node.id));
+			const is = new Set(nodes.map((node) => node.id));
+			removedIds = new Set([...was].filter((id) => !is.has(id)));
+			addedIds = new Set([...is].filter((id) => !was.has(id)));
+			isolateBefore = isolate;
+			nodesBefore = nodes;
+			linksBefore = links;
+		});
+	});
 	let drawnScene = '';
 	let drawnIsolated = false;
 	$effect(() => {
@@ -1334,7 +1411,25 @@
 				panX: panZoom.panX,
 				panY: panZoom.panY
 			}));
-			glideRadii = { from: restingRadii, progress: 0 };
+			// A dot that Isolate takes off the map or puts back fades where it stands on screen. Left
+			// in map units it rides the camera across the canvas as it fades. The leaving ones stay
+			// where they were seen; the arriving ones wait where they will end up.
+			const fadeAt = new SvelteMap<string, 'start' | 'end'>();
+			for (const id of removedIds) fadeAt.set(id, 'start');
+			for (const id of addedIds) fadeAt.set(id, 'end');
+			// Their size is held too: a dot fixed on screen would otherwise grow and shrink with the zoom.
+			const heldSize = untrack(() => {
+				const sizes = new SvelteMap<string, number>();
+				for (const id of removedIds) {
+					const size = restingRadii.get(id);
+					if (size !== undefined) sizes.set(id, size);
+				}
+				for (const node of viewModel.visibleNodes) {
+					if (addedIds.has(node.id)) sizes.set(node.id, radiusFor(node));
+				}
+				return sizes;
+			});
+			glideRadii = { from: restingRadii, progress: 0, held: new SvelteMap() };
 			timedGliding = true;
 			landed = false;
 			const timedStep = (now: number) => {
@@ -1358,19 +1453,31 @@
 				const camera = glideCamera?.clock === clock ? cameraAt(glideCamera, now) : startCamera;
 				const end = glideCamera?.clock === clock ? glideCamera.to : startCamera;
 				const next = new SvelteMap<string, Point>();
+				// eslint-disable-next-line svelte/prefer-svelte-reactivity -- built whole each frame, then published as one raw value
+				const held = new Map<string, number>();
 				for (const [id, point] of target) {
 					const start = from.get(id) ?? point;
 					const fromX = startCamera.zoom * start.x + startCamera.panX;
 					const fromY = startCamera.zoom * start.y + startCamera.panY;
 					const toX = end.zoom * point.x + end.panX;
 					const toY = end.zoom * point.y + end.panY;
+					const stays = fadeAt.get(id);
+					const size = heldSize.get(id);
+					if (stays && size !== undefined) {
+						held.set(id, (size * (stays === 'start' ? startCamera.zoom : end.zoom)) / camera.zoom);
+					}
+					// Where it is on screen this frame: travelling, or fixed for a fading dot.
+					const screenX =
+						stays === 'start' ? fromX : stays === 'end' ? toX : fromX + (toX - fromX) * eased;
+					const screenY =
+						stays === 'start' ? fromY : stays === 'end' ? toY : fromY + (toY - fromY) * eased;
 					next.set(id, {
-						x: (fromX + (toX - fromX) * eased - camera.panX) / camera.zoom,
-						y: (fromY + (toY - fromY) * eased - camera.panY) / camera.zoom
+						x: (screenX - camera.panX) / camera.zoom,
+						y: (screenY - camera.panY) / camera.zoom
 					});
 				}
 				drawn = next;
-				glideRadii = { from: restingRadii, progress: eased };
+				glideRadii = { from: restingRadii, progress: eased, held };
 				rafId = requestAnimationFrame(timedStep);
 			};
 			rafId = requestAnimationFrame(timedStep);
@@ -1704,7 +1811,7 @@
 								onGroupPress={drag.startGroup}
 							/>
 
-							{#each viewModel.visibleLinks as link (link.id)}
+							{#each shownLinks as link (link.id)}
 								{@const sourceId = link.source}
 								{@const targetId = link.target}
 								{@const sourcePoint = drawn.get(sourceId) ?? { x: 0, y: 0 }}
@@ -1716,11 +1823,14 @@
 								<!-- A tie that crosses between groups is drawn heavier, so the
 								     bridges between groups stand out from the ties inside them. -->
 								<path
+									in:fade={{ duration: reducedMotion ? 0 : 150 }}
 									d={path}
 									class={isEgoLink(link, viewModel) ? 'stroke-ink' : 'stroke-ink-3'}
 									fill="none"
 									stroke-width={isCross ? 2 : 1}
-									style:stroke-opacity={linkOpacity(link, viewModel)}
+									style:stroke-opacity={fadingLinkIds.has(link.id)
+										? 0
+										: linkOpacity(link, viewModel)}
 									style:transition={reducedMotion ? 'none' : 'stroke-opacity 200ms ease-out'}
 									vector-effect="non-scaling-stroke"
 									data-tie={isCross ? 'cross' : 'within'}
@@ -1739,7 +1849,7 @@
 								</clipPath>
 							</defs>
 
-							{#each viewModel.visibleNodes as node (node.id)}
+							{#each shownNodes as node (node.id)}
 								{@const point = drawn.get(node.id) ?? { x: 0, y: 0 }}
 								{@const radius = shownRadius(node)}
 								{@const labelPlacement = labelPlacements.get(node.id)}
@@ -1751,7 +1861,9 @@
 								>
 									<g
 										class="transition-opacity duration-150 ease-out outline-none focus-visible:[&>circle[data-focus-ring]]:stroke-ring"
-										opacity={nodeOpacity(node, viewModel)}
+										opacity={fadingIds.has(node.id) ? 0 : nodeOpacity(node, viewModel)}
+										pointer-events={fadingIds.has(node.id) ? 'none' : undefined}
+										aria-hidden={fadingIds.has(node.id) ? 'true' : undefined}
 										role="button"
 										tabindex="0"
 										data-node-id={node.id}
