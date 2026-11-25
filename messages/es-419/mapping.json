@@ -109,6 +109,6 @@
 	"mapping_exit_isolate": "Salir de Aislar",
 	"mapping_scope_drawn": "{drawn} de {total} trabajadores",
 	"mapping_scope_hidden": "{hidden} ocultos por filtros",
-	"mapping_scope_isolated": "{listed} de {total}",
+	"mapping_scope_isolated": "{listed} de {total} trabajadores",
 	"mapping_scope_grouped": "Agrupado por {attribute}"
 }

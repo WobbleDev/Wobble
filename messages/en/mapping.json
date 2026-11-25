@@ -109,6 +109,6 @@
 	"mapping_exit_isolate": "Exit Isolate",
 	"mapping_scope_drawn": "{drawn} of {total} workers",
 	"mapping_scope_hidden": "{hidden} hidden by filters",
-	"mapping_scope_isolated": "{listed} of {total}",
+	"mapping_scope_isolated": "{listed} of {total} workers",
 	"mapping_scope_grouped": "Grouped by {attribute}"
 }
