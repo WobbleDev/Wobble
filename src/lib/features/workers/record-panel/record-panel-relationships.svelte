@@ -10,6 +10,7 @@
 	import XIcon from '@lucide/svelte/icons/x';
 	import { Button } from '#lib/components/ui/button/index.ts';
 	import { Input } from '#lib/components/ui/input/index.ts';
+	import * as Popover from '#lib/components/ui/popover/index.ts';
 	import { relationshipCandidates } from './relationship-candidates.ts';
 	import SwatchDot from '#lib/shared/ui/swatch-dot.svelte';
 	import { assessmentColorKey } from '#lib/shared/workers/assessment.ts';
@@ -177,89 +178,111 @@
 			{/each}
 		</ul>
 	{/if}
-	{#if candidates}
-		<!-- A list inside the section, not a floating popover. -->
-		<div class="grid grid-cols-[minmax(0,1fr)] gap-2 rounded-item bg-inset p-2">
-			<Input
-				bind:ref={search}
-				bind:value={query}
-				type="search"
-				placeholder={m.workers_relationship_search()}
-				aria-label={m.workers_relationship_search_aria()}
-				disabled={saving}
-				onkeydown={(event) => {
-					if (event.key === 'Escape') {
-						event.preventDefault();
-						event.stopPropagation();
-						void closeList();
-					}
-				}}
-			/>
-			{#if candidates.matches.length}
-				<ul
-					aria-label={m.workers_relationship_list_aria()}
-					class="grid max-h-56 grid-cols-[minmax(0,1fr)] gap-0.5 overflow-y-auto overscroll-contain pb-1"
-				>
-					{#each candidates.matches as { worker: candidate, detail } (candidate.id)}
-						<li>
-							<!-- Kept raw: a full-width candidate row with a swatch, not a button variant. -->
-							<button
-								type="button"
-								class="flex min-h-tap w-full items-center gap-2 rounded-item px-2 py-1 text-left text-sm hover:bg-hover focus-visible:outline-2 focus-visible:outline-ring disabled:opacity-60 lg:min-h-8"
-								aria-label={detail
-									? `${m.workers_relationship_chip({ name: candidate.name, assessment: assessmentLabel(candidate.assessment) })}, ${detail}`
-									: m.workers_relationship_chip({
-											name: candidate.name,
-											assessment: assessmentLabel(candidate.assessment)
-										})}
-								disabled={saving}
-								onclick={() => void add(candidate)}
-							>
-								<SwatchDot color={`var(--${assessmentColorKey(candidate.assessment)})`} />
-								<span class="prose-value min-w-0 flex-1 truncate" title={candidate.name}
-									>{candidate.name}</span
-								>
-								{#if detail}
-									<span class="shrink-0 text-xs text-ink-3">{detail}</span>
-								{/if}
-							</button>
-						</li>
-					{/each}
-				</ul>
-			{:else}
-				<p class="px-2 text-sm text-ink-3">
-					{query.trim() ? m.workers_relationship_no_match() : m.workers_relationship_none()}
-				</p>
-			{/if}
-			<!-- The footer sits below the scrolling list, never over it. -->
-			<div class="flex items-center justify-between gap-2 border-t border-rule pt-2">
-				{#if candidates.more}
-					<p class="min-w-0 px-2 text-xs text-ink-3">{m.workers_relationship_narrow()}</p>
-				{/if}
+	<!-- The list is a popover over the panel, so opening it moves nothing around it. -->
+	<Popover.Root
+		open={adding}
+		onOpenChange={(open) => {
+			if (open) void openList();
+			else void closeList();
+		}}
+	>
+		<Popover.Trigger>
+			{#snippet child({ props })}
 				<Button
+					{...props}
 					type="button"
 					variant="ghost"
 					size="sm"
-					class="ml-auto min-h-tap lg:min-h-8"
-					onclick={() => void closeList()}
+					class="min-h-tap justify-self-start lg:min-h-8"
+					bind:ref={openButton}
 				>
-					{m.common_done()}
+					<PlusIcon class="size-4" />
+					{m.workers_relationship_add()}
 				</Button>
-			</div>
-		</div>
-	{:else}
-		<Button
-			type="button"
-			variant="ghost"
-			size="sm"
-			class="min-h-tap justify-self-start lg:min-h-8"
-			bind:ref={openButton}
-			onclick={() => void openList()}
+			{/snippet}
+		</Popover.Trigger>
+		<Popover.Content
+			align="start"
+			collisionPadding={8}
+			class="w-72 gap-2 p-2"
+			onOpenAutoFocus={(event) => {
+				event.preventDefault();
+				search?.focus();
+			}}
+			onCloseAutoFocus={(event) => event.preventDefault()}
 		>
-			<PlusIcon class="size-4" />
-			{m.workers_relationship_add()}
-		</Button>
-	{/if}
+			{#if candidates}
+				<div class="grid grid-cols-[minmax(0,1fr)] gap-2">
+					<Input
+						bind:ref={search}
+						bind:value={query}
+						type="search"
+						placeholder={m.workers_relationship_search()}
+						aria-label={m.workers_relationship_search_aria()}
+						disabled={saving}
+						onkeydown={(event) => {
+							if (event.key === 'Escape') {
+								event.preventDefault();
+								event.stopPropagation();
+								void closeList();
+							}
+						}}
+					/>
+					{#if candidates.matches.length}
+						<ul
+							aria-label={m.workers_relationship_list_aria()}
+							class="grid max-h-56 grid-cols-[minmax(0,1fr)] gap-0.5 overflow-y-auto overscroll-contain pb-1"
+						>
+							{#each candidates.matches as { worker: candidate, detail } (candidate.id)}
+								<li>
+									<!-- Kept raw: a full-width candidate row with a swatch, not a button variant. -->
+									<button
+										type="button"
+										class="flex min-h-tap w-full items-center gap-2 rounded-item px-2 py-1 text-left text-sm hover:bg-hover focus-visible:outline-2 focus-visible:outline-ring disabled:opacity-60 lg:min-h-8"
+										aria-label={detail
+											? `${m.workers_relationship_chip({ name: candidate.name, assessment: assessmentLabel(candidate.assessment) })}, ${detail}`
+											: m.workers_relationship_chip({
+													name: candidate.name,
+													assessment: assessmentLabel(candidate.assessment)
+												})}
+										disabled={saving}
+										onclick={() => void add(candidate)}
+									>
+										<SwatchDot color={`var(--${assessmentColorKey(candidate.assessment)})`} />
+										<span class="prose-value min-w-0 flex-1 truncate" title={candidate.name}
+											>{candidate.name}</span
+										>
+										{#if detail}
+											<span class="shrink-0 text-xs text-ink-3">{detail}</span>
+										{/if}
+									</button>
+								</li>
+							{/each}
+						</ul>
+					{:else}
+						<p class="px-2 text-sm text-ink-3">
+							{query.trim() ? m.workers_relationship_no_match() : m.workers_relationship_none()}
+						</p>
+					{/if}
+					<!-- The footer sits below the scrolling list, never over it. -->
+					<div class="flex items-center justify-between gap-2 border-t border-rule pt-2">
+						{#if candidates.more}
+							<p class="min-w-0 px-2 text-xs text-ink-3">{m.workers_relationship_narrow()}</p>
+						{/if}
+						<Button
+							type="button"
+							variant="ghost"
+							size="sm"
+							class="ml-auto min-h-tap lg:min-h-8"
+							onclick={() => void closeList()}
+						>
+							{m.common_done()}
+						</Button>
+					</div>
+				</div>
+			{/if}
+		</Popover.Content>
+	</Popover.Root>
 	{#if related.length && onShowOnMapping}
 		<Button
 			type="button"

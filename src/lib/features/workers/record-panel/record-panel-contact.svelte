@@ -1,8 +1,9 @@
 <script lang="ts">
 	/**
 	 * Contact: Email and Phone as two lines in the panel header, under the Name and
-	 * Assessment. Each is edited where it is shown; a long address ends in an
-	 * ellipsis and keeps its full text as a tooltip, in the copy and in the editor.
+	 * Assessment. Each is edited where it is shown. A value shows in full and breaks
+	 * across lines only when it cannot fit; the copy button floats over its end on hover
+	 * rather than keeping a gap of its own, so it never narrows the value.
 	 */
 	import RecordPanelField from './record-panel-field.svelte';
 	import type { DataTableEditReport } from '../data-table/features.ts';
@@ -30,9 +31,12 @@
 		onSaved?: (report: DataTableEditReport) => void;
 	} = $props();
 
-	/** The copy buttons wait for hover or focus where a pointer exists, and always show on touch. */
+	/**
+	 * The copy buttons wait for hover or focus where a pointer exists, floating over the end of the
+	 * value; on touch they always show, beside it.
+	 */
 	const copyReveal =
-		'[@media(hover:hover)]:opacity-0 group-hover/kv:opacity-100 focus-visible:opacity-100';
+		'[@media(hover:hover)]:absolute [@media(hover:hover)]:inset-y-0 [@media(hover:hover)]:right-0 [@media(hover:hover)]:my-auto [@media(hover:hover)]:bg-inset [@media(hover:hover)]:opacity-0 group-hover/kv:opacity-100 focus-visible:opacity-100';
 
 	const editModel = getEditModel();
 	const panelDraft = getPanelDraft();
@@ -68,14 +72,13 @@
 				{/if}
 				<!-- The icon says it to the eye; the term says it to a screen reader. -->
 				<dt class="sr-only">{m.workers_field_email()}</dt>
-				<dd class="flex min-w-0 items-center gap-1">
+				<dd class="relative flex min-w-0 items-center gap-1">
 					<div class="min-w-0 flex-1">
 						<RecordPanelField
 							label={m.workers_field_email()}
 							fieldKind="email"
 							editLabel={m.workers_edit_email()}
 							type="email"
-							oneLine
 							value={worker.email}
 							placeholder={m.workers_add_email()}
 							workerName={worker.name}
@@ -109,7 +112,7 @@
 					<PhoneIcon class="ml-2 size-3.5 text-ink-3" aria-hidden="true" />
 				{/if}
 				<dt class="sr-only">{m.workers_field_phone()}</dt>
-				<dd class="flex min-w-0 items-center gap-1">
+				<dd class="relative flex min-w-0 items-center gap-1">
 					<div class="min-w-0 flex-1">
 						<RecordPanelField
 							label={m.workers_field_phone()}
@@ -117,7 +120,6 @@
 							editLabel={m.workers_edit_phone()}
 							type="tel"
 							mask="phone"
-							oneLine
 							value={worker.phone}
 							placeholder={m.workers_add_phone()}
 							inputPlaceholder={m.workers_phone_placeholder()}
