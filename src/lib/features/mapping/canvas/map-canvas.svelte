@@ -930,7 +930,15 @@
 	let steadyFrame: number | undefined;
 	let preparationError = $state<string | undefined>();
 	let notifyReady = false;
+	/**
+	 * Whether the first drawing has been announced. Until then the dots land on whichever
+	 * arrangement is current: the first framing can arrive with a second arrangement a tick
+	 * behind it (once the names are measured), and gliding there would slide the whole map
+	 * in just after it appears.
+	 */
+	let entered = false;
 	function announceReady() {
+		entered = true;
 		notifyReady = true;
 		announceFreeze();
 	}
@@ -1306,8 +1314,8 @@
 		const timed = viewModel.isolated || drawnIsolated;
 		drawnScene = scene;
 		drawnIsolated = viewModel.isolated;
-		if (reducedMotion || sameScene) {
-			// The static path, and a manual move, land where the model says, with no travel.
+		if (reducedMotion || sameScene || !entered) {
+			// The static path, a manual move and the first drawing land where the model says, with no travel.
 			landOn(targetPositions);
 			if (rafId !== undefined) cancelAnimationFrame(rafId);
 			rafId = undefined;
@@ -1665,7 +1673,18 @@
 		}}
 		onkeydown={handleSurfaceKey}
 	>
-		<Chart.ChartContainer config={chartConfig} class="aspect-auto h-full w-full">
+		<!-- The map comes in as one motion: the whole drawing fades up once it is framed, instead of
+		     cutting in. Opacity on this wrapper runs on the compositor. -->
+		<Chart.ChartContainer
+			config={chartConfig}
+			class={`aspect-auto h-full w-full ${
+				fittedMirror === ''
+					? 'opacity-0'
+					: reducedMotion
+						? ''
+						: 'opacity-100 transition-opacity duration-200 ease-out'
+			}`}
+		>
 			<LayerChart width={Math.max(1, width)} height={Math.max(1, height)}>
 				{#snippet children({ context })}
 					<Layer center>
