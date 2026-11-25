@@ -27,6 +27,8 @@ async function workerId(request: APIRequestContext, name: string): Promise<strin
 const row = (page: Page, name: string) => page.getByRole('row', { name: new RegExp(name) });
 /** The Attribute editor popover, wherever it opens inside the panel or sheet. */
 const editor = (page: Page) => page.locator('[data-slot="popover-content"]');
+/** Email and Phone edit in place inside the panel (or sheet), not in a popover. */
+const inlineField = (page: Page) => page.getByTestId('record-panel');
 
 const select = (page: Page, name: string) =>
 	row(page, name)
@@ -75,7 +77,7 @@ async function typeEmail(page: Page, email: string) {
 	await select(page, 'Draft Keeper');
 	const keeper = panel(page, 'Draft Keeper');
 	await keeper.getByRole('button', { name: 'Edit email' }).click();
-	await editor(page).getByLabel('Email').fill(email);
+	await inlineField(page).getByLabel('Email', { exact: true }).fill(email);
 }
 
 /** The autosave writes about a second after the last keystroke; wait for the write itself. */
@@ -94,7 +96,9 @@ test('typed Email survives a reload and reopens with the message', async ({ page
 
 	// The record shows at once; the stored draft arrives a moment later and reopens the editor.
 	await expect(page.getByTestId('restored-draft')).toContainText('Restored unsaved changes from');
-	await expect(editor(page).getByLabel('Email')).toHaveValue('draft@example.test');
+	await expect(inlineField(page).getByLabel('Email', { exact: true })).toHaveValue(
+		'draft@example.test'
+	);
 });
 
 /** A Worksite with both ordinary Attribute kinds, and one Worker holding several values. */
@@ -173,7 +177,9 @@ test('an ordinary Email draft carries every Attribute, including several and non
 	await select(page, 'Draft Keeper');
 	await expect(page.getByTestId('restored-draft')).toBeVisible();
 	const panel = page.getByRole('complementary', { name: 'Worker details: Draft Keeper' });
-	await expect(editor(page).getByLabel('Email')).toHaveValue('ordinary-draft@example.test');
+	await expect(inlineField(page).getByLabel('Email', { exact: true })).toHaveValue(
+		'ordinary-draft@example.test'
+	);
 	const attributes = panel.locator('section[aria-labelledby="record-attributes"]');
 	const department = attributes.locator('dl > div').filter({ hasText: 'Department' });
 	const shifts = attributes.locator('dl > div').filter({ hasText: 'Shifts' });
@@ -279,8 +285,10 @@ test('committing the restored edit deletes the draft', async ({ page, request })
 	await select(page, 'Draft Keeper');
 
 	await expect(page.getByTestId('restored-draft')).toBeVisible();
-	await expect(editor(page).getByLabel('Email')).toHaveValue('draft@example.test');
-	await editor(page).getByLabel('Email').press('Enter');
+	await expect(inlineField(page).getByLabel('Email', { exact: true })).toHaveValue(
+		'draft@example.test'
+	);
+	await inlineField(page).getByLabel('Email', { exact: true }).press('Enter');
 
 	await expect(page.getByTestId('status-line')).toContainText("Saved Draft Keeper's Email");
 	await expect.poll(() => storedDraft(request, draftKeeper)).toBeNull();

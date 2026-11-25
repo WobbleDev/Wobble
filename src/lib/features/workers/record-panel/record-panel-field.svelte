@@ -5,6 +5,11 @@
 	 * Cancel beneath. Enter or Save commits, Escape or Cancel puts the old value
 	 * back, and focus returns to the value button either way.
 	 *
+	 * An `inline` field (Contact's Email and Phone) is a whole row instead: a lead icon,
+	 * the value, and a trailing slot. Editing swaps the value for an input in the same
+	 * box and the slot for icon Save and Cancel buttons, so nothing around it moves and
+	 * no popover opens. The value truncates to one line with the whole of it in `title`.
+	 *
 	 * A commit that changes nothing sends no request and reports nothing. A commit
 	 * the core refuses keeps the editor open with what was typed and says why in
 	 * the UI's own words (ADR-0024); the core's message never reaches the screen.
@@ -15,6 +20,9 @@
 	import { Input } from '#lib/components/ui/input/index.ts';
 	import * as Popover from '#lib/components/ui/popover/index.ts';
 	import { cn } from '#lib/utils.ts';
+	import type { Snippet } from 'svelte';
+	import CheckIcon from '@lucide/svelte/icons/check';
+	import XIcon from '@lucide/svelte/icons/x';
 	import { getEditModel } from '#lib/features/workers/edit-model.svelte.ts';
 	import { runSingleEdit } from '../data-table/bulk-actions/bulk-actions.ts';
 	import type { DataTableEditReport } from '../data-table/features.ts';
@@ -59,6 +67,12 @@
 		onCancelCreate?: () => void;
 		/** Keeps this field's unsaved typing as part of the Worker's draft (ADR-0023). */
 		draftKey?: PanelTextField;
+		/** Shows the field as a one-line row that edits in place (Email, Phone). */
+		inline?: boolean;
+		/** Inline: the row's leading icon, which stays put while editing. */
+		lead?: Snippet;
+		/** Inline: what fills the row's trailing slot while not editing (the copy button). */
+		trail?: Snippet;
 	};
 
 	let {
@@ -79,7 +93,10 @@
 		onSaved,
 		onCreate,
 		onCancelCreate,
-		draftKey
+		draftKey,
+		inline = false,
+		lead,
+		trail
 	}: Props = $props();
 
 	let editing = $state(false);
@@ -88,6 +105,7 @@
 	let saving = $state(false);
 	let input = $state<HTMLInputElement | null>(null);
 	let trigger = $state<HTMLButtonElement | null>(null);
+	let row = $state<HTMLElement | null>(null);
 	/** A restored draft reopens the editor without taking focus from where the organizer is. */
 	let restoredOpen = $state(false);
 
@@ -123,6 +141,23 @@
 		if (!draftKey || !panelDraft) return;
 		panelDraft.setField(draftKey, editing ? draft : undefined);
 		return () => panelDraft.setField(draftKey, undefined);
+	});
+
+	// An inline editor has no popover to notice a click away, so it does the same itself:
+	// pressing outside the row saves what is typed, as moving to another Worker does, and a
+	// refused write keeps the editor open with its message. Listening to the press, not to
+	// blur, keeps Cancel working where a button click does not take focus (Safari).
+	$effect(() => {
+		if (!inline || !editing) return;
+		const away = (event: PointerEvent) => {
+			if (event.target instanceof Node && row?.contains(event.target)) return;
+			// A restored draft the organizer has not touched is theirs to keep or discard from the
+			// banner; pressing there must not save it.
+			if (restoredOpen) return;
+			void commit(false);
+		};
+		document.addEventListener('pointerdown', away, true);
+		return () => document.removeEventListener('pointerdown', away, true);
 	});
 
 	const empty = $derived(!value);
@@ -165,6 +200,7 @@
 	/** Keeps only digits, lays them out, and leaves the caret on the same digit. */
 	function onInput(event: Event) {
 		const element = event.currentTarget as HTMLInputElement;
+		restoredOpen = false;
 		if (!phoneMask) {
 			draft = element.value;
 			return;
@@ -235,8 +271,8 @@
 		errorMessage = '';
 		restoredOpen = false;
 		editing = true;
-		// New Worker edits in place, so its input exists at once; a popover focuses on open.
-		if (onCreate) focusInput();
+		// New Worker and inline rows edit in place, so the input exists at once; a popover focuses on open.
+		if (onCreate || inline) focusInput();
 	}
 
 	/** The popover's own open and close (the value button, Escape) reach the same paths as the buttons. */
@@ -414,8 +450,106 @@
 	</span>
 {/snippet}
 
+{#snippet inlineRow()}
+	<!-- One row, one box: the highlight covers the icon, the value and the trailing slot alike.
+	     The value is a button stretched over the whole row, so the icon is a target too. -->
+	<div
+		bind:this={row}
+		class={cn(
+			'group/kv relative flex min-h-tap min-w-0 items-center gap-2 rounded-item px-2 transition-colors duration-150 motion-reduce:transition-none lg:min-h-8',
+			editing
+				? 'bg-panel outline-2 -outline-offset-1 outline-ring'
+				: 'hover:bg-hover has-[[data-value]:focus-visible]:outline-2 has-[[data-value]:focus-visible]:-outline-offset-1 has-[[data-value]:focus-visible]:outline-ring'
+		)}
+	>
+		<span class="flex size-4 shrink-0 items-center justify-center text-ink-3"
+			>{@render lead?.()}</span
+		>
+		{#if editing}
+			<!-- Escape is caught on the way up from the form's own controls. -->
+			<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+			<form
+				class="flex min-w-0 flex-1 items-center gap-1"
+				novalidate
+				onkeydown={(event) => {
+					if (event.key !== 'Escape') return;
+					event.preventDefault();
+					event.stopPropagation();
+					cancel();
+				}}
+				onsubmit={(event) => {
+					event.preventDefault();
+					void commit();
+				}}
+			>
+				<Input
+					bind:ref={input}
+					value={draft}
+					oninput={onInput}
+					onkeydown={onKeydown}
+					{type}
+					inputmode={phoneMask ? 'numeric' : undefined}
+					placeholder={inputPlaceholder ?? placeholder}
+					aria-label={label}
+					aria-busy={saving}
+					aria-invalid={errorMessage ? true : undefined}
+					class="h-7 min-h-0 flex-1 truncate rounded-none border-0 bg-transparent p-0 shadow-none outline-none focus-visible:outline-none lg:min-h-0"
+				/>
+				<Button
+					type="submit"
+					variant="ghost"
+					size="icon-xs"
+					aria-label={m.common_save()}
+					disabled={saving}
+				>
+					<CheckIcon />
+				</Button>
+				<Button
+					type="button"
+					variant="ghost"
+					size="icon-xs"
+					aria-label={m.common_cancel()}
+					onclick={cancel}
+					disabled={saving}
+				>
+					<XIcon />
+				</Button>
+			</form>
+		{:else}
+			<!-- Kept raw: the value is text that is edited from where it stands; the ui Button would restyle it. -->
+			<button
+				type="button"
+				bind:this={trigger}
+				data-value
+				class="min-w-0 flex-1 text-left text-sm outline-none after:absolute after:inset-0 after:rounded-item after:content-['']"
+				aria-label={valueLabel}
+				title={value || undefined}
+				onclick={startEditing}
+			>
+				<span
+					class={cn(
+						'block truncate',
+						empty && 'text-ink-3 underline decoration-dotted underline-offset-4'
+					)}
+				>
+					{value || placeholder}
+				</span>
+			</button>
+			<!-- Its own reserved space, so the value truncates before it and never runs under it. -->
+			<span class="relative z-10 flex size-6 shrink-0 items-center justify-center">
+				{@render trail?.()}
+			</span>
+		{/if}
+	</div>
+	{#if errorMessage}
+		<p role="alert" class="px-2 pb-1 text-sm text-state-error">{errorMessage}</p>
+	{/if}
+{/snippet}
+
 {#snippet field()}
-	{#if onCreate}
+	{#if inline}
+		{@render inlineRow()}
+	{:else if onCreate}
 		<!-- New Worker: the Name is typed where it will live, so the form stands in the row. -->
 		{#if editing}
 			{@render form()}

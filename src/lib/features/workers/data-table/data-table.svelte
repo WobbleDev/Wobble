@@ -328,8 +328,8 @@
 	type TableRow = ReturnType<typeof table.getRowModel>['rows'][number];
 	const mobileViewport = new IsMobile();
 	const reducedMotion = $derived(motionIsReduced());
-	/** How far the record card slides in from the right, in px. */
-	const CARD_SLIDE_PX = 288;
+	/** How far the record card slides in from the right, in px: the rail's width, 21rem. */
+	const CARD_SLIDE_PX = 336;
 	/** How long the record card takes to slide in, in ms; reduced motion skips it. */
 	const CARD_MOTION_MS = 220;
 	// opacity stays 1: fly's default fade-in leaves the translucent glass see-through, so the

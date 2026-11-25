@@ -62,6 +62,8 @@ const attributesSection = (region: Locator, id = 'record-attributes') =>
 	region.locator(`section[aria-labelledby="${id}"]`);
 /** The Attribute editor popover, wherever it opens inside the panel or sheet. */
 const editor = (page: Page) => page.locator('[data-slot="popover-content"]');
+/** Email and Phone edit in place inside the panel (or sheet), not in a popover. */
+const inlineField = (page: Page) => page.getByTestId('record-panel');
 
 const attributeRow = (region: Locator, name: string, id = 'record-attributes') =>
 	attributesSection(region, id).locator('dl > div').filter({ hasText: name });
@@ -420,7 +422,7 @@ test('editing Email saves it, offers Undo, and Undo puts the old address back', 
 	const ada = inspector(page, 'Ada Lovelace');
 
 	await ada.getByRole('button', { name: 'Edit email' }).click();
-	const input = editor(page).getByLabel('Email');
+	const input = inlineField(page).getByLabel('Email', { exact: true });
 	await expect(input).toHaveValue('ada@example.test');
 
 	await input.fill('ada.king@example.test');
@@ -447,8 +449,8 @@ test('a saved Email is still there after a reload', async ({ page, request }) =>
 	const ada = inspector(page, 'Ada Lovelace');
 
 	await ada.getByRole('button', { name: 'Edit email' }).click();
-	await editor(page).getByLabel('Email').fill('ada.king@example.test');
-	await editor(page).getByRole('button', { name: 'Save' }).click();
+	await inlineField(page).getByLabel('Email', { exact: true }).fill('ada.king@example.test');
+	await inlineField(page).getByRole('button', { name: 'Save', exact: true }).click();
 	await expect(ada).toContainText('ada.king@example.test');
 
 	await page.reload();
@@ -467,7 +469,7 @@ test('Escape puts the Phone back and returns focus to its value button', async (
 	const phone = ada.getByRole('button', { name: 'Edit phone' });
 
 	await phone.click();
-	const input = editor(page).getByLabel('Phone');
+	const input = inlineField(page).getByLabel('Phone', { exact: true });
 	await input.fill('555-9999');
 	await input.press('Escape');
 
@@ -513,7 +515,7 @@ test('a commit that changes nothing writes nothing and reports nothing', async (
 	const ada = inspector(page, 'Ada Lovelace');
 
 	await ada.getByRole('button', { name: 'Edit email' }).click();
-	await editor(page).getByLabel('Email').press('Enter');
+	await inlineField(page).getByLabel('Email', { exact: true }).press('Enter');
 
 	await expect(ada.getByRole('button', { name: 'Edit email' })).toBeFocused();
 	await expect(ada).toContainText('ada@example.test');
@@ -530,7 +532,7 @@ test.describe('Phone entry (ticket 01)', () => {
 	async function openPhone(page: Page) {
 		const ada = inspector(page, 'Ada Lovelace');
 		await ada.getByRole('button', { name: 'Edit phone' }).click();
-		return { ada, input: editor(page).getByLabel('Phone') };
+		return { ada, input: inlineField(page).getByLabel('Phone', { exact: true }) };
 	}
 
 	/** Puts the caret in a masked input once its formatting tick has settled. */
@@ -657,7 +659,7 @@ test.describe('Phone entry (ticket 01)', () => {
 		await expect(input).toHaveValue('(555) 010-0');
 		await input.press('Enter');
 
-		await expect(editor(page).getByRole('alert')).toContainText(/10 digits/i);
+		await expect(inlineField(page).getByRole('alert')).toContainText(/10 digits/i);
 		await expect(input).toHaveValue('(555) 010-0');
 		await expect(page.getByTestId('status-line')).not.toContainText("Saved Ada Lovelace's Phone");
 		expect(await storedPhone(request)).toBe('555-0100');
@@ -707,7 +709,7 @@ test.describe('Phone entry (ticket 01)', () => {
 
 		const reopened = inspector(page, 'Ada Lovelace');
 		await reopened.getByRole('button', { name: 'Edit phone' }).click();
-		await editor(page).getByLabel('Phone').press('Enter');
+		await inlineField(page).getByLabel('Phone', { exact: true }).press('Enter');
 
 		// The editor closes without a write: the value already matched the record.
 		await expect(reopened.getByRole('button', { name: 'Edit phone' })).toBeFocused();
@@ -744,8 +746,8 @@ test.describe('Phone entry (ticket 01)', () => {
 		await expect(ada.getByRole('button', { name: 'Edit phone' })).toContainText('555-0100');
 
 		await ada.getByRole('button', { name: 'Edit email' }).click();
-		await editor(page).getByLabel('Email').fill('ada.corrected@example.test');
-		await editor(page).getByLabel('Email').press('Enter');
+		await inlineField(page).getByLabel('Email', { exact: true }).fill('ada.corrected@example.test');
+		await inlineField(page).getByLabel('Email', { exact: true }).press('Enter');
 		await expect(page.getByTestId('status-line')).toContainText("Saved Ada Lovelace's Email");
 
 		const { input } = await openPhone(page);
@@ -785,7 +787,7 @@ test.describe('Phone entry (ticket 01)', () => {
 
 		// Coming back reopens the Phone editor with what was typed.
 		await selectWorker(page, 'Ada Lovelace');
-		await expect(editor(page).getByRole('textbox', { name: 'Phone' })).toHaveValue('(555) 01');
+		await expect(inlineField(page).getByRole('textbox', { name: 'Phone' })).toHaveValue('(555) 01');
 	});
 
 	test('unsaved Phone typing is kept in the draft as shown', async ({ page, request }) => {
@@ -811,7 +813,7 @@ test.describe('Phone entry (ticket 01)', () => {
 		await page.reload();
 		await appReady(page);
 		await selectWorker(page, 'Ada Lovelace');
-		await expect(editor(page).getByRole('textbox', { name: 'Phone' })).toHaveValue('(555) 01');
+		await expect(inlineField(page).getByRole('textbox', { name: 'Phone' })).toHaveValue('(555) 01');
 	});
 });
 
@@ -824,7 +826,7 @@ test('a long email is edited in a full-width input, not a clipped inline one', a
 	const ada = inspector(page, 'Ada Lovelace');
 
 	await ada.getByRole('button', { name: 'Edit email' }).click();
-	const input = editor(page).getByLabel('Email');
+	const input = inlineField(page).getByLabel('Email', { exact: true });
 	await input.fill('ada.lovelace.king.byron@a-very-long-domain.example.test');
 
 	// The editor opens over the panel at a width that reads a long address in place.
@@ -841,7 +843,7 @@ test('a half-typed Email is saved when another row is clicked', async ({ page, r
 
 	// Typed, never committed by hand: the row click must save it, not drop it.
 	await ada.getByRole('button', { name: 'Edit email' }).click();
-	await editor(page).getByLabel('Email').fill('ada.flush@example.test');
+	await inlineField(page).getByLabel('Email', { exact: true }).fill('ada.flush@example.test');
 
 	await selectWorker(page, 'Grace Hopper');
 	await expect(inspector(page, 'Grace Hopper')).toBeVisible();
@@ -902,12 +904,12 @@ test('a refused draft keeps the row unchecked and the editor open', async ({ pag
 	await selectWorker(page, 'Ada Lovelace');
 	const ada = inspector(page, 'Ada Lovelace');
 	await ada.getByRole('button', { name: 'Edit email' }).click();
-	await editor(page).getByLabel('Email').fill('not-an-email');
+	await inlineField(page).getByLabel('Email', { exact: true }).fill('not-an-email');
 
 	const box = page.getByRole('checkbox', { name: 'Select Grace Hopper' });
 	await box.check({ force: true, noWaitAfter: true }).catch(() => {});
-	await expect(editor(page).getByRole('alert')).toBeVisible();
-	await expect(editor(page).getByLabel('Email')).toHaveValue('not-an-email');
+	await expect(inlineField(page).getByRole('alert')).toBeVisible();
+	await expect(inlineField(page).getByLabel('Email', { exact: true })).toHaveValue('not-an-email');
 	await expect(box).not.toBeChecked();
 	await expect(page.getByTestId('bulk-bar')).toHaveCount(0);
 });
@@ -918,7 +920,7 @@ test('a bulk edit saves what is being typed in the panel first', async ({ page, 
 	const ada = inspector(page, 'Ada Lovelace');
 
 	await ada.getByRole('button', { name: 'Edit email' }).click();
-	await editor(page).getByLabel('Email').fill('ada.bulk@example.test');
+	await inlineField(page).getByLabel('Email', { exact: true }).fill('ada.bulk@example.test');
 
 	await page.getByRole('checkbox', { name: 'Select Ada Lovelace' }).check();
 	await page.getByTestId('bulk-bar').getByRole('button', { name: 'Edit', exact: true }).click();
@@ -1822,7 +1824,7 @@ test.describe('Undo reaches the Worker the edit started on (ticket 25)', () => {
 		await selectWorker(page, 'Ada Lovelace');
 		const ada = inspector(page, 'Ada Lovelace');
 		await ada.getByRole('button', { name: 'Edit email' }).click();
-		const input = editor(page).getByLabel('Email');
+		const input = inlineField(page).getByLabel('Email', { exact: true });
 		await input.fill('ada.king@example.test');
 		await input.press('Enter');
 		await expect(ada).toContainText('ada.king@example.test');
@@ -2286,12 +2288,12 @@ test('a malformed Email is refused in the panel and the stored address stays', a
 	await selectWorker(page, 'Ada Lovelace');
 	const ada = inspector(page, 'Ada Lovelace');
 	await ada.getByRole('button', { name: 'Edit email' }).click();
-	await editor(page).getByLabel('Email').fill('not-an-email');
-	await editor(page).getByLabel('Email').press('Enter');
-	await expect(editor(page).getByRole('alert')).toHaveText(
+	await inlineField(page).getByLabel('Email', { exact: true }).fill('not-an-email');
+	await inlineField(page).getByLabel('Email', { exact: true }).press('Enter');
+	await expect(inlineField(page).getByRole('alert')).toHaveText(
 		"That doesn't look like an email address. Check it, then save."
 	);
-	await expect(editor(page).getByLabel('Email')).toHaveValue('not-an-email');
+	await expect(inlineField(page).getByLabel('Email', { exact: true })).toHaveValue('not-an-email');
 	const stored = (await (await request.get('/api/dataset')).json()) as {
 		workers: { name: string; email: string }[];
 	};
@@ -2300,7 +2302,7 @@ test('a malformed Email is refused in the panel and the stored address stays', a
 	);
 });
 
-test('an Email shows in full on one line when it fits and wraps, never cut, when it cannot', async ({
+test('an Email shows in full on one line when it fits and ends in an ellipsis, with the whole address in its tooltip, when it cannot', async ({
 	page,
 	request
 }) => {
@@ -2309,25 +2311,33 @@ test('an Email shows in full on one line when it fits and wraps, never cut, when
 	const ada = inspector(page, 'Ada Lovelace');
 	const setEmail = async (email: string) => {
 		await ada.getByRole('button', { name: 'Edit email' }).click();
-		await editor(page).getByLabel('Email').fill(email);
-		await editor(page).getByLabel('Email').press('Enter');
+		await inlineField(page).getByLabel('Email', { exact: true }).fill(email);
+		await inlineField(page).getByLabel('Email', { exact: true }).press('Enter');
 	};
 	const value = ada.getByRole('button', { name: 'Edit email' });
+	const text = value.locator('span');
+	const clipped = () => text.evaluate((node) => node.scrollWidth > node.clientWidth);
 	const lineHeight = async () =>
 		(await ada.getByRole('button', { name: 'Edit phone' }).boundingBox())!.height;
 
-	// A usual address fits beside its icon with room to spare: whole, on one line.
+	// A usual address fits beside its icon with room to spare: whole, on one line, no ellipsis.
 	await setEmail('dana.osei@example.test');
 	await expect(value).toHaveText('dana.osei@example.test');
+	expect(await clipped()).toBe(false);
 	expect(Math.abs((await value.boundingBox())!.height - (await lineHeight()))).toBeLessThanOrEqual(
 		1
 	);
 
-	// One that cannot fit breaks across lines instead of ending in an ellipsis, and stays in the panel.
+	// A rare long one stays on one line and is cut with an ellipsis, inside the panel, and its
+	// tooltip holds the whole address.
 	const longEmail = 'harlan.ostrander-whitfield@harbourside-logistics.example.test';
 	await setEmail(longEmail);
 	await expect(value).toHaveText(longEmail);
-	expect((await value.boundingBox())!.height).toBeGreaterThan((await lineHeight()) + 1);
+	await expect(value).toHaveAttribute('title', longEmail);
+	expect(await clipped()).toBe(true);
+	expect(Math.abs((await value.boundingBox())!.height - (await lineHeight()))).toBeLessThanOrEqual(
+		1
+	);
 	const overflow = await page.evaluate(
 		() => document.documentElement.scrollWidth - document.documentElement.clientWidth
 	);
@@ -2335,6 +2345,89 @@ test('an Email shows in full on one line when it fits and wraps, never cut, when
 	const panel = await ada.boundingBox();
 	const box = await value.boundingBox();
 	expect(box!.x + box!.width).toBeLessThanOrEqual(panel!.x + panel!.width);
+});
+
+test('editing an Email in place keeps the row, its icon and the rows around it where they were', async ({
+	page,
+	request
+}) => {
+	await openWorkersTable(page, request, { seed: seedInspectorWorkers });
+	await selectWorker(page, 'Ada Lovelace');
+	const ada = inspector(page, 'Ada Lovelace');
+	const row = ada.getByRole('group', { name: 'Contact' }).getByRole('definition').first();
+	const phone = ada.getByRole('button', { name: 'Edit phone' });
+	const icon = row.locator('svg').first();
+	// The panel slides in from the right; measure once it has stopped.
+	let last = -1;
+	await expect
+		.poll(async () => {
+			const x = (await row.boundingBox())?.x ?? -2;
+			const settled = x === last;
+			last = x;
+			return settled;
+		})
+		.toBe(true);
+	const before = {
+		row: await row.boundingBox(),
+		icon: await icon.boundingBox(),
+		phone: await phone.boundingBox()
+	};
+
+	await ada.getByRole('button', { name: 'Edit email' }).click();
+	const input = inlineField(page).getByLabel('Email', { exact: true });
+	await expect(input).toBeFocused();
+	// No popover: the editor is the row itself, with Save and Cancel inside it.
+	await expect(page.locator('[data-slot="popover-content"]')).toHaveCount(0);
+	await expect(row.getByRole('button', { name: 'Save', exact: true })).toBeVisible();
+	await expect(row.getByRole('button', { name: 'Cancel', exact: true })).toBeVisible();
+
+	const during = {
+		row: await row.boundingBox(),
+		icon: await icon.boundingBox(),
+		phone: await phone.boundingBox(),
+		input: await input.boundingBox()
+	};
+	expect(during.row).toEqual(before.row);
+	expect(during.icon).toEqual(before.icon);
+	expect(during.phone).toEqual(before.phone);
+	// The text stays where it was read: the input starts at the value's own left edge.
+	const valueLeft = before.row!.x + 8 + 16 + 8;
+	expect(Math.abs(during.input!.x - valueLeft)).toBeLessThanOrEqual(1);
+
+	await input.press('Escape');
+	await expect(ada.getByRole('button', { name: 'Edit email' })).toBeFocused();
+});
+
+test('the Email row highlights as one box, icon included, and its copy button keeps a slot of its own', async ({
+	page,
+	request
+}) => {
+	await openWorkersTable(page, request, { seed: seedInspectorWorkers });
+	await selectWorker(page, 'Ada Lovelace');
+	const ada = inspector(page, 'Ada Lovelace');
+	const value = ada.getByRole('button', { name: 'Edit email' });
+	const copy = ada.getByRole('button', { name: 'Copy address' });
+	const row = ada.getByRole('group', { name: 'Contact' }).getByRole('definition').first();
+
+	const background = () =>
+		row.locator('> div').evaluate((node) => getComputedStyle(node).backgroundColor);
+	const resting = await background();
+	await expect(copy).toHaveCSS('opacity', '0');
+
+	await value.hover();
+	await expect(copy).toHaveCSS('opacity', '1');
+	await expect.poll(background).not.toBe(resting);
+
+	const box = await row.locator('> div').boundingBox();
+	const icon = await row.locator('svg').first().boundingBox();
+	const text = await value.locator('span').boundingBox();
+	const button = await copy.boundingBox();
+	// The highlight spans the icon with padding on its left, and the copy button sits inside it.
+	expect(icon!.x - box!.x).toBeGreaterThanOrEqual(6);
+	expect(button!.x + button!.width).toBeLessThanOrEqual(box!.x + box!.width);
+	// The text ends before the copy button begins, and the icon is centred on the line.
+	expect(text!.x + text!.width).toBeLessThanOrEqual(button!.x);
+	expect(Math.abs(icon!.y + icon!.height / 2 - (box!.y + box!.height / 2))).toBeLessThanOrEqual(1);
 });
 
 test('saving for a Worker deleted elsewhere says so and keeps the typing', async ({
@@ -2354,12 +2447,14 @@ test('saving for a Worker deleted elsewhere says so and keeps the typing', async
 			: route.continue()
 	);
 	await ada.getByRole('button', { name: 'Edit email' }).click();
-	await editor(page).getByLabel('Email').fill('new@example.test');
-	await editor(page).getByLabel('Email').press('Enter');
-	await expect(editor(page).getByRole('alert')).toHaveText(
+	await inlineField(page).getByLabel('Email', { exact: true }).fill('new@example.test');
+	await inlineField(page).getByLabel('Email', { exact: true }).press('Enter');
+	await expect(inlineField(page).getByRole('alert')).toHaveText(
 		'This worker was deleted, so the change could not be saved.'
 	);
-	await expect(editor(page).getByLabel('Email')).toHaveValue('new@example.test');
+	await expect(inlineField(page).getByLabel('Email', { exact: true })).toHaveValue(
+		'new@example.test'
+	);
 });
 
 test('a legacy worker id in the URL is ignored and stripped; the open record survives in-app return and clears on reload', async ({

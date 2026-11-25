@@ -13,6 +13,8 @@ test.use({ locale: 'es-MX', viewport: { width: 1440, height: 900 } });
 
 /** The editor popover of a field, wherever it opens. */
 const editor = (page: Page) => page.locator('[data-slot="popover-content"]');
+/** Email and Phone edit in place inside the panel (or sheet), not in a popover. */
+const inlineField = (page: Page) => page.getByTestId('record-panel');
 
 const rows = (page: Page) => page.locator('tbody tr[data-worker-id]');
 
@@ -97,8 +99,10 @@ test('the table and record read in Spanish while names and Worksite vocabulary s
 
 	// A contact edit saves under its Spanish label, and the canonical value is stored.
 	await ada.getByRole('button', { name: 'Editar correo electrónico' }).click();
-	await editor(page).getByLabel('Correo electrónico').fill('ada.es@example.test');
-	await editor(page).getByLabel('Correo electrónico').press('Enter');
+	await inlineField(page)
+		.getByLabel('Correo electrónico', { exact: true })
+		.fill('ada.es@example.test');
+	await inlineField(page).getByLabel('Correo electrónico', { exact: true }).press('Enter');
 	await expect(page.getByTestId('status-line')).toContainText(
 		'Se guardó Correo electrónico de Ada Lovelace'
 	);
@@ -107,10 +111,12 @@ test('the table and record read in Spanish while names and Worksite vocabulary s
 	// A refused contact write stays open with Spanish copy and keeps the typed value.
 	await page.route('**/api/workers/*', (route) => route.abort());
 	await ada.getByRole('button', { name: 'Editar correo electrónico' }).click();
-	await editor(page).getByLabel('Correo electrónico').fill('not-an-email');
-	await editor(page).getByLabel('Correo electrónico').press('Enter');
-	await expect(editor(page).getByRole('alert')).toBeVisible();
-	await expect(editor(page).getByLabel('Correo electrónico')).toHaveValue('not-an-email');
+	await inlineField(page).getByLabel('Correo electrónico', { exact: true }).fill('not-an-email');
+	await inlineField(page).getByLabel('Correo electrónico', { exact: true }).press('Enter');
+	await expect(inlineField(page).getByRole('alert')).toBeVisible();
+	await expect(inlineField(page).getByLabel('Correo electrónico', { exact: true })).toHaveValue(
+		'not-an-email'
+	);
 	await page.unroute('**/api/workers/*');
 });
 
@@ -306,7 +312,9 @@ test('a restored draft banner reads in Spanish and Discard them forgets it', asy
 		name: 'Detalles del trabajador: Borrador Keeper'
 	});
 	await panel.getByRole('button', { name: 'Editar correo electrónico' }).click();
-	await editor(page).getByLabel('Correo electrónico').fill('borrador@example.test');
+	await inlineField(page)
+		.getByLabel('Correo electrónico', { exact: true })
+		.fill('borrador@example.test');
 
 	// The autosave lands about a second after the last keystroke.
 	await expect

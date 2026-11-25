@@ -622,7 +622,7 @@
 				: m.workers_panel_details()}
 		data-material="glass"
 		data-rail="true"
-		class="flex min-h-0 w-72 shrink-0 flex-col overflow-hidden rounded-surface"
+		class="flex min-h-0 w-[21rem] shrink-0 flex-col overflow-hidden rounded-surface"
 	>
 		{@render record(onClose ? railCloseButton : undefined)}
 	</aside>
