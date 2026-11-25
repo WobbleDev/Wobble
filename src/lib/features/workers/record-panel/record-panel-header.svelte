@@ -49,49 +49,54 @@
 	}
 </script>
 
-<header class="flex shrink-0 items-start justify-between gap-2 border-b border-rule px-4 pt-4 pb-3">
-	<div class="grid min-w-0 flex-1 grid-cols-[minmax(0,1fr)] gap-1">
-		<!-- One editor per Worker: a selection change closes whoever's was open. -->
-		{#key worker.id}
-			<RecordPanelField
-				title
-				label={m.workers_field_name()}
-				fieldKind="name"
-				editLabel={m.workers_edit_name()}
-				editValueLabel={(value) => m.workers_edit_name_value({ value })}
-				value={worker.name}
-				placeholder={m.workers_add_name()}
-				workerName={worker.name}
-				draftKey="name"
-				onSave={saveField(worker.id, 'name')}
-				{refresh}
-				{onSaved}
-			/>
-			<!-- The cell's own control, colour dots included. `px-2`
+<header class="shrink-0 border-b border-rule px-4 pt-4 pb-3">
+	<div class="flex items-start justify-between gap-2">
+		<div class="grid min-w-0 flex-1 grid-cols-[minmax(0,1fr)] gap-1">
+			<!-- One editor per Worker: a selection change closes whoever's was open. -->
+			{#key worker.id}
+				<RecordPanelField
+					title
+					label={m.workers_field_name()}
+					fieldKind="name"
+					editLabel={m.workers_edit_name()}
+					editValueLabel={(value) => m.workers_edit_name_value({ value })}
+					value={worker.name}
+					placeholder={m.workers_add_name()}
+					workerName={worker.name}
+					draftKey="name"
+					onSave={saveField(worker.id, 'name')}
+					{refresh}
+					{onSaved}
+				/>
+				<!-- The cell's own control, colour dots included. `px-2`
 			     absorbs the trigger's negative margin, so the value lines up with the
 			     Name above it and the button never widens the header. -->
-			<div class="px-2 text-sm">
-				<DataTableOptionCell
-					type="single"
-					workerName={worker.name}
-					label={m.workers_field_assessment()}
-					actionLabel={m.workers_assessment_action()}
-					selected={worker.assessment}
-					options={assessmentChoices(assessmentOptions)}
-					swatch={assessmentColorFor(worker.assessment)}
-					swatchFor={(option) => assessmentColorFor(option as AssessmentOption)}
-					onUpdate={saveAssessment(worker.id)}
-					onFailed={(message) => editModel.fail(message)}
-					{onSaved}
-					{refresh}
-					fallbackMessage={m.workers_assessment_save_failed()}
-					invalidMessage={m.workers_assessment_invalid()}
-				/>
-			</div>
-		{/key}
-		<RecordPanelContact {worker} {onUpdateField} {refresh} {onSaved} />
+				<div class="px-2 text-sm">
+					<DataTableOptionCell
+						type="single"
+						workerName={worker.name}
+						label={m.workers_field_assessment()}
+						actionLabel={m.workers_assessment_action()}
+						selected={worker.assessment}
+						options={assessmentChoices(assessmentOptions)}
+						swatch={assessmentColorFor(worker.assessment)}
+						swatchFor={(option) => assessmentColorFor(option as AssessmentOption)}
+						onUpdate={saveAssessment(worker.id)}
+						onFailed={(message) => editModel.fail(message)}
+						{onSaved}
+						{refresh}
+						fallbackMessage={m.workers_assessment_save_failed()}
+						invalidMessage={m.workers_assessment_invalid()}
+					/>
+				</div>
+			{/key}
+		</div>
+		<div class="flex shrink-0 items-center gap-1">
+			{@render actions?.()}
+		</div>
 	</div>
-	<div class="flex shrink-0 items-center gap-1">
-		{@render actions?.()}
+	<!-- Under the close button's row, not beside it, so a value gets the panel's full width. -->
+	<div class="mt-1">
+		<RecordPanelContact {worker} {onUpdateField} {refresh} {onSaved} />
 	</div>
 </header>
