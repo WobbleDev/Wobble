@@ -1319,13 +1319,28 @@
 	 */
 	let fadingNodes = $state.raw<readonly WorkerGraphNode[]>([]);
 	let fadingLinks = $state.raw<readonly MapLink[]>([]);
+	/**
+	 * Everyone drawn before the change, in that order. The fading ones are drawn in their old places in
+	 * the list: moving a mounted element to the end of its parent restarts its styles, and with them
+	 * the fade, so a dot that moved would vanish at once instead.
+	 */
+	let orderNodes = $state.raw<readonly WorkerGraphNode[]>([]);
+	let orderLinks = $state.raw<readonly MapLink[]>([]);
+	function inOrder<T extends { id: string }>(before: readonly T[], now: readonly T[]): T[] {
+		const current = new Map(now.map((item) => [item.id, item]));
+		const kept = new Set(before.map((item) => item.id));
+		return [
+			...before.map((item) => current.get(item.id) ?? item),
+			...now.filter((item) => !kept.has(item.id))
+		];
+	}
 	const fadingIds = $derived(new Set(fadingNodes.map((node) => node.id)));
 	const fadingLinkIds = $derived(new Set(fadingLinks.map((link) => link.id)));
 	const shownNodes = $derived(
-		fadingNodes.length ? [...viewModel.visibleNodes, ...fadingNodes] : viewModel.visibleNodes
+		fadingNodes.length ? inOrder(orderNodes, viewModel.visibleNodes) : viewModel.visibleNodes
 	);
 	const shownLinks = $derived(
-		fadingLinks.length ? [...viewModel.visibleLinks, ...fadingLinks] : viewModel.visibleLinks
+		fadingLinks.length ? inOrder(orderLinks, viewModel.visibleLinks) : viewModel.visibleLinks
 	);
 	let fadeTimer: ReturnType<typeof setTimeout> | undefined;
 	onDestroy(() => clearTimeout(fadeTimer));
@@ -1338,12 +1353,16 @@
 			if (isolate !== isolateBefore && !reducedMotion && nodesBefore.length > 0) {
 				const now = new Set(nodes.map((node) => node.id));
 				const nowLinks = new Set(links.map((link) => link.id));
+				orderNodes = nodesBefore;
+				orderLinks = linksBefore;
 				fadingNodes = nodesBefore.filter((node) => !now.has(node.id));
 				fadingLinks = linksBefore.filter((link) => !nowLinks.has(link.id));
 				clearTimeout(fadeTimer);
 				fadeTimer = setTimeout(() => {
 					fadingNodes = [];
 					fadingLinks = [];
+					orderNodes = [];
+					orderLinks = [];
 				}, 260);
 			}
 			const was = new Set(nodesBefore.map((node) => node.id));
