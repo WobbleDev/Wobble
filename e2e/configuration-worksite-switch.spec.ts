@@ -65,7 +65,7 @@ test('configuration drafts survive Stay and a confirmed switch, while clean swit
 	await expect(page.getByRole('button', { name: 'Edit worksite name' })).toContainText(
 		'Unsaved Worksite name'
 	);
-	await expect(page.getByText('Unsaved Attribute', { exact: true })).toBeVisible();
+	await expect(page.getByText('Unsaved Attribute', { exact: true }).first()).toBeVisible();
 	await expect(page.getByText('Unsaved Agitation', { exact: true })).toBeVisible();
 	expect(selectionRequests).toEqual([]);
 

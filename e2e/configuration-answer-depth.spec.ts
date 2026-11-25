@@ -57,8 +57,11 @@ async function open(page: Page): Promise<void> {
 	await page.keyboard.press('ArrowRight');
 	for (const level of LEVELS.slice(0, 4)) {
 		await page.keyboard.press('ArrowRight');
-		await expect(answerRow(page, level)).toBeFocused();
-		await page.keyboard.press('ArrowRight');
+		const row = answerRow(page, level);
+		await expect(row).toBeFocused();
+		// A tree folds its values and opens one with Right; list and detail shows them all.
+		if ((await row.getAttribute('aria-expanded')) === 'false')
+			await page.keyboard.press('ArrowRight');
 	}
 }
 

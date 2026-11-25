@@ -25,6 +25,7 @@
 	import type { AttributePlacement } from './attribute-placement.svelte.ts';
 	import ChevronDownIcon from '@lucide/svelte/icons/chevron-down';
 	import Trash2Icon from '@lucide/svelte/icons/trash-2';
+	import { cn } from '#lib/utils.ts';
 	import { m } from '#lib/paraglide/messages.js';
 	import { answerDisplayLabel, answerPathLabel } from '#lib/shared/workers/answer-path.ts';
 	import { kindMode } from '#lib/shared/workers/select-mode.ts';
@@ -55,6 +56,11 @@
 		actions: AnswerActions;
 		onToggleExpanded: (id: string) => void;
 		onFocusRow: (id: string) => void;
+		/**
+		 * List and detail: values read as a flat ruled table (VALUE, ABBR, WORKERS) with
+		 * sub-values indented and always shown, so there is no per-value fold.
+		 */
+		detail?: boolean;
 	};
 
 	let {
@@ -70,12 +76,14 @@
 		focusedId,
 		actions,
 		onToggleExpanded,
-		onFocusRow
+		onFocusRow,
+		detail = false
 	}: Props = $props();
 
 	const children = $derived(allAnswers.filter((candidate) => candidate.parentId === answer.id));
 	const expandable = $derived(children.length > 0);
-	const expanded = $derived(expandedIds.has(answer.id));
+	/** In list and detail the sub-values are always shown; only a tree folds them. */
+	const expanded = $derived(detail || expandedIds.has(answer.id));
 	const label = $derived(answerDisplayLabel(allAnswers, answer.id));
 	const chipLabel = $derived(label || m.configuration_option_fallback());
 	const workerCount = $derived(counts.workers.get(answer.id) ?? 0);
@@ -84,6 +92,11 @@
 	/** The select mode this value's own sub-values follow (ADR 0043). */
 	const selectMode = $derived(answer.mode ?? kindMode(attributeType));
 	const selectModeName = $derived(selectMode === 'single' ? m.domain_category() : m.domain_tag());
+	const selectModeShort = $derived(
+		selectMode === 'single'
+			? m.configuration_type_single_short()
+			: m.configuration_type_multi_short()
+	);
 	const nextModeName = $derived(selectMode === 'single' ? m.domain_tag() : m.domain_category());
 	const selectModeHelp = $derived(
 		selectMode === 'single'
@@ -97,7 +110,112 @@
 	}
 	const rowColumns =
 		'grid-cols-[1.5rem_minmax(0,1fr)_3.5rem_1.75rem] @max-[20rem]:grid-cols-[2.75rem_minmax(0,1fr)_3rem_1.75rem]';
+	/** The table's columns: grip, value, Abbr, Workers, remove. */
+	const detailColumns = 'grid-cols-[1.5rem_minmax(0,1fr)_5rem_4rem_2rem]';
+	/** Sub-values shift the whole row right, so Abbr and Workers stay aligned. */
+	const indent = $derived(`${Math.max(0, depth - 2) * 1.25}rem`);
 </script>
+
+{#snippet grip()}
+	<button
+		type="button"
+		data-placement-handle={answer.id}
+		class="flex size-7 shrink-0 touch-none items-center justify-center rounded-sm text-ink-3 hover:bg-hover focus-visible:ring-2 focus-visible:ring-ring coarse:size-tap"
+		class:cursor-grabbing={placement.isDraggingAnswer(answer.id) && !placement.refusal}
+		class:cursor-not-allowed={placement.isDraggingAnswer(answer.id) && Boolean(placement.refusal)}
+		aria-label={m.configuration_placement_handle({
+			name: answerPathLabel(allAnswers, answer.id)
+		})}
+		aria-pressed={(placement.source?.kind === 'answer' &&
+			placement.source.answerId === answer.id) ||
+			actions.reorder.isHeld(answer.id)}
+		{disabled}
+		onkeydown={(event) => actions.reorder.keydown(event, attributeId, answer.id)}
+		onkeyup={(event) => {
+			// Space activates a button on release; the keydown already used it.
+			if (event.key === ' ') event.preventDefault();
+		}}
+		onblur={() => actions.reorder.blur(answer.id)}
+		onpointerdown={(event) =>
+			placement.pointerDown(event, { kind: 'answer', attributeId, answerId: answer.id })}
+		onclick={(event) =>
+			placement.clickHandle(event, { kind: 'answer', attributeId, answerId: answer.id })}
+		><GripVerticalIcon class="size-3.5" /></button
+	>
+{/snippet}
+
+{#snippet nameBody()}
+	{#if placement.source && placement.eligible({ attributeId, parentId: answer.id })}
+		<button
+			type="button"
+			class="absolute inset-0 z-10 rounded-sm"
+			aria-label={m.configuration_placement_under({
+				name: answerPathLabel(allAnswers, answer.id)
+			})}
+		></button>
+	{/if}
+	<EditableChip
+		variant="row"
+		removable={false}
+		destination={placement.isDestination(attributeId, answer.id)}
+		path={answerPathLabel(allAnswers, answer.id)}
+		text={answer.value || m.configuration_untitled_option()}
+		editLabel={m.configuration_edit_value({ name: chipLabel })}
+		removeLabel={m.configuration_remove_value({ name: chipLabel })}
+		error={actions.hasError(answer)}
+		{disabled}
+		onRemove={() => actions.onRequestRemove(answer.id)}
+		onRename={(text) => actions.onRename(answer.id, text)}
+		onDuplicate={(text, survivorId) => actions.onDuplicate(answer.id, text, survivorId)}
+	/>
+{/snippet}
+
+{#snippet nameChip()}
+	<div
+		class="relative min-w-0 flex-1 rounded-sm"
+		data-placement-attribute={attributeId}
+		data-placement-parent={answer.id}
+	>
+		{@render nameBody()}
+	</div>
+{/snippet}
+
+{#snippet abbreviation()}
+	<AbbreviationField
+		name={chipLabel}
+		shown={actions.abbreviationShown(answer)}
+		edited={answer.abbreviationOrigin === 'edited'}
+		chip={detail}
+		{disabled}
+		onInput={(text) => actions.onAbbreviation(answer.id, text)}
+	/>
+{/snippet}
+
+{#snippet removeButton()}
+	<button
+		type="button"
+		class="absolute top-1/2 right-1 flex size-7 -translate-y-1/2 items-center justify-center rounded-sm p-0 text-ink-3 hover:bg-state-error/10 hover:text-state-error focus-visible:text-state-error focus-visible:ring-2 focus-visible:ring-ring coarse:size-tap [@media(hover:hover)]:opacity-0 [@media(hover:hover)]:group-focus-within/row:opacity-100 [@media(hover:hover)]:group-hover/row:opacity-100"
+		aria-label={m.configuration_remove_value({ name: chipLabel })}
+		title={m.configuration_remove_value({ name: chipLabel })}
+		data-action="remove"
+		tabindex={-1}
+		{disabled}
+		onclick={() => actions.onRequestRemove(answer.id)}
+	>
+		<Trash2Icon class="size-4" />
+	</button>
+{/snippet}
+
+{#snippet dropLine(left: string)}
+	<span
+		aria-hidden="true"
+		data-testid="placement-drop-indicator"
+		class={`pointer-events-none absolute right-2 -bottom-1 z-10 flex items-center gap-1 ${left}`}
+	>
+		<span class="size-1.5 shrink-0 rounded-full bg-action"></span>
+		<span class="h-px flex-1 bg-action"></span>
+	</span>
+{/snippet}
 
 <div
 	role="treeitem"
@@ -118,142 +236,107 @@
 	<div
 		data-reorder-row={answer.id}
 		data-reorder-attribute={attributeId}
-		class={`group/row relative grid ${rowColumns} min-h-9 items-center gap-1 rounded-item px-1 coarse:min-h-tap`}
+		class={cn(
+			'group/row relative grid min-h-9 items-center gap-1 coarse:min-h-tap',
+			detail
+				? `${detailColumns} min-h-[2.375rem] border-b border-rule`
+				: `${rowColumns} rounded-item px-1`
+		)}
+		style:padding-left={detail ? indent : undefined}
 	>
 		{#if placement.dropEdge(answer.id)}
 			<span
 				aria-hidden="true"
 				data-testid="placement-drop-indicator"
-				class={`pointer-events-none absolute right-2 left-[2.25rem] z-10 flex items-center gap-1 ${placement.dropEdge(answer.id) === 'top' ? '-top-1' : '-bottom-1'}`}
+				class={`pointer-events-none absolute right-2 z-10 flex items-center gap-1 ${detail ? 'left-8' : 'left-[2.25rem]'} ${placement.dropEdge(answer.id) === 'top' ? '-top-1' : '-bottom-1'}`}
 			>
 				<span class="size-1.5 shrink-0 rounded-full bg-action"></span>
 				<span class="h-px flex-1 bg-action"></span>
 			</span>
 		{/if}
-		{#if expandable}
-			<button
-				type="button"
-				class="flex size-8 items-center justify-center rounded-item p-0 hover:bg-hover coarse:size-tap"
-				aria-label={m.configuration_answer_toggle({ name: label })}
-				aria-expanded={expanded}
-				aria-controls={`${answer.id}-answers`}
-				{disabled}
-				onclick={() => onToggleExpanded(answer.id)}
+		{#if detail}
+			{@render grip()}
+			<!-- The whole value cell is the placement target, as the name was in the tree. -->
+			<div
+				class="relative flex min-w-0 items-center gap-2 self-stretch"
+				data-placement-attribute={attributeId}
+				data-placement-parent={answer.id}
 			>
-				<ChevronDownIcon class={`size-4 transition-transform ${expanded ? '' : '-rotate-90'}`} />
-			</button>
-		{:else}
-			<span></span>
-		{/if}
-		<div class="flex min-w-0 flex-wrap items-center gap-x-0.5 gap-y-1">
-			<!-- The handle and the name wrap as one, so a narrow row moves the field down, not the handle. -->
-			<div class="flex min-w-0 flex-1 basis-40 items-center gap-0.5">
-				<button
-					type="button"
-					data-placement-handle={answer.id}
-					class="flex size-7 shrink-0 touch-none items-center justify-center rounded-sm text-ink-3 hover:bg-hover focus-visible:ring-2 focus-visible:ring-ring coarse:size-tap"
-					class:cursor-grabbing={placement.isDraggingAnswer(answer.id) && !placement.refusal}
-					class:cursor-not-allowed={placement.isDraggingAnswer(answer.id) &&
-						Boolean(placement.refusal)}
-					aria-label={m.configuration_placement_handle({
-						name: answerPathLabel(allAnswers, answer.id)
-					})}
-					aria-pressed={(placement.source?.kind === 'answer' &&
-						placement.source.answerId === answer.id) ||
-						actions.reorder.isHeld(answer.id)}
-					{disabled}
-					onkeydown={(event) => actions.reorder.keydown(event, attributeId, answer.id)}
-					onkeyup={(event) => {
-						// Space activates a button on release; the keydown already used it.
-						if (event.key === ' ') event.preventDefault();
-					}}
-					onblur={() => actions.reorder.blur(answer.id)}
-					onpointerdown={(event) =>
-						placement.pointerDown(event, { kind: 'answer', attributeId, answerId: answer.id })}
-					onclick={(event) =>
-						placement.clickHandle(event, { kind: 'answer', attributeId, answerId: answer.id })}
-					><GripVerticalIcon class="size-3.5" /></button
-				>
-				<div
-					class="relative min-w-0 flex-1 rounded-sm"
-					data-placement-attribute={attributeId}
-					data-placement-parent={answer.id}
-				>
-					{#if placement.source && placement.eligible({ attributeId, parentId: answer.id })}
-						<button
-							type="button"
-							class="absolute inset-0 z-10 rounded-sm"
-							aria-label={m.configuration_placement_under({
-								name: answerPathLabel(allAnswers, answer.id)
-							})}
-						></button>
-					{/if}
-					<EditableChip
-						variant="row"
-						removable={false}
-						destination={placement.isDestination(attributeId, answer.id)}
-						path={answerPathLabel(allAnswers, answer.id)}
-						text={answer.value || m.configuration_untitled_option()}
-						editLabel={m.configuration_edit_value({ name: chipLabel })}
-						removeLabel={m.configuration_remove_value({ name: chipLabel })}
-						error={actions.hasError(answer)}
+				<div class="min-w-0">{@render nameBody()}</div>
+				{#if expandable}
+					<button
+						type="button"
+						class="key shrink-0 rounded-sm px-1 hover:bg-hover focus-visible:ring-2 focus-visible:ring-ring coarse:min-h-tap"
+						data-testid="answer-select-mode"
+						aria-label={m.configuration_select_mode_toggle({
+							name: label,
+							current: selectModeName,
+							next: nextModeName
+						})}
+						aria-pressed={selectMode === 'multi'}
+						title={`${selectModeName}: ${selectModeHelp}`}
 						{disabled}
-						onRemove={() => actions.onRequestRemove(answer.id)}
-						onRename={(text) => actions.onRename(answer.id, text)}
-						onDuplicate={(text, survivorId) => actions.onDuplicate(answer.id, text, survivorId)}
-					/>
-				</div>
+						onclick={toggleSelectMode}
+					>
+						{selectModeShort}
+					</button>
+				{/if}
 			</div>
-			<AbbreviationField
-				name={chipLabel}
-				shown={actions.abbreviationShown(answer)}
-				edited={answer.abbreviationOrigin === 'edited'}
-				{disabled}
-				onInput={(text) => actions.onAbbreviation(answer.id, text)}
-			/>
+			<div class="flex items-center justify-end">{@render abbreviation()}</div>
+			<OutlineCount count={workerCount} />
+			{@render removeButton()}
+			{#if placement.isDestination(attributeId, answer.id)}
+				{@render dropLine('left-10')}
+			{/if}
+		{:else}
 			{#if expandable}
 				<button
 					type="button"
-					class="shrink-0 rounded-full bg-inset px-2 text-xs leading-6 text-ink-2 hover:bg-hover focus-visible:ring-2 focus-visible:ring-ring coarse:min-h-tap"
-					data-testid="answer-select-mode"
-					aria-label={m.configuration_select_mode_toggle({
-						name: label,
-						current: selectModeName,
-						next: nextModeName
-					})}
-					aria-pressed={selectMode === 'multi'}
-					title={`${selectModeName}: ${selectModeHelp}`}
+					class="flex size-8 items-center justify-center rounded-item p-0 hover:bg-hover coarse:size-tap"
+					aria-label={m.configuration_answer_toggle({ name: label })}
+					aria-expanded={expanded}
+					aria-controls={`${answer.id}-answers`}
 					{disabled}
-					onclick={toggleSelectMode}
+					onclick={() => onToggleExpanded(answer.id)}
 				>
-					{selectModeName}
+					<ChevronDownIcon class={`size-4 transition-transform ${expanded ? '' : '-rotate-90'}`} />
 				</button>
+			{:else}
+				<span></span>
 			{/if}
-		</div>
-		<div class="@max-[20rem]:col-start-3 @max-[20rem]:row-start-1">
-			<OutlineCount count={workerCount} />
-		</div>
-		<button
-			type="button"
-			class="absolute top-1/2 right-1 flex size-7 -translate-y-1/2 items-center justify-center rounded-sm p-0 text-ink-3 hover:bg-state-error/10 hover:text-state-error focus-visible:text-state-error focus-visible:ring-2 focus-visible:ring-ring coarse:size-tap [@media(hover:hover)]:opacity-0 [@media(hover:hover)]:group-focus-within/row:opacity-100 [@media(hover:hover)]:group-hover/row:opacity-100"
-			aria-label={m.configuration_remove_value({ name: chipLabel })}
-			title={m.configuration_remove_value({ name: chipLabel })}
-			data-action="remove"
-			tabindex={-1}
-			{disabled}
-			onclick={() => actions.onRequestRemove(answer.id)}
-		>
-			<Trash2Icon class="size-4" />
-		</button>
-		{#if placement.isDestination(attributeId, answer.id)}
-			<span
-				aria-hidden="true"
-				data-testid="placement-drop-indicator"
-				class="pointer-events-none absolute right-2 -bottom-1 left-[4.5rem] z-10 flex items-center gap-1 @max-[20rem]:left-12"
-			>
-				<span class="size-1.5 shrink-0 rounded-full bg-action"></span>
-				<span class="h-px flex-1 bg-action"></span>
-			</span>
+			<div class="flex min-w-0 flex-wrap items-center gap-x-0.5 gap-y-1">
+				<!-- The handle and the name wrap as one, so a narrow row moves the field down, not the handle. -->
+				<div class="flex min-w-0 flex-1 basis-40 items-center gap-0.5">
+					{@render grip()}
+					{@render nameChip()}
+				</div>
+				{@render abbreviation()}
+				{#if expandable}
+					<button
+						type="button"
+						class="shrink-0 rounded-full bg-inset px-2 text-xs leading-6 text-ink-2 hover:bg-hover focus-visible:ring-2 focus-visible:ring-ring coarse:min-h-tap"
+						data-testid="answer-select-mode"
+						aria-label={m.configuration_select_mode_toggle({
+							name: label,
+							current: selectModeName,
+							next: nextModeName
+						})}
+						aria-pressed={selectMode === 'multi'}
+						title={`${selectModeName}: ${selectModeHelp}`}
+						{disabled}
+						onclick={toggleSelectMode}
+					>
+						{selectModeName}
+					</button>
+				{/if}
+			</div>
+			<div class="@max-[20rem]:col-start-3 @max-[20rem]:row-start-1">
+				<OutlineCount count={workerCount} />
+			</div>
+			{@render removeButton()}
+			{#if placement.isDestination(attributeId, answer.id)}
+				{@render dropLine('left-[4.5rem] @max-[20rem]:left-12')}
+			{/if}
 		{/if}
 	</div>
 
@@ -262,11 +345,11 @@
 	{/if}
 
 	{#if expandable && expanded}
-		<!-- One guide line for the level these children sit on. -->
+		<!-- One guide line for the level these children sit on (a tree only; the table indents rows instead). -->
 		<div
 			id={`${answer.id}-answers`}
 			role="group"
-			class="ml-4 border-l border-rule pl-2 @max-[28rem]:ml-1 @max-[28rem]:pl-1"
+			class={cn(!detail && 'ml-4 border-l border-rule pl-2 @max-[28rem]:ml-1 @max-[28rem]:pl-1')}
 		>
 			{#each children as child (child.id)}
 				<Self
@@ -283,6 +366,7 @@
 					{actions}
 					{onToggleExpanded}
 					{onFocusRow}
+					{detail}
 				/>
 			{/each}
 			{#if directWorkers > 0}
@@ -301,12 +385,19 @@
 					onfocus={() => onFocusRow(remainderId)}
 				>
 					<div
-						class={`grid ${rowColumns} min-h-9 items-center gap-1 px-1 text-ink-2 coarse:min-h-tap`}
+						class={cn(
+							'grid min-h-9 items-center gap-1 text-ink-2 coarse:min-h-tap',
+							detail
+								? `${detailColumns} min-h-[2.375rem] border-b border-rule`
+								: `${rowColumns} px-1`
+						)}
+						style:padding-left={detail ? `${(depth - 1) * 1.25}rem` : undefined}
 					>
 						<span></span>
 						<span class="min-w-0 truncate text-sm">
 							{m.configuration_no_further_detail({ name: label })}
 						</span>
+						{#if detail}<span></span>{/if}
 						<OutlineCount count={directWorkers} />
 					</div>
 				</div>

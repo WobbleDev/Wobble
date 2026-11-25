@@ -103,6 +103,8 @@ test('exposes the outline as a tree with levels, expanded state and one tab stop
 }) => {
 	const settings = ids();
 	await seed(request, settings);
+	// Below 42rem of column the outline is a tree that folds; wider, list and detail shows every value.
+	await page.setViewportSize({ width: 680, height: 900 });
 	await openConfiguration(page);
 	await page.evaluate(() => document.fonts.ready);
 

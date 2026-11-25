@@ -82,9 +82,9 @@ test('only a value with sub-values shows a select-mode chip, and the chip toggle
 
 	// Front of House is Multi-Select; Back of House follows the Attribute and reads Single-Select.
 	const front = chipOf(page, 'Front of House');
-	await expect(front).toHaveText('Multi-Select');
+	await expect(front).toHaveText('Multi');
 	await expect(front).toHaveAttribute('aria-pressed', 'true');
-	await expect(chipOf(page, 'Back of House')).toHaveText('Single-Select');
+	await expect(chipOf(page, 'Back of House')).toHaveText('Single');
 
 	// A leaf value has no sub-values, so its row carries no chip.
 	await expect(answerRow(page, 'Server', 'Department')).toBeVisible();
@@ -93,7 +93,7 @@ test('only a value with sub-values shows a select-mode chip, and the chip toggle
 
 	// The chip flips the value's own mode in the draft, which is now unsaved.
 	await front.click();
-	await expect(front).toHaveText('Single-Select');
+	await expect(front).toHaveText('Single');
 	await expect(front).toHaveAttribute('aria-pressed', 'false');
 	await expect(
 		page.getByRole('button', {
@@ -104,7 +104,7 @@ test('only a value with sub-values shows a select-mode chip, and the chip toggle
 	await expect(page.getByText('Unsaved changes', { exact: true })).toBeVisible();
 
 	await front.click();
-	await expect(front).toHaveText('Multi-Select');
+	await expect(front).toHaveText('Multi');
 });
 
 test('switching Front of House to Single-Select previews the Worker it trims, then keeps only the first branch', async ({
@@ -119,7 +119,7 @@ test('switching Front of House to Single-Select previews the Worker it trims, th
 	await openAttributeEditor(page, 'Department');
 
 	await chipOf(page, 'Front of House').click();
-	await expect(chipOf(page, 'Front of House')).toHaveText('Single-Select');
+	await expect(chipOf(page, 'Front of House')).toHaveText('Single');
 	await page.getByRole('button', { name: 'Save all', exact: true }).click();
 
 	// Ada holds two branches of a group that is now Single-Select, so the preview names her
@@ -151,7 +151,7 @@ test('switching Front of House to Single-Select previews the Worker it trims, th
 	// The mode change persisted: Configuration reads Front of House as Single-Select again.
 	await openConfiguration(page);
 	await openAttributeEditor(page, 'Department');
-	await expect(chipOf(page, 'Front of House')).toHaveText('Single-Select');
+	await expect(chipOf(page, 'Front of House')).toHaveText('Single');
 
 	await page.goto('/workers');
 	await appReady(page);

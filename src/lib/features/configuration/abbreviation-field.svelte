@@ -13,9 +13,11 @@
 		edited: boolean;
 		disabled: boolean;
 		onInput: (text: string) => void;
+		/** List and detail: a small chip in the Abbr column rather than a bordered field. */
+		chip?: boolean;
 	};
 
-	let { name, shown, edited, disabled, onInput }: Props = $props();
+	let { name, shown, edited, disabled, onInput, chip = false }: Props = $props();
 
 	/** While the field has focus it shows what is typed, even when that is blank. */
 	let typing = $state<string | null>(null);
@@ -36,14 +38,23 @@
 </script>
 
 <!-- The count sits inside the field, so showing it moves nothing. -->
-<div class="relative w-[7.5rem] shrink-0">
+<div
+	class={cn(
+		'relative shrink-0',
+		chip ? (typing !== null || tooLong ? 'w-[11ch]' : 'w-[7ch]') : 'w-[7.5rem]'
+	)}
+>
 	<Input
 		value={text}
 		class={cn(
 			'h-7 min-h-0 px-2 text-xs coarse:min-h-tap',
+			chip &&
+				'h-6 min-h-0 w-auto rounded-sm border-transparent bg-inset px-1 text-center font-mono text-[0.6875rem] font-medium tracking-[0.06em] text-ink hover:bg-hover focus-visible:bg-panel lg:min-h-0',
+			// A generated suggestion is greyed; an edited one is drawn at full strength.
 			!edited && typing === null && 'text-ink-3',
-			(typing !== null || tooLong) && 'pr-9'
+			(typing !== null || tooLong) && (chip ? 'pr-7 text-left' : 'pr-9')
 		)}
+		size={chip ? Math.min(Math.max(count, 4), ABBREVIATION_LIMIT + 4) : undefined}
 		aria-label={m.configuration_abbreviation_aria({ name })}
 		aria-invalid={tooLong || undefined}
 		data-testid="abbreviation-field"

@@ -27,9 +27,15 @@ test('the Configuration tab speaks Attributes', async ({ page }) => {
 	await expect(page.getByTestId('assignment-column')).toHaveCount(0);
 	await expect(page.getByText('About each Work Assignment')).toHaveCount(0);
 	await expect(page.getByText('Scope', { exact: true })).toHaveCount(0);
+	// The column heads sit over the selected Attribute's values.
+	await page
+		.getByTestId('attribute-row')
+		.first()
+		.getByRole('button', { name: /^Toggle options for/ })
+		.click();
 	// The one count column counts Workers, never assignments.
 	await expect(workerColumn(page).getByTestId('worker-count-header')).toHaveText('Workers');
-	await expect(workerColumn(page).getByTestId('abbreviation-header')).toHaveText('Abbreviation');
+	await expect(workerColumn(page).getByTestId('abbreviation-header')).toHaveText('Abbr');
 	await expect(workerColumn(page).getByText(/assignment/i)).toHaveCount(0);
 });
 
@@ -357,5 +363,6 @@ test('an Attribute name edits inline, cancels with Escape, and commits on Enter 
 	await page.reload();
 	await appReady(page);
 	const reloaded = page.locator(`[data-testid="attribute-row"][data-attribute-id="${id}"]`);
+	await reloaded.getByRole('button', { name: /^Toggle options for/ }).click();
 	await expect(reloaded.getByRole('button', { name: 'Rename Department final' })).toBeVisible();
 });
