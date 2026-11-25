@@ -25,7 +25,12 @@ test('shows Spanish Configuration controls and keeps an entered Worksite name ve
 	await expect(
 		workerColumn(page).getByRole('heading', { name: 'Atributos', exact: true })
 	).toBeVisible();
-	await expect(workerColumn(page).getByTestId('abbreviation-header')).toHaveText('Abreviatura');
+	await page
+		.getByTestId('attribute-row')
+		.first()
+		.getByRole('button', { name: /^Mostrar u ocultar opciones de/ })
+		.click();
+	await expect(workerColumn(page).getByTestId('abbreviation-header')).toHaveText('Abrev.');
 	await expect(page.getByRole('heading', { name: 'Asuntos laborales', exact: true })).toBeVisible();
 	await expect(page.getByRole('heading', { name: 'Idiomas', exact: true })).toBeVisible();
 	await expect(page.getByRole('heading', { name: 'Zona de peligro', exact: true })).toBeVisible();

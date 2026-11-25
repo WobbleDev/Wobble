@@ -600,7 +600,10 @@ async function destinationGeometry(page: Page, region: Locator, destination: Loc
 	return page.evaluate(
 		({ regionElement, destinationElement }) => {
 			const region = regionElement.getBoundingClientRect();
-			const destination = destinationElement.getBoundingClientRect();
+			// An unfolded value wraps its sub-values, so measure its own row, not the whole item.
+			const destination = (
+				destinationElement.querySelector('[data-reorder-row]') ?? destinationElement
+			).getBoundingClientRect();
 			const point = {
 				x: destination.left + destination.width / 2,
 				y: destination.top + destination.height / 2
@@ -642,7 +645,7 @@ async function moveTouchGradually(
 
 test.describe('touch placement in long Attribute outlines', () => {
 	test.use({ hasTouch: true, reducedMotion: 'reduce' });
-	test('touch drag auto-scrolls to a collapsed deep destination and saves the held branch', async ({
+	test('touch drag auto-scrolls to a deep destination and saves the held branch', async ({
 		page,
 		request,
 		browserName
@@ -721,8 +724,9 @@ test.describe('touch placement in long Attribute outlines', () => {
 			exact: true
 		});
 		const leaf = page.getByRole('treeitem', { name: 'Receiving area', exact: true });
-		await expect(leaf).toHaveCount(0);
-		await expect(destination).toHaveAttribute('aria-expanded', 'false');
+		// List and detail shows every value, so the destination starts unfolded there.
+		await expect(leaf).toHaveCount(1);
+		await expect(destination).toHaveAttribute('aria-expanded', 'true');
 		const edgePoint = {
 			x: regionBox.x + regionBox.width / 2,
 			y: regionBox.y + regionBox.height - 18
@@ -741,7 +745,9 @@ test.describe('touch placement in long Attribute outlines', () => {
 				parentId: destinationId
 			});
 		const destinationPoint = await destination.evaluate((element) => {
-			const bounds = element.getBoundingClientRect();
+			const bounds = (
+				element.querySelector('[data-reorder-row]') ?? element
+			).getBoundingClientRect();
 			return { x: bounds.left + bounds.width / 2, y: bounds.top + bounds.height / 2 };
 		});
 		const destinationHit = await placementHitAt(page, destinationPoint);

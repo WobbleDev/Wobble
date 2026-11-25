@@ -221,6 +221,22 @@
 		if ((event.target as HTMLElement).closest('button, input, a')) return;
 		onToggleExpanded(attribute.id);
 	}
+
+	/** The type as a two-way control in list and detail: each side names what it is or switches to. */
+	const typeChoices = $derived([
+		{
+			type: 'category' as const,
+			short: m.configuration_type_single_short(),
+			long: m.domain_category(),
+			help: m.configuration_single_select_help()
+		},
+		{
+			type: 'tag' as const,
+			short: m.configuration_type_multi_short(),
+			long: m.domain_tag(),
+			help: m.configuration_multi_select_help()
+		}
+	]);
 </script>
 
 {#snippet removalChoice(parent: AttributeAnswerDraft)}
@@ -233,6 +249,114 @@
 		onMoveAnswer={(optionId, parentId) => onMoveAnswer(attribute.id, optionId, parentId)}
 		onClose={() => (pendingRemovalId = '')}
 	/>
+{/snippet}
+
+{#snippet reorderHandle(extra: string)}
+	<button
+		type="button"
+		data-testid="attribute-reorder"
+		data-action="reorder"
+		class={cn(
+			`flex size-7 shrink-0 touch-none items-center justify-center rounded-sm text-ink-3 hover:bg-hover focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-30 coarse:size-tap ${reordering ? 'cursor-grabbing' : 'cursor-grab'}`,
+			extra
+		)}
+		aria-label={m.configuration_attribute_reorder_handle({ name: displayName })}
+		title={m.configuration_attribute_reorder_handle({ name: displayName })}
+		disabled={saving}
+		onpointerdown={(event) => onStartReorder(event, attribute.id)}
+		onkeydown={reorderKeydown}
+	>
+		<GripVerticalIcon class="size-3.5" />
+	</button>
+{/snippet}
+
+{#snippet deleteButton(extra: string)}
+	<button
+		type="button"
+		class={cn(
+			'flex shrink-0 items-center justify-center rounded-sm text-ink-3 hover:bg-state-error/10 hover:text-state-error focus-visible:text-state-error focus-visible:ring-2 focus-visible:ring-ring coarse:min-h-tap coarse:min-w-tap [@media(hover:hover)]:opacity-0 [@media(hover:hover)]:group-focus-within/row:opacity-100 [@media(hover:hover)]:group-hover/row:opacity-100',
+			extra
+		)}
+		aria-label={m.configuration_delete_named({
+			name: attribute.name || m.configuration_attribute_fallback()
+		})}
+		title={m.configuration_delete_named({
+			name: attribute.name || m.configuration_attribute_fallback()
+		})}
+		disabled={saving}
+		onclick={() => onRequestDelete(attribute.id)}
+	>
+		<Trash2Icon class="size-4" />
+	</button>
+{/snippet}
+
+{#snippet dropLine(position: string)}
+	<span
+		aria-hidden="true"
+		data-testid="placement-drop-indicator"
+		class={`pointer-events-none absolute right-2 z-10 flex items-center gap-1 ${position}`}
+	>
+		<span class="size-1.5 shrink-0 rounded-full bg-action"></span>
+		<span class="h-px flex-1 bg-action"></span>
+	</span>
+{/snippet}
+
+{#snippet nameEditor(heading: boolean)}
+	{#if editingName}
+		<Input
+			bind:value={nameDraft}
+			class={cn(
+				'min-h-8 min-w-0 flex-1 px-2 py-1 text-sm md:min-h-8',
+				heading && 'text-base font-semibold'
+			)}
+			aria-label={m.configuration_attribute_name()}
+			aria-invalid={Boolean(nameError)}
+			aria-describedby={nameError ? `${attribute.id}-name-error` : undefined}
+			autofocus
+			oninput={() => (nameError = getAttributeNameError(nameDraft, allAttributes, attribute.id))}
+			onkeydown={(event) => {
+				if (event.key === 'Enter') {
+					event.preventDefault();
+					commitNameEdit(true);
+				} else if (event.key === 'Escape') {
+					event.preventDefault();
+					event.stopPropagation();
+					cancelNameEdit();
+				}
+			}}
+			onblur={() => commitNameEdit()}
+		/>
+	{:else}
+		<div
+			class="relative min-w-0 flex-[0_1_auto]"
+			data-placement-attribute={heading ? undefined : attribute.id}
+			data-placement-parent={heading ? undefined : ''}
+		>
+			<div class="min-w-0">
+				<button
+					bind:this={nameButton}
+					type="button"
+					class={cn(
+						'max-w-full min-w-0 truncate rounded-sm text-left underline decoration-transparent underline-offset-4 hover:decoration-ink-3 focus-visible:decoration-ink coarse:min-h-tap',
+						heading ? 'text-base leading-6 font-semibold' : 'text-sm font-medium',
+						!heading && placement.isDestination(attribute.id, '') && 'bg-hover'
+					)}
+					aria-label={m.configuration_attribute_rename({ name: displayName })}
+					title={`${displayName} — ${attributeType}: ${typeHelp}`}
+					onclick={startNameEdit}
+				>
+					{displayName}
+				</button>
+			</div>
+			{#if !heading && placement.source && placement.eligible( { attributeId: attribute.id, parentId: '' } )}
+				<button
+					type="button"
+					class="absolute inset-0 z-10 rounded-sm"
+					aria-label={m.configuration_placement_root({ name: displayName })}
+				></button>
+			{/if}
+		</div>
+	{/if}
 {/snippet}
 
 <div
@@ -250,7 +374,7 @@
 		'group/item relative outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring',
 		// List and detail: the item is just its row, one list column wide; the values are
 		// placed beside it from the tree's own corner (see the detail block below).
-		detail && '@2xl:static @2xl:w-64'
+		detail && 'static w-50'
 	)}
 	class:opacity-40={reordering}
 	onfocus={() => onFocusRow(attribute.id)}
@@ -258,166 +382,109 @@
 	<!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
 	<div
 		class={cn(
-			`group/row relative grid ${rowColumns} min-h-10 items-center gap-1 px-1 coarse:min-h-tap`,
-			// List and detail: no dropdown arrow; the whole row selects, and a slim bar marks the pick.
-			detail &&
-				'@2xl:cursor-pointer @2xl:grid-cols-[0.75rem_minmax(0,1fr)_3.5rem_1.75rem] @2xl:rounded-item',
-			detail && (expanded ? '@2xl:bg-inset' : '@2xl:hover:bg-hover')
+			'group/row relative grid min-h-10 items-center coarse:min-h-tap',
+			detail
+				? 'min-h-9 cursor-pointer grid-cols-[1rem_minmax(0,1fr)_auto] gap-1.5 rounded-item px-2.5'
+				: `${rowColumns} gap-1 px-1`,
+			// List and detail: no dropdown arrow; the whole row selects and a soft fill marks the pick.
+			detail && (expanded ? 'bg-hover' : 'hover:bg-hover')
 		)}
 		onclick={selectFromRow}
 	>
 		{#if dropEdge}
-			<span
-				aria-hidden="true"
-				data-testid="placement-drop-indicator"
-				class={`pointer-events-none absolute right-2 left-[2.25rem] z-10 flex items-center gap-1 ${dropEdge === 'top' ? '-top-1' : '-bottom-1'}`}
-			>
-				<span class="size-1.5 shrink-0 rounded-full bg-action"></span>
-				<span class="h-px flex-1 bg-action"></span>
-			</span>
-		{/if}
-		<button
-			type="button"
-			class={cn(
-				'group flex size-8 items-center justify-center rounded-item p-0 coarse:size-tap',
-				detail && '@2xl:w-3!'
+			{@render dropLine(
+				`${detail ? 'left-2.5' : 'left-[2.25rem]'} ${dropEdge === 'top' ? '-top-1' : '-bottom-1'}`
 			)}
-			aria-label={m.configuration_attribute_toggle({ name: displayName })}
-			aria-expanded={expanded}
-			aria-controls={`${attribute.id}-answers`}
-			disabled={saving}
-			onclick={() => onToggleExpanded(attribute.id)}
-		>
-			<span
-				class={cn(
-					'flex size-6 items-center justify-center rounded-sm group-hover:bg-hover',
-					detail && '@2xl:hidden'
-				)}
-			>
-				<ChevronDownIcon class={`size-4 transition-transform ${expanded ? '' : '-rotate-90'}`} />
-			</span>
-			{#if detail}
-				<span
-					aria-hidden="true"
-					class={cn(
-						'hidden h-5 w-1 rounded-full @2xl:block',
-						expanded ? 'bg-action' : 'bg-transparent'
-					)}
-				></span>
-			{/if}
-		</button>
-
-		<div class="flex min-w-0 flex-wrap items-center gap-1">
+		{/if}
+		{#if detail}
+			<!-- The row's own select control: a transparent cover, so keyboard and assistive technology still toggle it. -->
 			<button
 				type="button"
-				data-testid="attribute-reorder"
-				data-action="reorder"
-				class={`flex size-7 shrink-0 touch-none items-center justify-center rounded-sm text-ink-3 hover:bg-hover focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-30 coarse:size-tap ${reordering ? 'cursor-grabbing' : 'cursor-grab'}`}
-				aria-label={m.configuration_attribute_reorder_handle({ name: displayName })}
-				title={m.configuration_attribute_reorder_handle({ name: displayName })}
+				class="absolute inset-0 z-[1] rounded-item focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
+				aria-label={m.configuration_attribute_toggle({ name: displayName })}
+				aria-expanded={expanded}
+				aria-controls={`${attribute.id}-answers`}
 				disabled={saving}
-				onpointerdown={(event) => onStartReorder(event, attribute.id)}
-				onkeydown={reorderKeydown}
+				onclick={() => onToggleExpanded(attribute.id)}
+			></button>
+			{@render reorderHandle(
+				'relative z-[2] -mx-1.5 size-6 opacity-0 group-focus-within/row:opacity-100 group-hover/row:opacity-100 coarse:opacity-100'
+			)}
+			<div
+				class="relative min-w-0"
+				data-placement-attribute={attribute.id}
+				data-placement-parent=""
 			>
-				<GripVerticalIcon class="size-3.5" />
-			</button>
-			<div class="flex min-w-0 flex-1 flex-wrap items-center gap-1">
-				{#if editingName}
-					<Input
-						bind:value={nameDraft}
-						class="min-h-8 min-w-0 flex-1 px-2 py-1 text-sm md:min-h-8"
-						aria-label={m.configuration_attribute_name()}
-						aria-invalid={Boolean(nameError)}
-						aria-describedby={nameError ? `${attribute.id}-name-error` : undefined}
-						autofocus
-						oninput={() =>
-							(nameError = getAttributeNameError(nameDraft, allAttributes, attribute.id))}
-						onkeydown={(event) => {
-							if (event.key === 'Enter') {
-								event.preventDefault();
-								commitNameEdit(true);
-							} else if (event.key === 'Escape') {
-								event.preventDefault();
-								event.stopPropagation();
-								cancelNameEdit();
-							}
-						}}
-						onblur={() => commitNameEdit()}
-					/>
-				{:else}
-					<div
-						class="relative min-w-0 flex-[0_1_auto]"
-						data-placement-attribute={attribute.id}
-						data-placement-parent=""
-					>
-						<div class="min-w-0">
-							<button
-								bind:this={nameButton}
-								type="button"
-								class={`max-w-full min-w-0 truncate rounded-sm text-left text-sm font-medium underline decoration-transparent underline-offset-4 hover:decoration-ink-3 focus-visible:decoration-ink coarse:min-h-tap ${placement.isDestination(attribute.id, '') ? 'bg-hover' : ''}`}
-								aria-label={m.configuration_attribute_rename({ name: displayName })}
-								title={`${displayName} — ${attributeType}: ${typeHelp}`}
-								onclick={startNameEdit}
-							>
-								{displayName}
-							</button>
-						</div>
-						{#if placement.source && placement.eligible( { attributeId: attribute.id, parentId: '' } )}
-							<button
-								type="button"
-								class="absolute inset-0 z-10 rounded-sm"
-								aria-label={m.configuration_placement_root({ name: displayName })}
-							></button>
-						{/if}
-					</div>
-				{/if}
-				{#if !editingName}
+				<span
+					class={cn(
+						'block truncate text-sm',
+						expanded && 'font-semibold',
+						placement.isDestination(attribute.id, '') && 'w-fit rounded-sm bg-hover'
+					)}
+					title={displayName}>{displayName}</span
+				>
+				{#if placement.source && placement.eligible({ attributeId: attribute.id, parentId: '' })}
 					<button
 						type="button"
-						class="shrink-0 rounded-full bg-inset px-2.5 text-xs leading-6 text-ink-2 hover:bg-hover focus-visible:ring-2 focus-visible:ring-ring coarse:min-h-tap"
-						aria-label={m.configuration_attribute_type_toggle({
-							current: attributeType,
-							next: attribute.type === 'category' ? m.domain_tag() : m.domain_category()
-						})}
-						aria-pressed={attribute.type === 'tag'}
-						title={`${attributeType}: ${typeHelp}`}
-						onclick={toggleType}
-					>
-						{attributeType}
-					</button>
-				{/if}
-				{#if nameError}
-					<div class="basis-full">
-						<Field.Error id={`${attribute.id}-name-error`}>{nameError}</Field.Error>
-					</div>
+						class="absolute inset-0 z-10 rounded-sm"
+						aria-label={m.configuration_placement_root({ name: displayName })}
+					></button>
 				{/if}
 			</div>
-		</div>
-
-		<OutlineCount count={counts.workersAnswering} />
-		<button
-			type="button"
-			class="flex size-tap shrink-0 items-center justify-center rounded-sm text-ink-3 hover:bg-state-error/10 hover:text-state-error focus-visible:text-state-error focus-visible:ring-2 focus-visible:ring-ring md:size-7 coarse:min-h-tap coarse:min-w-tap [@media(hover:hover)]:opacity-0 [@media(hover:hover)]:group-focus-within/row:opacity-100 [@media(hover:hover)]:group-hover/row:opacity-100"
-			aria-label={m.configuration_delete_named({
-				name: attribute.name || m.configuration_attribute_fallback()
-			})}
-			title={m.configuration_delete_named({
-				name: attribute.name || m.configuration_attribute_fallback()
-			})}
-			disabled={saving}
-			onclick={() => onRequestDelete(attribute.id)}
-		>
-			<Trash2Icon class="size-4" />
-		</button>
-		{#if placement.isDestination(attribute.id, '')}
-			<span
-				aria-hidden="true"
-				data-testid="placement-drop-indicator"
-				class="pointer-events-none absolute right-2 -bottom-1 left-[2.25rem] z-10 flex items-center gap-1"
+			<OutlineCount
+				class={cn(
+					'pointer-events-none text-[0.8125rem] text-ink-3 [@media(hover:hover)]:group-focus-within/row:opacity-0 [@media(hover:hover)]:group-hover/row:opacity-0'
+				)}
+				count={counts.workersAnswering}
+			/>
+			{@render deleteButton('absolute top-1/2 right-1.5 z-[2] size-7 -translate-y-1/2')}
+		{:else}
+			<button
+				type="button"
+				class="group flex size-8 items-center justify-center rounded-item p-0 coarse:size-tap"
+				aria-label={m.configuration_attribute_toggle({ name: displayName })}
+				aria-expanded={expanded}
+				aria-controls={`${attribute.id}-answers`}
+				disabled={saving}
+				onclick={() => onToggleExpanded(attribute.id)}
 			>
-				<span class="size-1.5 shrink-0 rounded-full bg-action"></span>
-				<span class="h-px flex-1 bg-action"></span>
-			</span>
+				<span class="flex size-6 items-center justify-center rounded-sm group-hover:bg-hover">
+					<ChevronDownIcon class={`size-4 transition-transform ${expanded ? '' : '-rotate-90'}`} />
+				</span>
+			</button>
+
+			<div class="flex min-w-0 flex-wrap items-center gap-1">
+				{@render reorderHandle('')}
+				<div class="flex min-w-0 flex-1 flex-wrap items-center gap-1">
+					{@render nameEditor(false)}
+					{#if !editingName}
+						<button
+							type="button"
+							class="shrink-0 rounded-full bg-inset px-2.5 text-xs leading-6 text-ink-2 hover:bg-hover focus-visible:ring-2 focus-visible:ring-ring coarse:min-h-tap"
+							aria-label={m.configuration_attribute_type_toggle({
+								current: attributeType,
+								next: attribute.type === 'category' ? m.domain_tag() : m.domain_category()
+							})}
+							aria-pressed={attribute.type === 'tag'}
+							title={`${attributeType}: ${typeHelp}`}
+							onclick={toggleType}
+						>
+							{attributeType}
+						</button>
+					{/if}
+					{#if nameError}
+						<div class="basis-full">
+							<Field.Error id={`${attribute.id}-name-error`}>{nameError}</Field.Error>
+						</div>
+					{/if}
+				</div>
+			</div>
+
+			<OutlineCount count={counts.workersAnswering} />
+			{@render deleteButton('size-tap md:size-7')}
+		{/if}
+		{#if placement.isDestination(attribute.id, '')}
+			{@render dropLine(`-bottom-1 ${detail ? 'left-2.5' : 'left-[2.25rem]'}`)}
 		{/if}
 	</div>
 
@@ -425,18 +492,67 @@
 		<!-- In list and detail, the whole block fills the detail column beside the list. -->
 		<div
 			bind:clientHeight={detailHeight}
-			class={cn(detail && '@2xl:absolute @2xl:top-1.5 @2xl:right-0 @2xl:left-[17.5rem]')}
+			class={cn(detail && 'absolute top-1 right-0 left-56')}
 			class:opacity-40={reordering}
 		>
-			<!-- One guide line for the root answers' level (a tree only; the detail has its own column). -->
+			{#if detail}
+				<div class="flex min-h-6 items-center gap-2">
+					{@render nameEditor(true)}
+				</div>
+				{#if nameError}
+					<Field.Error id={`${attribute.id}-name-error`}>{nameError}</Field.Error>
+				{/if}
+				<div
+					role="group"
+					aria-label={m.configuration_attribute_type()}
+					class="mt-2 inline-flex gap-0.5 rounded-control border border-rule p-0.5"
+				>
+					{#each typeChoices as choice (choice.type)}
+						{@const on = attribute.type === choice.type}
+						<button
+							type="button"
+							class={cn(
+								'min-h-7 rounded-sm px-3 text-[0.8125rem] text-ink-2 hover:bg-hover focus-visible:ring-2 focus-visible:ring-ring coarse:min-h-tap',
+								on && 'bg-hover font-semibold text-ink'
+							)}
+							aria-label={on
+								? choice.long
+								: m.configuration_attribute_type_toggle({
+										current: attributeType,
+										next: choice.long
+									})}
+							aria-pressed={on}
+							title={on ? `${choice.long}: ${choice.help}` : `${attributeType}: ${typeHelp}`}
+							disabled={saving}
+							onclick={() => {
+								if (!on) toggleType();
+							}}
+						>
+							{choice.short}
+						</button>
+					{/each}
+				</div>
+				<div
+					aria-hidden="true"
+					class="mt-5 grid grid-cols-[1.5rem_minmax(0,1fr)_5rem_4rem_2rem] items-center gap-1 border-b border-rule pb-1"
+				>
+					<span></span>
+					<span class="key min-w-0 truncate">{m.configuration_values_heading()}</span>
+					<span class="key text-right" data-testid="abbreviation-header"
+						>{m.configuration_column_abbreviation()}</span
+					>
+					<span class="key text-right" data-testid="worker-count-header"
+						>{m.configuration_column_workers()}</span
+					>
+					<span></span>
+				</div>
+			{/if}
+			<!-- One guide line for the root answers' level (a tree only; the detail is a ruled table). -->
 			<div
 				id={`${attribute.id}-answers`}
 				role="group"
 				data-testid="attribute-answers"
-				class={cn(
-					'ml-4 border-l border-rule pl-2 @max-[28rem]:ml-1 @max-[28rem]:pl-1',
-					detail && '@2xl:ml-0 @2xl:border-l-0 @2xl:pl-0'
-				)}
+				class={cn(!detail && 'ml-4 border-l border-rule pl-2 @max-[28rem]:ml-1 @max-[28rem]:pl-1')}
 			>
 				{#each roots as answer (answer.id)}
 					<AnswerOutline
@@ -453,6 +569,7 @@
 						actions={answerActions}
 						{onToggleExpanded}
 						{onFocusRow}
+						{detail}
 					/>
 				{/each}
 				{#if !roots.length}
@@ -461,7 +578,9 @@
 			</div>
 			{#if placement.destination?.attributeId === attribute.id}
 				<div
-					class="sticky bottom-0 z-20 ml-4 grid min-w-0 gap-0.5 bg-panel py-1 pl-2 text-xs leading-4 text-ink-2"
+					class="sticky bottom-0 z-20 grid min-w-0 gap-0.5 bg-panel py-1 pl-2 text-xs leading-4 text-ink-2 {detail
+						? ''
+						: 'ml-4'}"
 					data-testid="placement-preview"
 				>
 					<span class="truncate font-medium" title={placement.destinationLabel}
@@ -473,19 +592,23 @@
 				</div>
 			{/if}
 			{#if attribute.moveError}
-				<div class="ml-4 pl-2"><Field.Error>{attribute.moveError}</Field.Error></div>
+				<div class={detail ? '' : 'ml-4 pl-2'}>
+					<Field.Error>{attribute.moveError}</Field.Error>
+				</div>
 			{/if}
 			{#if attribute.removalError}
-				<div class="ml-4 pl-2"><Field.Error>{attribute.removalError}</Field.Error></div>
+				<div class={detail ? '' : 'ml-4 pl-2'}>
+					<Field.Error>{attribute.removalError}</Field.Error>
+				</div>
 			{/if}
-			<AttributeTools {attribute} {saving} {onAddOption} {placement} />
+			<AttributeTools {attribute} {saving} {onAddOption} {placement} {detail} />
 		</div>
 	{/if}
 	{#if !expanded && placement.destination?.attributeId === attribute.id}
 		<div
 			class={cn(
 				'sticky bottom-0 z-20 ml-4 grid min-w-0 gap-0.5 bg-panel py-1 pl-2 text-xs leading-4 text-ink-2',
-				detail && '@2xl:w-64'
+				detail && 'w-50'
 			)}
 			data-testid="placement-preview"
 		>

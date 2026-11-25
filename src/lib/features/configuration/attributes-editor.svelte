@@ -16,6 +16,9 @@
 	import MergeConfirmDialog from './merge-confirm-dialog.svelte';
 	import type { ValueTextCheck } from './configuration-draft.ts';
 
+	/** Where list and detail begins: 42rem, the container width the Attributes card switches at. */
+	const DETAIL_MIN_WIDTH = 672;
+
 	type Props = {
 		/** The Attributes in this column, in configured order. */
 		attributes: AttributeDraft[];
@@ -94,10 +97,15 @@
 	const unfoldedCount = $derived(
 		attributes.filter((attribute) => expandedIds.has(attribute.id)).length
 	);
-	const detail = $derived(unfoldedCount <= 1);
+	/** The column's width: list and detail needs room for the list and the values side by side. */
+	let columnWidth = $state(0);
+	const listAndDetail = $derived(columnWidth >= DETAIL_MIN_WIDTH);
+	const detail = $derived(listAndDetail && unfoldedCount <= 1);
 	/** A click or key on an Attribute row selects it: the open one folds away. */
 	function selectOrToggle(id: string) {
 		const isAttribute = attributes.some((attribute) => attribute.id === id);
+		// List and detail shows every value, so a value has no fold to toggle.
+		if (detail && !isAttribute) return;
 		if (isAttribute && !expandedIds.has(id) && !placement.source) {
 			for (const other of attributes) {
 				if (other.id !== id && expandedIds.has(other.id)) onToggleExpanded(other.id);
@@ -238,42 +246,16 @@
   on this recess so every row below them lines up with what it is counting. An answer
   being placed can also be made an Attribute of its own from the promote zone under the tree.
 -->
-<div class="grid min-w-0 gap-0.5" bind:this={column}>
-	<div
-		class={cn(
-			'sticky top-[var(--outline-head,0px)] z-[8] -mx-6 border-b border-rule bg-panel px-7 pb-1',
-			// List and detail: one heading over the list, one over the values.
-			detail && '@2xl:grid @2xl:grid-cols-[16rem_minmax(0,1fr)] @2xl:gap-x-6'
-		)}
-		aria-hidden="true"
-	>
+<div class="grid min-w-0 gap-0.5" bind:this={column} bind:clientWidth={columnWidth}>
+	{#if !detail}
 		<div
-			class={cn(
-				`grid ${rowColumns} items-center gap-1`,
-				detail && '@2xl:grid-cols-[0.75rem_minmax(0,1fr)_3.5rem_1.75rem] @2xl:px-1'
-			)}
+			class="sticky top-[var(--outline-head,0px)] z-[8] -mx-6 border-b border-rule bg-panel px-7 pb-1"
+			aria-hidden="true"
 		>
-			<span></span>
-			<span class="flex min-w-0 items-center justify-between gap-2">
-				<span class="key min-w-0 truncate">{m.configuration_attribute_name()}</span>
-				<span
-					class={cn('key shrink-0 text-right whitespace-nowrap', detail && '@2xl:hidden')}
-					data-testid={detail ? undefined : 'abbreviation-header'}
-					>{m.configuration_column_abbreviation()}</span
-				>
-			</span>
-			<span
-				class={cn('key text-right leading-tight hyphens-auto', detail && '@2xl:hidden')}
-				data-testid={detail ? undefined : 'worker-count-header'}
-				>{m.configuration_column_workers()}</span
-			>
-			<span></span>
-		</div>
-		{#if detail}
-			<div class={`hidden ${rowColumns} items-center gap-1 px-1 @2xl:grid`}>
+			<div class={`grid ${rowColumns} items-center gap-1`}>
 				<span></span>
 				<span class="flex min-w-0 items-center justify-between gap-2">
-					<span class="key min-w-0 truncate">{m.configuration_values_heading()}</span>
+					<span class="key min-w-0 truncate">{m.configuration_attribute_name()}</span>
 					<span class="key shrink-0 text-right whitespace-nowrap" data-testid="abbreviation-header"
 						>{m.configuration_column_abbreviation()}</span
 					>
@@ -283,13 +265,13 @@
 				>
 				<span></span>
 			</div>
-		{/if}
-	</div>
+		</div>
+	{/if}
 
 	<div
 		role="tree"
-		class={cn('grid gap-1.5 pt-1.5', detail && '@2xl:relative')}
-		style:min-height={detail && detailHeight ? `${detailHeight + 6}px` : undefined}
+		class={cn('grid gap-1.5 pt-1.5', detail && 'relative content-start gap-0.5 pt-1')}
+		style:min-height={detail && detailHeight ? `${detailHeight + 4}px` : undefined}
 		class:cursor-grabbing={(placement.dragging && !placement.refusal) || reorder}
 		class:cursor-not-allowed={Boolean(placement.dragging && placement.refusal)}
 		tabindex="-1"
@@ -298,10 +280,7 @@
 		onkeydown={outline.keydown}
 	>
 		{#if detail && unfoldedCount === 0 && attributes.length}
-			<p
-				aria-hidden="true"
-				class="hidden px-2 py-1.5 text-sm text-ink-3 @2xl:absolute @2xl:top-1.5 @2xl:left-[17.5rem] @2xl:block"
-			>
+			<p aria-hidden="true" class="absolute top-1 left-56 block px-2 py-1.5 text-sm text-ink-3">
 				{m.configuration_pick_attribute()}
 			</p>
 		{/if}
