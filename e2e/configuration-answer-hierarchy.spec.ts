@@ -6,6 +6,7 @@ import { appReady } from './page-ready.ts';
 import {
 	addAttribute,
 	answerRow,
+	attributeRowByName,
 	closeAttributeEditor,
 	openAttributeEditor
 } from './configuration-outline.ts';
@@ -338,4 +339,57 @@ test('Workers selects a direct parent or a same-named child by path, and reload 
 		(worker: { name: string }) => worker.name === 'Rachel Carson'
 	)!;
 	expect(casey.attributes[settings.location]).toBe(settings.otherPacking);
+});
+
+test("a focused parent value shows its own row actions, not its sub-values' (#266)", async ({
+	page,
+	request
+}) => {
+	const attribute = `family-${randomUUID().slice(0, 8)}`;
+	const ids = [`${attribute}~parent`, `${attribute}~first`, `${attribute}~second`];
+	const configured = await request.put('/api/attributes', {
+		data: [
+			{
+				id: attribute,
+				name: 'Family',
+				kind: 'tag',
+				options: [
+					{ id: ids[0], value: 'Parent' },
+					{ id: ids[1], value: 'First Child', parentId: ids[0] },
+					{ id: ids[2], value: 'Second Child', parentId: ids[0] }
+				]
+			}
+		]
+	});
+	expect(configured.ok(), await configured.text()).toBeTruthy();
+	await page.goto('/configuration');
+	await appReady(page);
+
+	const family = attributeRowByName(page, 'Family');
+	await family.focus();
+	if ((await family.getAttribute('aria-expanded')) !== 'true')
+		await page.keyboard.press('ArrowRight');
+	await page.keyboard.press('ArrowRight');
+	const parent = answerRow(page, 'Parent');
+	await expect(parent).toBeFocused();
+	if ((await parent.getAttribute('aria-expanded')) === 'false')
+		await page.keyboard.press('ArrowRight');
+	// Keep the pointer off the rows, so only focus decides what shows.
+	await page.mouse.move(0, 0);
+
+	// The row's own delete control, not one nested in a sub-value below it.
+	const removeOpacity = (row: Locator) =>
+		row.evaluate((element) => {
+			const own = element.querySelector(':scope > [data-reorder-row] [data-action="remove"]');
+			return own ? getComputedStyle(own).opacity : 'missing';
+		});
+	const child = answerRow(page, 'First Child');
+
+	await expect.poll(() => removeOpacity(parent)).toBe('1');
+	await expect.poll(() => removeOpacity(child)).toBe('0');
+
+	await page.keyboard.press('ArrowDown');
+	await expect(child).toBeFocused();
+	await expect.poll(() => removeOpacity(child)).toBe('1');
+	await expect.poll(() => removeOpacity(parent)).toBe('0');
 });
