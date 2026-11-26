@@ -2,7 +2,6 @@
 	import { onMount, untrack } from 'svelte';
 	import { invalidateAll } from '$app/navigation';
 	import { Button } from '#lib/components/ui/button/index.ts';
-	import { Input } from '#lib/components/ui/input/index.ts';
 	import { Label } from '#lib/components/ui/label/index.ts';
 	import {
 		createStorage,
@@ -14,6 +13,7 @@
 	import FileReceipt from '#lib/features/settings/file-receipt.svelte';
 	import { applyAppLocale, appliedLocale, type AppLocale } from '#lib/i18n/locale.ts';
 	import { m } from '#lib/paraglide/messages.js';
+	import PassphraseInput from '#lib/shared/ui/passphrase-input.svelte';
 	import { createStartupRecovery } from '#lib/shell/startup-recovery.svelte.ts';
 	import { createBootForm } from './boot-form.svelte.ts';
 	import { version } from '../../../../package.json';
@@ -21,6 +21,7 @@
 	let { status }: { status: BootStatus } = $props();
 	let shownLocale = $state(appliedLocale());
 	let passwordInput = $state<HTMLInputElement | null>(null);
+	let confirmInput = $state<HTMLInputElement | null>(null);
 	const form = createBootForm(
 		untrack(() => status),
 		{ create: createStorage, unlock: unlockStorage, refresh: getBootStatus, opened: invalidateAll }
@@ -59,6 +60,8 @@
 						: m.boot_unlock_action(),
 			passphrase: m.boot_passphrase(),
 			confirm: m.boot_confirm(),
+			showPassphrase: m.passphrase_show(),
+			spacesHint: m.passphrase_spaces_hint(),
 			forgot: m.boot_forgot(),
 			legacy: m.boot_legacy_remnants(),
 			interrupted: m.boot_interrupted(),
@@ -164,42 +167,46 @@
 					<FileReceipt path={form.recoveryPath} />
 				</div>{/if}
 		{:else}
-			<h1 class="text-2xl font-semibold tracking-headline">{copy.title}</h1>
+			<div class="grid gap-3">
+				<p class="text-lg font-semibold tracking-headline text-ink">{m.app_name()}</p>
+				<hr class="border-rule" />
+				<h1 class="text-2xl font-semibold tracking-headline">{copy.title}</h1>
+			</div>
 			<form
 				autocomplete="off"
 				class="grid gap-5"
 				onsubmit={async (event) => {
 					event.preventDefault();
 					await form.submit();
-					if (form.failure) passwordInput?.focus();
+					if (form.failure === 'confirm') confirmInput?.focus();
+					else if (form.failure) passwordInput?.focus();
 				}}
 			>
 				<div class="grid gap-2">
 					<Label class="field-label" for="boot-passphrase">{copy.passphrase}</Label>
-					<Input
+					<PassphraseInput
 						id="boot-passphrase"
-						type="password"
+						showLabel={copy.showPassphrase}
 						bind:ref={passwordInput}
 						bind:value={form.passphrase}
-						autocomplete="off"
-						autocapitalize="off"
-						spellcheck={false}
 						disabled={form.busy}
-						aria-invalid={form.failure !== null}
-						aria-describedby={form.failure ? 'boot-consequence boot-error' : 'boot-consequence'}
+						aria-invalid={form.failure !== null && form.failure !== 'confirm'}
+						aria-describedby={`boot-consequence${newCredential ? ' boot-spaces' : ''}${form.failure ? ' boot-error' : ''}`}
 					/>
+					{#if newCredential}<p id="boot-spaces" class="text-sm text-ink-2">
+							{copy.spacesHint}
+						</p>{/if}
 				</div>
 				{#if newCredential}<div class="grid gap-2">
 						<Label class="field-label" for="boot-confirm">{copy.confirm}</Label>
-						<Input
+						<PassphraseInput
 							id="boot-confirm"
-							type="password"
+							showLabel={copy.showPassphrase}
+							bind:ref={confirmInput}
 							bind:value={form.confirm}
-							autocomplete="off"
-							autocapitalize="off"
-							spellcheck={false}
 							disabled={form.busy}
 							aria-invalid={form.failure === 'confirm'}
+							aria-describedby={form.failure === 'confirm' ? 'boot-error' : undefined}
 						/>
 					</div>{/if}
 				<p id="boot-consequence" class="text-sm text-ink-2">{copy.forgot}</p>

@@ -56,9 +56,6 @@ export function createPassphraseChange(host: {
 			const previous = current;
 			const replacement = next;
 			const confirmation = confirm;
-			current = '';
-			next = '';
-			confirm = '';
 			error = null;
 			if (
 				!previous.trim() ||
@@ -66,13 +63,22 @@ export function createPassphraseChange(host: {
 				previous.includes('\0') ||
 				replacement.includes('\0')
 			) {
+				current = '';
+				next = '';
+				confirm = '';
 				error = 'required';
 				return;
 			}
 			if (replacement !== confirmation) {
+				// Keep the current and new passphrases so a confirmation typo only retypes
+				// the confirmation.
+				confirm = '';
 				error = 'confirm';
 				return;
 			}
+			current = '';
+			next = '';
+			confirm = '';
 			busy = true;
 			try {
 				receipt = await host.change(previous, replacement, confirmation);

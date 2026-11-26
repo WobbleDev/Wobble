@@ -3,7 +3,7 @@ import { ApiError } from '#lib/client/api-error.ts';
 import { createPassphraseChange } from './passphrase-change.svelte.ts';
 
 describe('passphrase change', () => {
-	it('requires confirmation and clears all three fields before the core call settles', async () => {
+	it('keeps the primary fields on a confirmation mismatch and clears all three before the core call settles', async () => {
 		let complete: (path: string) => void = () => {};
 		const change = vi.fn(
 			(): Promise<string> =>
@@ -17,6 +17,7 @@ describe('passphrase change', () => {
 		flow.confirm = 'different';
 		await flow.submit();
 		expect(flow.error).toBe('confirm');
+		expect([flow.current, flow.next, flow.confirm]).toEqual(['old', 'new', '']);
 		expect(change).not.toHaveBeenCalled();
 		flow.current = '  old á  ';
 		flow.next = '  new á  ';

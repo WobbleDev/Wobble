@@ -1533,8 +1533,33 @@ test('encrypted export, guarded passphrase change and source-key restore preserv
 			.getByRole('button', { name: 'Change passphrase', exact: true })
 			.click();
 		const dialog = page.getByRole('dialog', { name: 'Change passphrase' });
+		await expect(dialog.getByText('Spaces count, including at the start and end.')).toBeVisible();
+		// Every field has its own Show toggle, which changes only that field's type.
+		for (const id of ['passphrase-current', 'passphrase-next', 'passphrase-confirm']) {
+			const toggle = dialog.locator(`[aria-controls="${id}"]`);
+			const field = dialog.locator(`#${id}`);
+			await expect(toggle).toHaveAttribute('aria-pressed', 'false');
+			await expect(field).toHaveAttribute('type', 'password');
+			await toggle.click();
+			await expect(field).toHaveAttribute('type', 'text');
+			await expect(toggle).toHaveAttribute('aria-pressed', 'true');
+			await toggle.click();
+			await expect(field).toHaveAttribute('type', 'password');
+			await expect(toggle).toHaveAttribute('aria-pressed', 'false');
+		}
 		await dialog.getByLabel('Current passphrase', { exact: true }).fill(TEST_PASSPHRASE);
 		await dialog.getByLabel('New passphrase', { exact: true }).fill(nextPassphrase);
+		await dialog
+			.getByLabel('Confirm new passphrase', { exact: true })
+			.fill('different confirmation');
+		await dialog.getByRole('button', { name: 'Change passphrase', exact: true }).click();
+		// A confirmation mismatch marks only the confirmation and keeps the new passphrase.
+		await expect(dialog.getByRole('alert')).toContainText(
+			"The passphrases don't match. Type the confirmation again."
+		);
+		await expect(dialog.locator('#passphrase-confirm')).toHaveAttribute('aria-invalid', 'true');
+		await expect(dialog.locator('#passphrase-next')).not.toHaveAttribute('aria-invalid', 'true');
+		await expect(dialog.getByLabel('New passphrase', { exact: true })).toHaveValue(nextPassphrase);
 		await dialog.getByLabel('Confirm new passphrase', { exact: true }).fill(nextPassphrase);
 		await dialog.getByRole('button', { name: 'Change passphrase', exact: true }).click();
 		await expect.poll(() => responseStatus).toBe(200);
@@ -1547,11 +1572,17 @@ test('encrypted export, guarded passphrase change and source-key restore preserv
 		release();
 		await expect(dialog.getByRole('status')).toHaveText('Passphrase changed.');
 		await expect(dialog).toContainText('This recovery copy uses your previous passphrase.');
+		// The receipt opens with focus on its own Done action.
+		const done = dialog.getByRole('button', { name: 'Done', exact: true });
+		await expect(done).toBeVisible();
+		await expect(done).toBeFocused();
 		const recovery = (await dialog.locator('code[data-selectable]').textContent())!;
 		expect(existsSync(recovery)).toBe(true);
 		await context.grantPermissions(['clipboard-read', 'clipboard-write']);
 		await dialog.getByRole('button', { name: 'Copy path', exact: true }).click();
 		expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(recovery);
+		await done.click();
+		await expect(dialog).toHaveCount(0);
 		const wrong = await request.post('/api/restore', {
 			data: { path: recovery, sourcePassphrase: nextPassphrase }
 		});
