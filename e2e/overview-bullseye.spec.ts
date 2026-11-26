@@ -366,14 +366,25 @@ test('scales the fitted chart under reduced motion without clipping or scrolling
 	await expect(page.locator('.no-scroll-chart')).toHaveCount(1);
 	const chart = chartBox(page);
 	const base = (await chart.boundingBox())!.width;
+	const reset = page.getByRole('button', { name: 'Reset zoom' });
+
+	// At 1× there is nothing to reset, so the fitted chart's control is absent.
+	await expect(reset).toHaveCount(0);
 
 	await wheelOverChart(page, 600);
 	await expect.poll(async () => (await chart.boundingBox())!.width).toBeLessThan(base - 10);
+	await expect(reset).toBeVisible();
 
 	// Shrinking is the one direction with room here, and it must stay a fitted
 	// chart: nothing clipped, nothing to scroll.
 	expect(await scrollableOverflow(page)).toBe(0);
 	expect(await clippedContent(page)).toEqual([]);
+
+	// Reset is a fitted-chart control at any scale other than 1×; returning to 1×
+	// puts it away again.
+	await reset.click();
+	await expect.poll(async () => (await chart.boundingBox())!.width).toBeCloseTo(base, 0);
+	await expect(reset).toHaveCount(0);
 
 	await page.emulateMedia({ reducedMotion: 'no-preference' });
 });

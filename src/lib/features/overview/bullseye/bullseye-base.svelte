@@ -19,6 +19,7 @@
 	import TooltipCallout from './tooltip-callout.svelte';
 	import { createTooltip } from './tooltip.svelte.ts';
 	import type { NameTag } from './worker-label.ts';
+	import { placeNameTags, type NameTagSide } from './tag-placement.ts';
 
 	let {
 		workers,
@@ -56,6 +57,80 @@
 	const selectedId = $derived(focus.pinnedWorkerId);
 	/** The selected worker and their ties, named for as long as the selection stands. */
 	let nameTags = $state<NameTag[]>([]);
+	/** The layer's rendered width, which turns each tag's measured size into chart units. */
+	let layerWidth = $state(0);
+	/** Each tag's rendered size, measured from the DOM so names of any length fit around their dots. */
+	let tagSizes = $state<Record<string, { width: number; height: number }>>({});
+
+	/** The space between a dot's footprint and its tag's near edge, matching the caret's reach. */
+	const tagGap = $derived(DOT_FOOTPRINT + (layerWidth > 0 ? (8 * 256) / layerWidth : 0));
+	const tagGapPixels = $derived(layerWidth > 0 ? (tagGap * layerWidth) / 256 : 0);
+	const unitsPerPixel = $derived(layerWidth > 0 ? 256 / layerWidth : 0);
+
+	/** Where each tag sits: the selected Leader above first, then colliding ties flipped away. */
+	const tagSideById = $derived.by(() => {
+		const measured = nameTags.map((tag) => {
+			const size = tagSizes[tag.id];
+			return {
+				...tag,
+				width: size ? size.width * unitsPerPixel : 0,
+				height: size ? size.height * unitsPerPixel : 0
+			};
+		});
+		return new Map(
+			placeNameTags(measured, selectedId, tagGap).map((placement) => [placement.id, placement.side])
+		);
+	});
+
+	/**
+	 * One tag's transform for each side. Percentages are the tag's own size, so the
+	 * transform holds however wide the name measures; the gap is in screen pixels,
+	 * matching the dot footprint at the layer's current scale.
+	 */
+	function tagTransform(side: NameTagSide, gap: number): string {
+		const pixels = +gap.toFixed(2);
+		switch (side) {
+			case 'above':
+				return `translate(-50%, calc(-100% - ${pixels}px))`;
+			case 'below':
+				return `translate(-50%, ${pixels}px)`;
+			case 'beside-start':
+				return `translate(calc(-100% - ${pixels}px), -50%)`;
+			case 'beside-end':
+				return `translate(${pixels}px, -50%)`;
+		}
+	}
+
+	/** The caret points back at the dot, whichever side the tag was moved to. */
+	function caretClass(side: NameTagSide): string {
+		switch (side) {
+			case 'above':
+				return 'top-full left-1/2 -translate-x-1/2 -translate-y-1/2 border-r border-b';
+			case 'below':
+				return 'bottom-full left-1/2 -translate-x-1/2 translate-y-1/2 border-l border-t';
+			case 'beside-start':
+				return 'top-1/2 left-full -translate-x-1/2 -translate-y-1/2 border-t border-r';
+			case 'beside-end':
+				return 'top-1/2 right-full translate-x-1/2 -translate-y-1/2 border-b border-l';
+		}
+	}
+
+	/** Measure a tag after it renders, and again if its name or the type size changes. */
+	function measureTag(node: HTMLElement) {
+		const update = () => {
+			const id = node.dataset.dotName;
+			if (!id) return;
+			const width = node.offsetWidth;
+			const height = node.offsetHeight;
+			const current = tagSizes[id];
+			if (current?.width === width && current.height === height) return;
+			tagSizes = { ...tagSizes, [id]: { width, height } };
+		};
+		update();
+		const observer = new ResizeObserver(update);
+		observer.observe(node);
+		return { destroy: () => observer.disconnect() };
+	}
 
 	/**
 	 * The frame's own measure: the slid dashboard's remaining strip and its right
@@ -268,6 +343,7 @@
 	     from this box. Opacity and blur sit on the drawing, not the layer. -->
 	<div
 		bind:this={pan.layer}
+		bind:clientWidth={layerWidth}
 		data-bullseye-layer
 		class="absolute aspect-square max-w-none will-change-transform"
 		style="width: {zoom *
@@ -304,26 +380,24 @@
 
 			<!-- Inside the layer, so the tags pan and resize with the dots they name, and
 		     set at interface size, since the layer is resized rather than scaled. -->
-			<div
-				class="[container-type:inline-size] pointer-events-none absolute inset-0"
-				aria-hidden="true"
-			>
+			<div class="pointer-events-none absolute inset-0" aria-hidden="true">
 				{#each nameTags as tag (tag.id)}
+					{@const side = tagSideById.get(tag.id) ?? 'above'}
 					<span
 						class={[
 							'absolute rounded-control border border-rule-strong bg-panel px-2 py-1 text-xs whitespace-nowrap text-ink shadow-tooltip',
 							tag.id === selectedId && 'z-10 font-semibold'
 						]}
 						data-dot-name={tag.id}
+						data-tag-side={side}
+						use:measureTag
 						style="left: {(tag.cx / 256) * 100}%; top: {(tag.cy / 256) *
-							100}%; transform: translate(-50%, calc(-100% - {((DOT_FOOTPRINT / 256) * 100).toFixed(
-							3
-						)}cqw - 0.5rem));"
+							100}%; transform: {tagTransform(side, tagGapPixels)};"
 					>
 						{tag.name}
 						<!-- The pointer: the tag reads as attached to its dot, not floating near it. -->
 						<span
-							class="absolute top-full left-1/2 size-2 -translate-x-1/2 -translate-y-1/2 rotate-45 border-r border-b border-rule-strong bg-panel"
+							class={['absolute size-2 rotate-45 border-rule-strong bg-panel', caretClass(side)]}
 						></span>
 					</span>
 				{/each}
