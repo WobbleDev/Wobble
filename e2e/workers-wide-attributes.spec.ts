@@ -8,8 +8,9 @@ import { addAttributes, addWorkers, type AttributeSeed } from './worksite-builde
  * #256: a Worksite with six or more Attributes no longer crushes every column to
  * fit the frame. The table holds its readable column floors and scrolls sideways
  * inside its own scrollport, under the sticky header, with the checkbox and Name
- * columns pinned. Long cell text truncates inside its cell instead of painting
- * into the neighbouring one (the "No Safety Certifi5+ years" overlap).
+ * columns pinned. Cell text wraps inside its cell, which clips its own content, so
+ * a value never paints into the neighbouring one (the "No Safety Certifi5+ years"
+ * overlap). Only Multi-Select chips stay on one line and truncate.
  *
  * This spec is not in `e2e/ui-specs.ts`: it seeds its own Worksite, so it runs
  * against the Rust dev shim in the regular suite rather than from recordings.
@@ -31,37 +32,53 @@ const longAttributes: AttributeSeed[] = [
 	{ name: 'Shifts', kind: 'tag', options: ['Dinner', 'Brunch'] }
 ];
 
+/** The readings each seeded Worker gets, in column order. */
+const workerReadings: {
+	name: string;
+	assessment: string;
+	values: (string | string[])[];
+}[] = [
+	{
+		name: 'Katherine Johnson',
+		assessment: 'Supporter',
+		values: [
+			'Front of House',
+			// A blank Category shows the long system reading.
+			'',
+			'5+ years',
+			'Weekday mornings',
+			'Service Assistant',
+			'North',
+			['Dinner', 'Brunch']
+		]
+	},
+	{
+		name: 'Margaret Hamilton',
+		assessment: 'Leader',
+		values: [
+			'Back of House',
+			'Food safety',
+			'1-2 years',
+			'Weekend evenings',
+			'Server',
+			'South',
+			['Brunch']
+		]
+	}
+];
+
 async function seedLongAttributeWorkers(page: Page, request: APIRequestContext) {
 	const ids = await addAttributes(request, longAttributes);
-	await addWorkers(request, [
-		{
-			name: 'Katherine Johnson',
-			assessment: 'Supporter',
-			attributes: {
-				[ids[0]]: 'Front of House',
-				// A blank Category shows the long system reading.
-				[ids[1]]: '',
-				[ids[2]]: '5+ years',
-				[ids[3]]: 'Weekday mornings',
-				[ids[4]]: 'Service Assistant',
-				[ids[5]]: 'North',
-				[ids[6]]: ['Dinner', 'Brunch']
-			}
-		},
-		{
-			name: 'Margaret Hamilton',
-			assessment: 'Leader',
-			attributes: {
-				[ids[0]]: 'Back of House',
-				[ids[1]]: 'Food safety',
-				[ids[2]]: '1-2 years',
-				[ids[3]]: 'Weekend evenings',
-				[ids[4]]: 'Server',
-				[ids[5]]: 'South',
-				[ids[6]]: ['Brunch']
-			}
-		}
-	]);
+	await addWorkers(
+		request,
+		workerReadings.map(({ name, assessment, values }) => ({
+			name,
+			assessment,
+			attributes: Object.fromEntries(
+				values.slice(0, ids.length).map((value, index) => [ids[index], value])
+			)
+		}))
+	);
 	await page.goto('/workers');
 	await appReady(page);
 	await expect(page.getByRole('row').filter({ hasText: 'Katherine Johnson' })).toBeVisible();
@@ -153,19 +170,37 @@ async function truncatedHeaders(page: Page): Promise<string[]> {
 	);
 }
 
-/** Assessment readings whose value is cut inside its cell. */
-async function truncatedAssessmentValues(page: Page): Promise<string[]> {
-	return page.evaluate(() =>
-		[
-			...document.querySelectorAll<HTMLElement>(
-				'tbody tr[data-index] td[data-column-id="assessment"] [data-cell-text]'
-			)
-		]
-			.filter(
-				(value) => value.getClientRects().length > 0 && value.scrollWidth > value.clientWidth + 1
-			)
-			.map((value) => value.textContent?.trim() ?? '')
+/**
+ * Values whose own text is cut: horizontally ellipsized/clipped, or vertically
+ * clipped by a fixed row height. Multi-Select chips truncate by design, so they
+ * are skipped when `singleOnly` is set.
+ */
+async function clippedText(page: Page, selector: string, singleOnly = false): Promise<string[]> {
+	return page.evaluate(
+		({ selector, singleOnly }) =>
+			[...document.querySelectorAll<HTMLElement>(selector)]
+				.filter(
+					(value) =>
+						value.getClientRects().length > 0 &&
+						(!singleOnly || !value.closest('[data-cell-multi]'))
+				)
+				.filter(
+					(value) =>
+						value.scrollWidth > value.clientWidth + 1 || value.scrollHeight > value.clientHeight + 1
+				)
+				.map((value) => value.textContent?.trim() ?? ''),
+		{ selector, singleOnly }
 	);
+}
+
+/** All single values and empty readings that are cut inside their own cell. */
+function clippedSingleValues(page: Page): Promise<string[]> {
+	return clippedText(page, 'tbody tr[data-index] [data-cell-text]', true);
+}
+
+/** Assessment readings that are cut inside their own cell. */
+function clippedAssessmentValues(page: Page): Promise<string[]> {
+	return clippedText(page, 'tbody tr[data-index] td[data-column-id="assessment"] [data-cell-text]');
 }
 
 /** The pinned header columns' left edges, and the scrollport's scroll metrics. */
@@ -225,7 +260,8 @@ test('six or more Attributes keep readable columns and scroll inside the table s
 			before.clientWidth
 		);
 		expect(await truncatedHeaders(page), `truncated headers at ${where}`).toEqual([]);
-		expect(await truncatedAssessmentValues(page), `truncated Assessment at ${where}`).toEqual([]);
+		expect(await clippedSingleValues(page), `clipped single values at ${where}`).toEqual([]);
+		expect(await clippedAssessmentValues(page), `clipped Assessment at ${where}`).toEqual([]);
 		expect(await visibleTextCollisions(page), `text collisions at ${where}`).toEqual([]);
 
 		// Scrolling reveals the far columns; the header stays put and the pinned
@@ -244,11 +280,37 @@ test('six or more Attributes keep readable columns and scroll inside the table s
 		expect(after.headerPosition, `sticky header after scroll at ${where}`).toBe('sticky');
 		expect(await truncatedHeaders(page), `truncated headers after scroll at ${where}`).toEqual([]);
 		expect(
-			await truncatedAssessmentValues(page),
-			`truncated Assessment after scroll at ${where}`
+			await clippedSingleValues(page),
+			`clipped single values after scroll at ${where}`
+		).toEqual([]);
+		expect(
+			await clippedAssessmentValues(page),
+			`clipped Assessment after scroll at ${where}`
 		).toEqual([]);
 		expect(await visibleTextCollisions(page), `text collisions after scroll at ${where}`).toEqual(
 			[]
 		);
+	}
+});
+
+test('three Attributes keep values whole and never bleed at 1024px', async ({ page, request }) => {
+	await page.setViewportSize({ width: 1024, height: 640 });
+	// The harness reads the shared list, so seed the short Worksite in place and
+	// restore the full seven for the wide test.
+	const full = longAttributes.splice(0, longAttributes.length);
+	longAttributes.push(...full.slice(0, 3));
+	try {
+		await seedLongAttributeWorkers(page, request);
+		await settleLayout(page);
+		const where = '1024x640 with 3 Attributes';
+
+		for (const label of longAttributes.map((attribute) => attribute.name)) {
+			await expect(page.getByRole('columnheader', { name: label })).toBeAttached();
+		}
+		expect(await clippedSingleValues(page), `clipped single values at ${where}`).toEqual([]);
+		expect(await clippedAssessmentValues(page), `clipped Assessment at ${where}`).toEqual([]);
+		expect(await visibleTextCollisions(page), `text collisions at ${where}`).toEqual([]);
+	} finally {
+		longAttributes.splice(0, longAttributes.length, ...full);
 	}
 });

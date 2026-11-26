@@ -165,7 +165,7 @@
 
 {#snippet emptyValue()}
 	<span
-		class="min-w-0 truncate overflow-hidden text-ink-3"
+		class="min-w-0 break-words whitespace-normal text-ink-3"
 		title={props.emptyDescription
 			? `${props.emptyLabel ?? '—'} · ${props.emptyDescription}`
 			: (props.emptyLabel ?? '—')}
@@ -204,14 +204,14 @@
 					<span class="flex min-w-0 items-start gap-1.5">
 						<SwatchDot color={props.swatch} class="mt-1.5" />
 						<span
-							class="min-w-0 truncate overflow-hidden whitespace-nowrap"
+							class="min-w-0 break-words whitespace-normal"
 							title={labelOf(props.selected)}
 							data-cell-text>{labelOf(props.selected)}</span
 						>
 					</span>
 				{:else if props.showBadge}
 					<span
-						class="min-w-0 truncate overflow-hidden rounded-item bg-inset px-1.5 py-0.5 whitespace-nowrap"
+						class="min-w-0 rounded-item bg-inset px-1.5 py-0.5 break-words whitespace-normal"
 						title={labelOf(props.selected)}
 						data-cell-text
 					>
@@ -219,7 +219,7 @@
 					</span>
 				{:else}
 					<span
-						class="min-w-0 truncate overflow-hidden whitespace-nowrap"
+						class="min-w-0 break-words whitespace-normal"
 						title={labelOf(props.selected)}
 						data-cell-text>{labelOf(props.selected)}</span
 					>
@@ -228,7 +228,7 @@
 				{@render emptyValue()}
 			{/if}
 		{:else if props.selected.length > 0}
-			<span class="flex min-w-0 flex-nowrap items-center gap-1 overflow-hidden">
+			<span class="flex min-w-0 flex-nowrap items-center gap-1 overflow-hidden" data-cell-multi>
 				{#each props.selected.slice(0, 2) as value (value)}
 					<span
 						title={labelOf(value)}

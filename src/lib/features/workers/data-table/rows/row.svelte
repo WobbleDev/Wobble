@@ -230,9 +230,9 @@
 			class={cn(
 				grid &&
 					'focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring',
-				// A cell clips its own text: a value truncates inside the cell instead of
-				// painting over the column beside it.
-				'overflow-hidden',
+				// A cell clips its own text and may shrink: a value wraps inside the cell
+				// instead of painting over the column beside it.
+				'min-w-0 overflow-hidden',
 				meta?.widthClass,
 				pinClass(meta),
 				cell.column.id === 'selection' && 'py-1 lg:py-0.5',
