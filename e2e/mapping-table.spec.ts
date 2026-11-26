@@ -67,22 +67,28 @@ test('there is no visible Map/Table toggle and the table takes no layout space',
 	expect(box === null || (box.width <= 1 && box.height <= 1)).toBe(true);
 });
 
-test('the skip link stays off the visible keyboard path and still focuses the table', async ({
-	page,
-	request
-}) => {
+test('keyboard users can Tab to the skip link and jump to the table', async ({ page, request }) => {
 	await seed(request);
 	await page.goto('/mapping');
 	await waitForMapReady(page);
 	const skip = page.getByRole('link', { name: 'Skip to map data table' });
 	await expect(skip).toHaveCount(1);
-	await expect(skip).toHaveAttribute('tabindex', '-1');
-	const box = await skip.boundingBox();
-	expect(box === null || (box.width <= 1 && box.height <= 1)).toBe(true);
-	// A screen reader can still follow it; it just never shows as a sighted Tab stop.
-	await skip.focus();
+	await expect(skip).not.toHaveAttribute('tabindex');
+
+	let reached = false;
+	for (let step = 0; step < 30; step += 1) {
+		await page.keyboard.press('Tab');
+		if (await skip.evaluate((link) => link === document.activeElement)) {
+			reached = true;
+			break;
+		}
+	}
+	expect(reached, 'the skip link is reachable by Tab within 30 presses').toBe(true);
 	await expect(skip).toBeFocused();
-	await skip.press('Enter');
+	const box = await skip.boundingBox();
+	expect(box !== null && box.width > 1 && box.height > 1).toBe(true);
+
+	await page.keyboard.press('Enter');
 	await expect(page.getByTestId('mapping-table')).toBeFocused();
 });
 
@@ -91,8 +97,8 @@ test('nothing inside the map table is a keyboard tab stop', async ({ page, reque
 	await page.goto('/mapping');
 	await waitForMapReady(page);
 	await expect(page.locator('[data-map-table-row]')).toHaveCount(3);
-	// Rows, sort controls and the skip link are readable by assistive tech but never
-	// take a Tab stop: the table is a screen-reader-only reading, not a visible surface.
+	// Rows and sort controls are readable by assistive tech but never take a Tab
+	// stop: the table is a screen-reader-only reading, not a visible surface.
 	await expect(page.locator('#mapping-table [tabindex="0"]')).toHaveCount(0);
 
 	for (let step = 0; step < 24; step += 1) {
