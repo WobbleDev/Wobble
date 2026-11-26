@@ -106,13 +106,14 @@
 	"configuration_refresh_failed": "Los cambios se guardaron, pero no se pudieron actualizar los datos de la página.",
 	"configuration_danger_zone": "Zona de peligro",
 	"configuration_delete_worksite": "Eliminar lugar de trabajo",
+	"configuration_delete_type_to_confirm": "Escribe {name} para confirmar",
 	"configuration_delete_cascade": [
 		{
 			"declarations": ["input count", "local countPlural = count: plural"],
 			"selectors": ["countPlural"],
 			"match": {
-				"countPlural=one": "a su único trabajador, sus Notas y Relaciones, y los Atributos y Asuntos laborales del lugar de trabajo",
-				"countPlural=other": "a sus {count} trabajadores, sus Notas y Relaciones, y los Atributos y Asuntos laborales del lugar de trabajo"
+				"countPlural=one": "a su único trabajador, sus Notas y Relaciones, y los Atributos, Asuntos laborales, Idiomas y Vistas guardadas del lugar de trabajo",
+				"countPlural=other": "a sus {count} trabajadores, sus Notas y Relaciones, y los Atributos, Asuntos laborales, Idiomas y Vistas guardadas del lugar de trabajo"
 			}
 		}
 	],

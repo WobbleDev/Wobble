@@ -16,6 +16,7 @@
 	import * as AlertDialog from '#lib/components/ui/alert-dialog/index.ts';
 	import { Button } from '#lib/components/ui/button/index.ts';
 	import * as Field from '#lib/components/ui/field/index.ts';
+	import { Input } from '#lib/components/ui/input/index.ts';
 	import { deleteWorksite } from '#lib/client/configuration-api.ts';
 	import { m } from '#lib/paraglide/messages.js';
 	import type { Worksite } from '#lib/domain-vocabulary.ts';
@@ -35,6 +36,7 @@
 	let confirmOpen = $state(false);
 	let pending = $state(false);
 	let errorMessage = $state('');
+	let typedConfirmation = $state('');
 
 	const deleteButtonLabel = $derived(m.configuration_delete_worksite());
 	const hasUnsavedDraft = $derived(configurationDraft.hasUnsavedChanges);
@@ -49,9 +51,15 @@
 			cascade: cascadeSummary
 		})
 	);
+	const armed = $derived(
+		workerCount === 0 ||
+			typedConfirmation.trim() === worksite.name.trim() ||
+			typedConfirmation.trim().toLowerCase() === 'delete'
+	);
 
 	function openConfirmation() {
 		errorMessage = '';
+		typedConfirmation = '';
 		confirmOpen = true;
 	}
 
@@ -111,6 +119,7 @@
 			return;
 		}
 		confirmOpen = open;
+		if (!open) typedConfirmation = '';
 	}}
 >
 	<AlertDialog.Content>
@@ -130,6 +139,24 @@
 				{m.configuration_delete_only_worksite()}
 			</p>
 		{/if}
+		{#if workerCount > 0}
+			<div class="grid gap-2">
+				<Field.FieldLabel for="delete-worksite-confirmation" class="field-label">
+					{m.configuration_delete_type_to_confirm({ name: worksite.name })}
+				</Field.FieldLabel>
+				<Input
+					id="delete-worksite-confirmation"
+					bind:value={typedConfirmation}
+					autocomplete="off"
+					spellcheck={false}
+					onkeydown={(event) => {
+						if (event.key !== 'Enter' || !armed) return;
+						event.preventDefault();
+						void confirmDelete();
+					}}
+				/>
+			</div>
+		{/if}
 		{#if errorMessage}
 			<p class="text-sm text-state-error" role="alert">{errorMessage}</p>
 		{/if}
@@ -138,7 +165,7 @@
 			<Button
 				variant="destructive"
 				class="bg-destructive text-on-action hover:bg-destructive/90"
-				disabled={pending}
+				disabled={pending || !armed}
 				onclick={confirmDelete}
 			>
 				{pending ? m.configuration_deleting() : deleteButtonLabel}
