@@ -156,6 +156,36 @@ test('a clean quit request exits at once', async ({ page }) => {
 	await expect(prompt(page)).toHaveCount(0);
 });
 
+test('choosing the already-active Worksite leaves a dirty draft alone', async ({
+	page,
+	activeWorksite
+}) => {
+	await openConfiguration(page);
+	await makeDirty(page);
+
+	const selections: string[] = [];
+	page.on('request', (request) => {
+		if (request.method() === 'PUT' && new URL(request.url()).pathname === '/api/worksite/active') {
+			selections.push(request.postData() ?? '');
+		}
+	});
+
+	const switcher = page.getByRole('button', { name: `Active Worksite: ${activeWorksite.name}` });
+	await switcher.click();
+	const activeItem = page.getByRole('menuitem', { name: activeWorksite.name, exact: true });
+	await expect(activeItem).toBeVisible();
+	await activeItem.click();
+
+	// The selection is a no-op: no prompt, no reload or navigation, no write, draft intact.
+	await expect(prompt(page)).toHaveCount(0);
+	await expect(page).toHaveURL('/configuration');
+	await expect(page.getByRole('button', { name: 'Edit worksite name' })).toContainText(
+		'Unsaved Draft Name'
+	);
+	await expect(activeItem).toHaveCount(0);
+	expect(selections).toEqual([]);
+});
+
 test('a dirty quit request asks, Stay keeps the draft, Discard exits', async ({ page }) => {
 	await openConfiguration(page);
 	await makeDirty(page);

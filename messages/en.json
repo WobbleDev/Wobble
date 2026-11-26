@@ -14,6 +14,8 @@
 	"nav_active_worksite": "Active Worksite: {name}",
 	"nav_switch_failed": "Could not switch the worksite.",
 	"nav_create_failed": "Could not create the worksite.",
+	"nav_group_worksite": "Worksite",
+	"nav_group_this_computer": "This computer",
 	"page_overview_title": "Overview",
 	"page_overview_subtitle": "A summary of the workers at this worksite.",
 	"page_workers_title": "Workers",
