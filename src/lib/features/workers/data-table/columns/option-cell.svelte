@@ -164,7 +164,16 @@
 {/snippet}
 
 {#snippet emptyValue()}
-	<span class="text-ink-3">
+	<!-- The long "No …" reading stops at two lines: unclamped it wraps a word or less per
+	     line in a phone-width column and makes every row several times taller. -->
+	<span
+		class="line-clamp-2 min-w-0 break-words whitespace-normal text-ink-3"
+		title={props.emptyDescription
+			? `${props.emptyLabel ?? '—'} · ${props.emptyDescription}`
+			: (props.emptyLabel ?? '—')}
+		data-cell-text
+		data-cell-empty
+	>
 		{props.emptyLabel ?? '—'}{#if props.emptyDescription}<span class="ml-1 text-xs"
 				>· {props.emptyDescription}</span
 			>{/if}
@@ -197,33 +206,45 @@
 				{#if props.swatch}
 					<span class="flex min-w-0 items-start gap-1.5">
 						<SwatchDot color={props.swatch} class="mt-1.5" />
-						<span class="break-words whitespace-normal">{labelOf(props.selected)}</span>
+						<!-- No `min-w-0`: an Assessment word stays whole, using the cell padding if it
+						     must, rather than breaking mid-word. -->
+						<span
+							class="break-words whitespace-normal"
+							title={labelOf(props.selected)}
+							data-cell-text>{labelOf(props.selected)}</span
+						>
 					</span>
 				{:else if props.showBadge}
 					<span
-						class="rounded-item bg-chip px-1.5 py-0.5 break-words whitespace-normal ring-1 ring-inset ring-rule-strong"
+						class="min-w-0 rounded-item bg-inset px-1.5 py-0.5 break-words whitespace-normal"
+						title={labelOf(props.selected)}
+						data-cell-text
 					>
 						{labelOf(props.selected)}
 					</span>
 				{:else}
-					<span class="break-words whitespace-normal">{labelOf(props.selected)}</span>
+					<span
+						class="min-w-0 break-words whitespace-normal"
+						title={labelOf(props.selected)}
+						data-cell-text>{labelOf(props.selected)}</span
+					>
 				{/if}
 			{:else}
 				{@render emptyValue()}
 			{/if}
 		{:else if props.selected.length > 0}
-			<span class="flex min-w-0 flex-nowrap items-center gap-1">
+			<span class="flex min-w-0 flex-nowrap items-center gap-1 overflow-hidden" data-cell-multi>
 				{#each props.selected.slice(0, 2) as value (value)}
 					<span
 						title={labelOf(value)}
-						class="h-5 min-w-0 truncate rounded-item bg-chip px-1.5 text-sm leading-5 whitespace-nowrap ring-1 ring-inset ring-rule-strong"
-						>{labelOf(value)}</span
+						class="h-5 min-w-0 truncate rounded-item bg-inset px-1.5 text-sm leading-5 whitespace-nowrap"
+						data-cell-text>{labelOf(value)}</span
 					>
 				{/each}
 				{#if props.selected.length > 2}
 					<span
-						class="h-5 shrink-0 rounded-item bg-chip px-1.5 text-sm leading-5 whitespace-nowrap text-ink-3 ring-1 ring-inset ring-rule-strong"
-						>+{props.selected.length - 2}</span
+						class="h-5 shrink-0 rounded-item bg-inset px-1.5 text-sm leading-5 whitespace-nowrap text-ink-3"
+						data-cell-text>+{props.selected.length - 2}</span
 					>
 				{/if}
 			</span>

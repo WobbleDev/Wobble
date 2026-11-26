@@ -230,13 +230,16 @@
 			class={cn(
 				grid &&
 					'focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring',
+				// A cell clips its own text and may shrink: a value wraps inside the cell
+				// instead of painting over the column beside it.
+				'min-w-0 overflow-hidden',
 				meta?.widthClass,
 				pinClass(meta),
 				cell.column.id === 'selection' && 'py-1 lg:py-0.5',
 				// The name is what an organizer scans by, so it carries the row:
 				// one weight step over the Attribute values beside it, same size.
 				// It truncates in its pinned width; the title carries the whole name.
-				cell.column.id === 'name' && 'overflow-hidden py-0.5 font-medium',
+				cell.column.id === 'name' && 'py-0.5 font-medium',
 				cell.column.id === 'assessment' && 'py-0.5 whitespace-normal'
 			)}
 		>

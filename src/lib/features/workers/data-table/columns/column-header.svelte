@@ -112,7 +112,7 @@
 			class="-mx-1.5 h-7 min-h-tap min-w-0 shrink gap-1 px-1.5 font-mono text-xs font-medium tracking-key uppercase lg:min-h-7"
 			onclick={column.getToggleSortingHandler()}
 		>
-			<span class="min-w-0 truncate">{title}</span>
+			<span class="min-w-0 truncate" {title}>{title}</span>
 			{#if column.getIsSorted() === 'asc'}
 				<ArrowUpIcon class="size-3" data-icon="inline-end" />
 			{:else if column.getIsSorted() === 'desc'}

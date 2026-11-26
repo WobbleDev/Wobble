@@ -37,7 +37,7 @@
 		createDataTableVirtualizer,
 		type DataTableRenderItem
 	} from './rows/virtualizer.svelte.ts';
-	import { nameColumnRem } from './columns/workers-table-width.ts';
+	import { nameColumnRem, WIDE_ATTRIBUTES_MIN } from './columns/workers-table-width.ts';
 	import { createView, deleteView, listViews, updateView } from '#lib/client/views-api.ts';
 	import { createSavedViews } from '#lib/features/saved-views/saved-views.svelte.ts';
 	import SavedViewReviewDialog from '#lib/features/saved-views/saved-view-review-dialog.svelte';
@@ -353,6 +353,7 @@
 				minWidth: column.columnDef.meta?.minWidth,
 				grow: column.columnDef.meta?.grow
 			})),
+		wideAttributes: () => attributes.length >= WIDE_ATTRIBUTES_MIN,
 		nameRem: () => nameRem
 	});
 

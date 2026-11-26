@@ -34,4 +34,24 @@ describe('workersTableStyleFor', () => {
 		expect(style).toContain('--workers-table-t: 0.5;');
 		expect(style.startsWith('width: ')).toBe(true);
 	});
+
+	it('uses each column declared minimum for the table floor', () => {
+		const withMin = workersTableStyleFor(
+			[{ id: 'name' }, { id: 'a', width: '10rem', minWidth: '7rem' }],
+			1
+		);
+		const withoutMin = workersTableStyleFor([{ id: 'name' }, { id: 'a', width: '10rem' }], 1);
+		expect(withMin).toContain('width: max(100%, calc(var(--workers-table-name-w) + 7rem));');
+		expect(withoutMin).toContain('width: max(100%, calc(var(--workers-table-name-w) + 5rem));');
+	});
+
+	it('shares a short table as a percentage and a wide table as measured px', () => {
+		const columns = [{ id: 'name' }, { id: 'a', width: '8rem', minWidth: '5rem', grow: true }];
+		expect(workersTableStyleFor(columns, 1)).toContain(
+			'--workers-table-slack: max(0px, calc(100% - calc(var(--workers-table-name-w) + 8rem)));'
+		);
+		expect(workersTableStyleFor(columns, 1, 32.5, true)).toContain(
+			'--workers-table-slack: 32.5px;'
+		);
+	});
 });

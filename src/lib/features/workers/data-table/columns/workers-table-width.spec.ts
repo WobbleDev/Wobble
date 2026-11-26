@@ -3,11 +3,11 @@ import {
 	ASSESSMENT_MIN_REM,
 	CONTENT_SHRINK_MIN_REM,
 	WORKERS_SELECT_REM,
+	contentColumnNeedRem,
 	contentColumnRem,
 	workersColumnMinRem,
 	workersColumnRem,
 	workersMinWidth,
-	workersPreferredWidth,
 	workersTableWidth,
 	NO_GROW_SHARE_REM,
 	workersVisibleRem,
@@ -18,7 +18,30 @@ describe('contentColumnRem', () => {
 	it('sizes a column to its longest option within a floor and a ceiling', () => {
 		expect(contentColumnRem([])).toBe(6);
 		expect(contentColumnRem(['Spanish'])).toBeLessThan(contentColumnRem(['Front of House']));
-		expect(contentColumnRem(['x'.repeat(200)])).toBe(14);
+		expect(contentColumnRem(['x'.repeat(200)])).toBe(15);
+	});
+});
+
+describe('contentColumnNeedRem', () => {
+	it('keeps a wide table header whole and its longest single value readable', () => {
+		expect(contentColumnNeedRem('Safety Certifications', [])).toBe(14.75);
+		expect(contentColumnNeedRem('Department', ['Front of House'])).toBe(9.25);
+		expect(
+			contentColumnNeedRem('Safety Certifications', ['First aid'], {
+				emptyLabel: 'No Safety Certifications'
+			})
+		).toBe(14.75);
+	});
+
+	it('sizes Assessment for its longest label and swatch, and Multi-Select for two chips', () => {
+		expect(contentColumnNeedRem('Assessment', ['Supporter', 'Disengaged'], { swatch: true })).toBe(
+			9.25
+		);
+		expect(contentColumnNeedRem('Shifts', ['Dinner', 'Brunch'], { multi: true })).toBe(9.25);
+	});
+
+	it('caps a value that is too long for the widest allowed column', () => {
+		expect(contentColumnNeedRem('Notes', ['x'.repeat(40)])).toBe(15);
 	});
 });
 
@@ -30,12 +53,10 @@ describe('workersColumnRem', () => {
 });
 
 describe('workersTableWidth', () => {
-	it('floors at the minimum sum while the preferred sum covers the full widths', () => {
+	it('floors at the minimum sum', () => {
 		const ids = ['selection', 'name', 'assessment', 'dept'] as const;
 		const content = { dept: 8 };
-		expect(workersPreferredWidth([...ids], content)).toBe(
-			'calc(var(--workers-table-name-w) + 19.75rem)'
-		);
+		expect(workersColumnRem('dept', content)).toBe(8);
 		expect(workersMinWidth([...ids], content)).toBe('calc(var(--workers-table-name-w) + 13.75rem)');
 		expect(workersTableWidth([...ids], content)).toBe(
 			'max(100%, calc(var(--workers-table-name-w) + 13.75rem))'
@@ -47,10 +68,37 @@ describe('workersTableWidth', () => {
 			'max(100%, calc(var(--workers-table-name-w) + 2.75rem))'
 		);
 	});
+
+	it('floors seven long Attribute columns past a 1024px frame', () => {
+		const labels = [
+			'Safety Certifications',
+			'Availability',
+			'Tenure',
+			'Role',
+			'Station',
+			'Shifts',
+			'Mentor'
+		];
+		const ids = ['selection', 'name', 'assessment', ...labels.map((_, index) => `attr-${index}`)];
+		const content = Object.fromEntries(labels.map((_, index) => [`attr-${index}`, 14]));
+		const minRem: Record<string, number> = {
+			assessment: contentColumnNeedRem('Assessment', ['Disengaged'], { swatch: true })
+		};
+		const contentMinRem = labels.reduce((sum, label, index) => {
+			const need = contentColumnNeedRem(label, [`${label} answer`]);
+			minRem[`attr-${index}`] = need;
+			return sum + need;
+		}, 0);
+		const totalMinRem = WORKERS_SELECT_REM + 10 + minRem.assessment + contentMinRem;
+		expect(totalMinRem * 16).toBeGreaterThan(1024);
+		expect(workersMinWidth(ids, content, minRem)).toBe(
+			`calc(var(--workers-table-name-w) + ${totalMinRem - 10}rem)`
+		);
+	});
 });
 
 describe('workersColumnMinRem', () => {
-	it('keeps pinned columns fixed and floors shrinkable ones', () => {
+	it('keeps pinned columns fixed and floors shrinkable ones for a table that fits', () => {
 		expect(workersColumnMinRem('selection', WORKERS_SELECT_REM)).toBe(WORKERS_SELECT_REM);
 		expect(workersColumnMinRem('name', 10)).toBe(10);
 		expect(workersColumnMinRem('assessment', 9)).toBe(ASSESSMENT_MIN_REM);
@@ -75,23 +123,25 @@ describe('shrinkFactor', () => {
 });
 
 describe('workersVisibleRem', () => {
-	it('keeps the rem widths and sums only the growing columns', () => {
-		const { contentRem, growRem } = workersVisibleRem([
+	it('keeps the rem widths and minimums and sums only the growing columns', () => {
+		const { contentRem, minRem, growRem } = workersVisibleRem([
 			{ id: 'name', width: '12rem' },
-			{ id: 'assessment', width: '9rem', grow: true },
-			{ id: 'languages', width: '7.5rem', grow: true },
+			{ id: 'assessment', width: '9rem', minWidth: '9rem', grow: true },
+			{ id: 'languages', width: '7.5rem', minWidth: '5rem', grow: true },
 			{ id: 'notes', width: 'auto' }
 		]);
 		expect(contentRem).toEqual({ name: 12, assessment: 9, languages: 7.5 });
+		expect(minRem).toEqual({ assessment: 9, languages: 5 });
 		expect(growRem).toBe(16.5);
 	});
 
 	it('leaves out columns without a rem width and reports no grow when none grows', () => {
-		const { contentRem, growRem } = workersVisibleRem([
+		const { contentRem, minRem, growRem } = workersVisibleRem([
 			{ id: 'selection', width: '2.75rem' },
 			{ id: 'extra', grow: true }
 		]);
 		expect(contentRem).toEqual({ selection: 2.75 });
+		expect(minRem).toEqual({});
 		expect(growRem).toBe(0);
 	});
 
