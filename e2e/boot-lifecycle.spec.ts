@@ -11,7 +11,9 @@ test('boot supports English and Spanish at narrow widths without clearing an uns
 	await page.setViewportSize({ width: 375, height: 812 });
 	await page.goto('/configuration');
 	await expect(page.getByRole('heading', { name: 'Create a passphrase' })).toBeVisible();
-	await page.getByLabel('Passphrase', { exact: true }).fill(passphrase);
+	const passphraseField = page.getByLabel('Passphrase', { exact: true });
+	const confirmField = page.getByLabel('Confirm passphrase', { exact: true });
+	await passphraseField.fill(passphrase);
 	await page.getByRole('button', { name: 'Español', exact: true }).click();
 	await expect(page.getByRole('heading', { name: 'Crear una frase de contraseña' })).toBeVisible();
 	await expect(page.getByLabel('Frase de contraseña', { exact: true })).toHaveValue(passphrase);
@@ -27,11 +29,31 @@ test('boot supports English and Spanish at narrow widths without clearing an uns
 		expect((await button.boundingBox())!.height).toBeGreaterThanOrEqual(44);
 	await page.screenshot({ path: test.info().outputPath('boot-spanish-375.png') });
 	await page.getByRole('button', { name: 'English', exact: true }).click();
-	await page.getByLabel('Confirm passphrase', { exact: true }).fill('different');
+
+	// The locked form sits directly on the page, under the wordmark and its one rule.
+	await expect(page.getByText('Wobble', { exact: true })).toBeVisible();
+	await expect(page.locator('main hr')).toHaveCount(1);
+	expect(await page.locator('form').evaluate((form) => form.closest('.bg-panel') === null)).toBe(
+		true
+	);
+	await expect(page.getByText('Spaces count, including at the start and end.')).toBeVisible();
+
+	// The field's own Show toggle changes its type without touching the other field.
+	const showPassphrase = page.locator('[aria-controls="boot-passphrase"]');
+	await expect(showPassphrase).toHaveAttribute('aria-pressed', 'false');
+	await showPassphrase.click();
+	await expect(passphraseField).toHaveAttribute('type', 'text');
+	await expect(showPassphrase).toHaveAttribute('aria-pressed', 'true');
+
+	await confirmField.fill('different');
 	await page.getByRole('button', { name: 'Create passphrase', exact: true }).click();
 	await expect(page.getByRole('alert')).toContainText('do not match');
-	await expect(page.getByLabel('Passphrase', { exact: true })).toHaveValue('');
-	await expect(page.getByLabel('Confirm passphrase', { exact: true })).toHaveValue('');
+	// A confirmation typo keeps the first field and returns focus to the confirmation.
+	await expect(passphraseField).toHaveValue(passphrase);
+	await expect(confirmField).toHaveValue('');
+	await expect(confirmField).toBeFocused();
+	await expect(confirmField).toHaveAttribute('aria-invalid', 'true');
+	await expect(confirmField).toHaveAttribute('aria-describedby', /boot-error/);
 	await expect(page.getByRole('navigation')).toHaveCount(0);
 });
 

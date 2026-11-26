@@ -116,6 +116,8 @@
 	"boot_convert_title": "Cifrar los datos existentes",
 	"boot_passphrase": "Frase de contraseña",
 	"boot_confirm": "Confirmar frase de contraseña",
+	"passphrase_show": "Mostrar frase de contraseña",
+	"passphrase_spaces_hint": "Los espacios cuentan, también al principio y al final.",
 	"boot_create_action": "Crear frase de contraseña",
 	"boot_unlock_action": "Desbloquear",
 	"boot_convert_action": "Cifrar y abrir",

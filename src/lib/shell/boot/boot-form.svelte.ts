@@ -63,19 +63,24 @@ export function createBootForm(
 			if (busy || status.state !== 'locked') return;
 			const submitted = passphrase;
 			const confirmation = confirm;
-			passphrase = '';
-			confirm = '';
 			failure = null;
 			recoveryPath = '';
 			if (!submitted.trim() || submitted.includes('\0')) {
+				passphrase = '';
+				confirm = '';
 				failure = 'required';
 				return;
 			}
 			const newCredential = status.firstRun || status.legacyPlaintext;
 			if (newCredential && submitted !== confirmation) {
+				// Keep the credential the reader already entered; clearing it too would make a
+				// confirmation typo retype both fields.
+				confirm = '';
 				failure = 'confirm';
 				return;
 			}
+			passphrase = '';
+			confirm = '';
 			busy = true;
 			try {
 				status = status.firstRun

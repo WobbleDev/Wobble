@@ -52,15 +52,16 @@ describe('boot credential submission', () => {
 		expect(form.failure).toBe('required');
 		expect(events.unlock).not.toHaveBeenCalled();
 	});
-	it('requires exact new-credential confirmation and uses create only for first run', async () => {
+	it('requires exact new-credential confirmation and keeps the primary field on a mismatch', async () => {
 		const events = host();
 		const form = createBootForm({ ...locked, state: 'locked', firstRun: true }, events);
 		form.passphrase = 'new';
 		form.confirm = 'different';
 		await form.submit();
 		expect(form.failure).toBe('confirm');
+		expect(form.passphrase).toBe('new');
+		expect(form.confirm).toBe('');
 		expect(events.create).not.toHaveBeenCalled();
-		form.passphrase = 'new';
 		form.confirm = 'new';
 		await form.submit();
 		expect(events.create).toHaveBeenCalledWith('new', 'new');

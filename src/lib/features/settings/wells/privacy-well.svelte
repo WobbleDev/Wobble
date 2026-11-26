@@ -3,8 +3,8 @@
 	import { m } from '#lib/paraglide/messages.js';
 	import { changePassphrase } from '#lib/client/boot-api.ts';
 	import * as Dialog from '#lib/components/ui/dialog/index.ts';
-	import { Input } from '#lib/components/ui/input/index.ts';
 	import { Label } from '#lib/components/ui/label/index.ts';
+	import PassphraseInput from '#lib/shared/ui/passphrase-input.svelte';
 	import FileReceipt from '../file-receipt.svelte';
 	import { createPassphraseChange } from '../passphrase-change.svelte.ts';
 	import SettingsRow from '../settings-row.svelte';
@@ -13,7 +13,25 @@
 	let { encrypted }: { encrypted: boolean } = $props();
 
 	let changeOpen = $state(false);
+	let confirmInput = $state<HTMLInputElement | null>(null);
+	let doneButton = $state<HTMLElement | null>(null);
 	const change = createPassphraseChange({ change: changePassphrase });
+
+	/** Whether the current error is about this field, for its invalid and description wiring. */
+	function fieldError(field: 'current' | 'next' | 'confirm'): boolean {
+		if (change.error === 'required') {
+			const value =
+				field === 'current' ? change.current : field === 'next' ? change.next : change.confirm;
+			return value === '';
+		}
+		if (change.error === 'confirm') return field === 'confirm';
+		if (change.error === 'wrong') return field === 'current';
+		return false;
+	}
+
+	$effect(() => {
+		if (change.receipt) doneButton?.focus({ preventScroll: true });
+	});
 </script>
 
 <SettingsWell
@@ -67,48 +85,57 @@
 			<p role="status" class="text-sm">{m.settings_passphrase_changed()}</p>
 			<p class="text-sm text-ink-2">{m.settings_passphrase_recovery()}</p>
 			<FileReceipt path={change.receipt} />
+			<Button
+				type="button"
+				class="min-h-tap md:min-h-9"
+				bind:ref={doneButton}
+				onclick={() => (changeOpen = false)}>{m.common_done()}</Button
+			>
 		{:else}
 			<form
 				class="grid gap-4"
 				autocomplete="off"
-				onsubmit={(event) => {
+				onsubmit={async (event) => {
 					event.preventDefault();
-					void change.submit();
+					await change.submit();
+					if (change.error === 'confirm') confirmInput?.focus({ preventScroll: true });
 				}}
 			>
 				<div class="grid gap-2">
 					<Label class="field-label" for="passphrase-current"
 						>{m.settings_passphrase_current()}</Label
-					><Input
+					><PassphraseInput
 						id="passphrase-current"
-						type="password"
 						bind:value={change.current}
-						autocomplete="off"
 						disabled={change.busy}
+						aria-invalid={fieldError('current')}
+						aria-describedby={fieldError('current') ? 'passphrase-error' : undefined}
 					/>
 				</div>
 				<div class="grid gap-2">
 					<Label class="field-label" for="passphrase-next">{m.settings_passphrase_new()}</Label
-					><Input
+					><PassphraseInput
 						id="passphrase-next"
-						type="password"
 						bind:value={change.next}
-						autocomplete="off"
 						disabled={change.busy}
+						aria-invalid={fieldError('next')}
+						aria-describedby={`passphrase-spaces${fieldError('next') ? ' passphrase-error' : ''}`}
 					/>
+					<p id="passphrase-spaces" class="text-sm text-ink-2">{m.passphrase_spaces_hint()}</p>
 				</div>
 				<div class="grid gap-2">
 					<Label class="field-label" for="passphrase-confirm"
 						>{m.settings_passphrase_confirm()}</Label
-					><Input
+					><PassphraseInput
 						id="passphrase-confirm"
-						type="password"
+						bind:ref={confirmInput}
 						bind:value={change.confirm}
-						autocomplete="off"
 						disabled={change.busy}
+						aria-invalid={fieldError('confirm')}
+						aria-describedby={fieldError('confirm') ? 'passphrase-error' : undefined}
 					/>
 				</div>
-				{#if change.error}<p role="alert" class="text-sm text-state-error">
+				{#if change.error}<p id="passphrase-error" role="alert" class="text-sm text-state-error">
 						{change.error === 'required'
 							? m.boot_error_required()
 							: change.error === 'confirm'
