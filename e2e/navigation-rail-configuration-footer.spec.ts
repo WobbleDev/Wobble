@@ -62,14 +62,20 @@ test('Configuration stays in the navigation rail footer on desktop and mobile', 
 		.boundingBox();
 	const configurationBox = await configurationLink.boundingBox();
 	const settingsBox = await settingsLink.boundingBox();
-	if (!mappingBox || !configurationBox || !settingsBox) {
-		throw new Error('Navigation rail links are not visible');
+	const ruleBox = await railFooter.locator('[data-slot="separator"]').boundingBox();
+	if (!mappingBox || !configurationBox || !settingsBox || !ruleBox) {
+		throw new Error('Navigation rail elements are not visible');
 	}
 	expect({ x: configurationBox.x, width: configurationBox.width }).toEqual({
 		x: mappingBox.x,
 		width: mappingBox.width
 	});
 	expect({ x: settingsBox.x, width: settingsBox.width }).toEqual({
+		x: mappingBox.x,
+		width: mappingBox.width
+	});
+	// The footer paints its rule inside its own padding, so it is inset like the links.
+	expect({ x: ruleBox.x, width: ruleBox.width }).toEqual({
 		x: mappingBox.x,
 		width: mappingBox.width
 	});
@@ -80,6 +86,10 @@ test('Configuration stays in the navigation rail footer on desktop and mobile', 
 	// The rail card is inset 0.875rem (14px) from every window edge, so its footer
 	// sits that far above the viewport bottom rather than flush with it.
 	expect(footerBounds.y + footerBounds.height).toBeGreaterThanOrEqual(viewport.height - 16);
+	// The footer keeps its own bottom padding below the last link.
+	expect(footerBounds.y + footerBounds.height - (settingsBox.y + settingsBox.height)).toBeCloseTo(
+		8
+	);
 
 	// The Configuration page asks for Abbreviation suggestions as it opens. Waiting for that
 	// call makes it happen, and be recorded, in every run rather than only when the page
