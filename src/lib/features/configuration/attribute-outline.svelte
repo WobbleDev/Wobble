@@ -502,7 +502,7 @@
 		<div
 			bind:clientHeight={detailHeight}
 			class={cn(
-				detail && 'absolute top-1 right-0 left-56 border-s border-rule pl-4 [--short-form-w:5rem]'
+				detail && 'absolute top-1 right-0 left-56 border-s border-rule pl-4 [--abbr-w:5rem]'
 			)}
 			class:opacity-40={reordering}
 			data-testid={detail ? 'attribute-detail' : undefined}
@@ -546,7 +546,7 @@
 				</div>
 				<div
 					aria-hidden="true"
-					class="mt-5 grid grid-cols-[1.5rem_minmax(0,1fr)_var(--short-form-w)_4rem_var(--row-actions-w)] items-center gap-1 border-b border-rule pb-1"
+					class="mt-5 grid grid-cols-[1.5rem_minmax(0,1fr)_var(--abbr-w)_4rem_var(--row-actions-w)] items-center gap-1 border-b border-rule pb-1"
 				>
 					<span></span>
 					<span class="key min-w-0 truncate">{m.configuration_values_heading()}</span>

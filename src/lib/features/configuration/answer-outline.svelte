@@ -116,18 +116,17 @@
 	const rowColumns =
 		'grid-cols-[1.5rem_minmax(0,1fr)_3.5rem_var(--row-actions-w)] @max-[20rem]:grid-cols-[2.75rem_minmax(0,1fr)_3rem_var(--row-actions-w)]';
 	/** The table's columns: grip, value, Short form, Workers, actions. */
-	const detailColumns =
-		'grid-cols-[1.5rem_minmax(0,1fr)_var(--short-form-w)_4rem_var(--row-actions-w)]';
+	const detailColumns = 'grid-cols-[1.5rem_minmax(0,1fr)_var(--abbr-w)_4rem_var(--row-actions-w)]';
 	/** Sub-values indent only the first track, so the fixed columns stay aligned. */
 	const indent = $derived(`${Math.max(0, depth - 2) * 1.25}rem`);
 	const rowStyle = $derived(
 		detail
-			? `calc(1.5rem + ${indent}) minmax(0,1fr) var(--short-form-w) 4rem var(--row-actions-w)`
+			? `calc(1.5rem + ${indent}) minmax(0,1fr) var(--abbr-w) 4rem var(--row-actions-w)`
 			: undefined
 	);
 	const remainderStyle = $derived(
 		detail
-			? `calc(1.5rem + ${(depth - 1) * 1.25}rem) minmax(0,1fr) var(--short-form-w) 4rem var(--row-actions-w)`
+			? `calc(1.5rem + ${(depth - 1) * 1.25}rem) minmax(0,1fr) var(--abbr-w) 4rem var(--row-actions-w)`
 			: undefined
 	);
 
@@ -288,7 +287,7 @@
 		)}
 		style:padding-left={detail ? `calc(1.5rem + ${(depth - 1) * 1.25}rem)` : undefined}
 		style:padding-right={detail
-			? 'calc(var(--short-form-w) + 4rem + var(--row-actions-w) + 1rem)'
+			? 'calc(var(--abbr-w) + 4rem + var(--row-actions-w) + 1rem)'
 			: undefined}
 		data-testid="add-child-composer"
 	>

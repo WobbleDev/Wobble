@@ -271,7 +271,7 @@
   being placed can also be made an Attribute of its own from the promote zone under the tree.
 -->
 <div
-	class="grid min-w-0 gap-0.5 [--row-actions-w:3.75rem] [--short-form-w:7.5rem] coarse:[--row-actions-w:5.75rem]"
+	class="grid min-w-0 gap-0.5 [--abbr-w:7.5rem] [--row-actions-w:3.75rem] coarse:[--row-actions-w:5.75rem]"
 	bind:this={column}
 	bind:clientWidth={columnWidth}
 >
