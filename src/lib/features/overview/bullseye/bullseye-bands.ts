@@ -29,6 +29,21 @@ export function ringLabelWedge(name: string, centreRadius: number): number {
 	return Math.min(width / centreRadius, Math.PI / 2);
 }
 
+/**
+ * Whether a ring's name, set at `labelSize` user units, still fits the arc the
+ * band keeps clear for it. The wedge reserves room at the fixed Label step (see
+ * `RING_LABEL_UNITS`); a chart drawn smaller turns the same interface size into
+ * more user units, so the name can outgrow its wedge and cover the dots packed
+ * beside it. Such a name is omitted rather than shrunk below the 11px Label
+ * floor, leaving the chart's description to name the ring.
+ */
+export function ringLabelFits(name: string, centreRadius: number, labelSize: number): boolean {
+	if (!(labelSize > 0) || !(centreRadius > 0)) return false;
+	const arc = ringLabelWedge(name, centreRadius) * centreRadius;
+	const ink = name.length * RING_LABEL_ADVANCE_EM * labelSize + 2 * RING_LABEL_MARGIN;
+	return ink <= arc + 1e-6;
+}
+
 /** The name anchor in the chart's own angle convention, where twelve o'clock is −π/2. */
 export function labelAnchorAngle(): number {
 	return (RING_LABEL_ANGLE * Math.PI) / 180 - Math.PI / 2;

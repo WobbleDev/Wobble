@@ -188,15 +188,15 @@
      here only for the fitted chart, where the chart backdrop cannot be dragged: below the
      Shell tier the page flows again, so it sits in that flow under the chart. The
      focused chart backdrop carries its own reset in the shell, at the lower right above
-     the chart. The zoom lives in the shell's shared view context, so resetting
-     writes that rather than touching the DOM. Its visible label names it; an
-     aria-label override would break label-in-name. -->
-{#if !view.shown}
+     the chart. At 1× there is nothing to reset, so the control is left out rather
+     than standing disabled over the chart. The zoom lives in the shell's shared view
+     context, so resetting writes that rather than touching the DOM. Its visible label
+     names it; an aria-label override would break label-in-name. -->
+{#if !view.shown && view.zoom !== 1}
 	<Button
 		variant="outline"
 		size="sm"
 		class="pointer-events-auto z-10 mt-2 min-h-tap self-end lg:fixed lg:right-6 lg:bottom-6 lg:mt-0 lg:min-h-8"
-		disabled={view.zoom === 1}
 		onclick={() => view.setZoom(1)}
 	>
 		{m.overview_reset_zoom()}

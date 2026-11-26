@@ -311,3 +311,98 @@ test('the scroll viewport does not clip the cards: no overflow clip over their b
 	});
 	for (const gap of edge) expect(gap).toBeGreaterThanOrEqual(1);
 });
+
+test('flips colliding pinned tie name tags clear of one another', async ({ page, request }) => {
+	expect((await request.put('/api/attributes', { data: wireDefinitions([]) })).ok()).toBeTruthy();
+	const leaderId = await createWorker(request, { name: 'Ada', assessment: 'Leader' });
+	for (const name of ['Bea', 'Cal', 'Dot', 'Eve', 'Fay']) {
+		await createWorker(request, { name, assessment: 'Activist', relationships: [leaderId] });
+	}
+
+	await page.setViewportSize({ width: 1440, height: 874 });
+	await page.goto('/overview');
+	await appReady(page);
+	await edge(page).click();
+	await members(page).first().click();
+
+	const tags = page.locator('[data-dot-name]');
+	await expect(tags).toHaveCount(6);
+	// The tags are measured after they render; the first frame leaves them all
+	// above, then the colliding ties move below or beside their dots.
+	await expect
+		.poll(() =>
+			tags.evaluateAll(
+				(nodes) => nodes.filter((node) => node.getAttribute('data-tag-side') !== 'above').length
+			)
+		)
+		.toBeGreaterThan(0);
+
+	const boxes = await tags.evaluateAll((nodes) =>
+		nodes.map((node) => {
+			const box = node.getBoundingClientRect();
+			return {
+				id: node.getAttribute('data-dot-name') as string,
+				side: node.getAttribute('data-tag-side'),
+				left: box.left,
+				top: box.top,
+				right: box.right,
+				bottom: box.bottom
+			};
+		})
+	);
+
+	// The selected Leader keeps the preferred place above its dot.
+	expect(boxes.find((box) => box.id === leaderId)?.side).toBe('above');
+
+	for (let first = 0; first < boxes.length; first += 1) {
+		for (let second = first + 1; second < boxes.length; second += 1) {
+			const a = boxes[first];
+			const b = boxes[second];
+			const overlap =
+				Math.min(a.right, b.right) - Math.max(a.left, b.left) > 0 &&
+				Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top) > 0;
+			expect(overlap, `tags ${a.id} and ${b.id} stay apart`).toBe(false);
+		}
+	}
+});
+
+test('the Committee column takes glass, the label floor and a 2px focus outline', async ({
+	page,
+	request
+}) => {
+	await seedCommittee(request);
+	await page.setViewportSize({ width: 1440, height: 874 });
+	await page.goto('/overview');
+	await appReady(page);
+
+	const columnBox = column(page);
+	await expect(columnBox).toHaveAttribute('data-material', 'glass');
+	await expect(columnBox).toHaveCSS('border-radius', '8px');
+
+	await edge(page).focus();
+	await page.keyboard.press('Enter');
+	await expect(page.locator('[data-focus-back]')).toBeFocused();
+
+	const headingSize = await columnBox
+		.locator('[data-committee-section] h3')
+		.first()
+		.evaluate((element) => parseFloat(getComputedStyle(element).fontSize));
+	expect(headingSize).toBeGreaterThanOrEqual(11);
+
+	const outline = await page.locator('[data-focus-back]').evaluate((element) => {
+		const style = getComputedStyle(element);
+		return { style: style.outlineStyle, width: style.outlineWidth, offset: style.outlineOffset };
+	});
+	expect(outline).toEqual({ style: 'solid', width: '2px', offset: '2px' });
+
+	// The vendored table head is the Map table's and the CSV review's; both take
+	// the same 11px Label floor as the rest of the label role.
+	await page.goto('/mapping');
+	await appReady(page);
+	const header = page.locator('th[data-slot="table-head"]').first();
+	await expect(header).toBeAttached();
+	const headerSize = await header.evaluate((element) =>
+		parseFloat(getComputedStyle(element).fontSize)
+	);
+	expect(headerSize).toBeGreaterThanOrEqual(11);
+});

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import type { AssessmentOption, Worker } from '#lib/domain-vocabulary.ts';
 import { worker as baseWorker } from '#lib/testing/builders.ts';
-import { bandLayout, ringLabelWedge } from './bullseye-bands.ts';
+import { bandLayout, ringLabelFits, ringLabelWedge } from './bullseye-bands.ts';
 import { plotWorkerGroups } from './bullseye-geometry.ts';
 import { CHART_CENTER, type BandLayout, type RingNames } from './bullseye-shared.ts';
 import { tiePath } from './bullseye-ties.ts';
@@ -263,6 +263,14 @@ describe('ring names', () => {
 
 	it('caps the wedge at a quarter turn for a band too thin to hold its name', () => {
 		expect(ringLabelWedge('Disengaged', 1)).toBe(Math.PI / 2);
+	});
+
+	it('omits a ring name whose Label-step ink outgrows the wedge its dots keep clear', () => {
+		// The fitted chart turns the 11px Label floor into more user units; the focused
+		// chart backdrop turns it into fewer, and the same name fits there.
+		expect(ringLabelFits('Disengaged', 90, 11 / 1.2)).toBe(false);
+		expect(ringLabelFits('Disengaged', 90, 11 / 4.5)).toBe(true);
+		expect(ringLabelFits('Disengaged', 90, 0)).toBe(false);
 	});
 
 	it('keeps every named band dot outside the wedge its name needs', () => {

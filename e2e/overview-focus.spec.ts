@@ -539,8 +539,9 @@ test('hides the edge control below the floor and draws the fitted chart', async 
 	await expect(edge(page)).toHaveCount(0);
 	await expect(chartBackdrop(page)).toHaveCount(0);
 	await expect(page.locator('.no-scroll-chart')).toHaveCount(1);
-	// The fitted chart keeps its own reset: the fallback is unchanged.
-	await expect(resetZoom(page)).toBeVisible();
+	// The fitted chart's reset waits for a scale to reset: at 1× it is left out
+	// rather than standing disabled over the chart.
+	await expect(resetZoom(page)).toHaveCount(0);
 });
 
 test('settles the focus change within one frame under reduced motion', async ({

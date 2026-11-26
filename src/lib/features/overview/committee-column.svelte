@@ -168,7 +168,8 @@
 
 <aside
 	bind:this={column}
-	class="committee-column absolute z-[4] flex w-[min(21rem,calc(100%-2rem))] flex-col rounded-[0.625rem] border border-rule bg-panel/92 px-[1.125rem] py-4 backdrop-blur-lg"
+	class="committee-column absolute z-[4] flex w-[min(21rem,calc(100%-2rem))] flex-col rounded-surface border border-rule px-[1.125rem] py-4"
+	data-material="glass"
 	class:is-focused={focus.focused}
 	style={box
 		? `top: ${box.top}px; left: ${box.left}px; max-height: ${box.height}px`
@@ -193,7 +194,7 @@
 				<Tooltip.Trigger
 					type="button"
 					data-focus-back
-					class="-mt-1.5 -mr-2 grid size-8 shrink-0 place-items-center rounded-control text-ink-3 transition-colors hover:bg-inset hover:text-ink focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none motion-reduce:transition-none"
+					class="-mt-1.5 -mr-2 grid size-8 shrink-0 place-items-center rounded-control text-ink-3 transition-colors hover:bg-inset hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring motion-reduce:transition-none"
 					aria-label={m.overview_show_dashboard()}
 					onclick={() => focus.blur()}
 					onkeydown={(event) => {
@@ -268,7 +269,7 @@
 				<section aria-label={section.label ?? m.overview_committee_title()} data-committee-section>
 					{#if section.label !== null}
 						<h3
-							class="flex items-center justify-between gap-3 px-2.5 pb-1.5 font-mono text-2xs tracking-key text-ink-2 uppercase"
+							class="flex items-center justify-between gap-3 px-2.5 pb-1.5 font-mono text-xs tracking-key text-ink-2 uppercase"
 						>
 							<span class="truncate">{section.label}</span>
 							<span

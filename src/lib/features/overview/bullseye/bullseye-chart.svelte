@@ -6,7 +6,7 @@
 	import { assessmentGroupLabel, assessmentLabel } from '#lib/i18n/assessment.ts';
 	import { m } from '#lib/paraglide/messages.js';
 	import { cn } from '#lib/utils.ts';
-	import { labelArcPath } from './bullseye-bands.ts';
+	import { labelArcPath, ringLabelFits } from './bullseye-bands.ts';
 	import {
 		CHART_CENTER,
 		DOT_FOOTPRINT,
@@ -217,26 +217,31 @@
 	 * name takes the stop of whatever it is drawn on as its halo, so the ties
 	 * crossing it break behind the word while the boundary above it stays whole.
 	 * The Leader ring carries no name on its edge, because its name is the centre.
+	 * A name whose ink outgrows the wedge its dots keep clear is left out: at the
+	 * fitted size the Label floor is too large for the ring, and a word over the
+	 * dots names nothing.
 	 */
-	const ringLabels = $derived([
-		...ringGeometry
-			.filter((ring) => ring.assessment !== 'Leader')
-			.map((ring) => ({
-				text: ringDisplayName(ring.assessment),
-				radius: (ring.innerRadius + ring.outerRadius) / 2,
-				halo: ring.fill,
-				inset: RING_LABEL_INSET_EM
-			})),
-		{
-			text: assessmentGroupLabel('Hostile'),
-			/* Fixed in user units: a radius that followed the measured label size moved the
-			   word on every resize or zoom frame. Hostile holds no band, so its name
-			   carries no halo stroke. */
-			radius: layout.hostileRadius + DOT_FOOTPRINT + TRACK_LABEL_GAP + HOSTILE_LABEL_HALF_INK,
-			halo: 'none',
-			inset: 0
-		}
-	]);
+	const ringLabels = $derived(
+		[
+			...ringGeometry
+				.filter((ring) => ring.assessment !== 'Leader')
+				.map((ring) => ({
+					text: ringDisplayName(ring.assessment),
+					radius: (ring.innerRadius + ring.outerRadius) / 2,
+					halo: ring.fill,
+					inset: RING_LABEL_INSET_EM
+				})),
+			{
+				text: assessmentGroupLabel('Hostile'),
+				/* Fixed in user units: a radius that followed the measured label size moved the
+				   word on every resize or zoom frame. Hostile holds no band, so its name
+				   carries no halo stroke. */
+				radius: layout.hostileRadius + DOT_FOOTPRINT + TRACK_LABEL_GAP + HOSTILE_LABEL_HALF_INK,
+				halo: 'none',
+				inset: 0
+			}
+		].filter((label) => ringLabelFits(label.text, label.radius, labelSize))
+	);
 
 	/**
 	 * The stop each mark is drawn on, so a dot's halo is the surface beneath it
