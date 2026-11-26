@@ -247,9 +247,12 @@
 			</Sidebar.Group>
 		{/each}
 	</Sidebar.Content>
-	<Sidebar.Footer>
+	<!-- The footer's own padding would nest inside each group's, indenting and narrowing
+	     the footer links against the Views group. The groups keep their horizontal
+	     padding and drop their vertical padding, so the two rows sit compactly. -->
+	<Sidebar.Footer class="gap-0 p-0">
 		{#each footerGroups as group (group.id)}
-			<Sidebar.Group>
+			<Sidebar.Group class="p-2 py-0">
 				<Sidebar.GroupLabel>{group.label}</Sidebar.GroupLabel>
 				<Sidebar.GroupContent>
 					<Sidebar.Menu>

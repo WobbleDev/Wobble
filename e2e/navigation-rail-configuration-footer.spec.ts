@@ -55,6 +55,25 @@ test('Configuration stays in the navigation rail footer on desktop and mobile', 
 	await expect(settingsLink).toHaveAttribute('href', '/settings');
 	await expect(settingsLink).toBeVisible();
 
+	// The footer groups align with Views rather than nesting a second padding box.
+	const mappingBox = await page
+		.getByRole('navigation', { name: 'Worksite' })
+		.getByRole('link', { name: 'Mapping', exact: true })
+		.boundingBox();
+	const configurationBox = await configurationLink.boundingBox();
+	const settingsBox = await settingsLink.boundingBox();
+	if (!mappingBox || !configurationBox || !settingsBox) {
+		throw new Error('Navigation rail links are not visible');
+	}
+	expect({ x: configurationBox.x, width: configurationBox.width }).toEqual({
+		x: mappingBox.x,
+		width: mappingBox.width
+	});
+	expect({ x: settingsBox.x, width: settingsBox.width }).toEqual({
+		x: mappingBox.x,
+		width: mappingBox.width
+	});
+
 	const footerBounds = await railFooter.boundingBox();
 	const viewport = page.viewportSize();
 	if (!footerBounds || !viewport) throw new Error('Configuration footer is not visible');
