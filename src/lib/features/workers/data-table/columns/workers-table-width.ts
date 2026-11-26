@@ -10,7 +10,9 @@
  * show. Shrinkable columns interpolate between a preferred width and a minimum
  * width with one unitless factor `--workers-table-t` (0..1, computed in JS); the table
  * floors at the sum of the minimums, so the scrollport only scrolls sideways
- * when the frame is narrower than even the minimums.
+ * when the frame is narrower than even the minimums. A content column's minimum
+ * is a readable one — its header plus a truncated value — not a flat 5rem, so a
+ * Worksite with six or more Attributes scrolls instead of crushing every column.
  */
 
 /** The pinned checkbox column. The Name column's sticky offset is this same value. */
@@ -23,17 +25,30 @@ export const ASSESSMENT_MIN_REM = 6;
 /** A content-sized column never gets narrower than this, nor wider than this. */
 const CONTENT_MIN_REM = 6;
 const CONTENT_MAX_REM = 14;
-/** Below the preferred floor: how far a content column shrinks before the table scrolls. */
-export const CONTENT_SHRINK_MIN_REM = 5;
+/** A content column keeps room for a value shortened with an ellipsis, not only its header. */
+const CONTENT_READABLE_VALUE_REM = 6;
 /** Rough width of one character at the table's text size, plus a cell's padding and trigger room. */
 const REM_PER_CHARACTER = 0.55;
 const CONTENT_CHROME_REM = 3;
+/** The same estimate for a header label, which shares its cell with a sort and filter control. */
+const HEADER_REM_PER_CHARACTER = 0.5;
+const HEADER_CHROME_REM = 2;
 
 /** The width a column needs to show its longest option without breaking it. */
 export function contentColumnRem(options: readonly string[]): number {
 	const longest = options.reduce((max, option) => Math.max(max, option.length), 0);
 	const wanted = longest * REM_PER_CHARACTER + CONTENT_CHROME_REM;
 	return Math.min(CONTENT_MAX_REM, Math.max(CONTENT_MIN_REM, Math.ceil(wanted * 4) / 4));
+}
+
+/**
+ * The readable width a content column may shrink to before the table scrolls: enough
+ * for its header label and a truncated value. The caller caps it at the column's own
+ * preferred width, so a short column still rests at that preferred width.
+ */
+export function contentColumnMinRem(label: string): number {
+	const header = label.length * HEADER_REM_PER_CHARACTER + HEADER_CHROME_REM;
+	return Math.max(CONTENT_MIN_REM, CONTENT_READABLE_VALUE_REM, Math.ceil(header * 4) / 4);
 }
 
 /** Name is pinned to its longest name, within these bounds; a longer name truncates. */
@@ -80,24 +95,34 @@ export function workersPreferredWidth(
 /**
  * A shrinkable column's minimum width, in rem. Pinned columns (checkbox, Name)
  * stay fixed at their preferred width; Assessment floors at ASSESSMENT_MIN_REM
- * and content columns at most CONTENT_SHRINK_MIN_REM.
+ * and content columns at their readable floor (capped at the preferred width).
+ * `label` is the column header's text, which sets that readable floor.
  */
-export function workersColumnMinRem(columnId: string, preferredRem: number): number {
+export function workersColumnMinRem(columnId: string, preferredRem: number, label = ''): number {
 	if (columnId === 'selection' || columnId === 'name') return preferredRem;
 	if (columnId === 'assessment') return Math.min(preferredRem, ASSESSMENT_MIN_REM);
-	return Math.min(preferredRem, CONTENT_SHRINK_MIN_REM);
+	return Math.min(preferredRem, contentColumnMinRem(label));
 }
 
-/** The sum of the visible columns' minimum widths, as a CSS length: the narrowest the table gets. */
+/**
+ * The sum of the visible columns' minimum widths, as a CSS length: the narrowest the table gets.
+ * `labels` holds each content column's header text, which sets its readable floor.
+ */
 export function workersMinWidth(
 	visibleColumnIds: readonly string[],
-	contentRem: Readonly<Record<string, number>>
+	contentRem: Readonly<Record<string, number>>,
+	labels: Readonly<Record<string, string>> = {}
 ): string {
 	let rem = 0;
 	let name = false;
 	for (const columnId of visibleColumnIds) {
 		if (columnId === 'name') name = true;
-		else rem += workersColumnMinRem(columnId, workersColumnRem(columnId, contentRem));
+		else
+			rem += workersColumnMinRem(
+				columnId,
+				workersColumnRem(columnId, contentRem),
+				labels[columnId]
+			);
 	}
 	return name ? `calc(var(--workers-table-name-w) + ${rem}rem)` : `${rem}rem`;
 }
@@ -122,9 +147,10 @@ export function shrinkFactor(framePx: number, minPx: number, prefPx: number): nu
  */
 export function workersTableWidth(
 	visibleColumnIds: readonly string[],
-	contentRem: Readonly<Record<string, number>>
+	contentRem: Readonly<Record<string, number>>,
+	labels: Readonly<Record<string, string>> = {}
 ): string {
-	return `max(100%, ${workersMinWidth(visibleColumnIds, contentRem)})`;
+	return `max(100%, ${workersMinWidth(visibleColumnIds, contentRem, labels)})`;
 }
 
 /** A column's declared content width in rem, by column id. */

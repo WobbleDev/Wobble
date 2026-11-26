@@ -74,8 +74,8 @@ test('the Workers table shrinks to the 1024px window instead of scrolling', asyn
 	expect(report.documentOverflowX).toBe(false);
 	await expect(page.getByTestId('workers-scroll-fade')).toHaveCount(0);
 	// The table fills the frame but never goes below its minimum sum (the pinned
-	// checkbox 2.75rem, Name at its longest name, Assessment 6rem, Languages and
-	// the three Attributes at most 5rem each).
+	// checkbox 2.75rem, Name at its longest name, Assessment 6rem, and Languages
+	// plus the three Attributes at their readable content floors).
 	expect(report.tableScrollWidth).toBeGreaterThanOrEqual(
 		workersMinFloorRem() * report.rootFont - 2
 	);

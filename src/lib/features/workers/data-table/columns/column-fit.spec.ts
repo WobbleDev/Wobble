@@ -34,4 +34,14 @@ describe('workersTableStyleFor', () => {
 		expect(style).toContain('--workers-table-t: 0.5;');
 		expect(style.startsWith('width: ')).toBe(true);
 	});
+
+	it('reads a content column label into its readable floor', () => {
+		const withLabel = workersTableStyleFor(
+			[{ id: 'name' }, { id: 'a', label: 'Department', width: '10rem' }],
+			1
+		);
+		const withoutLabel = workersTableStyleFor([{ id: 'name' }, { id: 'a', width: '10rem' }], 1);
+		expect(withLabel).toContain('width: max(100%, calc(var(--workers-table-name-w) + 7rem));');
+		expect(withoutLabel).toContain('width: max(100%, calc(var(--workers-table-name-w) + 6rem));');
+	});
 });

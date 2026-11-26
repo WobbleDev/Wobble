@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import {
 	ASSESSMENT_MIN_REM,
-	CONTENT_SHRINK_MIN_REM,
 	WORKERS_SELECT_REM,
+	contentColumnMinRem,
 	contentColumnRem,
 	workersColumnMinRem,
 	workersColumnRem,
@@ -22,6 +22,15 @@ describe('contentColumnRem', () => {
 	});
 });
 
+describe('contentColumnMinRem', () => {
+	it('keeps a readable floor for a header and a truncated value', () => {
+		expect(contentColumnMinRem('')).toBe(6);
+		expect(contentColumnMinRem('Role')).toBe(6);
+		expect(contentColumnMinRem('Department')).toBe(7);
+		expect(contentColumnMinRem('Safety Certifications')).toBe(12.5);
+	});
+});
+
 describe('workersColumnRem', () => {
 	it('gives the pinned checkbox the shared constant and unknown ids their content width', () => {
 		expect(workersColumnRem('selection', {})).toBe(WORKERS_SELECT_REM);
@@ -36,9 +45,9 @@ describe('workersTableWidth', () => {
 		expect(workersPreferredWidth([...ids], content)).toBe(
 			'calc(var(--workers-table-name-w) + 19.75rem)'
 		);
-		expect(workersMinWidth([...ids], content)).toBe('calc(var(--workers-table-name-w) + 13.75rem)');
+		expect(workersMinWidth([...ids], content)).toBe('calc(var(--workers-table-name-w) + 14.75rem)');
 		expect(workersTableWidth([...ids], content)).toBe(
-			'max(100%, calc(var(--workers-table-name-w) + 13.75rem))'
+			'max(100%, calc(var(--workers-table-name-w) + 14.75rem))'
 		);
 	});
 
@@ -47,15 +56,41 @@ describe('workersTableWidth', () => {
 			'max(100%, calc(var(--workers-table-name-w) + 2.75rem))'
 		);
 	});
+
+	it('floors seven long Attribute columns past a 1024px frame', () => {
+		const labels = [
+			'Safety Certifications',
+			'Availability',
+			'Tenure',
+			'Role',
+			'Station',
+			'Shifts',
+			'Mentor'
+		];
+		const ids = ['selection', 'name', 'assessment', ...labels.map((_, index) => `attr-${index}`)];
+		const content = Object.fromEntries(labels.map((_, index) => [`attr-${index}`, 14]));
+		const labelsById = Object.fromEntries(labels.map((label, index) => [`attr-${index}`, label]));
+		const contentMinRem = labels.reduce(
+			(sum, label, index) => sum + workersColumnMinRem(`attr-${index}`, 14, label),
+			0
+		);
+		const minRem = WORKERS_SELECT_REM + 10 + ASSESSMENT_MIN_REM + contentMinRem;
+		expect(minRem * 16).toBeGreaterThan(1024);
+		expect(workersMinWidth(ids, content, labelsById)).toBe(
+			`calc(var(--workers-table-name-w) + ${minRem - 10}rem)`
+		);
+	});
 });
 
 describe('workersColumnMinRem', () => {
-	it('keeps pinned columns fixed and floors shrinkable ones', () => {
+	it('keeps pinned columns fixed and floors shrinkable ones readably', () => {
 		expect(workersColumnMinRem('selection', WORKERS_SELECT_REM)).toBe(WORKERS_SELECT_REM);
 		expect(workersColumnMinRem('name', 10)).toBe(10);
 		expect(workersColumnMinRem('assessment', 9)).toBe(ASSESSMENT_MIN_REM);
-		expect(workersColumnMinRem('dept', 8)).toBe(CONTENT_SHRINK_MIN_REM);
+		expect(workersColumnMinRem('dept', 8)).toBe(6);
 		expect(workersColumnMinRem('dept', 4)).toBe(4);
+		expect(workersColumnMinRem('dept', 10, 'Department')).toBe(7);
+		expect(workersColumnMinRem('dept', 6, 'Safety Certifications')).toBe(6);
 	});
 });
 

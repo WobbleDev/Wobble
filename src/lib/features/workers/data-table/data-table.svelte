@@ -349,6 +349,7 @@
 		columns: () =>
 			table.getVisibleLeafColumns().map((column) => ({
 				id: column.id,
+				label: column.columnDef.meta?.label,
 				width: column.columnDef.meta?.width,
 				minWidth: column.columnDef.meta?.minWidth,
 				grow: column.columnDef.meta?.grow

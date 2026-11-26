@@ -17,7 +17,8 @@ import {
  *
  * The wide fixture's scroll floor (`wideWorkersMinFloorRem` in workers-table-grid.ts) is
  * the sum of its visible columns' minima: the pinned checkbox, Name sized to the longest
- * seeded name, Assessment at 6rem, and Languages plus every Attribute at most 5rem.
+ * seeded name, Assessment at 6rem, and Languages plus every Attribute at their readable
+ * content floors.
  */
 test.describe('readable Workers table', () => {
 	test.beforeEach(async ({ page }) => {

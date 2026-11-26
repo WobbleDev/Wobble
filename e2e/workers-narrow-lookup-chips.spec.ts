@@ -131,7 +131,7 @@ test('chips stay distinct from normal, hovered and checked rows in both themes a
 				const chipEl = rowEl.querySelector(c) as HTMLElement;
 				return [getComputedStyle(cell).backgroundColor, getComputedStyle(chipEl).backgroundColor];
 			},
-			['tbody tr[data-worker-id]:nth-child(2)', 'span.bg-chip']
+			['tbody tr[data-worker-id]:nth-child(2)', 'span.bg-inset']
 		);
 	for (const [dark, contrast] of [
 		[false, 'off'],
@@ -147,7 +147,8 @@ test('chips stay distinct from normal, hovered and checked rows in both themes a
 			[dark, contrast] as const
 		);
 		await expect(chip).toBeVisible();
-		await expect(chip).toHaveCSS('box-shadow', /rgb/);
+		// The chip reads as a tonal fill now, without the old dark ring.
+		await expect(chip).toHaveCSS('box-shadow', 'none');
 		const [rowBg, chipBg] = await gap();
 		expect(chipBg).not.toBe(rowBg);
 		await row.hover();

@@ -243,18 +243,21 @@ export function workersFloorRem(): number {
 
 /**
  * The scroll floor for the standard fixture, in rem: the pinned columns plus
- * every shrinkable column at its minimum (Assessment 6, content at most 5).
- * Below this sum the scrollport scrolls; above it the columns shrink instead.
+ * every shrinkable column at its readable minimum (Assessment 6, content from
+ * its header and a truncated value). Below this sum the scrollport scrolls;
+ * above it the columns shrink instead.
  */
 export function workersMinFloorRem(): number {
 	const fixed = 2.75 + nameColumnRem(workerNames) + workersColumnMinRem('assessment', 9);
 	const languages = workersColumnMinRem(
 		'languages',
-		contentColumnRem(['Spanish', 'Polish', 'Vietnamese'])
+		contentColumnRem(['Spanish', 'Polish', 'Vietnamese']),
+		'Languages'
 	);
 	const attributes = attributeDefs.reduce(
 		(sum, attribute) =>
-			sum + workersColumnMinRem(attribute.name, contentColumnRem(attribute.options)),
+			sum +
+			workersColumnMinRem(attribute.name, contentColumnRem(attribute.options), attribute.name),
 		0
 	);
 	return fixed + languages + attributes;
@@ -276,14 +279,19 @@ export function wideWorkersFloorRem(): number {
 	return fixed + languages + attributes;
 }
 
-/** The scroll floor for the twelve-Attribute fixture: pinned columns plus shrink minima. */
+/** The scroll floor for the twelve-Attribute fixture: pinned columns plus readable shrink minima. */
 export function wideWorkersMinFloorRem(): number {
 	const names = Array.from({ length: 50 }, (_, index) => wideWorkerName(index));
 	const fixed = 2.75 + nameColumnRem(names) + workersColumnMinRem('assessment', 9);
-	const languages = workersColumnMinRem('languages', contentColumnRem(wideLanguageNames));
+	const languages = workersColumnMinRem(
+		'languages',
+		contentColumnRem(wideLanguageNames),
+		'Languages'
+	);
 	const attributes = wideAttributeDefs.reduce(
 		(sum, attribute) =>
-			sum + workersColumnMinRem(attribute.name, contentColumnRem(attribute.options)),
+			sum +
+			workersColumnMinRem(attribute.name, contentColumnRem(attribute.options), attribute.name),
 		0
 	);
 	return fixed + languages + attributes;

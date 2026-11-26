@@ -341,7 +341,7 @@ export function createColumns(
 				widthClass: 'px-2',
 				grow: true,
 				width: `${contentColumnRem(languageLabels)}rem`,
-				minWidth: `${workersColumnMinRem('languages', contentColumnRem(languageLabels))}rem`
+				minWidth: `${workersColumnMinRem('languages', contentColumnRem(languageLabels), languagesLabel)}rem`
 			}
 		}),
 		// The Agitation facet narrows the rows without becoming a visible column: the
@@ -416,7 +416,7 @@ export function createColumns(
 					widthClass: 'px-2',
 					grow: true,
 					width: `${contentColumnRem(labels)}rem`,
-					minWidth: `${workersColumnMinRem(attribute.id, contentColumnRem(labels))}rem`,
+					minWidth: `${workersColumnMinRem(attribute.id, contentColumnRem(labels), attribute.name)}rem`,
 					describeValue: (value) => describeAnswerValue(attribute, value as WorkerAttributeValue)
 				}
 			});

@@ -15,6 +15,7 @@ import {
 /** One visible column, as far as its width is concerned. */
 export type FitColumn = {
 	id: string;
+	label?: string;
 	width?: string;
 	minWidth?: string;
 	grow?: boolean;
@@ -74,9 +75,13 @@ export function workersTableStyleFor(columns: readonly FitColumn[], frameFit: nu
 		columns.map((column) => ({ id: column.id, width: column.width, grow: column.grow }))
 	);
 	const ids = columns.map((column) => column.id);
+	const labels: Record<string, string> = {};
+	for (const column of columns) {
+		if (column.label !== undefined) labels[column.id] = column.label;
+	}
 	// Spare width is what the frame has beyond the columns' preferred sum;
 	// it is shared out by the growing columns, in proportion to their own widths.
-	return `width: ${workersTableWidth(ids, contentRem)}; --workers-table-slack: max(0px, calc(100% - ${workersPreferredWidth(ids, contentRem)})); --workers-table-grow-rem: ${growRem || NO_GROW_SHARE_REM}; --workers-table-t: ${frameFit};`;
+	return `width: ${workersTableWidth(ids, contentRem, labels)}; --workers-table-slack: max(0px, calc(100% - ${workersPreferredWidth(ids, contentRem)})); --workers-table-grow-rem: ${growRem || NO_GROW_SHARE_REM}; --workers-table-t: ${frameFit};`;
 }
 
 /** Call during component init: it registers effects. */
