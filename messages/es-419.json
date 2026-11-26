@@ -14,6 +14,8 @@
 	"nav_active_worksite": "Lugar de trabajo activo: {name}",
 	"nav_switch_failed": "No se pudo cambiar el lugar de trabajo.",
 	"nav_create_failed": "No se pudo crear el lugar de trabajo.",
+	"nav_group_worksite": "Lugar de trabajo",
+	"nav_group_this_computer": "Esta computadora",
 	"page_overview_title": "Resumen",
 	"page_overview_subtitle": "Un resumen de los trabajadores de este lugar de trabajo.",
 	"page_workers_title": "Trabajadores",

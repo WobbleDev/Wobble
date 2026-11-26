@@ -65,6 +65,35 @@
 		}
 	]);
 
+	/* Configuration belongs to the Worksite; Settings is installation-wide. The footer
+	   says so as two labelled groups rather than one undifferentiated list. */
+	const footerGroups = $derived([
+		{
+			id: 'worksite',
+			label: m.nav_group_worksite(),
+			items: [
+				{
+					id: 'configuration',
+					title: m.nav_configuration(),
+					url: '/configuration' as const,
+					icon: Columns3cog
+				}
+			]
+		},
+		{
+			id: 'this-computer',
+			label: m.nav_group_this_computer(),
+			items: [
+				{
+					id: 'settings',
+					title: m.nav_settings(),
+					url: '/settings' as const,
+					icon: SettingsIcon
+				}
+			]
+		}
+	]);
+
 	async function switchWorksite(id: string) {
 		isPending = true;
 		errorMessage = '';
@@ -80,6 +109,10 @@
 	}
 
 	function requestWorksiteSwitch(target: Worksite) {
+		// Choosing the Worksite already active is not a switch: nothing to guard,
+		// reload or navigate to.
+		if (target.id === worksite?.id) return;
+
 		// The shared guard owns the prompt, so a switch and a nav link cannot each
 		// raise their own — and the switch itself is just the held intent.
 		void unsavedChanges.request({
@@ -138,7 +171,7 @@
 							<Button
 								{...props}
 								variant="outline"
-								class="min-h-tap w-full justify-between border-sidebar-border bg-transparent text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground lg:min-h-9"
+								class="min-h-tap w-full justify-between bg-transparent text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground lg:min-h-9"
 								aria-label={worksite
 									? m.nav_active_worksite({ name: worksite.name })
 									: m.nav_select_worksite()}
@@ -215,43 +248,34 @@
 		{/each}
 	</Sidebar.Content>
 	<Sidebar.Footer>
-		<Sidebar.Menu>
-			<Sidebar.MenuItem>
-				<Sidebar.MenuButton
-					isActive={page.url.pathname === '/settings'}
-					class="min-h-tap lg:min-h-9"
-				>
-					{#snippet child({ props })}
-						<a
-							href={resolve('/settings')}
-							{...props}
-							aria-current={page.url.pathname === '/settings' ? 'page' : undefined}
-							onclick={() => rail.setOpenMobile(false)}
-						>
-							<SettingsIcon />
-							<span>{m.nav_settings()}</span>
-						</a>
-					{/snippet}
-				</Sidebar.MenuButton>
-			</Sidebar.MenuItem>
-			<Sidebar.MenuItem>
-				<Sidebar.MenuButton
-					isActive={page.url.pathname === '/configuration'}
-					class="min-h-tap lg:min-h-9"
-				>
-					{#snippet child({ props })}
-						<a
-							href={resolve('/configuration')}
-							{...props}
-							aria-current={page.url.pathname === '/configuration' ? 'page' : undefined}
-							onclick={() => rail.setOpenMobile(false)}
-						>
-							<Columns3cog />
-							<span>{m.nav_configuration()}</span>
-						</a>
-					{/snippet}
-				</Sidebar.MenuButton>
-			</Sidebar.MenuItem>
-		</Sidebar.Menu>
+		{#each footerGroups as group (group.id)}
+			<Sidebar.Group>
+				<Sidebar.GroupLabel>{group.label}</Sidebar.GroupLabel>
+				<Sidebar.GroupContent>
+					<Sidebar.Menu>
+						{#each group.items as item (item.id)}
+							<Sidebar.MenuItem>
+								<Sidebar.MenuButton
+									isActive={page.url.pathname === item.url}
+									class="min-h-tap lg:min-h-9"
+								>
+									{#snippet child({ props })}
+										<a
+											href={resolve(item.url)}
+											{...props}
+											aria-current={page.url.pathname === item.url ? 'page' : undefined}
+											onclick={() => rail.setOpenMobile(false)}
+										>
+											<item.icon />
+											<span>{item.title}</span>
+										</a>
+									{/snippet}
+								</Sidebar.MenuButton>
+							</Sidebar.MenuItem>
+						{/each}
+					</Sidebar.Menu>
+				</Sidebar.GroupContent>
+			</Sidebar.Group>
+		{/each}
 	</Sidebar.Footer>
 </Sidebar.Root>
