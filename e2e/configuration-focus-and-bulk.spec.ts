@@ -80,7 +80,9 @@ async function seed(
 async function unfoldLocation(page: Page) {
 	const location = attributeRowByName(page, 'Location');
 	await location.focus();
-	await page.keyboard.press('ArrowRight');
+	// List and detail opens the first Attribute on load; a tree starts it closed.
+	if ((await location.getAttribute('aria-expanded')) !== 'true')
+		await page.keyboard.press('ArrowRight');
 	await expect(location).toHaveAttribute('aria-expanded', 'true');
 }
 

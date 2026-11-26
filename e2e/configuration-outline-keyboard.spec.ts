@@ -248,8 +248,11 @@ test('shortens a long answer name visually but keeps the full name and the count
 	await openConfiguration(page);
 	await page.evaluate(() => document.fonts.ready);
 
-	await attributeRowByName(page, 'Location').focus();
-	await page.keyboard.press('ArrowRight');
+	const location = attributeRowByName(page, 'Location');
+	await location.focus();
+	// List and detail opens the first Attribute on load; a tree starts it closed.
+	if ((await location.getAttribute('aria-expanded')) !== 'true')
+		await page.keyboard.press('ArrowRight');
 	const longRow = answerRow(page, longName);
 	await expect(longRow).toBeVisible();
 	await expect(longRow).toHaveAccessibleName(longName);
@@ -300,5 +303,5 @@ test.describe('coarse pointer', () => {
 
 async function expandForTouch(row: import('@playwright/test').Locator): Promise<void> {
 	await row.focus();
-	await row.press('ArrowRight');
+	if ((await row.getAttribute('aria-expanded')) !== 'true') await row.press('ArrowRight');
 }

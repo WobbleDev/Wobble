@@ -6,6 +6,7 @@ import { randomUUID } from 'node:crypto';
 import {
 	addAttribute,
 	closeAttributeEditor,
+	expandAttribute,
 	openAttributeEditor,
 	workerColumn
 } from './configuration-outline.ts';
@@ -27,12 +28,14 @@ test('the Configuration tab speaks Attributes', async ({ page }) => {
 	await expect(page.getByTestId('assignment-column')).toHaveCount(0);
 	await expect(page.getByText('About each Work Assignment')).toHaveCount(0);
 	await expect(page.getByText('Scope', { exact: true })).toHaveCount(0);
-	// The column heads sit over the selected Attribute's values.
-	await page
+	// The column heads sit over the selected Attribute's values; the first is already
+	// selected on a wide layout, so only open it when needed.
+	const firstToggle = page
 		.getByTestId('attribute-row')
 		.first()
-		.getByRole('button', { name: /^Toggle options for/ })
-		.click();
+		.getByRole('button', { name: /^Toggle options for/ });
+	if ((await firstToggle.getAttribute('aria-expanded')) !== 'true') await firstToggle.click();
+	await expect(firstToggle).toHaveAttribute('aria-expanded', 'true');
 	// The one count column counts Workers, never assignments.
 	await expect(workerColumn(page).getByTestId('worker-count-header')).toHaveText('Workers');
 	await expect(workerColumn(page).getByTestId('abbreviation-header')).toHaveText('Abbr');
@@ -363,6 +366,6 @@ test('an Attribute name edits inline, cancels with Escape, and commits on Enter 
 	await page.reload();
 	await appReady(page);
 	const reloaded = page.locator(`[data-testid="attribute-row"][data-attribute-id="${id}"]`);
-	await reloaded.getByRole('button', { name: /^Toggle options for/ }).click();
+	await expandAttribute(page, 'Department final');
 	await expect(reloaded.getByRole('button', { name: 'Rename Department final' })).toBeVisible();
 });

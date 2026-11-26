@@ -255,7 +255,7 @@
 	<div class="flex items-center justify-end gap-0.5">
 		<button
 			type="button"
-			class="flex size-7 shrink-0 items-center justify-center rounded-sm p-0 text-ink-3 hover:bg-hover focus-visible:ring-2 focus-visible:ring-ring coarse:size-tap [@media(hover:hover)]:opacity-0 [@media(hover:hover)]:group-focus-within/row:opacity-100 [@media(hover:hover)]:group-hover/row:opacity-100"
+			class="flex size-7 shrink-0 items-center justify-center rounded-sm p-0 text-ink-3 hover:bg-hover focus-visible:ring-2 focus-visible:ring-ring coarse:size-tap [@media(hover:hover)]:opacity-0 [@media(hover:hover)]:group-focus-within/answer-row:opacity-100 [@media(hover:hover)]:group-hover/row:opacity-100"
 			aria-label={m.configuration_add_child_value({ name: chipLabel })}
 			title={m.configuration_add_child_value({ name: chipLabel })}
 			data-action="add-child"
@@ -267,7 +267,7 @@
 		</button>
 		<button
 			type="button"
-			class="flex size-7 shrink-0 items-center justify-center rounded-sm p-0 text-ink-3 hover:bg-state-error/10 hover:text-state-error focus-visible:text-state-error focus-visible:ring-2 focus-visible:ring-ring coarse:size-tap [@media(hover:hover)]:opacity-0 [@media(hover:hover)]:group-focus-within/row:opacity-100 [@media(hover:hover)]:group-hover/row:opacity-100"
+			class="flex size-7 shrink-0 items-center justify-center rounded-sm p-0 text-ink-3 hover:bg-state-error/10 hover:text-state-error focus-visible:text-state-error focus-visible:ring-2 focus-visible:ring-ring coarse:size-tap [@media(hover:hover)]:opacity-0 [@media(hover:hover)]:group-focus-within/answer-row:opacity-100 [@media(hover:hover)]:group-hover/row:opacity-100"
 			aria-label={m.configuration_remove_value({ name: chipLabel })}
 			title={m.configuration_remove_value({ name: chipLabel })}
 			data-action="remove"
@@ -343,7 +343,7 @@
 	data-row-id={answer.id}
 	data-parent-row-id={answer.parentId ?? attributeId}
 	data-depth={depth}
-	class="outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
+	class="group/answer-row outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
 	class:opacity-40={placement.isDraggingAnswer(answer.id)}
 	onfocus={() => onFocusRow(answer.id)}
 >

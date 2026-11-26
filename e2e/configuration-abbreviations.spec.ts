@@ -5,7 +5,13 @@ import { openConfiguration } from './pages.ts';
 import { appReady } from './page-ready.ts';
 import { createWorker } from './api.ts';
 import { wireDefinitions } from './answer-wire.ts';
-import { addValue, answerRow, openAttributeEditor, saveAll } from './configuration-outline.ts';
+import {
+	addValue,
+	answerRow,
+	expandAttribute,
+	openAttributeEditor,
+	saveAll
+} from './configuration-outline.ts';
 import { ABBREVIATION_LIMIT } from '../src/lib/shared/text/abbreviation.ts';
 
 /**
@@ -77,12 +83,9 @@ test('a new value shows a greyed suggestion, typing makes it edited, and eleven 
 }) => {
 	const id = await seedDepartments(request, ['Kitchen']);
 	await openConfiguration(page);
-	// The short-code boxes carry a visible column header (#152).
-	await page
-		.getByTestId('attribute-row')
-		.first()
-		.getByRole('button', { name: /^Toggle options for/ })
-		.click();
+	// The short-code boxes carry a visible column header (#152). The first Attribute is
+	// already selected on a wide layout, so do not toggle it closed.
+	await expandAttribute(page, 'Department');
 	await expect(page.getByTestId('abbreviation-header')).toHaveText('Abbr');
 	await addValue(page, 'Department', 'Customer Service');
 

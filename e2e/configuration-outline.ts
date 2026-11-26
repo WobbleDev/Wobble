@@ -52,11 +52,10 @@ export async function addAttribute(
 	await expect(attributeRow(target, name)).toBeVisible();
 }
 
-/** Opens an Attribute's existing detail editor by its name. */
+/** Opens an Attribute's existing detail editor by its name, leaving an open one open. */
 export async function openAttribute(page: Page, name: string): Promise<Locator> {
-	const row = page.getByTestId('attribute-row').filter({ hasText: name });
-	await row.getByRole('button', { name: `Toggle options for ${name}` }).click();
-	return row;
+	await expandAttribute(page, name);
+	return attributeRowByName(page, name);
 }
 
 /** The Attribute row anywhere on the page, by name. */
