@@ -55,6 +55,41 @@
 			.filter((language) => worker.languages.includes(language.id))
 			.map((language) => language.name)
 	);
+
+	/* The Relationships list is height-capped. Count the rows still hidden below it so a
+	   long record never looks silently short, and fade the edge only while there is more
+	   to reach. The mask is static, so there is no motion for reduced motion to turn off. */
+	let relationshipsList = $state<HTMLUListElement>();
+	let hiddenRelationships = $state(0);
+
+	$effect(() => {
+		const list = relationshipsList;
+		if (!list) return;
+		const measure = () => {
+			const visible = list.getBoundingClientRect();
+			let hidden = 0;
+			for (const row of list.children) {
+				// Rows already scrolled above the box are read; only the foot counts.
+				if (row.getBoundingClientRect().bottom > visible.bottom + 1) hidden += 1;
+			}
+			hiddenRelationships = hidden;
+		};
+		measure();
+		list.addEventListener('scroll', measure, { passive: true });
+		const observer = new ResizeObserver(measure);
+		observer.observe(list);
+		for (const row of list.children) observer.observe(row);
+		const mutations = new MutationObserver(() => {
+			for (const row of list.children) observer.observe(row);
+			measure();
+		});
+		mutations.observe(list, { childList: true, characterData: true, subtree: true });
+		return () => {
+			list.removeEventListener('scroll', measure);
+			observer.disconnect();
+			mutations.disconnect();
+		};
+	});
 </script>
 
 <section
@@ -115,7 +150,14 @@
 	{#if neighbours.length > 0}
 		<div class="flex flex-col gap-2">
 			<p class="label text-ink-3">{m.domain_relationships()}</p>
-			<ul class="flex max-h-48 flex-col gap-1 overflow-y-auto">
+			<ul
+				bind:this={relationshipsList}
+				class="flex max-h-48 flex-col gap-1 overflow-y-auto"
+				data-relationships-list
+				style:mask-image={hiddenRelationships > 0
+					? 'linear-gradient(to bottom, #000 calc(100% - 1.5rem), transparent)'
+					: undefined}
+			>
 				{#each neighbours as neighbour (neighbour.id)}
 					<li>
 						<!-- Kept raw: a full-width neighbour row with a swatch and a trailing count; no ui control is a list row. -->
@@ -133,6 +175,11 @@
 					</li>
 				{/each}
 			</ul>
+			{#if hiddenRelationships > 0}
+				<p class="label text-ink-3" data-relationships-more>
+					{m.mapping_dossier_more({ count: hiddenRelationships })}
+				</p>
+			{/if}
 		</div>
 	{/if}
 

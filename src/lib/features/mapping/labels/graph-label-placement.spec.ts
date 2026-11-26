@@ -197,6 +197,65 @@ describe('placeLabels on a narrow canvas', () => {
 	});
 });
 
+describe('placeLabels with after-search drops', () => {
+	const afterSearch = { rings: [1], dropMode: 'after-search' as const };
+
+	it('places every name while no drop is asked for, then drops the colliding later one', () => {
+		// Two identical, very large names on one dot. Every candidate one can take covers the
+		// other, so only the desktop contract's final drop can keep the drawing readable.
+		const requests = [
+			request({ id: 'a', width: 10_000, height: 10_000 }),
+			request({ id: 'b', width: 10_000, height: 10_000 })
+		];
+		// A band above the dot absorbs every candidate that would stand clear of the first name.
+		const reserved = [{ left: -20_000, top: -30_000, right: 20_000, bottom: -14 }];
+		expect([...placeLabels(requests, [], 8, reserved).keys()]).toEqual(['a', 'b']);
+		expect([
+			...placeLabels(requests, [], 8, reserved, [], {
+				...afterSearch,
+				dropOnNameCollision: new Set(['b'])
+			}).keys()
+		]).toEqual(['a']);
+	});
+
+	it('runs the fine-ring search before dropping, so a clear farther spot keeps the name', () => {
+		// One blocker at ring 1 blocks each side's first spot but leaves the ring-1.5 right
+		// spot clear. The narrow contract skips the fine search and drops the name; the
+		// desktop contract finds the clear spot and keeps it.
+		const blockers: Obstacle[] = [
+			{ id: 'right', x: 11, y: 0, radius: 6 },
+			{ id: 'left', x: -11, y: 0, radius: 6 },
+			{ id: 'above', x: 0, y: -11, radius: 6 },
+			{ id: 'below-right', x: 6, y: 6, radius: 6 },
+			{ id: 'below-left', x: -6, y: 6, radius: 6 },
+			{ id: 'above-right', x: 6, y: -6, radius: 6 },
+			{ id: 'above-left', x: -6, y: -6, radius: 6 }
+		];
+		const requests = [request({ id: 'a' }), request({ id: 'b' })];
+		const dropped = placeLabels(requests, blockers, 8, [], [], {
+			...afterSearch,
+			dropMode: 'narrow',
+			dropOnNameCollision: new Set(['b'])
+		});
+		expect([...dropped.keys()]).toEqual(['a']);
+
+		const desktop = placeLabels(requests, blockers, 8, [], [], {
+			...afterSearch,
+			dropOnNameCollision: new Set(['b'])
+		});
+		expect([...desktop.keys()]).toEqual(['a', 'b']);
+		expect(desktop.get('b')).toMatchObject({ side: 'right', ring: 1.5 });
+		const first = boxFor(requests[0], desktop.get('a')!);
+		const second = boxFor(requests[1], desktop.get('b')!);
+		expect(
+			second.left < first.right &&
+				first.left < second.right &&
+				second.top < first.bottom &&
+				first.top < second.bottom
+		).toBe(false);
+	});
+});
+
 describe('measured region headings', () => {
 	it('uses the measured ascent so the painted heading stays inside its reserved box', () => {
 		const region = {

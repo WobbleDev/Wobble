@@ -219,13 +219,22 @@ function placeLabelsInner(
 		 */
 		kept?: ReadonlyMap<string, { side: LabelSide; ring: number }>;
 		/**
-		 * On a narrow canvas a resting name that cannot stand clear of another resting
-		 * name is dropped rather than drawn over it (its card and table row still name the
-		 * Worker). Active names are never listed here, so hover and selection keep their rule.
+		 * A resting name that cannot stand clear of another resting name is dropped rather
+		 * than drawn over it (its card and table row still name the Worker). Active names
+		 * are never listed here, so hover and selection keep their rule.
 		 */
 		dropOnNameCollision?: ReadonlySet<string>;
+		/**
+		 * How a listed name is dropped. `'narrow'` (the default) keeps the narrow canvas'
+		 * contract: no fine-ring search and no graze repair, so a crowded name leaves at
+		 * once. `'after-search'` keeps the full desktop search and repair, and only a name
+		 * whose final spot still covers a name kept before it leaves the drawing.
+		 */
+		dropMode?: 'narrow' | 'after-search';
 	} = {}
 ): Map<string, LabelPlacement> {
+	const narrowDrop =
+		options.dropOnNameCollision !== undefined && (options.dropMode ?? 'narrow') === 'narrow';
 	const placements = new Map<string, LabelPlacement>();
 	const boxes: Box[] = [...reserved];
 	/** The name boxes alone, which are the only collisions the narrow-layout drop reads. */
@@ -297,7 +306,7 @@ function placeLabelsInner(
 		chosen ??= candidate(request, 'below', 1, gap);
 		// Narrow canvases keep their own contract: a name that cannot stand clear
 		// of another resting name is left off rather than pushed farther out.
-		if (hardAt(boxFor(request, chosen), request.id) > 0 && !options.dropOnNameCollision) {
+		if (hardAt(boxFor(request, chosen), request.id) > 0 && !narrowDrop) {
 			// The coarse grid found no clear cell in this crowd: look between and
 			// beyond its rings before accepting an overlap. Green maps never reach
 			// here — their coarse winner is already clear — so this only moves names
@@ -337,7 +346,8 @@ function placeLabelsInner(
 		const chosenBox = boxFor(request, chosen);
 		// A resting name on a narrow canvas has no least-crowded consolation: if every
 		// spot runs over another resting name, the name is left off the drawing.
-		if (options.dropOnNameCollision?.has(request.id) && collidesWithName(chosenBox)) continue;
+		if (narrowDrop && options.dropOnNameCollision?.has(request.id) && collidesWithName(chosenBox))
+			continue;
 		placements.set(request.id, chosen);
 		boxes.push(chosenBox);
 		nameBoxes.push(chosenBox);
@@ -357,6 +367,32 @@ function dotBoxOverlap(box: Box, obstacle: Obstacle, shrink: number): boolean {
 }
 
 /**
+ * The desktop contract: the full search and the graze repair run as they always have, and
+ * only at the end does a resting name whose final box still runs over a name kept before
+ * it leave the drawing. Requests arrive in priority order, so the later name of a
+ * colliding pair is the one dropped and the surviving picture stays deterministic.
+ */
+function dropAfterSearch(
+	placements: Map<string, LabelPlacement>,
+	requests: readonly LabelRequest[],
+	dropIds: ReadonlySet<string>
+): Map<string, LabelPlacement> {
+	if (dropIds.size === 0) return placements;
+	const kept: Box[] = [];
+	for (const request of requests) {
+		const placement = placements.get(request.id);
+		if (!placement) continue;
+		const box = boxFor(request, placement);
+		if (dropIds.has(request.id) && kept.some((name) => intersectsBox(box, name))) {
+			placements.delete(request.id);
+			continue;
+		}
+		kept.push(box);
+	}
+	return placements;
+}
+
+/**
  * Places every label, then repairs the corner grazes the circle test allows: a
  * name can clear a round dot yet touch its drawn box corner, which the drawn
  * contract forbids. The repair only runs when the single search left a graze,
@@ -366,9 +402,10 @@ export function placeLabels(
 	...args: Parameters<typeof placeLabelsInner>
 ): Map<string, LabelPlacement> {
 	const [requests, obstacles, gap, reserved = [], ties = [], options = {}] = args;
+	const dropIds = options.dropOnNameCollision;
 	// Narrow canvases keep the drop contract: re-placing grazes would push names
 	// back on that the narrow reading deliberately left off.
-	if (options.dropOnNameCollision) return placeLabelsInner(...args);
+	if (dropIds && (options.dropMode ?? 'narrow') === 'narrow') return placeLabelsInner(...args);
 	// Two screen pixels in map units: gap holds eight screen pixels, and the drawn
 	// contract shrinks a dot's box by two before testing the overlap.
 	const shrink = gap / 4;
@@ -412,7 +449,7 @@ export function placeLabels(
 			bestCount = count;
 		}
 	}
-	return best;
+	return dropIds ? dropAfterSearch(best, requests, dropIds) : best;
 }
 
 /** A short leader from a dot's surface to its name's box, when the name stands off by `minStandoff` or more. */

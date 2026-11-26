@@ -65,6 +65,7 @@
 	"mapping_close_worker_record": "Cerrar la ficha del trabajador",
 	"mapping_worker_meta_one": "{assessment} · {count} relación",
 	"mapping_worker_meta_other": "{assessment} · {count} relaciones",
+	"mapping_dossier_more": "+{count} más",
 	"mapping_open_in_workers": "Abrir en Trabajadores",
 	"mapping_isolate": "Aislar",
 	"mapping_key_group": "Clave de colores de evaluación",
