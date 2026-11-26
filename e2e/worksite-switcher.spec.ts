@@ -65,6 +65,30 @@ test('the navigation rail creates and switches Worksites without carrying prior 
 	).toBeVisible();
 });
 
+test('the Settings breadcrumb omits the Worksite while other routes keep it', async ({
+	page,
+	activeWorksite
+}) => {
+	await page.goto('/settings');
+	await appReady(page);
+
+	const breadcrumbs = page.getByRole('navigation', { name: 'breadcrumb' });
+	const items = breadcrumbs.locator('[data-slot="breadcrumb-item"]');
+	await expect(items).toHaveCount(1);
+	await expect(breadcrumbs.getByText('Settings', { exact: true })).toBeVisible();
+	await expect(breadcrumbs.locator('[data-slot="breadcrumb-link"]')).toHaveCount(0);
+	await expect(breadcrumbs.locator('[data-slot="breadcrumb-separator"]')).toHaveCount(0);
+	await expect(breadcrumbs.getByText(activeWorksite.name, { exact: true })).toHaveCount(0);
+
+	await page.goto('/workers');
+	await appReady(page);
+	await expect(items).toHaveCount(2);
+	await expect(
+		breadcrumbs.getByRole('link', { name: activeWorksite.name, exact: true })
+	).toBeVisible();
+	await expect(breadcrumbs.getByText('Workers', { exact: true })).toBeVisible();
+});
+
 /*
  * The same dialog, reached through the switcher instead of the empty shell, and the
  * other way out of it: "Finish setup" saves the name, closes the dialog and drops
