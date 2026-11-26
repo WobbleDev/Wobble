@@ -450,8 +450,19 @@ for (const colorScheme of ['light', 'dark'] as const) {
 			await page.setViewportSize({ width: 1440, height: 874 });
 			await page.goto('/overview');
 			await appReady(page);
+			// The shell re-applies the saved settings each time it refreshes them, which resets
+			// the palette written here to the saved default; under load a refresh can land
+			// before the segments are sampled. Keep the palette under test on the root.
 			await page.evaluate((value) => {
-				document.documentElement.dataset.assessmentPalette = value;
+				const root = document.documentElement;
+				const pin = () => {
+					if (root.dataset.assessmentPalette !== value) root.dataset.assessmentPalette = value;
+				};
+				pin();
+				new MutationObserver(pin).observe(root, {
+					attributes: true,
+					attributeFilter: ['data-assessment-palette']
+				});
 			}, palette);
 
 			// The reading cards are Frosted 84%: 84% of the panel over the blurred floor.
