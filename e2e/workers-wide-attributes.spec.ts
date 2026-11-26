@@ -193,9 +193,46 @@ async function clippedText(page: Page, selector: string, singleOnly = false): Pr
 	);
 }
 
+/**
+ * Words of a single value that reach past their own cell, or break across two lines
+ * although the cell is wide enough to hold them. A word wider than the cell may break.
+ */
+function damagedWords(page: Page): Promise<string[]> {
+	return page.evaluate(() => {
+		const damaged: string[] = [];
+		for (const value of document.querySelectorAll<HTMLElement>(
+			'tbody tr[data-index] [data-cell-text]'
+		)) {
+			if (value.closest('[data-cell-multi]') || value.getClientRects().length === 0) continue;
+			const cell = value.closest('td')!.getBoundingClientRect();
+			// The cell less its own and its trigger's horizontal padding.
+			const room = cell.width - 24;
+			const walker = document.createTreeWalker(value, NodeFilter.SHOW_TEXT);
+			for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+				// A hyphen is a legitimate place to wrap, so it ends a word here.
+				for (const match of (node.textContent ?? '').matchAll(/[^\s-]+/g)) {
+					const range = document.createRange();
+					range.setStart(node, match.index);
+					range.setEnd(node, match.index + match[0].length);
+					const boxes = [...range.getClientRects()].filter((box) => box.width > 0);
+					const width = boxes.reduce((sum, box) => sum + box.width, 0);
+					if (
+						(boxes.length > 1 && width <= room) ||
+						boxes.some((box) => box.right > cell.right + 1)
+					) {
+						damaged.push(match[0]);
+					}
+				}
+			}
+		}
+		return damaged;
+	});
+}
+
 /** All single values and empty readings that are cut inside their own cell. */
-function clippedSingleValues(page: Page): Promise<string[]> {
-	return clippedText(page, 'tbody tr[data-index] [data-cell-text]', true);
+async function clippedSingleValues(page: Page): Promise<string[]> {
+	const clipped = await clippedText(page, 'tbody tr[data-index] [data-cell-text]', true);
+	return [...clipped, ...(await damagedWords(page))];
 }
 
 /** Assessment readings that are cut inside their own cell. */

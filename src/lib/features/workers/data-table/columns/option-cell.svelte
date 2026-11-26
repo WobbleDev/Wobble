@@ -203,8 +203,10 @@
 				{#if props.swatch}
 					<span class="flex min-w-0 items-start gap-1.5">
 						<SwatchDot color={props.swatch} class="mt-1.5" />
+						<!-- No `min-w-0`: an Assessment word stays whole, using the cell padding if it
+						     must, rather than breaking mid-word. -->
 						<span
-							class="min-w-0 break-words whitespace-normal"
+							class="break-words whitespace-normal"
 							title={labelOf(props.selected)}
 							data-cell-text>{labelOf(props.selected)}</span
 						>
