@@ -539,8 +539,7 @@
 			{#snippet children({ resetFrame })}
 				<a
 					href="#mapping-table"
-					tabindex="-1"
-					class="sr-only"
+					class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:rounded-control focus:bg-panel focus:px-3 focus:py-2 focus:text-sm focus:font-medium focus:ring-1 focus:ring-rule-strong focus:outline-none"
 					data-testid="skip-to-map-table"
 					onclick={(event) => {
 						event.preventDefault();
