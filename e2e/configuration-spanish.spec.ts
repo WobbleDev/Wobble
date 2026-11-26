@@ -25,11 +25,13 @@ test('shows Spanish Configuration controls and keeps an entered Worksite name ve
 	await expect(
 		workerColumn(page).getByRole('heading', { name: 'Atributos', exact: true })
 	).toBeVisible();
-	await page
+	const firstToggle = page
 		.getByTestId('attribute-row')
 		.first()
-		.getByRole('button', { name: /^Mostrar u ocultar opciones de/ })
-		.click();
+		.getByRole('button', { name: /^Mostrar u ocultar opciones de/ });
+	// The first Attribute is already selected on a wide layout, so only open it when needed.
+	if ((await firstToggle.getAttribute('aria-expanded')) !== 'true') await firstToggle.click();
+	await expect(firstToggle).toHaveAttribute('aria-expanded', 'true');
 	await expect(workerColumn(page).getByTestId('abbreviation-header')).toHaveText('Abrev.');
 	await expect(page.getByRole('heading', { name: 'Asuntos laborales', exact: true })).toBeVisible();
 	await expect(page.getByRole('heading', { name: 'Idiomas', exact: true })).toBeVisible();

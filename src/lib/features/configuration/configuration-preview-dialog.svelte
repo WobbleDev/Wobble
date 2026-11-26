@@ -303,9 +303,6 @@
 			<AlertDialog.Cancel>{m.common_cancel()}</AlertDialog.Cancel>
 			<AlertDialog.Action
 				variant={requiresConfirmation ? 'destructive' : 'default'}
-				class={requiresConfirmation
-					? 'bg-destructive text-on-action hover:bg-destructive/90'
-					: undefined}
 				disabled={!resolutionsComplete}
 				onclick={onConfirm}
 			>

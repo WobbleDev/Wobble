@@ -917,7 +917,7 @@ test('pending value placement creates directly under its parent and saves withou
 	await expect(page.getByTestId('attribute-parent')).toHaveCount(0);
 	await expect(page.getByTestId('attribute-move-disclosure')).toHaveCount(0);
 	const before = await dataset(request);
-	const input = page.getByRole('textbox', { name: 'Add an option to Location', exact: true });
+	const input = page.getByRole('textbox', { name: 'New value for Location', exact: true });
 	await input.fill('Central');
 	await page.getByRole('button', { name: 'Place new value Central', exact: true }).press('Enter');
 	await page.getByRole('button', { name: 'Place under North', exact: true }).press('Enter');
@@ -951,7 +951,7 @@ test('pending placement cancellation and sibling conflicts keep the typed value 
 	await openConfiguration(page);
 	await openAttributeEditor(page, 'Location');
 	const before = await dataset(request);
-	const input = page.getByRole('textbox', { name: 'Add an option to Location', exact: true });
+	const input = page.getByRole('textbox', { name: 'New value for Location', exact: true });
 
 	await input.fill('Abandoned');
 	await page.getByRole('button', { name: 'Place new value Abandoned', exact: true }).press('Enter');
@@ -971,16 +971,13 @@ test('pending placement cancellation and sibling conflicts keep the typed value 
 	expect(await dataset(request)).toEqual(before);
 });
 
-test('the add button and Enter create top-level values after a directly placed child', async ({
-	page,
-	request
-}) => {
+test('Enter creates a top-level value after a directly placed child', async ({ page, request }) => {
 	const id = ids();
 	await configure(request, id);
 	await openConfiguration(page);
 	await openAttributeEditor(page, 'Location');
 	const editor = await openAttributeEditor(page, 'Location');
-	const input = editor.getByRole('textbox', { name: 'Add an option to Location', exact: true });
+	const input = editor.getByRole('textbox', { name: 'New value for Location', exact: true });
 	await input.fill('Child first');
 	await editor
 		.getByRole('button', { name: 'Place new value Child first', exact: true })
@@ -994,13 +991,7 @@ test('the add button and Enter create top-level values after a directly placed c
 
 	await input.fill('Enter root');
 	await input.press('Enter');
-	await input.fill('Button root');
-	await editor.getByRole('button', { name: 'Add option to Location', exact: true }).click();
 	await expect(editor.getByRole('treeitem', { name: 'Enter root', exact: true })).toHaveAttribute(
-		'data-parent-row-id',
-		id.location
-	);
-	await expect(editor.getByRole('treeitem', { name: 'Button root', exact: true })).toHaveAttribute(
 		'data-parent-row-id',
 		id.location
 	);
@@ -1030,7 +1021,7 @@ test('pending values use the same placement flow for Worker Attributes and Disca
 	await openAttributeEditor(page, 'Location');
 	const before = await dataset(request);
 	const editor = await openAttributeEditor(page, 'Team');
-	const input = editor.getByRole('textbox', { name: 'Add an option to Team', exact: true });
+	const input = editor.getByRole('textbox', { name: 'New value for Team', exact: true });
 	await input.fill('Canvass');
 	await editor.getByRole('button', { name: 'Place new value Canvass', exact: true }).press('Enter');
 	await page.keyboard.press('ArrowDown');

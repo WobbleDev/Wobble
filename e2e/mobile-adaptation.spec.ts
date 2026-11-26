@@ -181,7 +181,9 @@ test('mobile Configuration keeps attribute options inside the viewport', async (
 	);
 
 	const dialog = await openAttributeEditor(page, 'Department');
-	await expect(dialog.getByPlaceholder('Add value')).toBeVisible();
+	await expect(
+		dialog.getByRole('textbox', { name: 'New value for Department', exact: true })
+	).toBeVisible();
 	expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
 });
 

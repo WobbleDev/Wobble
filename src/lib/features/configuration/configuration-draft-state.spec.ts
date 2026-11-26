@@ -397,6 +397,18 @@ describe('ConfigurationDraftState five-level Attribute answers', () => {
 		expect(region.newOptionError).toBe('');
 	});
 
+	it('adds a row composer value without disturbing the foot composer text', () => {
+		const draft = openDeep();
+		const region = draft.draftAttributes[0];
+		region.newOption = 'Bay';
+
+		expect(draft.answers.addAttributeOption(region, 'floor', 'Aisle 2')).not.toBeNull();
+		expect(region.newOption).toBe('Bay');
+		expect(region.answers.find((answer) => answer.value === 'Aisle 2')?.parentId).toBe('floor');
+		expect(region.answers.some((answer) => answer.value === 'Bay')).toBe(false);
+		expect(region.newOptionError).toBe('');
+	});
+
 	it('refuses a level-5 answer whose label repeats a sibling under the same level-4 parent', () => {
 		const draft = openDeep();
 		const region = draft.draftAttributes[0];

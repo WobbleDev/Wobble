@@ -62,8 +62,15 @@ export class AnswerEditing {
 
 	constructor(private readonly host: AnswerEditingHost) {}
 
-	addAttributeOption(attribute: AttributeDraft, requestedParentId = ''): string | null {
-		const value = attribute.newOption.trim();
+	addAttributeOption(
+		attribute: AttributeDraft,
+		requestedParentId = '',
+		requestedValue?: string
+	): string | null {
+		// The foot composer edits the Attribute's own field; a row's inline composer supplies
+		// its text directly, so the two never share or clear each other's draft text.
+		const fromField = requestedValue === undefined;
+		const value = (requestedValue ?? attribute.newOption).trim();
 		if (!value) {
 			attribute.newOptionError = m.configuration_enter_option();
 			return null;
@@ -88,7 +95,7 @@ export class AnswerEditing {
 		) {
 			this.host.expandedIds.add(ancestorId);
 		}
-		attribute.newOption = '';
+		if (fromField) attribute.newOption = '';
 		attribute.newOptionError = '';
 		attribute.removalError = '';
 		attribute.moveError = '';

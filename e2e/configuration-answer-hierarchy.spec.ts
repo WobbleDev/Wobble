@@ -5,6 +5,8 @@ import { worksiteDataset } from './api.ts';
 import { appReady } from './page-ready.ts';
 import {
 	addAttribute,
+	answerRow,
+	attributeRowByName,
 	closeAttributeEditor,
 	openAttributeEditor
 } from './configuration-outline.ts';
@@ -101,7 +103,7 @@ test('Configuration builds root and child answers, rejects sibling collisions, a
 	await addAttribute(page, 'Location');
 
 	const editor = await openAttributeEditor(page, 'Location');
-	const option = editor.getByRole('textbox', { name: 'Add an option to Location' });
+	const option = editor.getByRole('textbox', { name: 'New value for Location' });
 	for (const value of ['Central', 'Other']) {
 		await option.fill(value);
 		await option.press('Enter');
@@ -252,6 +254,54 @@ test('Configuration builds root and child answers, rejects sibling collisions, a
 	expect(await worksiteDataset(request)).toEqual(afterReload);
 });
 
+test('the foot composer adds a root value and a row + opens an indented child composer', async ({
+	page
+}) => {
+	await page.emulateMedia({
+		colorScheme: 'light',
+		reducedMotion: 'reduce',
+		forcedColors: 'none'
+	});
+	await page.setViewportSize({ width: 1280, height: 900 });
+	await page.goto('/configuration');
+	await appReady(page);
+	await page.evaluate(() => document.fonts.ready);
+
+	await addAttribute(page, 'Location');
+	const editor = await openAttributeEditor(page, 'Location');
+	const input = editor.getByRole('textbox', { name: 'New value for Location', exact: true });
+	await expect(input).toHaveAttribute('placeholder', 'New value…');
+	await input.fill('Central');
+	await input.press('Enter');
+	await expect(input).toHaveValue('');
+	const central = answerRow(page, 'Central', 'Location');
+	await expect(central).toHaveAttribute('data-depth', '2');
+	const centralId = await central.getAttribute('data-answer-id');
+
+	// The row's + opens a composer directly beneath it, indented one level deeper.
+	await central.hover();
+	await central.getByRole('button', { name: 'Add a value under Central', exact: true }).click();
+	const childComposer = editor.getByTestId('add-child-composer');
+	await expect(childComposer).toBeVisible();
+	const childInput = childComposer.getByRole('textbox', {
+		name: 'New value under Central',
+		exact: true
+	});
+	await expect(childInput).toBeFocused();
+	const [rowBox, composerBox] = await Promise.all([
+		central.boundingBox(),
+		childComposer.boundingBox()
+	]);
+	expect(rowBox).not.toBeNull();
+	expect(composerBox).not.toBeNull();
+	expect(composerBox!.x).toBeGreaterThan(rowBox!.x);
+
+	await childInput.fill('Store A');
+	await childInput.press('Enter');
+	const child = answerRow(page, 'Store A', 'Location');
+	await expect(child).toHaveAttribute('data-parent-row-id', centralId!);
+});
+
 test('Workers selects a direct parent or a same-named child by path, and reload keeps them', async ({
 	page,
 	request
@@ -289,4 +339,57 @@ test('Workers selects a direct parent or a same-named child by path, and reload 
 		(worker: { name: string }) => worker.name === 'Rachel Carson'
 	)!;
 	expect(casey.attributes[settings.location]).toBe(settings.otherPacking);
+});
+
+test("a focused parent value shows its own row actions, not its sub-values' (#266)", async ({
+	page,
+	request
+}) => {
+	const attribute = `family-${randomUUID().slice(0, 8)}`;
+	const ids = [`${attribute}~parent`, `${attribute}~first`, `${attribute}~second`];
+	const configured = await request.put('/api/attributes', {
+		data: [
+			{
+				id: attribute,
+				name: 'Family',
+				kind: 'tag',
+				options: [
+					{ id: ids[0], value: 'Parent' },
+					{ id: ids[1], value: 'First Child', parentId: ids[0] },
+					{ id: ids[2], value: 'Second Child', parentId: ids[0] }
+				]
+			}
+		]
+	});
+	expect(configured.ok(), await configured.text()).toBeTruthy();
+	await page.goto('/configuration');
+	await appReady(page);
+
+	const family = attributeRowByName(page, 'Family');
+	await family.focus();
+	if ((await family.getAttribute('aria-expanded')) !== 'true')
+		await page.keyboard.press('ArrowRight');
+	await page.keyboard.press('ArrowRight');
+	const parent = answerRow(page, 'Parent');
+	await expect(parent).toBeFocused();
+	if ((await parent.getAttribute('aria-expanded')) === 'false')
+		await page.keyboard.press('ArrowRight');
+	// Keep the pointer off the rows, so only focus decides what shows.
+	await page.mouse.move(0, 0);
+
+	// The row's own delete control, not one nested in a sub-value below it.
+	const removeOpacity = (row: Locator) =>
+		row.evaluate((element) => {
+			const own = element.querySelector(':scope > [data-reorder-row] [data-action="remove"]');
+			return own ? getComputedStyle(own).opacity : 'missing';
+		});
+	const child = answerRow(page, 'First Child');
+
+	await expect.poll(() => removeOpacity(parent)).toBe('1');
+	await expect.poll(() => removeOpacity(child)).toBe('0');
+
+	await page.keyboard.press('ArrowDown');
+	await expect(child).toBeFocused();
+	await expect.poll(() => removeOpacity(child)).toBe('1');
+	await expect.poll(() => removeOpacity(parent)).toBe('0');
 });

@@ -54,7 +54,12 @@ async function open(page: Page): Promise<void> {
 	await page.evaluate(() => document.fonts.ready);
 	const chain = attributeRowByName(page, 'Chain');
 	await chain.focus();
-	await page.keyboard.press('ArrowRight');
+	// List and detail opens the first Attribute on load; a tree starts it closed. Open it
+	// only when needed, then Right moves into the first value either way.
+	if ((await chain.getAttribute('aria-expanded')) !== 'true') {
+		await page.keyboard.press('ArrowRight');
+		await expect(chain).toHaveAttribute('aria-expanded', 'true');
+	}
 	for (const level of LEVELS.slice(0, 4)) {
 		await page.keyboard.press('ArrowRight');
 		const row = answerRow(page, level);

@@ -182,7 +182,7 @@ test('creates an Attribute, a root value and a nested value with the keyboard on
 
 	// Creating the Attribute leaves focus in its value field, ready for the first root value.
 	const editor = attributeRowByName(page, 'Keyboard Skill');
-	const option = editor.getByRole('textbox', { name: 'Add an option to Keyboard Skill' });
+	const option = editor.getByRole('textbox', { name: 'New value for Keyboard Skill' });
 	await expect(option).toBeFocused();
 	await page.keyboard.type('Downtown');
 	await page.keyboard.press('Enter');
@@ -196,6 +196,27 @@ test('creates an Attribute, a root value and a nested value with the keyboard on
 
 	await expect(answerRow(page, 'Main Street', 'Keyboard Skill')).toHaveAttribute('data-depth', '3');
 	await expect(page.getByRole('tree').locator('[role="treeitem"][tabindex="0"]')).toHaveCount(1);
+
+	// Focusing a row reveals its + action, which opens an inline child composer from the keyboard.
+	const downtown = answerRow(page, 'Downtown', 'Keyboard Skill');
+	const addChild = downtown.getByRole('button', {
+		name: 'Add a value under Downtown',
+		exact: true
+	});
+	await page.evaluate(() => (document.activeElement as HTMLElement | null)?.blur());
+	await expect(addChild).toHaveCSS('opacity', '0');
+	await downtown.focus();
+	await expect(addChild).toHaveCSS('opacity', '1');
+	await addChild.focus();
+	await page.keyboard.press('Enter');
+	const childInput = page.getByRole('textbox', {
+		name: 'New value under Downtown',
+		exact: true
+	});
+	await expect(childInput).toBeFocused();
+	await page.keyboard.type('Harbor');
+	await page.keyboard.press('Enter');
+	await expect(answerRow(page, 'Harbor', 'Keyboard Skill')).toHaveAttribute('data-depth', '3');
 });
 
 test('reorders an Attribute with Alt+Arrow, announcing the move', async ({ page, request }) => {
@@ -227,8 +248,11 @@ test('shortens a long answer name visually but keeps the full name and the count
 	await openConfiguration(page);
 	await page.evaluate(() => document.fonts.ready);
 
-	await attributeRowByName(page, 'Location').focus();
-	await page.keyboard.press('ArrowRight');
+	const location = attributeRowByName(page, 'Location');
+	await location.focus();
+	// List and detail opens the first Attribute on load; a tree starts it closed.
+	if ((await location.getAttribute('aria-expanded')) !== 'true')
+		await page.keyboard.press('ArrowRight');
 	const longRow = answerRow(page, longName);
 	await expect(longRow).toBeVisible();
 	await expect(longRow).toHaveAccessibleName(longName);
@@ -279,5 +303,5 @@ test.describe('coarse pointer', () => {
 
 async function expandForTouch(row: import('@playwright/test').Locator): Promise<void> {
 	await row.focus();
-	await row.press('ArrowRight');
+	if ((await row.getAttribute('aria-expanded')) !== 'true') await row.press('ArrowRight');
 }

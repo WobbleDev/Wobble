@@ -41,15 +41,19 @@
 <div
 	class={cn(
 		'relative shrink-0',
-		chip ? (typing !== null || tooLong ? 'w-[11ch]' : 'w-[7ch]') : 'w-[7.5rem]'
+		chip
+			? typing !== null || tooLong
+				? 'w-[11ch]'
+				: 'w-[7ch]'
+			: 'w-[7.5rem] @max-[24rem]:w-[5rem]'
 	)}
 >
 	<Input
 		value={text}
 		class={cn(
-			'h-7 min-h-0 px-2 text-xs coarse:min-h-tap',
+			'h-7 min-h-0 border border-transparent bg-transparent px-2 text-xs transition-[color,box-shadow,background-color,border-color] hover:border-rule-strong focus-visible:border-rule-strong coarse:min-h-tap',
 			chip &&
-				'h-6 min-h-0 w-auto rounded-sm border-transparent bg-inset px-1 text-center font-mono text-[0.6875rem] font-medium tracking-[0.06em] text-ink hover:bg-hover focus-visible:bg-panel lg:min-h-0',
+				'h-6 min-h-0 w-full rounded-sm px-1 text-center font-mono text-[0.6875rem] font-medium tracking-[0.06em] text-ink lg:min-h-0',
 			// A generated suggestion is greyed; an edited one is drawn at full strength.
 			!edited && typing === null && 'text-ink-3',
 			(typing !== null || tooLong) && (chip ? 'pr-7 text-left' : 'pr-9')

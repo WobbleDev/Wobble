@@ -80,7 +80,9 @@ async function seed(
 async function unfoldLocation(page: Page) {
 	const location = attributeRowByName(page, 'Location');
 	await location.focus();
-	await page.keyboard.press('ArrowRight');
+	// List and detail opens the first Attribute on load; a tree starts it closed.
+	if ((await location.getAttribute('aria-expanded')) !== 'true')
+		await page.keyboard.press('ArrowRight');
 	await expect(location).toHaveAttribute('aria-expanded', 'true');
 }
 
@@ -199,7 +201,7 @@ for (const viewport of [
 		const tools = page.getByTestId('attribute-tools');
 		await expect(page.getByRole('button', { name: 'Rename Location' })).toBeVisible();
 		await expect(tools.getByLabel('Name', { exact: true })).toHaveCount(0);
-		await expect(tools.getByRole('textbox', { name: /^Add an option/ })).toBeVisible();
+		await expect(tools.getByRole('textbox', { name: /^New value for/ })).toBeVisible();
 		await expect(tools.getByTestId('attribute-parent')).toHaveCount(0);
 		await expect(tools.getByTestId('attribute-move-disclosure')).toHaveCount(0);
 		await expect(tools.getByRole('button', { name: /^Scope:/ })).toHaveCount(0);

@@ -52,11 +52,10 @@ export async function addAttribute(
 	await expect(attributeRow(target, name)).toBeVisible();
 }
 
-/** Opens an Attribute's existing detail editor by its name. */
+/** Opens an Attribute's existing detail editor by its name, leaving an open one open. */
 export async function openAttribute(page: Page, name: string): Promise<Locator> {
-	const row = page.getByTestId('attribute-row').filter({ hasText: name });
-	await row.getByRole('button', { name: `Toggle options for ${name}` }).click();
-	return row;
+	await expandAttribute(page, name);
+	return attributeRowByName(page, name);
 }
 
 /** The Attribute row anywhere on the page, by name. */
@@ -123,7 +122,7 @@ export async function attributeIds(page: Page): Promise<string[]> {
 /** Types a new root value into an open Attribute and presses Enter. */
 export async function addValue(page: Page, attributeName: string, value: string): Promise<void> {
 	const editor = await openAttributeEditor(page, attributeName);
-	const input = editor.getByRole('textbox', { name: `Add an option to ${attributeName}` });
+	const input = editor.getByRole('textbox', { name: `New value for ${attributeName}` });
 	await input.fill(value);
 	await input.press('Enter');
 	await expect(input).toHaveValue('');
@@ -137,7 +136,7 @@ export async function addValueUnder(
 	parentPath: string
 ): Promise<void> {
 	const editor = await openAttributeEditor(page, attributeName);
-	const input = editor.getByRole('textbox', { name: `Add an option to ${attributeName}` });
+	const input = editor.getByRole('textbox', { name: `New value for ${attributeName}` });
 	await input.fill(value);
 	await editor
 		.getByRole('button', { name: `Place new value ${value}`, exact: true })
