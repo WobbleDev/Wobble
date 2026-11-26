@@ -282,7 +282,7 @@ test('Configuration keeps same-named branches tellable by path and reachable by 
 
 	// Pending placement uses the same full paths as the hierarchy, so a keyboard
 	// reader chooses a branch rather than a short, ambiguous leaf label.
-	const newOption = attributeEditor.getByRole('textbox', { name: 'Add an option to Location' });
+	const newOption = attributeEditor.getByRole('textbox', { name: 'New value for Location' });
 	await newOption.fill('Deep receiving team');
 	const pendingHandle = attributeEditor.getByRole('button', {
 		name: 'Place new value Deep receiving team',

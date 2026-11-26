@@ -26,6 +26,33 @@ async function seedDepartments(request: APIRequestContext, values: string[]) {
 const field = (row: Locator, name: string) =>
 	row.getByRole('textbox', { name: `Abbreviation of ${name}`, exact: true });
 
+/** Three levels plus a root sibling, so nesting depth and a Single-Select badge both show. */
+async function seedHierarchy(request: APIRequestContext, id: string) {
+	const configured = await request.put('/api/attributes', {
+		data: [
+			{
+				id,
+				name: 'Department',
+				kind: 'category',
+				options: [
+					{ id: `${id}~central`, value: 'Central' },
+					{ id: `${id}~store-a`, value: 'Store A', parentId: `${id}~central` },
+					{ id: `${id}~packing`, value: 'Packing', parentId: `${id}~store-a` },
+					{ id: `${id}~other`, value: 'Other' }
+				]
+			}
+		]
+	});
+	expect(configured.ok(), await configured.text()).toBeTruthy();
+}
+
+function alphaOf(color: string): number {
+	const slash = color.match(/\/\s*([\d.]+)\s*\)/);
+	if (slash) return Number(slash[1]);
+	const rgba = color.match(/^rgba\([^)]*,\s*([\d.]+)\s*\)$/);
+	return rgba ? Number(rgba[1]) : 1;
+}
+
 async function storedForms(request: APIRequestContext, attributeId: string) {
 	const dataset = await request.get('/api/dataset');
 	const attribute = (
@@ -87,6 +114,41 @@ test('a new value shows a greyed suggestion, typing makes it edited, and eleven 
 	const reloaded = field(answerRow(page, 'Customer Service', 'Department'), 'Customer Service');
 	await expect(reloaded).toHaveValue('CS');
 	await expect(reloaded).toHaveAttribute('data-origin', 'edited');
+});
+
+test('every Short form field keeps one column across nesting depth and select-mode badges', async ({
+	page,
+	request
+}) => {
+	await page.emulateMedia({
+		colorScheme: 'light',
+		reducedMotion: 'reduce',
+		forcedColors: 'none'
+	});
+	await page.setViewportSize({ width: 680, height: 900 });
+	const id = `abbr-column-${randomUUID().slice(0, 8)}`;
+	await seedHierarchy(request, id);
+	await openConfiguration(page);
+	await openAttributeEditor(page, 'Department');
+	await page.evaluate(() => document.fonts.ready);
+
+	const fields = page.getByTestId('abbreviation-field');
+	await expect(fields).toHaveCount(4);
+	const lefts = await fields.evaluateAll((nodes) =>
+		nodes.map((node) => node.getBoundingClientRect().left)
+	);
+	for (const left of lefts) expect(Math.abs(left - lefts[0])).toBeLessThanOrEqual(1);
+
+	// The field is quiet at rest: a transparent hairline that appears on hover.
+	const fieldBox = fields.first();
+	const atRest = await fieldBox.evaluate((element) => getComputedStyle(element).borderLeftColor);
+	expect(alphaOf(atRest)).toBe(0);
+	await fieldBox.hover();
+	await expect
+		.poll(async () =>
+			alphaOf(await fieldBox.evaluate((element) => getComputedStyle(element).borderLeftColor))
+		)
+		.toBeGreaterThan(0);
 });
 
 test('a rename refreshes a generated Abbreviation but not an edited one, and clearing returns to generated', async ({

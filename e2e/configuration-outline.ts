@@ -123,7 +123,7 @@ export async function attributeIds(page: Page): Promise<string[]> {
 /** Types a new root value into an open Attribute and presses Enter. */
 export async function addValue(page: Page, attributeName: string, value: string): Promise<void> {
 	const editor = await openAttributeEditor(page, attributeName);
-	const input = editor.getByRole('textbox', { name: `Add an option to ${attributeName}` });
+	const input = editor.getByRole('textbox', { name: `New value for ${attributeName}` });
 	await input.fill(value);
 	await input.press('Enter');
 	await expect(input).toHaveValue('');
@@ -137,7 +137,7 @@ export async function addValueUnder(
 	parentPath: string
 ): Promise<void> {
 	const editor = await openAttributeEditor(page, attributeName);
-	const input = editor.getByRole('textbox', { name: `Add an option to ${attributeName}` });
+	const input = editor.getByRole('textbox', { name: `New value for ${attributeName}` });
 	await input.fill(value);
 	await editor
 		.getByRole('button', { name: `Place new value ${value}`, exact: true })

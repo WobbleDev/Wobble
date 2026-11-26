@@ -5,6 +5,7 @@ import { worksiteDataset } from './api.ts';
 import { appReady } from './page-ready.ts';
 import {
 	addAttribute,
+	answerRow,
 	closeAttributeEditor,
 	openAttributeEditor
 } from './configuration-outline.ts';
@@ -101,7 +102,7 @@ test('Configuration builds root and child answers, rejects sibling collisions, a
 	await addAttribute(page, 'Location');
 
 	const editor = await openAttributeEditor(page, 'Location');
-	const option = editor.getByRole('textbox', { name: 'Add an option to Location' });
+	const option = editor.getByRole('textbox', { name: 'New value for Location' });
 	for (const value of ['Central', 'Other']) {
 		await option.fill(value);
 		await option.press('Enter');
@@ -250,6 +251,54 @@ test('Configuration builds root and child answers, rejects sibling collisions, a
 	];
 	expect((await request.put('/api/attributes', { data: crossAttribute })).status()).toBe(400);
 	expect(await worksiteDataset(request)).toEqual(afterReload);
+});
+
+test('the foot composer adds a root value and a row + opens an indented child composer', async ({
+	page
+}) => {
+	await page.emulateMedia({
+		colorScheme: 'light',
+		reducedMotion: 'reduce',
+		forcedColors: 'none'
+	});
+	await page.setViewportSize({ width: 1280, height: 900 });
+	await page.goto('/configuration');
+	await appReady(page);
+	await page.evaluate(() => document.fonts.ready);
+
+	await addAttribute(page, 'Location');
+	const editor = await openAttributeEditor(page, 'Location');
+	const input = editor.getByRole('textbox', { name: 'New value for Location', exact: true });
+	await expect(input).toHaveAttribute('placeholder', 'New value…');
+	await input.fill('Central');
+	await input.press('Enter');
+	await expect(input).toHaveValue('');
+	const central = answerRow(page, 'Central', 'Location');
+	await expect(central).toHaveAttribute('data-depth', '2');
+	const centralId = await central.getAttribute('data-answer-id');
+
+	// The row's + opens a composer directly beneath it, indented one level deeper.
+	await central.hover();
+	await central.getByRole('button', { name: 'Add a value under Central', exact: true }).click();
+	const childComposer = editor.getByTestId('add-child-composer');
+	await expect(childComposer).toBeVisible();
+	const childInput = childComposer.getByRole('textbox', {
+		name: 'New value under Central',
+		exact: true
+	});
+	await expect(childInput).toBeFocused();
+	const [rowBox, composerBox] = await Promise.all([
+		central.boundingBox(),
+		childComposer.boundingBox()
+	]);
+	expect(rowBox).not.toBeNull();
+	expect(composerBox).not.toBeNull();
+	expect(composerBox!.x).toBeGreaterThan(rowBox!.x);
+
+	await childInput.fill('Store A');
+	await childInput.press('Enter');
+	const child = answerRow(page, 'Store A', 'Location');
+	await expect(child).toHaveAttribute('data-parent-row-id', centralId!);
 });
 
 test('Workers selects a direct parent or a same-named child by path, and reload keeps them', async ({

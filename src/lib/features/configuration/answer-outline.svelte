@@ -13,6 +13,8 @@
 		onAbbreviation: (answerId: string, text: string) => void;
 		onDuplicate: (answerId: string, text: string, survivorId: string) => void;
 		onRequestRemove: (answerId: string) => void;
+		/** Adds a value under this answer from its inline composer. */
+		onAddChild: (answerId: string, value: string) => { id: string | null; error: string };
 		reorder: AnswerReorder;
 		/** Renders the parent-removal choice directly under the row whose removal is pending. */
 		removalChoice: Snippet<[AttributeAnswerDraft]>;
@@ -20,7 +22,9 @@
 </script>
 
 <script lang="ts">
+	import { tick } from 'svelte';
 	import GripVerticalIcon from '@lucide/svelte/icons/grip-vertical';
+	import PlusIcon from '@lucide/svelte/icons/plus';
 	import type { AnswerReorder } from './answer-reorder.svelte.ts';
 	import type { AttributePlacement } from './attribute-placement.svelte.ts';
 	import ChevronDownIcon from '@lucide/svelte/icons/chevron-down';
@@ -33,6 +37,7 @@
 	import EditableChip from './editable-chip.svelte';
 	import OutlineCount from './outline-count.svelte';
 	import AbbreviationField from './abbreviation-field.svelte';
+	import { Input } from '#lib/components/ui/input/index.ts';
 	import Self from './answer-outline.svelte';
 
 	/**
@@ -109,11 +114,66 @@
 		answer.mode = next === kindMode(attributeType) ? undefined : next;
 	}
 	const rowColumns =
-		'grid-cols-[1.5rem_minmax(0,1fr)_3.5rem_1.75rem] @max-[20rem]:grid-cols-[2.75rem_minmax(0,1fr)_3rem_1.75rem]';
-	/** The table's columns: grip, value, Abbr, Workers, remove. */
-	const detailColumns = 'grid-cols-[1.5rem_minmax(0,1fr)_5rem_4rem_2rem]';
-	/** Sub-values shift the whole row right, so Abbr and Workers stay aligned. */
+		'grid-cols-[1.5rem_minmax(0,1fr)_3.5rem_var(--row-actions-w)] @max-[20rem]:grid-cols-[2.75rem_minmax(0,1fr)_3rem_var(--row-actions-w)]';
+	/** The table's columns: grip, value, Short form, Workers, actions. */
+	const detailColumns =
+		'grid-cols-[1.5rem_minmax(0,1fr)_var(--short-form-w)_4rem_var(--row-actions-w)]';
+	/** Sub-values indent only the first track, so the fixed columns stay aligned. */
 	const indent = $derived(`${Math.max(0, depth - 2) * 1.25}rem`);
+	const rowStyle = $derived(
+		detail
+			? `calc(1.5rem + ${indent}) minmax(0,1fr) var(--short-form-w) 4rem var(--row-actions-w)`
+			: undefined
+	);
+	const remainderStyle = $derived(
+		detail
+			? `calc(1.5rem + ${(depth - 1) * 1.25}rem) minmax(0,1fr) var(--short-form-w) 4rem var(--row-actions-w)`
+			: undefined
+	);
+
+	/** The row's own child composer, opened by its + action. */
+	let addingChild = $state(false);
+	let childValue = $state('');
+	let childError = $state('');
+	let childInput = $state<HTMLInputElement | null>(null);
+
+	async function startChildComposer() {
+		if (disabled) return;
+		addingChild = true;
+		childValue = '';
+		childError = '';
+		await tick();
+		childInput?.focus();
+	}
+
+	function closeChildComposer() {
+		addingChild = false;
+		childValue = '';
+		childError = '';
+	}
+
+	async function submitChildComposer() {
+		const value = childValue.trim();
+		if (!value) {
+			childError = m.configuration_enter_option();
+			return;
+		}
+		const result = actions.onAddChild(answer.id, value);
+		if (!result.id) {
+			childError = result.error;
+			return;
+		}
+		closeChildComposer();
+		await tick();
+		document.querySelector<HTMLElement>(`[role="treeitem"][data-row-id="${result.id}"]`)?.focus();
+	}
+
+	function cancelChildComposer(event: KeyboardEvent & { currentTarget: HTMLInputElement }) {
+		event.preventDefault();
+		event.stopPropagation();
+		closeChildComposer();
+		event.currentTarget.closest<HTMLElement>('[role="treeitem"]')?.focus();
+	}
 </script>
 
 {#snippet grip()}
@@ -191,19 +251,73 @@
 	/>
 {/snippet}
 
-{#snippet removeButton()}
-	<button
-		type="button"
-		class="absolute top-1/2 right-1 flex size-7 -translate-y-1/2 items-center justify-center rounded-sm p-0 text-ink-3 hover:bg-state-error/10 hover:text-state-error focus-visible:text-state-error focus-visible:ring-2 focus-visible:ring-ring coarse:size-tap [@media(hover:hover)]:opacity-0 [@media(hover:hover)]:group-focus-within/row:opacity-100 [@media(hover:hover)]:group-hover/row:opacity-100"
-		aria-label={m.configuration_remove_value({ name: chipLabel })}
-		title={m.configuration_remove_value({ name: chipLabel })}
-		data-action="remove"
-		tabindex={-1}
-		{disabled}
-		onclick={() => actions.onRequestRemove(answer.id)}
+{#snippet rowActions()}
+	<div class="flex items-center justify-end gap-0.5">
+		<button
+			type="button"
+			class="flex size-7 shrink-0 items-center justify-center rounded-sm p-0 text-ink-3 hover:bg-hover focus-visible:ring-2 focus-visible:ring-ring coarse:size-tap [@media(hover:hover)]:opacity-0 [@media(hover:hover)]:group-focus-within/row:opacity-100 [@media(hover:hover)]:group-hover/row:opacity-100"
+			aria-label={m.configuration_add_child_value({ name: chipLabel })}
+			title={m.configuration_add_child_value({ name: chipLabel })}
+			data-action="add-child"
+			data-testid="add-child-value"
+			{disabled}
+			onclick={startChildComposer}
+		>
+			<PlusIcon class="size-4" />
+		</button>
+		<button
+			type="button"
+			class="flex size-7 shrink-0 items-center justify-center rounded-sm p-0 text-ink-3 hover:bg-state-error/10 hover:text-state-error focus-visible:text-state-error focus-visible:ring-2 focus-visible:ring-ring coarse:size-tap [@media(hover:hover)]:opacity-0 [@media(hover:hover)]:group-focus-within/row:opacity-100 [@media(hover:hover)]:group-hover/row:opacity-100"
+			aria-label={m.configuration_remove_value({ name: chipLabel })}
+			title={m.configuration_remove_value({ name: chipLabel })}
+			data-action="remove"
+			tabindex={-1}
+			{disabled}
+			onclick={() => actions.onRequestRemove(answer.id)}
+		>
+			<Trash2Icon class="size-4" />
+		</button>
+	</div>
+{/snippet}
+
+{#snippet childComposer()}
+	<div
+		class={cn(
+			'relative',
+			!detail && 'ml-4 border-l border-rule pl-2 @max-[28rem]:ml-1 @max-[28rem]:pl-1'
+		)}
+		style:padding-left={detail ? `calc(1.5rem + ${(depth - 1) * 1.25}rem)` : undefined}
+		style:padding-right={detail
+			? 'calc(var(--short-form-w) + 4rem + var(--row-actions-w) + 1rem)'
+			: undefined}
+		data-testid="add-child-composer"
 	>
-		<Trash2Icon class="size-4" />
-	</button>
+		<div class="flex min-w-0 items-center gap-1 py-1">
+			<Input
+				bind:ref={childInput}
+				bind:value={childValue}
+				class="min-h-tap border-transparent bg-transparent px-1 text-sm shadow-none placeholder:text-ink-3 hover:border-rule-strong focus-visible:border-rule-strong md:min-h-8"
+				placeholder={m.configuration_new_value_placeholder()}
+				aria-label={m.configuration_new_child_value({ name: chipLabel })}
+				aria-invalid={Boolean(childError)}
+				oninput={() => {
+					childError = '';
+				}}
+				onkeydown={(event) => {
+					if (event.key === 'Enter') {
+						event.preventDefault();
+						event.stopPropagation();
+						submitChildComposer();
+					} else if (event.key === 'Escape') {
+						cancelChildComposer(event);
+					}
+				}}
+			/>
+		</div>
+		{#if childError}
+			<p role="alert" class="pl-1 text-sm text-state-error">{childError}</p>
+		{/if}
+	</div>
 {/snippet}
 
 {#snippet dropLine(left: string)}
@@ -242,7 +356,7 @@
 				? `${detailColumns} min-h-[2.375rem] border-b border-rule`
 				: `${rowColumns} rounded-item px-1`
 		)}
-		style:padding-left={detail ? indent : undefined}
+		style:grid-template-columns={rowStyle}
 	>
 		{#if placement.dropEdge(answer.id)}
 			<span
@@ -255,7 +369,7 @@
 			</span>
 		{/if}
 		{#if detail}
-			{@render grip()}
+			<div class="flex items-center" style:padding-left={indent}>{@render grip()}</div>
 			<!-- The whole value cell is the placement target, as the name was in the tree. -->
 			<div
 				class="relative flex min-w-0 items-center gap-2 self-stretch"
@@ -284,7 +398,7 @@
 			</div>
 			<div class="flex items-center justify-end">{@render abbreviation()}</div>
 			<OutlineCount count={workerCount} />
-			{@render removeButton()}
+			{@render rowActions()}
 			{#if placement.isDestination(attributeId, answer.id)}
 				{@render dropLine('left-10')}
 			{/if}
@@ -304,17 +418,16 @@
 			{:else}
 				<span></span>
 			{/if}
-			<div class="flex min-w-0 flex-wrap items-center gap-x-0.5 gap-y-1">
+			<div class="flex min-w-0 flex-wrap items-center gap-x-1 gap-y-1">
 				<!-- The handle and the name wrap as one, so a narrow row moves the field down, not the handle. -->
 				<div class="flex min-w-0 flex-1 basis-40 items-center gap-0.5">
 					{@render grip()}
 					{@render nameChip()}
 				</div>
-				{@render abbreviation()}
 				{#if expandable}
 					<button
 						type="button"
-						class="shrink-0 rounded-full bg-inset px-2 text-xs leading-6 text-ink-2 hover:bg-hover focus-visible:ring-2 focus-visible:ring-ring coarse:min-h-tap"
+						class="shrink-0 rounded-full bg-inset px-2 text-xs leading-6 text-ink-2 hover:bg-hover focus-visible:ring-2 focus-visible:ring-ring @max-[24rem]:order-3 coarse:min-h-tap"
 						data-testid="answer-select-mode"
 						aria-label={m.configuration_select_mode_toggle({
 							name: label,
@@ -329,16 +442,24 @@
 						{selectModeName}
 					</button>
 				{/if}
+				<!-- Pushed to the cell's fixed right edge, so the Short form column never follows depth or badges. -->
+				<div class="ml-auto flex shrink-0 items-center justify-end @max-[24rem]:order-2">
+					{@render abbreviation()}
+				</div>
 			</div>
-			<div class="@max-[20rem]:col-start-3 @max-[20rem]:row-start-1">
+			<div>
 				<OutlineCount count={workerCount} />
 			</div>
-			{@render removeButton()}
+			{@render rowActions()}
 			{#if placement.isDestination(attributeId, answer.id)}
 				{@render dropLine('left-[4.5rem] @max-[20rem]:left-12')}
 			{/if}
 		{/if}
 	</div>
+
+	{#if addingChild}
+		{@render childComposer()}
+	{/if}
 
 	{#if actions.pendingRemovalId === answer.id}
 		{@render actions.removalChoice(answer)}
@@ -391,7 +512,7 @@
 								? `${detailColumns} min-h-[2.375rem] border-b border-rule`
 								: `${rowColumns} px-1`
 						)}
-						style:padding-left={detail ? `${(depth - 1) * 1.25}rem` : undefined}
+						style:grid-template-columns={remainderStyle}
 					>
 						<span></span>
 						<span class="min-w-0 truncate text-sm">
@@ -399,6 +520,7 @@
 						</span>
 						{#if detail}<span></span>{/if}
 						<OutlineCount count={directWorkers} />
+						<span></span>
 					</div>
 				</div>
 			{/if}

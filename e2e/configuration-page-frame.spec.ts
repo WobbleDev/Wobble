@@ -93,6 +93,44 @@ test('the Worksite card, the one Attributes list and the danger zone read in ord
 	expect(await documentOverflow(page)).toBeLessThanOrEqual(1);
 });
 
+test('opening Configuration selects the first Attribute inside a hairline-divided ledger', async ({
+	page,
+	request
+}) => {
+	await page.emulateMedia({
+		colorScheme: 'light',
+		reducedMotion: 'reduce',
+		forcedColors: 'none'
+	});
+	await page.setViewportSize({ width: 1280, height: 900 });
+	const id = `first-attribute-${randomUUID().slice(0, 8)}`;
+	const configured = await request.put('/api/attributes', {
+		data: wireDefinitions([
+			{ id, name: 'Department', kind: 'category', options: ['Central', 'Packing'] }
+		])
+	});
+	expect(configured.ok(), await configured.text()).toBeTruthy();
+
+	await openConfiguration(page);
+	await page.evaluate(() => document.fonts.ready);
+
+	// The first Attribute opens with its values beside the list; no empty pick pane is shown.
+	const first = page.getByTestId('attribute-row').first();
+	await expect(first.getByRole('button', { name: /^Toggle options for/ })).toHaveAttribute(
+		'aria-expanded',
+		'true'
+	);
+	await expect(page.getByText('Select an Attribute to see its values')).toHaveCount(0);
+	const detail = page.getByTestId('attribute-detail');
+	await expect(detail).toBeVisible();
+	await expect(detail.getByTestId('abbreviation-field').first()).toBeVisible();
+
+	// The values sit behind a single hairline, not another boxed panel.
+	await expect(detail).toHaveCSS('border-left-width', '1px');
+	await expect(detail).toHaveCSS('border-left-style', 'solid');
+	await expect(detail).toHaveCSS('border-top-width', '0px');
+});
+
 test('the one Attributes list fits at laptop and phone widths without horizontal overflow', async ({
 	page
 }) => {

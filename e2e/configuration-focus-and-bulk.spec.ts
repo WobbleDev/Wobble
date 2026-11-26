@@ -199,7 +199,7 @@ for (const viewport of [
 		const tools = page.getByTestId('attribute-tools');
 		await expect(page.getByRole('button', { name: 'Rename Location' })).toBeVisible();
 		await expect(tools.getByLabel('Name', { exact: true })).toHaveCount(0);
-		await expect(tools.getByRole('textbox', { name: /^Add an option/ })).toBeVisible();
+		await expect(tools.getByRole('textbox', { name: /^New value for/ })).toBeVisible();
 		await expect(tools.getByTestId('attribute-parent')).toHaveCount(0);
 		await expect(tools.getByTestId('attribute-move-disclosure')).toHaveCount(0);
 		await expect(tools.getByRole('button', { name: /^Scope:/ })).toHaveCount(0);

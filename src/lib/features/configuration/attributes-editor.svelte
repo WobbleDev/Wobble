@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { tick } from 'svelte';
+	import { tick, untrack } from 'svelte';
 	import BanIcon from '@lucide/svelte/icons/ban';
 	import GripVerticalIcon from '@lucide/svelte/icons/grip-vertical';
 	import { createAttributePlacement } from './attribute-placement.svelte.ts';
@@ -32,7 +32,7 @@
 		onToggleExpanded: (id: string) => void;
 		onRequestDelete: (id: string) => void;
 		onMoveAttribute: (id: string, direction: -1 | 1) => boolean;
-		onAddOption: (attribute: AttributeDraft, parentId?: string) => string | null;
+		onAddOption: (attribute: AttributeDraft, parentId?: string, value?: string) => string | null;
 		onRemoveOption: (attributeId: string, optionId: string, removeBranch?: boolean) => void;
 		onRenameOption: (attributeId: string, optionId: string, text: string) => ValueTextCheck;
 		onMergeOption: (attributeId: string, foldedId: string, survivorId: string) => void;
@@ -212,7 +212,7 @@
 	);
 
 	const rowColumns =
-		'grid-cols-[1.5rem_minmax(0,1fr)_3.5rem_1.75rem] @max-[20rem]:grid-cols-[2.75rem_minmax(0,1fr)_3rem_1.75rem]';
+		'grid-cols-[1.5rem_minmax(0,1fr)_3.5rem_var(--row-actions-w)] @max-[20rem]:grid-cols-[2.75rem_minmax(0,1fr)_3rem_var(--row-actions-w)]';
 
 	/** A duplicate answer edit waiting for confirmation: where it is, the folded text, and the survivor. */
 	let pendingMerge = $state<{
@@ -227,6 +227,30 @@
 	const pendingSurvivorText = $derived(
 		pendingAttribute?.answers.find((answer) => answer.id === pendingMerge?.survivorId)?.value ?? ''
 	);
+
+	// List and detail opens on the first Attribute instead of an empty value pane. The
+	// selection is made through the same function a click uses, without taking focus; a
+	// deliberate collapse is left alone until the Attribute list itself changes.
+	let autoSelectedInDetail = false;
+	let lastAttributeOrder = '';
+	$effect(() => {
+		if (!detail) {
+			autoSelectedInDetail = false;
+			lastAttributeOrder = '';
+			return;
+		}
+		const order = attributes.map((attribute) => attribute.id).join('\u0000');
+		const listChanged = order !== lastAttributeOrder;
+		lastAttributeOrder = order;
+		if (!attributes.length) return;
+		if (attributes.some((attribute) => expandedIds.has(attribute.id))) {
+			autoSelectedInDetail = true;
+			return;
+		}
+		if (autoSelectedInDetail && !listChanged) return;
+		autoSelectedInDetail = true;
+		untrack(() => selectOrToggle(attributes[0].id));
+	});
 
 	// A row that folded away, or an Attribute that was deleted, must not leave the
 	// column's roving treeitem tab stop pointing at nothing.
@@ -246,7 +270,11 @@
   on this recess so every row below them lines up with what it is counting. An answer
   being placed can also be made an Attribute of its own from the promote zone under the tree.
 -->
-<div class="grid min-w-0 gap-0.5" bind:this={column} bind:clientWidth={columnWidth}>
+<div
+	class="grid min-w-0 gap-0.5 [--row-actions-w:3.75rem] [--short-form-w:7.5rem] coarse:[--row-actions-w:5.75rem]"
+	bind:this={column}
+	bind:clientWidth={columnWidth}
+>
 	{#if !detail}
 		<div
 			class="sticky top-[var(--outline-head,0px)] z-[8] -mx-6 border-b border-rule bg-panel px-7 pb-1"
@@ -279,11 +307,6 @@
 		bind:this={tree}
 		onkeydown={outline.keydown}
 	>
-		{#if detail && unfoldedCount === 0 && attributes.length}
-			<p aria-hidden="true" class="absolute top-1 left-56 block px-2 py-1.5 text-sm text-ink-3">
-				{m.configuration_pick_attribute()}
-			</p>
-		{/if}
 		{#each attributes as attribute (attribute.id)}
 			<AttributeOutline
 				{attribute}

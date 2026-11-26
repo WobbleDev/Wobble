@@ -223,8 +223,8 @@
 				onToggleExpanded={(id) => draftState.toggleExpanded(id)}
 				onRequestDelete={(id) => draftState.requestDeleteAttribute(id)}
 				onMoveAttribute={(id, direction) => draftState.moveAttribute(id, direction)}
-				onAddOption={(attribute, parentId) =>
-					draftState.answers.addAttributeOption(attribute, parentId)}
+				onAddOption={(attribute, parentId, value) =>
+					draftState.answers.addAttributeOption(attribute, parentId, value)}
 				onRemoveOption={(attributeId, optionId, removeBranch) =>
 					draftState.answers.removeAttributeOption(attributeId, optionId, removeBranch)}
 				onRenameOption={(attributeId, optionId, text) =>

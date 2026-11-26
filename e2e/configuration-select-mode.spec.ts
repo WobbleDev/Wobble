@@ -1,5 +1,5 @@
 import { randomUUID } from 'node:crypto';
-import type { APIRequestContext, Page } from '@playwright/test';
+import type { APIRequestContext, Locator, Page } from '@playwright/test';
 import { expect, test } from './fixtures.ts';
 import { answerId, wireDefinitions, wireWorkerAttributes } from './answer-wire.ts';
 import { createWorker, worksiteDataset } from './api.ts';
@@ -62,6 +62,18 @@ const previewDialog = (page: Page) => page.getByTestId('configuration-preview-di
 const confirmButton = (page: Page) =>
 	previewDialog(page).getByRole('button', { name: 'Save and discard values', exact: true });
 
+/** The alpha channel of a computed background, whether it reads rgba(…), oklab(… / a), or color(… / a). */
+async function backgroundAlpha(locator: Locator): Promise<number> {
+	return locator.evaluate((element) => {
+		const color = getComputedStyle(element).backgroundColor;
+		// Chromium may resolve a tint to oklab(…), color(…), or rgba(…).
+		const slash = color.match(/\/\s*([\d.]+)\s*\)/);
+		if (slash) return Number(slash[1]);
+		const rgba = color.match(/^rgba\([^)]*,\s*([\d.]+)\s*\)$/);
+		return rgba ? Number(rgba[1]) : 1;
+	});
+}
+
 async function storedDepartment(
 	request: APIRequestContext,
 	workerName: string,
@@ -111,6 +123,11 @@ test('switching Front of House to Single-Select previews the Worker it trims, th
 	page,
 	request
 }) => {
+	await page.emulateMedia({
+		colorScheme: 'light',
+		reducedMotion: 'reduce',
+		forcedColors: 'none'
+	});
 	const department = randomUUID();
 	const ada = 'Ada Select ' + randomUUID().slice(0, 6);
 	await seedDepartment(request, department);
@@ -138,6 +155,10 @@ test('switching Front of House to Single-Select previews the Worker it trims, th
 		resolutions.getByText(ada + ' keeps Server and loses Host.', { exact: true })
 	).toBeVisible();
 	await expect(confirmButton(page)).toBeEnabled();
+	// The destructive action uses Wobble's translucent tint, never a solid fill.
+	const alpha = await backgroundAlpha(confirmButton(page));
+	expect(alpha).toBeGreaterThan(0);
+	expect(alpha).toBeLessThan(0.3);
 
 	await confirmButton(page).click();
 	await expect(preview).toHaveCount(0);

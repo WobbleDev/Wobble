@@ -48,7 +48,7 @@
 		allAttributes: readonly AttributeDraft[];
 		onRequestDelete: (id: string) => void;
 		onMoveAttribute: (id: string, direction: -1 | 1) => boolean;
-		onAddOption: (attribute: AttributeDraft, parentId?: string) => string | null;
+		onAddOption: (attribute: AttributeDraft, parentId?: string, value?: string) => string | null;
 		onFocusRow: (id: string) => void;
 		onRemoveOption: (attributeId: string, optionId: string, removeBranch?: boolean) => void;
 		onRenameOption: (attributeId: string, optionId: string, text: string) => ValueTextCheck;
@@ -206,6 +206,13 @@
 		onDuplicate: (answerId, text, survivorId) =>
 			onDuplicateOption(attribute.id, answerId, text, survivorId),
 		onRequestRemove: requestRemove,
+		onAddChild: (answerId, value) => {
+			const id = onAddOption(attribute, answerId, value);
+			const error = id ? '' : attribute.newOptionError;
+			// A child refusal belongs to its own composer, not the Attribute's foot field.
+			attribute.newOptionError = '';
+			return { id, error };
+		},
 		get reorder() {
 			return answerReorder;
 		},
@@ -213,7 +220,7 @@
 	};
 
 	const rowColumns =
-		'grid-cols-[1.5rem_minmax(0,1fr)_3.5rem_1.75rem] @max-[20rem]:grid-cols-[2.75rem_minmax(0,1fr)_3rem_1.75rem]';
+		'grid-cols-[1.5rem_minmax(0,1fr)_3.5rem_var(--row-actions-w)] @max-[20rem]:grid-cols-[2.75rem_minmax(0,1fr)_3rem_var(--row-actions-w)]';
 
 	/** List and detail: a click on the row's own space selects it; its controls keep their own clicks. */
 	function selectFromRow(event: MouseEvent) {
@@ -481,7 +488,9 @@
 			</div>
 
 			<OutlineCount count={counts.workersAnswering} />
-			{@render deleteButton('size-tap md:size-7')}
+			<div class="flex items-center justify-end">
+				{@render deleteButton('size-tap md:size-7')}
+			</div>
 		{/if}
 		{#if placement.isDestination(attribute.id, '')}
 			{@render dropLine(`-bottom-1 ${detail ? 'left-2.5' : 'left-[2.25rem]'}`)}
@@ -492,8 +501,11 @@
 		<!-- In list and detail, the whole block fills the detail column beside the list. -->
 		<div
 			bind:clientHeight={detailHeight}
-			class={cn(detail && 'absolute top-1 right-0 left-56')}
+			class={cn(
+				detail && 'absolute top-1 right-0 left-56 border-s border-rule pl-4 [--short-form-w:5rem]'
+			)}
 			class:opacity-40={reordering}
+			data-testid={detail ? 'attribute-detail' : undefined}
 		>
 			{#if detail}
 				<div class="flex min-h-6 items-center gap-2">
@@ -534,7 +546,7 @@
 				</div>
 				<div
 					aria-hidden="true"
-					class="mt-5 grid grid-cols-[1.5rem_minmax(0,1fr)_5rem_4rem_2rem] items-center gap-1 border-b border-rule pb-1"
+					class="mt-5 grid grid-cols-[1.5rem_minmax(0,1fr)_var(--short-form-w)_4rem_var(--row-actions-w)] items-center gap-1 border-b border-rule pb-1"
 				>
 					<span></span>
 					<span class="key min-w-0 truncate">{m.configuration_values_heading()}</span>
