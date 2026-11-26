@@ -38,6 +38,7 @@ import {
 } from './worker-sort.ts';
 import { assessmentColorFor } from '#lib/shared/workers/assessment.ts';
 import {
+	WIDE_ATTRIBUTES_MIN,
 	WORKERS_SELECT_REM,
 	contentColumnNeedRem,
 	contentColumnRem,
@@ -242,7 +243,7 @@ export function createColumns(
 	 * column keeps the width its header and values actually need. A short table
 	 * keeps the older shrink floor and still fits a narrow desktop frame.
 	 */
-	const readableFloors = attributes.length >= 6;
+	const readableFloors = attributes.length >= WIDE_ATTRIBUTES_MIN;
 
 	/** A content column's preferred width and shrink floor. */
 	function contentWidths(

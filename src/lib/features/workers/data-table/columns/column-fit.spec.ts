@@ -45,8 +45,13 @@ describe('workersTableStyleFor', () => {
 		expect(withoutMin).toContain('width: max(100%, calc(var(--workers-table-name-w) + 5rem));');
 	});
 
-	it('writes the measured spare width as px', () => {
-		const style = workersTableStyleFor([{ id: 'a', width: '8rem' }], 1, 32.5);
-		expect(style).toContain('--workers-table-slack: 32.5px;');
+	it('shares a short table as a percentage and a wide table as measured px', () => {
+		const columns = [{ id: 'name' }, { id: 'a', width: '8rem', minWidth: '5rem', grow: true }];
+		expect(workersTableStyleFor(columns, 1)).toContain(
+			'--workers-table-slack: max(0px, calc(100% - calc(var(--workers-table-name-w) + 8rem)));'
+		);
+		expect(workersTableStyleFor(columns, 1, 32.5, true)).toContain(
+			'--workers-table-slack: 32.5px;'
+		);
 	});
 });

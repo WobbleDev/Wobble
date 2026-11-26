@@ -7,6 +7,7 @@ import { tick } from 'svelte';
 import {
 	NO_GROW_SHARE_REM,
 	shrinkFactor,
+	workersPreferredWidth,
 	workersTableWidth,
 	workersVisibleRem
 } from './workers-table-width.ts';
@@ -25,6 +26,8 @@ export type WorkersColumnFitHost = {
 	viewport: () => HTMLElement | null;
 	/** The visible leaf columns, left to right. */
 	columns: () => readonly FitColumn[];
+	/** Whether the Worksite has six or more Attributes. */
+	wideAttributes: () => boolean;
 	/** The Name column's width, in rem, when the viewport names none. */
 	nameRem: () => number;
 };
@@ -71,7 +74,8 @@ export function namePxFrom(rawName: string, fallbackRem: number, rootFont: numbe
 export function workersTableStyleFor(
 	columns: readonly FitColumn[],
 	frameFit: number,
-	slackPx = 0
+	slackPx = 0,
+	wideAttributes = false
 ): string {
 	const { contentRem, minRem, growRem } = workersVisibleRem(
 		columns.map((column) => ({
@@ -82,9 +86,16 @@ export function workersTableStyleFor(
 		}))
 	);
 	const ids = columns.map((column) => column.id);
-	// Spare width is measured in px in the fit controller: a percentage inside a
-	// column's calc() resolves against the table and makes the whole width invalid.
-	return `width: ${workersTableWidth(ids, contentRem, minRem)}; --workers-table-slack: ${Math.max(0, slackPx)}px; --workers-table-grow-rem: ${growRem || NO_GROW_SHARE_REM}; --workers-table-t: ${frameFit};`;
+	// A short table is exactly the frame width, so the percentage below resolves
+	// against that width: the browser shares the frame's room beyond the columns'
+	// preferred sum among the growing columns, in proportion to their own widths.
+	// A wide table is wider than the frame, where that percentage is indefinite
+	// and invalid inside a column's calc(), so the fit controller measures the
+	// spare width in px instead.
+	const slack = wideAttributes
+		? `${Math.max(0, slackPx)}px`
+		: `max(0px, calc(100% - ${workersPreferredWidth(ids, contentRem)}))`;
+	return `width: ${workersTableWidth(ids, contentRem, minRem)}; --workers-table-slack: ${slack}; --workers-table-grow-rem: ${growRem || NO_GROW_SHARE_REM}; --workers-table-t: ${frameFit};`;
 }
 
 /** Call during component init: it registers effects. */
@@ -101,7 +112,9 @@ export function createWorkersColumnFit(host: WorkersColumnFitHost) {
 	let overflowing = $state(false);
 	let scrolledToEnd = $state(true);
 
-	const style = $derived(workersTableStyleFor(host.columns(), frameFit, slackPx));
+	const style = $derived(
+		workersTableStyleFor(host.columns(), frameFit, slackPx, host.wideAttributes())
+	);
 
 	function measureOverflow() {
 		const viewport = host.viewport();

@@ -31,6 +31,8 @@ const CONTENT_MIN_REM = 6;
 const CONTENT_MAX_REM = 15;
 /** Few Attributes: how far a content column shrinks before the table scrolls. */
 export const CONTENT_SHRINK_MIN_REM = 5;
+/** From this many Attributes the table keeps readable floors and scrolls sideways. */
+export const WIDE_ATTRIBUTES_MIN = 6;
 
 /** Preferred widths still size a column from its longest single option. */
 const REM_PER_CHARACTER = 0.55;
@@ -150,6 +152,20 @@ export function workersColumnRem(
 	if (columnId === 'selection') return WORKERS_SELECT_REM;
 	if (columnId === 'assessment') return ASSESSMENT_REM;
 	return contentRem[columnId] ?? CONTENT_MIN_REM;
+}
+
+/** The sum of the visible columns' preferred widths, as a CSS length. */
+export function workersPreferredWidth(
+	visibleColumnIds: readonly string[],
+	contentRem: Readonly<Record<string, number>>
+): string {
+	let rem = 0;
+	let name = false;
+	for (const columnId of visibleColumnIds) {
+		if (columnId === 'name') name = true;
+		else rem += workersColumnRem(columnId, contentRem);
+	}
+	return name ? `calc(var(--workers-table-name-w) + ${rem}rem)` : `${rem}rem`;
 }
 
 /**
