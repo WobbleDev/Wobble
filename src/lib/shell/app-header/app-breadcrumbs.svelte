@@ -14,9 +14,7 @@
 	const onCommittee = $derived(page.url.pathname === '/overview' && focus.focused);
 
 	const currentTitle = $derived(routeTitle(page.data.titleKey));
-	const worksiteName = $derived(
-		page.data.worksite ? page.data.worksite.name : m.page_worksite_fallback()
-	);
+	const worksiteName = $derived(page.data.worksite?.name ?? null);
 </script>
 
 <Breadcrumb.Root class="label">
@@ -24,12 +22,14 @@
 	     body size in ink-muted, which is what made the trail render at 14px
 	     instead of the 11px the root declares (the recorded divergence). -->
 	<Breadcrumb.List class="text-xs text-ink">
-		<Breadcrumb.Item>
-			<Breadcrumb.Link href="/overview" class="block max-w-[48ch] truncate" title={worksiteName}
-				>{worksiteName}</Breadcrumb.Link
-			>
-		</Breadcrumb.Item>
-		<Breadcrumb.Separator />
+		{#if worksiteName}
+			<Breadcrumb.Item>
+				<Breadcrumb.Link href="/overview" class="block max-w-[48ch] truncate" title={worksiteName}
+					>{worksiteName}</Breadcrumb.Link
+				>
+			</Breadcrumb.Item>
+			<Breadcrumb.Separator />
+		{/if}
 		{#if onCommittee}
 			<Breadcrumb.Item>
 				<button

@@ -4,13 +4,7 @@
 	import type { WorkerAttributeDefinition } from '#lib/domain-vocabulary.ts';
 	import { m } from '#lib/paraglide/messages.js';
 	import GroupPager from './group-pager.svelte';
-	import {
-		cellShade,
-		cellTone,
-		heatRatio,
-		toneClass,
-		type DashboardTheme
-	} from './overview-dashboard-presentation.ts';
+	import { cellShade, heatRatio } from './overview-dashboard-presentation.ts';
 	import type { createOverviewAgitationsCard } from './overview-agitations-card.svelte.ts';
 	import { scrollHint } from './overview-scroll-hint.ts';
 	import { matrixAllHref, matrixCellHref } from './summary-links.ts';
@@ -20,15 +14,13 @@
 		matrix,
 		attribute,
 		attributes,
-		workerCount,
-		theme
+		workerCount
 	}: {
 		card: ReturnType<typeof createOverviewAgitationsCard>;
 		matrix: { columns: { id: string; text: string; count: number }[]; max: number };
 		attribute: { name: string } | undefined;
 		attributes: readonly WorkerAttributeDefinition[];
 		workerCount: number;
-		theme: DashboardTheme;
 	} = $props();
 
 	const agitationsDescriptionId = $props.id();
@@ -189,10 +181,7 @@
 									{#each card.visibleRows as row (row.answerId)}
 										{@const n = row.counts[i]}
 										<td
-											class="rounded-[3px] text-center font-mono tabular-nums {toneClass(
-												cellTone(heat(n), theme),
-												''
-											)}"
+											class="rounded-[3px] text-center font-mono tabular-nums"
 											style="background: {cellShade(heat(n))}"
 											>{#if n > 0}<a
 													href={matrixCellHref(row, column.id, attributes)}

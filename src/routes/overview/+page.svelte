@@ -163,7 +163,6 @@
 			{attribute}
 			attributes={data.attributes}
 			workerCount={workers.length}
-			theme={rootState.theme}
 		/>
 	</div>
 
@@ -215,7 +214,7 @@
 		   edge whole at the right of the page, where the rings reach it. */
 		border: 1px solid color-mix(in oklab, var(--ink) 12%, var(--rule));
 		border-radius: 0.625rem;
-		background: color-mix(in oklab, var(--panel) 62%, transparent);
+		background: color-mix(in oklab, var(--panel) 84%, transparent);
 		backdrop-filter: blur(8px);
 		padding: 1rem 1.125rem;
 	}

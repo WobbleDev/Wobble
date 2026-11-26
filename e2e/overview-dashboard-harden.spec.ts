@@ -445,6 +445,13 @@ for (const colorScheme of ['light', 'dark'] as const) {
 				document.documentElement.dataset.assessmentPalette = value;
 			}, palette);
 
+			// The reading cards are Frosted 84%: 84% of the panel over the blurred floor.
+			const cardBackground = await agitationsCard(page).evaluate(
+				(element) => getComputedStyle(element).backgroundColor
+			);
+			const alpha = cardBackground.match(/\/\s*([\d.]+)\)$/)?.[1];
+			expect(Number(alpha), `${colorScheme} card ${cardBackground}`).toBeCloseTo(0.84, 2);
+
 			const headers = await agitationsCard(page)
 				.locator('table[data-agitations-headers] thead th')
 				.evaluateAll((elements) =>

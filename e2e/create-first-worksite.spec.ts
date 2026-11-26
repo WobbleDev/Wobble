@@ -29,6 +29,18 @@ test('new Worksites open setup, accept an optional name and import contacts only
 	await page.goto('/overview');
 	const createFirstWorksite = page.getByRole('button', { name: 'New Worksite' });
 	await expect(createFirstWorksite).toBeVisible();
+
+	// No Worksite means no chart backdrop, no chart help, and no placeholder
+	// Worksite crumb: the empty shell has nothing to explain or navigate to.
+	await expect(page.locator('[data-bullseye-base]')).toHaveCount(0);
+	await expect(page.locator('[data-bullseye-base-surface]')).toHaveCount(0);
+	await expect(page.getByRole('button', { name: 'How to read the chart' })).toHaveCount(0);
+	const breadcrumbs = page.locator('[data-slot="breadcrumb-list"]');
+	await expect(breadcrumbs).toContainText('Overview');
+	await expect(breadcrumbs.locator('[data-slot="breadcrumb-link"]')).toHaveCount(0);
+	await expect(breadcrumbs.locator('[data-slot="breadcrumb-separator"]')).toHaveCount(0);
+	await expect(breadcrumbs).not.toContainText('Worksite');
+
 	await createFirstWorksite.click({ trial: true });
 
 	await page.goto('/workers');

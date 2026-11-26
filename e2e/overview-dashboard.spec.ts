@@ -218,9 +218,34 @@ test('shades the Agitations matrix with no shade key', async ({ page, request })
 	await expect(controls.locator('[data-group-range]')).toHaveText('Groups 1–2 of 2');
 	await expect(controls.getByRole('button', { name: 'Previous agitations page' })).toBeDisabled();
 	await expect(controls.getByRole('button', { name: 'Next agitations page' })).toBeDisabled();
-	// Full heat reads white, half heat black, and the cold cell keeps the default ink.
-	await expect(matrix.locator('td.text-white')).toHaveCount(3);
-	await expect(matrix.locator('td.text-black')).toHaveCount(1);
+	// The heat ramp is cool slate, not charcoal: every shaded count keeps the inherited
+	// ink, and the hottest cell's fill leans blue rather than neutral gray. The All
+	// column is intentionally unshaded, so it is left out.
+	const shades = await matrix.locator('tbody td[style]').evaluateAll((cells) =>
+		cells
+			.filter((cell) => /^\d+$/.test((cell.textContent ?? '').trim()))
+			.map((cell) => ({
+				count: Number((cell.textContent ?? '').trim()),
+				color: getComputedStyle(cell).color,
+				background: getComputedStyle(cell).backgroundColor,
+				white: cell.classList.contains('text-white'),
+				black: cell.classList.contains('text-black')
+			}))
+	);
+	expect(shades.length).toBeGreaterThan(0);
+	for (const cell of shades) {
+		expect(cell.white, `count ${cell.count} uses no white ink`).toBe(false);
+		expect(cell.black, `count ${cell.count} uses no black ink`).toBe(false);
+		expect(cell.color, `count ${cell.count} keeps the theme ink`).toBe('rgb(31, 31, 31)');
+	}
+	const hottest = shades.filter((cell) => cell.count === Math.max(...shades.map((s) => s.count)));
+	expect(hottest.length).toBeGreaterThan(0);
+	for (const cell of hottest) {
+		const channels = cell.background.match(/[\d.]+/g)!.map(Number);
+		const scale = channels.slice(0, 3).every((channel) => channel <= 1) ? 255 : 1;
+		const [red, , blue] = channels.map((channel) => channel * scale);
+		expect(blue, `count ${cell.count} fills cool slate (${cell.background})`).toBeGreaterThan(red!);
+	}
 });
 
 test('rests the bullseye floor faded, blurred and inert behind the cards', async ({

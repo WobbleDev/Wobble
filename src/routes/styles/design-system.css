@@ -119,6 +119,9 @@
 	--data-support: var(--assess-leader);
 	--data-other: var(--z4);
 
+	/* The Agitations heat ramp: cool slate, mixed into the panel by cell shade. */
+	--heat: #5d6f86;
+
 	/* --- Tier 3 · component tokens ----------------------------------- */
 	/* Comfortable is the default, not an option: a control is 36px and a Workers table
 	   row 44px at Standard density, and the density setting moves both together
@@ -230,6 +233,7 @@
 	--state-error: var(--err-300);
 	--data-support: var(--assess-leader);
 	--data-other: var(--z5);
+	--heat: #8aa0bb;
 
 	/* A worker's colour means the same thing in either theme, so the six hues
 	   lift together rather than swapping families. */
