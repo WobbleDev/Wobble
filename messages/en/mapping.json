@@ -65,6 +65,7 @@
 	"mapping_close_worker_record": "Close worker record",
 	"mapping_worker_meta_one": "{assessment} · {count} relationship",
 	"mapping_worker_meta_other": "{assessment} · {count} relationships",
+	"mapping_dossier_more": "+{count} more",
 	"mapping_open_in_workers": "Open in Workers",
 	"mapping_isolate": "Isolate",
 	"mapping_key_group": "Assessment color key",

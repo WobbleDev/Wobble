@@ -73,7 +73,8 @@ export type NameScene = {
 	readonly atReference: boolean;
 	/**
 	 * True on a narrow canvas (below the Narrow tier), where a resting name that cannot
-	 * clear another resting name is dropped instead of drawn over it.
+	 * clear another resting name is dropped instead of drawn over it. Wider canvases use
+	 * the same drop as a last resort, after the full desktop search and repair.
 	 */
 	readonly narrow?: boolean;
 };
@@ -169,7 +170,7 @@ function placeNames(
 		reserved: readonly LabelBox[];
 		/** Free-only: the side and ring each resting name chose at the framing camera. */
 		kept?: ReadonlyMap<string, KeptName>;
-		/** The resting names a narrow canvas may leave off rather than overprint. */
+		/** The resting names that may be left off rather than overprint another name. */
 		dropIds?: ReadonlySet<string>;
 	}
 ) {
@@ -206,7 +207,8 @@ function placeNames(
 		kept: input.kept,
 		within: scene.nameBounds,
 		viewport: scene.grouped ? scene.viewport() : undefined,
-		dropOnNameCollision: scene.narrow ? input.dropIds : undefined
+		dropOnNameCollision: input.dropIds,
+		dropMode: scene.narrow ? 'narrow' : 'after-search'
 	});
 	return { requests, placements };
 }
@@ -269,7 +271,7 @@ export function keptNames(scene: NameScene, camera: Camera): Map<string, KeptNam
 		positions: scene.settledPositions,
 		zoom: camera.zoom,
 		reserved: reservedNameBoxes(scene, camera),
-		dropIds: scene.narrow ? new Set(labelNodes.map((node) => node.id)) : undefined
+		dropIds: new Set(labelNodes.map((node) => node.id))
 	});
 	const kept = new Map<string, KeptName>();
 	for (const node of labelNodes) {
@@ -318,11 +320,14 @@ export function legacyPlacements(
 		zoom: camera.zoom,
 		reserved,
 		kept: free && !viewModel.isolated ? freeKept : undefined,
-		// On a narrow canvas only the names already standing may be dropped; a selected or
-		// hovered name outside the resting set keeps its priority and its place.
-		dropIds: scene.narrow
-			? new Set(labelNodes.filter((node) => standing.has(node.id)).map((node) => node.id))
-			: undefined
+		// Only the names already standing may be dropped; a selected or hovered name
+		// keeps its priority and its place, even when it is also in the resting cap.
+		dropIds: new Set(
+			labelNodes
+				.filter((node) => standing.has(node.id))
+				.filter((node) => node.id !== viewModel.selectedId && node.id !== viewModel.hoveredId)
+				.map((node) => node.id)
+		)
 	});
 	// A crowded cluster can push a name away from its dot in any layout. Keep its
 	// Worker association visible.
@@ -352,7 +357,7 @@ export function restingNameBoxes(scene: NameScene, zoom: number, frame: Rect): R
 		positions: scene.settledPositions,
 		zoom,
 		reserved: scene.chromeAtFit(zoom, frame),
-		dropIds: scene.narrow ? new Set(labelNodes.map((node) => node.id)) : undefined
+		dropIds: new Set(labelNodes.map((node) => node.id))
 	});
 	return requests.flatMap((asked) => {
 		const placement = placements.get(asked.id);
@@ -485,7 +490,8 @@ function composedPlacements(
 		rings: [1, 2, 3, 4, 5, 6],
 		tieWeight: 6,
 		viewport: scene.viewport(),
-		dropOnNameCollision: scene.narrow ? new Set(resting) : undefined
+		dropOnNameCollision: new Set(resting),
+		dropMode: scene.narrow ? 'narrow' : 'after-search'
 	});
 	for (const asked of requests) {
 		const placement = found.get(asked.id);

@@ -211,13 +211,13 @@ describe('wholeMapViewport', () => {
 	});
 });
 
-describe('narrow canvases', () => {
-	const ids = Array.from({ length: 10 }, (_, index) => `n${index}`);
+describe('crowded canvases', () => {
+	const ids = Array.from({ length: 20 }, (_, index) => `n${index}`);
 
-	/** Ten Workers piled on one dot with long names, at a phone's fit zoom. */
+	/** Twenty Workers piled on one dot with long names, at a phone's fit zoom. */
 	function crowdedScene(
 		narrow: boolean,
-		options: { selectedId?: string; restingIds?: string[] } = {}
+		options: { selectedId?: string; hoveredId?: string; restingIds?: string[] } = {}
 	): NameScene {
 		const nodes = ids.map((id) => node(id, `Henri Marie ${id.slice(1)}`));
 		const positions = new Map(nodes.map((worker) => [worker.id, { x: 0, y: 0 }]));
@@ -233,20 +233,40 @@ describe('narrow canvases', () => {
 				visibleLinks: [],
 				labelIds: new Set(ids),
 				restingLabelIds: new Set(options.restingIds ?? ids),
-				selectedId: options.selectedId ?? ''
+				selectedId: options.selectedId ?? '',
+				hoveredId: options.hoveredId ?? ''
 			}
 		);
 	}
 
 	it('drops resting names rather than drawing them over one another', () => {
-		const wide = legacyPlacements(crowdedScene(false), undefined);
+		const wide = [...legacyPlacements(crowdedScene(false), undefined).values()];
 		const narrow = legacyPlacements(crowdedScene(true), undefined);
 
-		// The wide reading still places every name (the documented least-crowded fallback);
-		// the narrow reading leaves an unplaceable name off rather than overprinting it.
-		expect(wide.size).toBe(10);
+		// The desktop reading keeps the full search, then drops a name whose final spot
+		// still covers a kept name; the narrow reading drops it earlier, without the fine
+		// search. Neither draws one resting name over another.
+		expect(wide.length).toBeGreaterThan(0);
+		for (let i = 0; i < wide.length; i += 1)
+			for (let j = i + 1; j < wide.length; j += 1) {
+				const a = wide[i].box;
+				const b = wide[j].box;
+				expect(a.left < b.right && b.left < a.right && a.top < b.bottom && b.top < a.bottom).toBe(
+					false
+				);
+			}
 		expect(narrow.size).toBeGreaterThan(0);
-		expect(narrow.size).toBeLessThan(wide.size);
+		expect(narrow.size).toBeLessThanOrEqual(wide.length);
+	});
+
+	it('drops a colliding desktop name and reveals it on hover or selection', () => {
+		const atRest = legacyPlacements(crowdedScene(false), undefined);
+		const dropped = ids.find((id) => !atRest.has(id));
+		expect(dropped, 'the dense desktop scene leaves a name off').toBeDefined();
+		const hovered = legacyPlacements(crowdedScene(false, { hoveredId: dropped }), undefined);
+		expect(hovered.has(dropped!)).toBe(true);
+		const selected = legacyPlacements(crowdedScene(false, { selectedId: dropped }), undefined);
+		expect(selected.has(dropped!)).toBe(true);
 	});
 
 	it('keeps a selected name that the resting cap does not hold', () => {
