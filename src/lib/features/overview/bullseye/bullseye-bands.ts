@@ -21,35 +21,12 @@ import {
  * The angle a band keeps clear for its own name, in radians. The name is centred
  * on the band's centreline and set along it, so the wedge is its advance times its
  * length plus a margin either side, measured at that centreline. Dots of the band
- * pack round what is left of the circle. A half turn is the most a band gives up:
- * that is the whole arc its name is set on, so a longer wedge would clear dots for
- * ink the arc cannot carry. `labelSize` is the size the name is drawn at, in user
- * units, so a chart drawn smaller turns the same interface step into a larger
- * wedge. The innermost band's name is the chart's centre, so the caller passes it 0.
+ * pack round what is left of the circle. A quarter turn is the most a band gives
+ * up. The innermost band's name is the chart's centre, so the caller passes it 0.
  */
-export function ringLabelWedge(
-	name: string,
-	centreRadius: number,
-	labelSize = RING_LABEL_UNITS
-): number {
-	const width = name.length * RING_LABEL_ADVANCE_EM * labelSize + 2 * RING_LABEL_MARGIN;
-	return Math.min(width / centreRadius, Math.PI);
-}
-
-/**
- * Whether a ring's name, set at `labelSize` user units, still fits the arc the
- * band keeps clear for it. The wedge is sized at that same label size, so a chart
- * drawn smaller gives its names the room they need. The check only fails when the
- * name is longer than the half-circle its arc can offer, which is the point where
- * the name would really cover the dots beside it: such a name is omitted rather
- * than shrunk below the 11px Label floor, leaving the chart's description to name
- * the ring.
- */
-export function ringLabelFits(name: string, centreRadius: number, labelSize: number): boolean {
-	if (!(labelSize > 0) || !(centreRadius > 0)) return false;
-	const arc = ringLabelWedge(name, centreRadius, labelSize) * centreRadius;
-	const ink = name.length * RING_LABEL_ADVANCE_EM * labelSize + 2 * RING_LABEL_MARGIN;
-	return ink <= arc + 1e-6;
+export function ringLabelWedge(name: string, centreRadius: number): number {
+	const width = name.length * RING_LABEL_ADVANCE_EM * RING_LABEL_UNITS + 2 * RING_LABEL_MARGIN;
+	return Math.min(width / centreRadius, Math.PI / 2);
 }
 
 /** The name anchor in the chart's own angle convention, where twelve o'clock is −π/2. */

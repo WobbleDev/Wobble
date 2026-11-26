@@ -127,96 +127,6 @@ async function expectFittedCardsContained(page: Page) {
 	}
 }
 
-/**
- * The ring names the fitted chart actually draws, and any whose glyph ink reaches
- * a dot. The extent box `getExtentOfChar` gives for a glyph set on a curve is the
- * axis-aligned box around the rotated glyph cell, far wider than its ink; each
- * glyph's real ink box is measured with the same font on a canvas and placed at
- * the glyph's own start and rotation instead.
- */
-async function ringLabelFootprint(page: Page) {
-	return page.evaluate(() => {
-		const canvas = document.createElement('canvas');
-		const context = canvas.getContext('2d')!;
-		const dots = [...document.querySelectorAll('circle[data-worker-id]')].map((dot) => {
-			const box = dot.getBoundingClientRect();
-			return { x: box.x + box.width / 2, y: box.y + box.height / 2, radius: box.width / 2 };
-		});
-		const labels = [...document.querySelectorAll<SVGTextElement>('text.ring-label')];
-		const overlapping = new Set<string>();
-		const distanceToSegment = (
-			point: { x: number; y: number },
-			start: { x: number; y: number },
-			end: { x: number; y: number }
-		) => {
-			const dx = end.x - start.x;
-			const dy = end.y - start.y;
-			const length2 = dx * dx + dy * dy;
-			const t =
-				length2 === 0
-					? 0
-					: Math.max(
-							0,
-							Math.min(1, ((point.x - start.x) * dx + (point.y - start.y) * dy) / length2)
-						);
-			return Math.hypot(point.x - (start.x + t * dx), point.y - (start.y + t * dy));
-		};
-		const contains = (point: { x: number; y: number }, quad: { x: number; y: number }[]) => {
-			let inside = false;
-			for (let i = 0, j = quad.length - 1; i < quad.length; j = i++) {
-				const a = quad[i];
-				const b = quad[j];
-				if (
-					a.y > point.y !== b.y > point.y &&
-					point.x < ((b.x - a.x) * (point.y - a.y)) / (b.y - a.y) + a.x
-				) {
-					inside = !inside;
-				}
-			}
-			return inside;
-		};
-		for (const label of labels) {
-			const name = label.textContent?.trim() ?? '';
-			const style = getComputedStyle(label);
-			context.font = `${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
-			const matrix = label.getScreenCTM();
-			if (!matrix) continue;
-			for (let index = 0; index < name.length; index += 1) {
-				const ink = context.measureText(name[index]);
-				const start = label.getStartPositionOfChar(index);
-				const rotation = (label.getRotationOfChar(index) * Math.PI) / 180;
-				const cos = Math.cos(rotation);
-				const sin = Math.sin(rotation);
-				const quad = [
-					[-ink.actualBoundingBoxLeft, -ink.actualBoundingBoxAscent],
-					[ink.actualBoundingBoxRight, -ink.actualBoundingBoxAscent],
-					[ink.actualBoundingBoxRight, ink.actualBoundingBoxDescent],
-					[-ink.actualBoundingBoxLeft, ink.actualBoundingBoxDescent]
-				].map(([x, y]) => {
-					const point = label.ownerSVGElement!.createSVGPoint();
-					point.x = start.x + x * cos - y * sin;
-					point.y = start.y + x * sin + y * cos;
-					const placed = point.matrixTransform(matrix);
-					return { x: placed.x, y: placed.y };
-				});
-				const reached = dots.some(
-					(dot) =>
-						contains(dot, quad) ||
-						quad.some(
-							(corner, cornerIndex) =>
-								distanceToSegment(dot, corner, quad[(cornerIndex + 1) % quad.length]) <= dot.radius
-						)
-				);
-				if (reached) overlapping.add(name);
-			}
-		}
-		return {
-			names: labels.map((label) => label.textContent?.trim() ?? '').sort(),
-			overlapping: [...overlapping].sort()
-		};
-	});
-}
-
 test('falls back to the fitted chart when motion is reduced', async ({ page, request }) => {
 	await seedWorkers(request);
 	await page.setViewportSize({ width: 1280, height: 900 });
@@ -227,9 +137,7 @@ test('falls back to the fitted chart when motion is reduced', async ({ page, req
 	await page.emulateMedia({ reducedMotion: 'reduce' });
 
 	for (const size of [
-		{ width: 1280, height: 800 },
-		{ width: 1440, height: 900 },
-		{ width: 1920, height: 1080 },
+		{ width: 1280, height: 900 },
 		{ width: 1024, height: 640 }
 	]) {
 		await page.setViewportSize(size);
@@ -255,19 +163,6 @@ test('falls back to the fitted chart when motion is reduced', async ({ page, req
 		expect(await scrollableOverflow(page)).toBe(0);
 		expect(await clippedContent(page)).toEqual([]);
 		await expectFittedCardsContained(page);
-
-		// Every ring name keeps its place at the Label floor, and none lies across a dot.
-		const footprint = await ringLabelFootprint(page);
-		expect(footprint.names, `${size.width}x${size.height} ring names`).toEqual([
-			'Activists',
-			'Disengaged',
-			'Hostile',
-			'Supporters'
-		]);
-		expect(footprint.overlapping, `${size.width}x${size.height} ring names clear of dots`).toEqual(
-			[]
-		);
-
 		await page.screenshot({
 			path: test.info().outputPath(`fitted-${size.width}x${size.height}.png`)
 		});

@@ -8,7 +8,6 @@ import {
 	CHART_CENTER,
 	MIN_PITCH,
 	EDGE_CLEARANCE,
-	RING_LABEL_UNITS,
 	type RingNames,
 	type PlotAssessment,
 	type BandLayout,
@@ -246,8 +245,7 @@ function planRows(
 export function plotWorkerGroups(
 	workers: Worker[],
 	bands: BandLayout[],
-	names: RingNames,
-	labelSize = RING_LABEL_UNITS
+	names: RingNames
 ): PlotGroup[] {
 	const parent = reachTree(workers);
 	const angles = treeAngles(workers, parent);
@@ -287,11 +285,7 @@ export function plotWorkerGroups(
 		const wedge =
 			band.assessment === 'Leader'
 				? 0
-				: ringLabelWedge(
-						names[band.assessment],
-						(band.innerRadius + band.outerRadius) / 2,
-						labelSize
-					);
+				: ringLabelWedge(names[band.assessment], (band.innerRadius + band.outerRadius) / 2);
 		const rows = planRows(band, members.length, wedge);
 		// A tied dot whose natural angle falls in the wedge moves to the wedge edge nearer its own member.
 		const pull = (worker: Worker) => {
