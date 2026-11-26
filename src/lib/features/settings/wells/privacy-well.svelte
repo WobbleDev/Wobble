@@ -106,6 +106,7 @@
 						>{m.settings_passphrase_current()}</Label
 					><PassphraseInput
 						id="passphrase-current"
+						showLabel={m.passphrase_show()}
 						bind:value={change.current}
 						disabled={change.busy}
 						aria-invalid={fieldError('current')}
@@ -116,6 +117,7 @@
 					<Label class="field-label" for="passphrase-next">{m.settings_passphrase_new()}</Label
 					><PassphraseInput
 						id="passphrase-next"
+						showLabel={m.passphrase_show()}
 						bind:value={change.next}
 						disabled={change.busy}
 						aria-invalid={fieldError('next')}
@@ -128,6 +130,7 @@
 						>{m.settings_passphrase_confirm()}</Label
 					><PassphraseInput
 						id="passphrase-confirm"
+						showLabel={m.passphrase_show()}
 						bind:ref={confirmInput}
 						bind:value={change.confirm}
 						disabled={change.busy}

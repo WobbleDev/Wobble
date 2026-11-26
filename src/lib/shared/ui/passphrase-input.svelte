@@ -4,20 +4,22 @@
 	import type { HTMLInputAttributes } from 'svelte/elements';
 	import { Button } from '#lib/components/ui/button/index.ts';
 	import { Input } from '#lib/components/ui/input/index.ts';
-	import { m } from '#lib/paraglide/messages.js';
 
 	/**
 	 * A passphrase field with its own Show toggle. Wobble has no recovery key, so the
-	 * reader can check what they typed without choosing the field again.
+	 * reader can check what they typed without choosing the field again. The caller
+	 * supplies the toggle label so a screen that can switch language rebuilds it.
 	 */
 	type Props = Omit<HTMLInputAttributes, 'type' | 'value' | 'files'> & {
 		id: string;
+		showLabel: string;
 		value?: string;
 		ref?: HTMLInputElement | null;
 	};
 
 	let {
 		id,
+		showLabel,
 		value = $bindable(''),
 		ref = $bindable(null),
 		disabled = false,
@@ -49,7 +51,7 @@
 		variant="ghost"
 		size="icon"
 		class="absolute top-1/2 right-0.5 size-tap -translate-y-1/2 text-ink-2 md:size-8"
-		aria-label={m.passphrase_show()}
+		aria-label={showLabel}
 		aria-pressed={visible}
 		aria-controls={id}
 		{disabled}

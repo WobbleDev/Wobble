@@ -60,6 +60,7 @@
 						: m.boot_unlock_action(),
 			passphrase: m.boot_passphrase(),
 			confirm: m.boot_confirm(),
+			showPassphrase: m.passphrase_show(),
 			spacesHint: m.passphrase_spaces_hint(),
 			forgot: m.boot_forgot(),
 			legacy: m.boot_legacy_remnants(),
@@ -185,6 +186,7 @@
 					<Label class="field-label" for="boot-passphrase">{copy.passphrase}</Label>
 					<PassphraseInput
 						id="boot-passphrase"
+						showLabel={copy.showPassphrase}
 						bind:ref={passwordInput}
 						bind:value={form.passphrase}
 						disabled={form.busy}
@@ -199,6 +201,7 @@
 						<Label class="field-label" for="boot-confirm">{copy.confirm}</Label>
 						<PassphraseInput
 							id="boot-confirm"
+							showLabel={copy.showPassphrase}
 							bind:ref={confirmInput}
 							bind:value={form.confirm}
 							disabled={form.busy}

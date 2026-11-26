@@ -17,6 +17,14 @@ test('boot supports English and Spanish at narrow widths without clearing an uns
 	await page.getByRole('button', { name: 'Español', exact: true }).click();
 	await expect(page.getByRole('heading', { name: 'Crear una frase de contraseña' })).toBeVisible();
 	await expect(page.getByLabel('Frase de contraseña', { exact: true })).toHaveValue(passphrase);
+	await expect(page.locator('[aria-controls="boot-passphrase"]')).toHaveAttribute(
+		'aria-label',
+		'Mostrar frase de contraseña'
+	);
+	await expect(page.locator('[aria-controls="boot-confirm"]')).toHaveAttribute(
+		'aria-label',
+		'Mostrar frase de contraseña'
+	);
 	await expect(page).toHaveURL(/\/configuration$/);
 	expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 	for (const label of await page.locator('label').all()) {
