@@ -87,6 +87,40 @@ test('a Worker record says how many Relationships sit below the list fold', asyn
 		.poll(() => list.evaluate((element) => getComputedStyle(element).maskImage))
 		.toContain('linear-gradient');
 
+	// The cue is only useful if it can be read the moment the card opens: it must sit inside
+	// the card's own clipped box and the viewport, with the card unscrolled, and the count
+	// must be the rows whose foot the reader cannot fully see.
+	const cue = await card.evaluate((section) => {
+		const more = section.querySelector<HTMLElement>('[data-relationships-more]')!;
+		const list = section.querySelector<HTMLElement>('[data-relationships-list]')!;
+		const cueBox = more.getBoundingClientRect();
+		const cardBox = section.getBoundingClientRect();
+		const listBox = list.getBoundingClientRect();
+		const fullyVisible = [...list.children].filter(
+			(row) => row.getBoundingClientRect().bottom <= listBox.bottom + 0.5
+		).length;
+		return {
+			cueTop: cueBox.top,
+			cueBottom: cueBox.bottom,
+			cardTop: cardBox.top,
+			cardBottom: cardBox.bottom,
+			cardScrollTop: section.scrollTop,
+			cardScrolls: section.scrollHeight > section.clientHeight,
+			fullyVisible,
+			rows: list.children.length,
+			text: more.textContent?.trim() ?? ''
+		};
+	});
+	expect(cue.cardScrollTop, 'the card opens unscrolled').toBe(0);
+	expect(cue.cardScrolls, 'the whole card fits without its own scrollbar').toBe(false);
+	expect(cue.cueTop, 'the cue is below the card top').toBeGreaterThanOrEqual(cue.cardTop);
+	expect(cue.cueBottom, 'the cue is inside the card and the viewport').toBeLessThanOrEqual(
+		Math.min(cue.cardBottom, FLOOR.height)
+	);
+	expect(cue.text, 'the cue counts the rows that are not fully visible').toBe(
+		`+${cue.rows - cue.fullyVisible} more`
+	);
+
 	await list.evaluate((element) => {
 		element.scrollTop = element.scrollHeight;
 	});

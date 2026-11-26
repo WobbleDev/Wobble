@@ -69,8 +69,9 @@
 			const visible = list.getBoundingClientRect();
 			let hidden = 0;
 			for (const row of list.children) {
-				// Rows already scrolled above the box are read; only the foot counts.
-				if (row.getBoundingClientRect().bottom > visible.bottom + 1) hidden += 1;
+				// Rows already scrolled above the box are read; only the foot counts. Half a
+				// pixel absorbs subpixel rounding without counting a genuinely clipped row.
+				if (row.getBoundingClientRect().bottom > visible.bottom + 0.5) hidden += 1;
 			}
 			hiddenRelationships = hidden;
 		};
@@ -148,11 +149,15 @@
 	</dl>
 
 	{#if neighbours.length > 0}
-		<div class="flex flex-col gap-2">
+		<!-- A flexible pane, not a fixed 12rem: when the docked card is shorter than its
+		     content the list gives up height so the cue and the card's own actions stay in
+		     view without scrolling the card. The 12rem cap keeps larger cards as they were,
+		     and one row is the floor so the list never collapses out from under the fade. -->
+		<div class="flex min-h-0 flex-col gap-2">
 			<p class="label text-ink-3">{m.domain_relationships()}</p>
 			<ul
 				bind:this={relationshipsList}
-				class="flex max-h-48 flex-col gap-1 overflow-y-auto"
+				class="flex max-h-48 min-h-9 flex-col gap-1 overflow-y-auto"
 				data-relationships-list
 				style:mask-image={hiddenRelationships > 0
 					? 'linear-gradient(to bottom, #000 calc(100% - 1.5rem), transparent)'
