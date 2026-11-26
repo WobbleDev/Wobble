@@ -306,7 +306,7 @@
 					? '[clip-path:inset(0_0_0_calc(-1*var(--overview-rail-reach)))]'
 					: 'overflow-hidden'
 			)}
-			data-bullseye-base-surface={chartBackdropShown ? '' : undefined}
+			data-bullseye-base-surface={chartBackdropShown && data.worksite ? '' : undefined}
 		>
 			<!-- The header paints nothing of its own — no fill, no blur, no edge — so
 		     the bullseye chart backdrop reads continuously behind it. It sits above the
@@ -337,8 +337,8 @@
 			     route hands PageHeader an accessory. -->
 				<PageHeader>
 					{#snippet titleAccessory()}
-						{#if isOverview}
-							<ChartHelp committeeGoal={data.worksite?.committeeGoal ?? 5} />
+						{#if isOverview && data.worksite}
+							<ChartHelp committeeGoal={data.worksite.committeeGoal} />
 						{/if}
 					{/snippet}
 				</PageHeader>
@@ -441,7 +441,7 @@
 			<!-- The chart backdrop is mounted after the page so the Overview's own heading and
 		     controls come first in tab order; its absolute, negative stacking keeps it
 		     behind them with no visual change. -->
-			{#if chartBackdropShown}
+			{#if chartBackdropShown && data.worksite}
 				<BullseyeBase
 					workers={data.workers}
 					attributes={data.attributes}

@@ -3,10 +3,9 @@ import { assessmentColorFor } from '#lib/shared/workers/assessment.ts';
 
 /**
  * The Overview dashboard's presentation rules: how a matrix cell's holder count
- * becomes a heat ratio, a shade and a text tone, when a bar segment names its
- * count, and where the bullseye floor rests. Pure and DOM-free so the page
- * reads them instead of recomputing them; asserted in the spec beside this
- * module.
+ * becomes a heat ratio and a shade, when a bar segment names its count, and
+ * where the bullseye floor rests. Pure and DOM-free so the page reads them
+ * instead of recomputing them; asserted in the spec beside this module.
  */
 
 /** A cell's share of the table maximum, or 0 when the table is empty. */
@@ -14,16 +13,19 @@ export function heatRatio(count: number, max: number): number {
 	return max === 0 ? 0 : count / max;
 }
 
-/** A cell's text tone: white on the hottest cells, black above the middle, otherwise the default ink. */
+/** A text tone for a filled surface: white, black, or the surface's default ink. */
 export type CellTone = 'white' | 'black' | 'default';
 
 /** The only origin the floor placement takes: the lower-right corner it grows about. */
 export type FloorOrigin = 'right bottom';
 
-/** Zero holders take the neutral inset; positive counts mix secondary ink into the panel at 85% of heat. */
+/**
+ * Zero holders take the neutral inset; positive counts mix the cool-slate heat
+ * tone into the panel, from 6% at the coldest to 58% at the table maximum.
+ */
 export function cellShade(ratio: number): string {
 	if (ratio === 0) return 'var(--inset)';
-	return `color-mix(in oklab, var(--ink-2) ${ratio * 85}%, var(--panel))`;
+	return `color-mix(in srgb, var(--heat) ${6 + ratio * 52}%, var(--panel))`;
 }
 
 /** The shade key's stops, from none to the table maximum. */
@@ -84,18 +86,6 @@ export function floorPlacement(
 export type DashboardTheme = 'light' | 'dark';
 
 /**
- * A matrix cell's text tone from its heat: light-theme cells switch to white
- * above 0.80, while dark-theme cells use black above 0.66. Below those
- * thresholds the middle range uses black in light theme and white in the dark-theme middle range; the lowest dark cells keep default ink.
- */
-export function cellTone(ratio: number, theme: DashboardTheme = 'light'): CellTone {
-	if (theme === 'dark') return ratio > 0.66 ? 'black' : ratio > 0.35 ? 'white' : 'default';
-	if (ratio > 0.8) return 'white';
-	if (ratio > 0.35) return 'black';
-	return 'default';
-}
-
-/**
  * Choose label ink for a bar segment: every assessed standing prints white on its bar fill
  * (see segmentFill), in both themes and both palettes; Unassessed keeps theme ink on its
  * neutral mix. The default palette's fills read white at 3.2 to 4.4:1, which only large print
@@ -108,8 +98,7 @@ export function segmentLabelTone(assessment: AssessmentOption): CellTone {
 
 /**
  * A tone's text class: a white or black tone names its class, any other tone
- * falls back to the caller's default — the matrix cells' inherited ink, the bar
- * segments' theme ink.
+ * falls back to the caller's default — the bar segments' theme ink.
  */
 export function toneClass(tone: CellTone, fallback: string): string {
 	return tone === 'white' ? 'text-white' : tone === 'black' ? 'text-black' : fallback;

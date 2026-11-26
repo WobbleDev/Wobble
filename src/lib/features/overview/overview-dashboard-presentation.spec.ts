@@ -7,7 +7,6 @@ import {
 	segments,
 	entranceAnimationCountUp,
 	cellShade,
-	cellTone,
 	floorPlacement,
 	heatRatio,
 	segmentLabelTone,
@@ -22,20 +21,6 @@ import { readLayoutCss } from '#lib/testing/layout-css.ts';
  * reads them instead of recomputing them. Each expectation below pins the
  * approved presentation value, not a recomputation of the implementation.
  */
-describe('cellTone', () => {
-	it('uses theme-specific thresholds for light and dark cell fills', () => {
-		expect(cellTone(0.85)).toBe('white');
-		expect(cellTone(0.81)).toBe('white');
-		expect(cellTone(0.8)).toBe('black');
-		expect(cellTone(0.36)).toBe('black');
-		expect(cellTone(0.35)).toBe('default');
-		expect(cellTone(0)).toBe('default');
-		expect(cellTone(0.5, 'dark')).toBe('white');
-		expect(cellTone(0.66, 'dark')).toBe('white');
-		expect(cellTone(0.67, 'dark')).toBe('black');
-	});
-});
-
 describe('toneClass', () => {
 	it('names the white and black classes and falls back otherwise', () => {
 		expect(toneClass('white', '')).toBe('text-white');
@@ -48,11 +33,55 @@ describe('toneClass', () => {
 });
 
 describe('cellShade', () => {
-	it('mixes the secondary ink into the panel at 85% of the ratio', () => {
+	it('mixes the cool-slate heat into the panel from 6% to 58% of the ratio', () => {
 		expect(cellShade(0)).toBe('var(--inset)');
-		expect(cellShade(0.5)).toBe('color-mix(in oklab, var(--ink-2) 42.5%, var(--panel))');
-		expect(cellShade(1)).toBe('color-mix(in oklab, var(--ink-2) 85%, var(--panel))');
+		expect(cellShade(0.25)).toBe('color-mix(in srgb, var(--heat) 19%, var(--panel))');
+		expect(cellShade(0.5)).toBe('color-mix(in srgb, var(--heat) 32%, var(--panel))');
+		expect(cellShade(0.75)).toBe('color-mix(in srgb, var(--heat) 45%, var(--panel))');
+		expect(cellShade(1)).toBe('color-mix(in srgb, var(--heat) 58%, var(--panel))');
 	});
+});
+
+describe('heat ramp', () => {
+	const css = readLayoutCss();
+	const token = (selector: string, name: string) => {
+		const start = css.indexOf(`${selector} {`);
+		expect(start, selector).toBeGreaterThanOrEqual(0);
+		const body = css.slice(start, css.indexOf('}', start));
+		const value = body.match(new RegExp(`${name}:\\s*(#[a-fA-F0-9]{6})`))?.[1];
+		expect(value, `${selector} ${name}`).toBeDefined();
+		return value!;
+	};
+	const channels = (hex: string) =>
+		[1, 3, 5].map((start) => parseInt(hex.slice(start, start + 2), 16));
+	const mix = (heat: string, panel: string, percentage: number) =>
+		channels(heat).map((channel, index) =>
+			Math.round(channel * percentage + channels(panel)[index]! * (1 - percentage))
+		);
+	const luminance = (rgb: number[]) =>
+		rgb
+			.map((channel) => {
+				const s = channel / 255;
+				return s <= 0.04045 ? s / 12.92 : ((s + 0.055) / 1.055) ** 2.4;
+			})
+			.reduce((sum, channel, index) => sum + channel * [0.2126, 0.7152, 0.0722][index]!, 0);
+	const contrastRatio = (a: number[], b: number[]) => {
+		const [hi, lo] = [luminance(a), luminance(b)].sort((x, y) => y - x);
+		return (hi! + 0.05) / (lo! + 0.05);
+	};
+
+	it('declares the approved heat token in each theme', () => {
+		expect(token(':root', '--heat')).toBe('#5d6f86');
+		expect(token('.dark', '--heat')).toBe('#8aa0bb');
+	});
+
+	for (const theme of ['light', 'dark'] as const) {
+		it(`keeps ink at 4.5:1 on the hottest ${theme} cell`, () => {
+			const body = theme === 'light' ? ':root' : '.dark';
+			const fill = mix(token(body, '--heat'), token(body, '--panel'), 0.58);
+			expect(contrastRatio(fill, channels(token(body, '--ink')))).toBeGreaterThanOrEqual(4.5);
+		});
+	}
 });
 
 describe('shade key', () => {

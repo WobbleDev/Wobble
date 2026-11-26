@@ -16,9 +16,7 @@
 	const onSettings = $derived(page.url.pathname === '/settings');
 
 	const currentTitle = $derived(routeTitle(page.data.titleKey));
-	const worksiteName = $derived(
-		page.data.worksite ? page.data.worksite.name : m.page_worksite_fallback()
-	);
+	const worksiteName = $derived(page.data.worksite?.name ?? null);
 </script>
 
 <Breadcrumb.Root class="label">
@@ -31,12 +29,14 @@
 				<Breadcrumb.Page>{currentTitle}</Breadcrumb.Page>
 			</Breadcrumb.Item>
 		{:else}
-			<Breadcrumb.Item>
-				<Breadcrumb.Link href="/overview" class="block max-w-[48ch] truncate" title={worksiteName}
-					>{worksiteName}</Breadcrumb.Link
-				>
-			</Breadcrumb.Item>
-			<Breadcrumb.Separator />
+			{#if worksiteName}
+				<Breadcrumb.Item>
+					<Breadcrumb.Link href="/overview" class="block max-w-[48ch] truncate" title={worksiteName}
+						>{worksiteName}</Breadcrumb.Link
+					>
+				</Breadcrumb.Item>
+				<Breadcrumb.Separator />
+			{/if}
 			{#if onCommittee}
 				<Breadcrumb.Item>
 					<button

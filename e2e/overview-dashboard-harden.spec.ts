@@ -438,12 +438,28 @@ for (const colorScheme of ['light', 'dark'] as const) {
 		}) => {
 			await seedContrast(request);
 			await page.emulateMedia({ colorScheme });
+			// The cards fall back to a solid panel under reduced transparency, which a runner's
+			// OS setting can turn on; pin the default so the Frosted 84% reading is measured.
+			const cdp = await page.context().newCDPSession(page);
+			await cdp.send('Emulation.setEmulatedMedia', {
+				features: [
+					{ name: 'prefers-color-scheme', value: colorScheme },
+					{ name: 'prefers-reduced-transparency', value: 'no-preference' }
+				]
+			});
 			await page.setViewportSize({ width: 1440, height: 874 });
 			await page.goto('/overview');
 			await appReady(page);
 			await page.evaluate((value) => {
 				document.documentElement.dataset.assessmentPalette = value;
 			}, palette);
+
+			// The reading cards are Frosted 84%: 84% of the panel over the blurred floor.
+			const cardBackground = await agitationsCard(page).evaluate(
+				(element) => getComputedStyle(element).backgroundColor
+			);
+			const alpha = cardBackground.match(/\/\s*([\d.]+)\)$/)?.[1];
+			expect(Number(alpha), `${colorScheme} card ${cardBackground}`).toBeCloseTo(0.84, 2);
 
 			const headers = await agitationsCard(page)
 				.locator('table[data-agitations-headers] thead th')
