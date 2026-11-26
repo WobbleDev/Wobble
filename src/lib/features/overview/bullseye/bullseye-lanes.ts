@@ -20,7 +20,8 @@ import {
 	type PlacedDot,
 	type PlotGroup,
 	type RelationshipTie,
-	type RingNames
+	type RingNames,
+	RING_LABEL_UNITS
 } from './bullseye-shared.ts';
 import { reachTree, tiePath } from './bullseye-ties.ts';
 
@@ -394,11 +395,12 @@ function gapsFor(routed: Routed[]): Map<string, Point[]> {
 export function bullseyeLayout(
 	workers: Worker[],
 	counts: Partial<Record<AssessmentOption, number>>,
-	names: RingNames
+	names: RingNames,
+	labelSize = RING_LABEL_UNITS
 ): BullseyeLayout {
 	const rooms = [0, 0, 0, 0];
 	let bands = bandLayout(counts, rooms);
-	let groups = plotWorkerGroups(workers, bands, names);
+	let groups = plotWorkerGroups(workers, bands, names, labelSize);
 	for (let pass = 0; ; pass++) {
 		const zones = laneZones(bands, groups);
 		const dots = groups.flatMap((group) => group.dots);
@@ -417,7 +419,7 @@ export function bullseyeLayout(
 		});
 		if (!grew) break;
 		bands = bandLayout(counts, rooms);
-		groups = plotWorkerGroups(workers, bands, names);
+		groups = plotWorkerGroups(workers, bands, names, labelSize);
 		if (pass === MAX_PASSES - 1) break;
 	}
 

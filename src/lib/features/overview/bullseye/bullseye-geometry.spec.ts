@@ -14,8 +14,8 @@ const EN_RING_NAMES: RingNames = {
 	Disengaged: 'Disengaged'
 };
 
-const plot = (workers: Worker[], bands: BandLayout[]) =>
-	plotWorkerGroups(workers, bands, EN_RING_NAMES);
+const plot = (workers: Worker[], bands: BandLayout[], labelSize?: number) =>
+	plotWorkerGroups(workers, bands, EN_RING_NAMES, labelSize);
 
 const worker = (id: string, assessment: Worker['assessment'], relationships: string[] = []) =>
 	baseWorker({ id, name: id, assessment, relationships });
@@ -261,15 +261,25 @@ describe('ring names', () => {
 		expect(ringLabelWedge('Activists', 90)).toBeLessThan(ringLabelWedge('Activists', 60));
 	});
 
-	it('caps the wedge at a quarter turn for a band too thin to hold its name', () => {
-		expect(ringLabelWedge('Disengaged', 1)).toBe(Math.PI / 2);
+	it('caps the wedge at the half-circle the name is set on', () => {
+		expect(ringLabelWedge('Disengaged', 1)).toBe(Math.PI);
 	});
 
-	it('omits a ring name whose Label-step ink outgrows the wedge its dots keep clear', () => {
-		// The fitted chart turns the 11px Label floor into more user units; the focused
-		// chart backdrop turns it into fewer, and the same name fits there.
-		expect(ringLabelFits('Disengaged', 90, 11 / 1.2)).toBe(false);
+	it('grows the wedge with the label size the chart is drawn at', () => {
+		const fitted = 11 / 1.2;
+		expect(ringLabelWedge('Activists', 60, fitted)).toBeGreaterThan(
+			ringLabelWedge('Activists', 60)
+		);
+	});
+
+	it('moves the wedge with the fitted label, and omits only a name the half-circle cannot hold', () => {
+		// The wedge is sized at the drawn Label step, so the fitted chart's larger name
+		// gets the room it needs instead of being hidden.
+		const fitted = 11 / 1.2;
+		expect(ringLabelFits('Disengaged', 90, fitted)).toBe(true);
 		expect(ringLabelFits('Disengaged', 90, 11 / 4.5)).toBe(true);
+		// A chart so small that the whole half-circle is shorter than the name omits it.
+		expect(ringLabelFits('Disengaged', 10, fitted)).toBe(false);
 		expect(ringLabelFits('Disengaged', 90, 0)).toBe(false);
 	});
 
@@ -285,6 +295,32 @@ describe('ring names', () => {
 		for (const band of bands) {
 			if (band.assessment === 'Leader') continue;
 			const wedge = ringLabelWedge(EN_RING_NAMES[band.assessment], band.centerlineRadius);
+			const dots = groups.find((group) => group.assessment === band.assessment)!.dots;
+			for (const dot of dots) {
+				expect(offsetFromAnchor(dot), `${band.assessment} ${dot.worker.id}`).toBeGreaterThanOrEqual(
+					wedge / 2 - 1e-6
+				);
+			}
+		}
+	});
+
+	it("keeps the fitted chart's dots outside the larger wedge its names need", () => {
+		const tally = counts(6, 12, 16, 8);
+		const workers = DRAWN_ASSESSMENTS.flatMap((assessment) =>
+			Array.from({ length: tally[assessment] }, (_, index) =>
+				worker(`${assessment}${index}`, assessment)
+			)
+		);
+		const bands = bandLayout(tally);
+		// A fitted drawing about 210px across turns the 11px Label floor into roughly
+		// 13.4 user units; all four names still fit their half-circle at that size.
+		const labelSize = 11 / (210 / 256);
+		const groups = plot(workers, bands, labelSize);
+		for (const band of bands) {
+			if (band.assessment === 'Leader') continue;
+			const name = EN_RING_NAMES[band.assessment];
+			const wedge = ringLabelWedge(name, band.centerlineRadius, labelSize);
+			expect(ringLabelFits(name, band.centerlineRadius, labelSize), name).toBe(true);
 			const dots = groups.find((group) => group.assessment === band.assessment)!.dots;
 			for (const dot of dots) {
 				expect(offsetFromAnchor(dot), `${band.assessment} ${dot.worker.id}`).toBeGreaterThanOrEqual(

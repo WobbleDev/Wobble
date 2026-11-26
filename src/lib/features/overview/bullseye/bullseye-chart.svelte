@@ -12,7 +12,8 @@
 		DOT_FOOTPRINT,
 		DOT_RADIUS,
 		DOT_STROKE_WIDTH,
-		DRAWN_ASSESSMENTS
+		DRAWN_ASSESSMENTS,
+		RING_LABEL_UNITS
 	} from './bullseye-shared.ts';
 	import { bullseyeLayout } from './bullseye-lanes.ts';
 	import { nearestTarget } from './dot-hit.ts';
@@ -130,11 +131,6 @@
 		].join('. ')
 	);
 
-	/* Bands, dots and routed ties come from one layout, because the ties' lanes
-	   may ask the bands for room. */
-	const layout = $derived(bullseyeLayout(workers, assessmentCounts, ringNames));
-	const ringGeometry = $derived(layout.bands);
-
 	/** The break a lane run keeps under a leg crossing it, as a circle's radius. */
 	const TIE_GAP_RADIUS = 1.3;
 
@@ -163,19 +159,22 @@
 	/** Half the Hostile name's ink height at the Label step, at a typical 2 px to the unit. */
 	const HOSTILE_LABEL_HALF_INK = RING_LABEL_PX * RING_LABEL_INK_HALF_EM * 0.5;
 
-	/* The chart's own rendered width, which is what turns an interface type step
-	   into a user unit. The same chart is drawn at 1.2 px to the unit as a fitted
-	   chart on a phone and at nearly 5 as the dragged chart backdrop on a wide screen, so a
-	   name sized in user units would be a smudge at one end and a headline at the
-	   other; measured, one chart reads the same at both. */
+	/* The chart's own rendered drawing size, which is what turns an interface type
+	   step into a user unit. The same chart is drawn at 1.2 px to the unit as a
+	   fitted chart on a phone and at nearly 5 as the dragged chart backdrop on a wide
+	   screen, so a name sized in user units would be a smudge at one end and a
+	   headline at the other; measured, one chart reads the same at both. The SVG's
+	   box need not be square: the viewBox scales to its smaller side and letterboxes
+	   the rest, so the smaller side is the scale the drawing is actually read at. */
 	let svgElement = $state<SVGSVGElement>();
-	let renderedWidth = $state(0);
+	let renderedSize = $state(0);
 	let measuredZoom = $state<number | null>(null);
 	$effect(() => {
 		const currentZoom = zoom;
 		if (!svgElement) return;
 		const measure = () => {
-			renderedWidth = svgElement?.getBoundingClientRect().width ?? 0;
+			const box = svgElement?.getBoundingClientRect();
+			renderedSize = box ? Math.min(box.width, box.height) : 0;
 			measuredZoom = currentZoom;
 		};
 		measure();
@@ -184,15 +183,24 @@
 		return () => observer.disconnect();
 	});
 
-	/* The chart is resized with zoom. Scale the last measured width immediately
+	/* The chart is resized with zoom. Scale the last measured size immediately
 	   with the zoom prop, before ResizeObserver reports the new DOM dimensions. */
 	const pxPerUnit = $derived(
-		renderedWidth > 0 && measuredZoom !== null
-			? (renderedWidth * (zoom / measuredZoom)) / (CHART_CENTER * 2)
+		renderedSize > 0 && measuredZoom !== null
+			? (renderedSize * (zoom / measuredZoom)) / (CHART_CENTER * 2)
 			: 0
 	);
 	const labelSize = $derived(pxPerUnit > 0 ? RING_LABEL_PX / pxPerUnit : 0);
 	const labelHalo = $derived(pxPerUnit > 0 ? LABEL_HALO_PX / pxPerUnit : 0);
+
+	/* Bands, dots and routed ties come from one layout, because the ties' lanes
+	   may ask the bands for room. The layout is told the size the ring names are
+	   actually drawn at, so the wedge each band keeps clear grows with them: a
+	   fitted chart turns the same 11px Label step into more user units, and dots
+	   packed to the older, smaller wedge would sit under the names. */
+	const labelSizeUnits = $derived(labelSize > 0 ? labelSize : RING_LABEL_UNITS);
+	const layout = $derived(bullseyeLayout(workers, assessmentCounts, ringNames, labelSizeUnits));
+	const ringGeometry = $derived(layout.bands);
 
 	/*
 	 * The Committee's name, set in the room the innermost band holds clear for it.
@@ -217,9 +225,10 @@
 	 * name takes the stop of whatever it is drawn on as its halo, so the ties
 	 * crossing it break behind the word while the boundary above it stays whole.
 	 * The Leader ring carries no name on its edge, because its name is the centre.
-	 * A name whose ink outgrows the wedge its dots keep clear is left out: at the
-	 * fitted size the Label floor is too large for the ring, and a word over the
-	 * dots names nothing.
+	 * The band's wedge is sized from the Label step the name is actually drawn at,
+	 * so a fitted chart gives its names the room they need rather than hiding them.
+	 * Only a name too long for the half-circle its arc can offer — a very small
+	 * chart — is left out, and the description still names that ring.
 	 */
 	const ringLabels = $derived(
 		[
@@ -240,7 +249,7 @@
 				halo: 'none',
 				inset: 0
 			}
-		].filter((label) => ringLabelFits(label.text, label.radius, labelSize))
+		].filter((label) => ringLabelFits(label.text, label.radius, labelSizeUnits))
 	);
 
 	/**
