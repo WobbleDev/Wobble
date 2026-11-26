@@ -90,6 +90,13 @@ async function openConfirmation(page: Page, worksite: TestWorksite): Promise<Loc
 	return dialog;
 }
 
+/** Fills the typed confirmation the dialog asks for when the Worksite has Workers. */
+async function typeConfirmation(dialog: Locator, worksite: TestWorksite): Promise<void> {
+	await dialog
+		.getByRole('textbox', { name: `Type ${worksite.name} to confirm` })
+		.fill(worksite.name);
+}
+
 test.describe('Worksite deletion', () => {
 	// The database is shared across a run, so these destructive cases must not race.
 	test.describe.configure({ mode: 'serial' });
@@ -151,6 +158,54 @@ test.describe('Worksite deletion', () => {
 		await expect(page.getByRole('row', { name: /Kept Worker/ })).toBeVisible();
 	});
 
+	test('arms deletion only for the exact Worksite name or delete', async ({ page, context }) => {
+		const worksite = await createSoleWorksite(context);
+		await seedWorkerWithNote(context, 'Guarded Worker');
+
+		const dialog = await openConfirmation(page, worksite);
+		const deleteAction = dialog.getByRole('button', { name: deleteWorksiteButton });
+		const confirmation = dialog.getByRole('textbox', {
+			name: `Type ${worksite.name} to confirm`
+		});
+
+		await expect(confirmation).toBeVisible();
+		await expect(deleteAction).toBeDisabled();
+
+		await confirmation.fill('Not the Worksite');
+		await expect(deleteAction).toBeDisabled();
+
+		await confirmation.fill('delete');
+		await expect(deleteAction).toBeEnabled();
+
+		// Cancelling forgets what was typed, so reopening starts unarmed again.
+		await dialog.getByRole('button', { name: 'Cancel' }).click();
+		await expect(dialog).toBeHidden();
+		await page.getByRole('button', { name: deleteWorksiteButton }).click();
+		await expect(confirmation).toHaveValue('');
+		await expect(deleteAction).toBeDisabled();
+
+		await typeConfirmation(dialog, worksite);
+		await expect(deleteAction).toBeEnabled();
+		await deleteAction.click();
+
+		await expect(page).toHaveURL(/\/overview$/);
+	});
+
+	test('allows deleting an empty Worksite without typed confirmation', async ({
+		page,
+		context
+	}) => {
+		const worksite = await createSoleWorksite(context);
+
+		const dialog = await openConfirmation(page, worksite);
+		await expect(dialog.getByRole('textbox')).toHaveCount(0);
+		const deleteAction = dialog.getByRole('button', { name: deleteWorksiteButton });
+		await expect(deleteAction).toBeEnabled();
+
+		await deleteAction.click();
+		await expect(page).toHaveURL(/\/overview$/);
+	});
+
 	test('names the Worker count and destruction scope, then lands on the survivor', async ({
 		page,
 		context
@@ -167,8 +222,11 @@ test.describe('Worksite deletion', () => {
 		await expect(dialog).toContainText('Relationships');
 		await expect(dialog).toContainText('Attributes');
 		await expect(dialog).toContainText('Agitations');
+		await expect(dialog).toContainText('Languages');
+		await expect(dialog).toContainText('Saved views');
 		await expect(dialog).toContainText('cannot be undone');
 
+		await typeConfirmation(dialog, doomed);
 		await dialog.getByRole('button', { name: deleteWorksiteButton }).click();
 
 		await expect(page).toHaveURL(/\/overview$/);
@@ -267,6 +325,7 @@ test.describe('Worksite deletion', () => {
 		});
 
 		const dialog = await openConfirmation(page, worksite);
+		await typeConfirmation(dialog, worksite);
 		await dialog.getByRole('button', { name: deleteWorksiteButton }).click();
 
 		await expect(dialog).toBeVisible();

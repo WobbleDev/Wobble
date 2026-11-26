@@ -34,6 +34,9 @@ test('shows Spanish Configuration controls and keeps an entered Worksite name ve
 	await expect(page.getByRole('heading', { name: 'Asuntos laborales', exact: true })).toBeVisible();
 	await expect(page.getByRole('heading', { name: 'Idiomas', exact: true })).toBeVisible();
 	await expect(page.getByRole('heading', { name: 'Zona de peligro', exact: true })).toBeVisible();
+	const dangerZone = page.getByRole('region', { name: 'Zona de peligro' });
+	await expect(dangerZone).toContainText('Idiomas');
+	await expect(dangerZone).toContainText('Vistas guardadas');
 	await expect(page.getByLabel('Trabajadores por Líder')).toHaveValue('5');
 	await expect(page.getByTestId('worksite-card').getByText('Un Líder por cada')).toBeVisible();
 	await expect(

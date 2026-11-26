@@ -106,13 +106,14 @@
 	"configuration_refresh_failed": "Changes were saved, but the page data could not be refreshed.",
 	"configuration_danger_zone": "Danger zone",
 	"configuration_delete_worksite": "Delete Worksite",
+	"configuration_delete_type_to_confirm": "Type {name} to confirm",
 	"configuration_delete_cascade": [
 		{
 			"declarations": ["input count", "local countPlural = count: plural"],
 			"selectors": ["countPlural"],
 			"match": {
-				"countPlural=one": "its {count} worker, their Notes and Relationships, and the worksite's Attributes and Agitations",
-				"countPlural=other": "its {count} workers, their Notes and Relationships, and the worksite's Attributes and Agitations"
+				"countPlural=one": "its {count} worker, their Notes and Relationships, and the worksite's Attributes, Agitations, Languages and Saved views",
+				"countPlural=other": "its {count} workers, their Notes and Relationships, and the worksite's Attributes, Agitations, Languages and Saved views"
 			}
 		}
 	],
