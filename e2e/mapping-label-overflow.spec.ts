@@ -3,6 +3,7 @@ import { expect, test } from './fixtures.ts';
 import { settled, waitForMapInteraction } from './map.ts';
 import { readNames } from './mapping-name-framing.ts';
 import { createWorker } from './api.ts';
+import { wireDefinitions } from './answer-wire.ts';
 import density from './fixtures/mapping-density-clipping.json' with { type: 'json' };
 
 /**
@@ -18,6 +19,9 @@ const FLOOR = { width: 1024, height: 640 };
 
 /** A small Worksite with one Worker holding seven stored Relationships. */
 async function seedSevenRelationships(request: APIRequestContext): Promise<string> {
+	// The suite's default Worksite carries Attributes a bare Worker does not answer, so
+	// clear them first, as the other Mapping seeds do.
+	expect((await request.put('/api/attributes', { data: wireDefinitions([]) })).ok()).toBeTruthy();
 	const friends: string[] = [];
 	for (let index = 1; index <= 7; index += 1) {
 		friends.push(await createWorker(request, { name: `Related ${index}` }));
