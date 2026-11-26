@@ -127,7 +127,7 @@
 	"boot_legacy_remnants": "Earlier exports and filesystem remnants may remain unencrypted.",
 	"boot_interrupted": "An interrupted operation must be recovered before your data can open. If a passphrase change was interrupted, try the previous passphrase.",
 	"boot_error_required": "Enter a passphrase containing at least one non-space character. Null characters are not supported.",
-	"boot_error_confirm": "The passphrases do not match. Enter them again.",
+	"boot_error_confirm": "The passphrases don't match. Type the confirmation again.",
 	"boot_error_wrong": "This passphrase did not unlock the database. Try again; if it is correct, the file may be damaged.",
 	"boot_error_recovery": "Recovery could not finish. Keep the database and its recovery files, then try the previous passphrase.",
 	"boot_error_failed": "Storage could not open. Try again.",

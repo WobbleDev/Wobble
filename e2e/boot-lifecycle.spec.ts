@@ -55,12 +55,15 @@ test('boot supports English and Spanish at narrow widths without clearing an uns
 
 	await confirmField.fill('different');
 	await page.getByRole('button', { name: 'Create passphrase', exact: true }).click();
-	await expect(page.getByRole('alert')).toContainText('do not match');
+	await expect(page.getByRole('alert')).toContainText(
+		"The passphrases don't match. Type the confirmation again."
+	);
 	// A confirmation typo keeps the first field and returns focus to the confirmation.
 	await expect(passphraseField).toHaveValue(passphrase);
 	await expect(confirmField).toHaveValue('');
 	await expect(confirmField).toBeFocused();
 	await expect(confirmField).toHaveAttribute('aria-invalid', 'true');
+	await expect(passphraseField).not.toHaveAttribute('aria-invalid', 'true');
 	await expect(confirmField).toHaveAttribute('aria-describedby', /boot-error/);
 	await expect(page.getByRole('navigation')).toHaveCount(0);
 });

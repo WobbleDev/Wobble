@@ -1549,6 +1549,17 @@ test('encrypted export, guarded passphrase change and source-key restore preserv
 		}
 		await dialog.getByLabel('Current passphrase', { exact: true }).fill(TEST_PASSPHRASE);
 		await dialog.getByLabel('New passphrase', { exact: true }).fill(nextPassphrase);
+		await dialog
+			.getByLabel('Confirm new passphrase', { exact: true })
+			.fill('different confirmation');
+		await dialog.getByRole('button', { name: 'Change passphrase', exact: true }).click();
+		// A confirmation mismatch marks only the confirmation and keeps the new passphrase.
+		await expect(dialog.getByRole('alert')).toContainText(
+			"The passphrases don't match. Type the confirmation again."
+		);
+		await expect(dialog.locator('#passphrase-confirm')).toHaveAttribute('aria-invalid', 'true');
+		await expect(dialog.locator('#passphrase-next')).not.toHaveAttribute('aria-invalid', 'true');
+		await expect(dialog.getByLabel('New passphrase', { exact: true })).toHaveValue(nextPassphrase);
 		await dialog.getByLabel('Confirm new passphrase', { exact: true }).fill(nextPassphrase);
 		await dialog.getByRole('button', { name: 'Change passphrase', exact: true }).click();
 		await expect.poll(() => responseStatus).toBe(200);

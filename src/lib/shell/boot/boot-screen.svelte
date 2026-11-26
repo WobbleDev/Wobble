@@ -178,8 +178,8 @@
 				onsubmit={async (event) => {
 					event.preventDefault();
 					await form.submit();
-					if (form.failure === 'confirm') confirmInput?.focus({ preventScroll: true });
-					else if (form.failure) passwordInput?.focus({ preventScroll: true });
+					if (form.failure === 'confirm') confirmInput?.focus();
+					else if (form.failure) passwordInput?.focus();
 				}}
 			>
 				<div class="grid gap-2">
@@ -190,7 +190,7 @@
 						bind:ref={passwordInput}
 						bind:value={form.passphrase}
 						disabled={form.busy}
-						aria-invalid={form.failure !== null}
+						aria-invalid={form.failure !== null && form.failure !== 'confirm'}
 						aria-describedby={`boot-consequence${newCredential ? ' boot-spaces' : ''}${form.failure ? ' boot-error' : ''}`}
 					/>
 					{#if newCredential}<p id="boot-spaces" class="text-sm text-ink-2">

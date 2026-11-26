@@ -127,7 +127,7 @@
 	"boot_legacy_remnants": "Las exportaciones anteriores y los restos en el sistema de archivos pueden seguir sin cifrar.",
 	"boot_interrupted": "Se debe recuperar una operación interrumpida antes de abrir los datos. Si se interrumpió un cambio de frase de contraseña, prueba la anterior.",
 	"boot_error_required": "Ingresa una frase de contraseña con al menos un carácter que no sea un espacio. No se admiten caracteres nulos.",
-	"boot_error_confirm": "Las frases de contraseña no coinciden. Vuelve a ingresarlas.",
+	"boot_error_confirm": "Las frases de contraseña no coinciden. Vuelve a ingresar la confirmación.",
 	"boot_error_wrong": "Esta frase de contraseña no desbloqueó la base de datos. Inténtalo de nuevo; si es correcta, el archivo puede estar dañado.",
 	"boot_error_recovery": "No se pudo completar la recuperación. Conserva la base de datos y sus archivos de recuperación, y prueba la frase de contraseña anterior.",
 	"boot_error_failed": "No se pudieron abrir los datos. Inténtalo de nuevo.",
