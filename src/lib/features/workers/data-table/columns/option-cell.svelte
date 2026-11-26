@@ -164,12 +164,15 @@
 {/snippet}
 
 {#snippet emptyValue()}
+	<!-- The long "No …" reading stops at two lines: unclamped it wraps a word or less per
+	     line in a phone-width column and makes every row several times taller. -->
 	<span
-		class="min-w-0 break-words whitespace-normal text-ink-3"
+		class="line-clamp-2 min-w-0 break-words whitespace-normal text-ink-3"
 		title={props.emptyDescription
 			? `${props.emptyLabel ?? '—'} · ${props.emptyDescription}`
 			: (props.emptyLabel ?? '—')}
 		data-cell-text
+		data-cell-empty
 	>
 		{props.emptyLabel ?? '—'}{#if props.emptyDescription}<span class="ml-1 text-xs"
 				>· {props.emptyDescription}</span

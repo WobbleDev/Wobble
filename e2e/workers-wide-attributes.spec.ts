@@ -182,7 +182,9 @@ async function clippedText(page: Page, selector: string, singleOnly = false): Pr
 				.filter(
 					(value) =>
 						value.getClientRects().length > 0 &&
-						(!singleOnly || !value.closest('[data-cell-multi]'))
+						// Chips truncate by design, and the no-value reading stops at two lines.
+						(!singleOnly ||
+							(!value.closest('[data-cell-multi]') && !value.hasAttribute('data-cell-empty')))
 				)
 				.filter(
 					(value) =>
@@ -347,6 +349,14 @@ test('three Attributes keep values whole and never bleed at 1024px', async ({ pa
 		expect(await clippedSingleValues(page), `clipped single values at ${where}`).toEqual([]);
 		expect(await clippedAssessmentValues(page), `clipped Assessment at ${where}`).toEqual([]);
 		expect(await visibleTextCollisions(page), `text collisions at ${where}`).toEqual([]);
+
+		// At phone width a long no-value reading must not make the rows tall.
+		await page.setViewportSize({ width: 400, height: 844 });
+		await settleLayout(page);
+		const tallest = await page
+			.locator('tbody tr[data-index]')
+			.evaluateAll((rows) => Math.max(...rows.map((row) => row.getBoundingClientRect().height)));
+		expect(tallest, 'tallest row at 400px').toBeLessThanOrEqual(74);
 	} finally {
 		longAttributes.splice(0, longAttributes.length, ...full);
 	}
