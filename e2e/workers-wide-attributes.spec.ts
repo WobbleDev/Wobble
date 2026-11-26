@@ -78,18 +78,23 @@ async function settleLayout(page: Page) {
 }
 
 /**
- * A text box as the eye sees it: the text node's range, narrowed by any clipping
- * element between it and the row. A range alone reports the laid-out text even
- * when it is clipped, so the span and the cell's own overflow are both applied.
+ * A text box as the eye sees it: the text node's range, narrowed by the cell's
+ * clipping and by the scrollport itself. Unpinned cells that slide under the
+ * pinned Name column are clipped at its right edge, so being covered is not
+ * mistaken for a collision.
  */
 async function visibleTextCollisions(page: Page): Promise<string[]> {
 	return page.evaluate(() => {
-		const textBox = (text: HTMLElement) => {
+		const viewport = document.querySelector<HTMLElement>('[data-testid="workers-scroll-viewport"]');
+		if (!viewport) throw new Error('The Workers table scrollport is missing.');
+		const viewportRect = viewport.getBoundingClientRect();
+
+		const textBox = (text: HTMLElement, leftEdge: number) => {
 			const range = document.createRange();
 			range.selectNodeContents(text);
 			const rangeRect = range.getBoundingClientRect();
-			let left = rangeRect.left;
-			let right = rangeRect.right;
+			let left = Math.max(rangeRect.left, leftEdge, viewportRect.left);
+			let right = Math.min(rangeRect.right, viewportRect.right);
 			const clip = (element: HTMLElement | null) => {
 				if (!element) return;
 				const style = getComputedStyle(element);
@@ -106,11 +111,18 @@ async function visibleTextCollisions(page: Page): Promise<string[]> {
 		const collisions: string[] = [];
 		for (const row of document.querySelectorAll<HTMLTableRowElement>('tbody tr[data-index]')) {
 			const cells = [...row.querySelectorAll<HTMLTableCellElement>('td[data-column-id]')];
+			// The pinned Name cell paints over whatever slides under it.
+			const pinnedRight =
+				row.querySelector<HTMLElement>('td[data-pin="name"]')?.getBoundingClientRect().right ??
+				viewportRect.left;
 			const boxes = cells.map((cell) => {
 				const column = cell.dataset.columnId ?? '';
+				const leftEdge = cell.hasAttribute('data-pin')
+					? viewportRect.left
+					: Math.max(viewportRect.left, pinnedRight);
 				const texts = [...cell.querySelectorAll<HTMLElement>('[data-cell-text], [data-name-cell]')]
 					.filter((text) => text.getClientRects().length > 0)
-					.map(textBox)
+					.map((text) => textBox(text, leftEdge))
 					.filter((box): box is { left: number; right: number } => box !== null);
 				return { column, boxes: texts };
 			});
@@ -130,6 +142,30 @@ async function visibleTextCollisions(page: Page): Promise<string[]> {
 		}
 		return collisions;
 	});
+}
+
+/** Header labels whose own text is wider than the label's box. */
+async function truncatedHeaders(page: Page): Promise<string[]> {
+	return page.evaluate(() =>
+		[...document.querySelectorAll<HTMLElement>('thead span[title]')]
+			.filter((label) => label.scrollWidth > label.clientWidth + 1)
+			.map((label) => label.getAttribute('title') ?? label.textContent?.trim() ?? '')
+	);
+}
+
+/** Assessment readings whose value is cut inside its cell. */
+async function truncatedAssessmentValues(page: Page): Promise<string[]> {
+	return page.evaluate(() =>
+		[
+			...document.querySelectorAll<HTMLElement>(
+				'tbody tr[data-index] td[data-column-id="assessment"] [data-cell-text]'
+			)
+		]
+			.filter(
+				(value) => value.getClientRects().length > 0 && value.scrollWidth > value.clientWidth + 1
+			)
+			.map((value) => value.textContent?.trim() ?? '')
+	);
 }
 
 /** The pinned header columns' left edges, and the scrollport's scroll metrics. */
@@ -188,6 +224,8 @@ test('six or more Attributes keep readable columns and scroll inside the table s
 		expect(before.scrollWidth, `table wider than scrollport at ${where}`).toBeGreaterThan(
 			before.clientWidth
 		);
+		expect(await truncatedHeaders(page), `truncated headers at ${where}`).toEqual([]);
+		expect(await truncatedAssessmentValues(page), `truncated Assessment at ${where}`).toEqual([]);
 		expect(await visibleTextCollisions(page), `text collisions at ${where}`).toEqual([]);
 
 		// Scrolling reveals the far columns; the header stays put and the pinned
@@ -204,6 +242,11 @@ test('six or more Attributes keep readable columns and scroll inside the table s
 		).toBeLessThanOrEqual(1);
 		expect(Math.abs(after.name - before.name), `Name pinned at ${where}`).toBeLessThanOrEqual(1);
 		expect(after.headerPosition, `sticky header after scroll at ${where}`).toBe('sticky');
+		expect(await truncatedHeaders(page), `truncated headers after scroll at ${where}`).toEqual([]);
+		expect(
+			await truncatedAssessmentValues(page),
+			`truncated Assessment after scroll at ${where}`
+		).toEqual([]);
 		expect(await visibleTextCollisions(page), `text collisions after scroll at ${where}`).toEqual(
 			[]
 		);

@@ -35,13 +35,18 @@ describe('workersTableStyleFor', () => {
 		expect(style.startsWith('width: ')).toBe(true);
 	});
 
-	it('reads a content column label into its readable floor', () => {
-		const withLabel = workersTableStyleFor(
-			[{ id: 'name' }, { id: 'a', label: 'Department', width: '10rem' }],
+	it('uses each column declared minimum for the table floor', () => {
+		const withMin = workersTableStyleFor(
+			[{ id: 'name' }, { id: 'a', width: '10rem', minWidth: '7rem' }],
 			1
 		);
-		const withoutLabel = workersTableStyleFor([{ id: 'name' }, { id: 'a', width: '10rem' }], 1);
-		expect(withLabel).toContain('width: max(100%, calc(var(--workers-table-name-w) + 7rem));');
-		expect(withoutLabel).toContain('width: max(100%, calc(var(--workers-table-name-w) + 6rem));');
+		const withoutMin = workersTableStyleFor([{ id: 'name' }, { id: 'a', width: '10rem' }], 1);
+		expect(withMin).toContain('width: max(100%, calc(var(--workers-table-name-w) + 7rem));');
+		expect(withoutMin).toContain('width: max(100%, calc(var(--workers-table-name-w) + 5rem));');
+	});
+
+	it('writes the measured spare width as px', () => {
+		const style = workersTableStyleFor([{ id: 'a', width: '8rem' }], 1, 32.5);
+		expect(style).toContain('--workers-table-slack: 32.5px;');
 	});
 });

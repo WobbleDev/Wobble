@@ -7,7 +7,6 @@ import { tick } from 'svelte';
 import {
 	NO_GROW_SHARE_REM,
 	shrinkFactor,
-	workersPreferredWidth,
 	workersTableWidth,
 	workersVisibleRem
 } from './workers-table-width.ts';
@@ -15,7 +14,6 @@ import {
 /** One visible column, as far as its width is concerned. */
 export type FitColumn = {
 	id: string;
-	label?: string;
 	width?: string;
 	minWidth?: string;
 	grow?: boolean;
@@ -69,19 +67,24 @@ export function namePxFrom(rawName: string, fallbackRem: number, rootFont: numbe
 	return namePx;
 }
 
-/** The table's inline style: its width, the slack above the preferred sum, and the shrink factor. */
-export function workersTableStyleFor(columns: readonly FitColumn[], frameFit: number): string {
-	const { contentRem, growRem } = workersVisibleRem(
-		columns.map((column) => ({ id: column.id, width: column.width, grow: column.grow }))
+/** The table's inline style: its width, the spare width, and the shrink factor. */
+export function workersTableStyleFor(
+	columns: readonly FitColumn[],
+	frameFit: number,
+	slackPx = 0
+): string {
+	const { contentRem, minRem, growRem } = workersVisibleRem(
+		columns.map((column) => ({
+			id: column.id,
+			width: column.width,
+			minWidth: column.minWidth,
+			grow: column.grow
+		}))
 	);
 	const ids = columns.map((column) => column.id);
-	const labels: Record<string, string> = {};
-	for (const column of columns) {
-		if (column.label !== undefined) labels[column.id] = column.label;
-	}
-	// Spare width is what the frame has beyond the columns' preferred sum;
-	// it is shared out by the growing columns, in proportion to their own widths.
-	return `width: ${workersTableWidth(ids, contentRem, labels)}; --workers-table-slack: max(0px, calc(100% - ${workersPreferredWidth(ids, contentRem)})); --workers-table-grow-rem: ${growRem || NO_GROW_SHARE_REM}; --workers-table-t: ${frameFit};`;
+	// Spare width is measured in px in the fit controller: a percentage inside a
+	// column's calc() resolves against the table and makes the whole width invalid.
+	return `width: ${workersTableWidth(ids, contentRem, minRem)}; --workers-table-slack: ${Math.max(0, slackPx)}px; --workers-table-grow-rem: ${growRem || NO_GROW_SHARE_REM}; --workers-table-t: ${frameFit};`;
 }
 
 /** Call during component init: it registers effects. */
@@ -92,11 +95,13 @@ export function createWorkersColumnFit(host: WorkersColumnFitHost) {
 	 * preferred sum the growing columns share the spare width as before.
 	 */
 	let frameFit = $state(1);
+	/** Spare px above the preferred sum, shared by the growing columns. */
+	let slackPx = $state(0);
 	/** Overflow cues: the table is wider than its frame, and whether it is scrolled to the end. */
 	let overflowing = $state(false);
 	let scrolledToEnd = $state(true);
 
-	const style = $derived(workersTableStyleFor(host.columns(), frameFit));
+	const style = $derived(workersTableStyleFor(host.columns(), frameFit, slackPx));
 
 	function measureOverflow() {
 		const viewport = host.viewport();
@@ -118,6 +123,8 @@ export function createWorkersColumnFit(host: WorkersColumnFitHost) {
 		const { minPx, prefPx } = columnWidthsPx(host.columns(), namePx, rootFont);
 		const next = shrinkFactor(viewport.clientWidth, minPx, prefPx);
 		if (next !== frameFit) frameFit = next;
+		const nextSlack = Math.max(0, viewport.clientWidth - prefPx);
+		if (nextSlack !== slackPx) slackPx = nextSlack;
 	}
 
 	$effect(() => {

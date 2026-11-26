@@ -2,10 +2,12 @@ import { randomUUID } from 'node:crypto';
 import { type APIRequestContext, type Page } from '@playwright/test';
 import { expect, isReplay } from './fixtures.ts';
 import {
+	contentColumnNeedRem,
 	contentColumnRem,
 	nameColumnRem,
 	workersColumnMinRem
 } from '../src/lib/features/workers/data-table/columns/workers-table-width.ts';
+import { assessmentOptions } from '../src/lib/domain-vocabulary.ts';
 import { wireDefinitions, wireWorkerAttributes } from './answer-wire.ts';
 
 /** The density cases the Workers table is measured at, and what each renders. */
@@ -243,21 +245,18 @@ export function workersFloorRem(): number {
 
 /**
  * The scroll floor for the standard fixture, in rem: the pinned columns plus
- * every shrinkable column at its readable minimum (Assessment 6, content from
- * its header and a truncated value). Below this sum the scrollport scrolls;
- * above it the columns shrink instead.
+ * every shrinkable column at its narrow shrink minimum (Assessment 6, content
+ * 5). Below this sum the scrollport scrolls; above it the columns shrink instead.
  */
 export function workersMinFloorRem(): number {
 	const fixed = 2.75 + nameColumnRem(workerNames) + workersColumnMinRem('assessment', 9);
 	const languages = workersColumnMinRem(
 		'languages',
-		contentColumnRem(['Spanish', 'Polish', 'Vietnamese']),
-		'Languages'
+		contentColumnRem(['Spanish', 'Polish', 'Vietnamese'])
 	);
 	const attributes = attributeDefs.reduce(
 		(sum, attribute) =>
-			sum +
-			workersColumnMinRem(attribute.name, contentColumnRem(attribute.options), attribute.name),
+			sum + workersColumnMinRem(attribute.name, contentColumnRem(attribute.options)),
 		0
 	);
 	return fixed + languages + attributes;
@@ -279,19 +278,21 @@ export function wideWorkersFloorRem(): number {
 	return fixed + languages + attributes;
 }
 
-/** The scroll floor for the twelve-Attribute fixture: pinned columns plus readable shrink minima. */
+/** The scroll floor for the twelve-Attribute fixture: pinned columns plus readable minimums. */
 export function wideWorkersMinFloorRem(): number {
 	const names = Array.from({ length: 50 }, (_, index) => wideWorkerName(index));
-	const fixed = 2.75 + nameColumnRem(names) + workersColumnMinRem('assessment', 9);
-	const languages = workersColumnMinRem(
-		'languages',
-		contentColumnRem(wideLanguageNames),
-		'Languages'
-	);
+	const fixed =
+		2.75 +
+		nameColumnRem(names) +
+		contentColumnNeedRem('Assessment', assessmentOptions, { swatch: true });
+	const languages = contentColumnNeedRem('Languages', wideLanguageNames, { multi: true });
 	const attributes = wideAttributeDefs.reduce(
 		(sum, attribute) =>
 			sum +
-			workersColumnMinRem(attribute.name, contentColumnRem(attribute.options), attribute.name),
+			contentColumnNeedRem(attribute.name, attribute.options, {
+				multi: attribute.kind === 'tag',
+				emptyLabel: `No ${attribute.name}`
+			}),
 		0
 	);
 	return fixed + languages + attributes;

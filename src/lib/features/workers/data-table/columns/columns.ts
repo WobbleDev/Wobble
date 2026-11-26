@@ -39,9 +39,11 @@ import {
 import { assessmentColorFor } from '#lib/shared/workers/assessment.ts';
 import {
 	WORKERS_SELECT_REM,
+	contentColumnNeedRem,
 	contentColumnRem,
 	workersColumnMinRem,
-	workersColumnRem
+	workersColumnRem,
+	type ContentColumnValueOptions
 } from './workers-table-width.ts';
 
 const columnHelper = createColumnHelper<DataTableFeatures, Worker>();
@@ -231,9 +233,34 @@ export function createColumns(
 	const languageOptions = languageLabels.map((label) => ({ value: label, label }));
 	const languageIdsByName = new Map(languages.map((language) => [language.name, language.id]));
 	const assessmentOptionsForDisplay = assessmentChoices(assessmentOptions);
+	const assessmentLabels = assessmentOptionsForDisplay.map((option) => option.label);
 	const nameLabel = m.workers_column_name();
 	const assessmentLabel = m.workers_column_assessment();
 	const languagesLabel = m.workers_column_languages();
+	/**
+	 * Six or more Attributes means the table will scroll anyway, so every content
+	 * column keeps the width its header and values actually need. A short table
+	 * keeps the older shrink floor and still fits a narrow desktop frame.
+	 */
+	const readableFloors = attributes.length >= 6;
+
+	/** A content column's preferred width and shrink floor. */
+	function contentWidths(
+		columnId: string,
+		label: string,
+		values: readonly string[],
+		preferredRem: number,
+		options: ContentColumnValueOptions = {}
+	): { width: string; minWidth: string } {
+		if (!readableFloors) {
+			return {
+				width: `${preferredRem}rem`,
+				minWidth: `${workersColumnMinRem(columnId, preferredRem)}rem`
+			};
+		}
+		const need = contentColumnNeedRem(label, values, options);
+		return { width: `${Math.max(preferredRem, need)}rem`, minWidth: `${need}rem` };
+	}
 
 	return columnHelper.columns([
 		columnHelper.display({
@@ -295,8 +322,13 @@ export function createColumns(
 			meta: {
 				label: assessmentLabel,
 				...columnLayout.assessment,
-				width: `${workersColumnRem('assessment', {})}rem`,
-				minWidth: `${workersColumnMinRem('assessment', workersColumnRem('assessment', {}))}rem`
+				...contentWidths(
+					'assessment',
+					assessmentLabel,
+					assessmentLabels,
+					workersColumnRem('assessment', {}),
+					{ swatch: true }
+				)
 			}
 		}),
 		columnHelper.accessor((worker) => languageNames(worker, languages), {
@@ -340,8 +372,13 @@ export function createColumns(
 				label: languagesLabel,
 				widthClass: 'px-2',
 				grow: true,
-				width: `${contentColumnRem(languageLabels)}rem`,
-				minWidth: `${workersColumnMinRem('languages', contentColumnRem(languageLabels), languagesLabel)}rem`
+				...contentWidths(
+					'languages',
+					languagesLabel,
+					languageLabels,
+					contentColumnRem(languageLabels),
+					{ multi: true }
+				)
 			}
 		}),
 		// The Agitation facet narrows the rows without becoming a visible column: the
@@ -415,8 +452,10 @@ export function createColumns(
 					label: attribute.name,
 					widthClass: 'px-2',
 					grow: true,
-					width: `${contentColumnRem(labels)}rem`,
-					minWidth: `${workersColumnMinRem(attribute.id, contentColumnRem(labels), attribute.name)}rem`,
+					...contentWidths(attribute.id, attribute.name, labels, contentColumnRem(labels), {
+						multi: storesList(attribute),
+						emptyLabel: reading.label
+					}),
 					describeValue: (value) => describeAnswerValue(attribute, value as WorkerAttributeValue)
 				}
 			});

@@ -406,6 +406,17 @@ const headerOrder = async (page: Page) =>
 /** The column order the seed and the table start from, before anything is moved. */
 const DEFAULT_HEADERS = ['', 'Name', 'Assessment', 'Languages', 'Department', 'Role', 'Shifts'];
 
+/**
+ * Drags a header by its gutter. The cell centre can land on the sort or filter
+ * control, whose button does not start a native drag; the padding does.
+ */
+function dragHeader(source: Locator, target: Locator) {
+	return source.dragTo(target, {
+		sourcePosition: { x: 8, y: 22 },
+		targetPosition: { x: 8, y: 22 }
+	});
+}
+
 /** The column ids the header row and the first Worker row carry, left to right. */
 async function columnIdsByRow(page: Page) {
 	const ids = (locator: Locator) =>
@@ -430,9 +441,10 @@ test('dragging a header moves its column and its cells, and Name stays first', a
 	await page.goto('/workers');
 	await appReady(page);
 
-	await page
-		.getByRole('columnheader', { name: 'Role' })
-		.dragTo(page.getByRole('columnheader', { name: 'Assessment' }));
+	await dragHeader(
+		page.getByRole('columnheader', { name: 'Role' }),
+		page.getByRole('columnheader', { name: 'Assessment' })
+	);
 
 	expect(await headerOrder(page)).toEqual([
 		'',
@@ -464,7 +476,7 @@ test('dragging a header never sorts, and clicking it still does', async ({ page,
 	const languagesHeader = page.getByRole('columnheader', { name: 'Languages' });
 	await expect(nameHeader).toHaveAttribute('aria-sort', 'ascending');
 
-	await languagesHeader.dragTo(page.getByRole('columnheader', { name: 'Role' }));
+	await dragHeader(languagesHeader, page.getByRole('columnheader', { name: 'Role' }));
 	await expect(languagesHeader).toHaveAttribute('aria-sort', 'none');
 	await expect(nameHeader).toHaveAttribute('aria-sort', 'ascending');
 	expect(await namesInOrder(page)).toEqual(['Ada Lovelace', 'Grace Hopper', 'Katherine Johnson']);
@@ -487,8 +499,8 @@ test('Name and the selection checkbox cannot be dragged, and nothing drops onto 
 	await expect(nameHeader).not.toHaveAttribute('draggable', 'true');
 	await expect(selectionHeader).not.toHaveAttribute('draggable', 'true');
 
-	await page.getByRole('columnheader', { name: 'Assessment' }).dragTo(nameHeader);
-	await page.getByRole('columnheader', { name: 'Languages' }).dragTo(selectionHeader);
+	await dragHeader(page.getByRole('columnheader', { name: 'Assessment' }), nameHeader);
+	await dragHeader(page.getByRole('columnheader', { name: 'Languages' }), selectionHeader);
 	expect(await headerOrder(page)).toEqual(DEFAULT_HEADERS);
 });
 
@@ -556,9 +568,10 @@ test('a moved order holds through a sort, and a hidden column returns to its pla
 	await page.goto('/workers');
 	await appReady(page);
 
-	await page
-		.getByRole('columnheader', { name: 'Role' })
-		.dragTo(page.getByRole('columnheader', { name: 'Assessment' }));
+	await dragHeader(
+		page.getByRole('columnheader', { name: 'Role' }),
+		page.getByRole('columnheader', { name: 'Assessment' })
+	);
 	const moved = ['', 'Name', 'Role', 'Assessment', 'Languages', 'Department', 'Shifts'];
 	expect(await headerOrder(page)).toEqual(moved);
 
