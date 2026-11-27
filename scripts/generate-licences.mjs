@@ -119,7 +119,11 @@ function npmPackages() {
 			queue.push({ name: dep, from: dir });
 		}
 	}
-	return [...seen.values()];
+	/* One package installed in two places (commander 7.2.0 sits under two parents) is one
+	   entry: the list keys each row by name, version and ecosystem. */
+	const distinct = new Map();
+	for (const pkg of seen.values()) distinct.set(`${pkg.name}@${pkg.version}`, pkg);
+	return [...distinct.values()];
 }
 
 /* ── Cargo: the crates the desktop app links ─────────────────────────────────── */
