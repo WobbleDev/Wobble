@@ -712,6 +712,7 @@
 										<Table.Head
 											colspan={header.colSpan}
 											data-column-id={header.column.id}
+											data-workers-mobile-width={meta?.mobileWidth ? '' : undefined}
 											draggable={columnOrder.isMovableColumn(header.column.id) ? 'true' : undefined}
 											data-dragging={columnOrder.draggingColumnId === header.column.id || undefined}
 											data-drop-target={columnOrder.dropTargetColumnId === header.column.id ||
@@ -765,6 +766,8 @@
 									{#each table.getVisibleLeafColumns() as column (column.id)}
 										{@const meta = column.columnDef.meta}
 										<Table.Cell
+											data-column-id={column.id}
+											data-workers-mobile-width={meta?.mobileWidth ? '' : undefined}
 											data-pin={meta?.pin}
 											style={columnStyle(meta)}
 											class={cn(meta?.widthClass, pinClass(meta))}
@@ -952,3 +955,15 @@
 		}}
 	/>
 {/if}
+
+<style>
+	/* Below lg every header carries two 44px controls, so the column keeps the width the
+	   cell declared for its full label. The value rides each cell's custom property; the
+	   table's fit logic and its desktop widths are untouched. */
+	@media (width < 64rem) {
+		:global([data-testid='workers-scroll-viewport'] th[data-workers-mobile-width]),
+		:global([data-testid='workers-scroll-viewport'] td[data-workers-mobile-width]) {
+			width: var(--workers-table-mobile-w) !important;
+		}
+	}
+</style>

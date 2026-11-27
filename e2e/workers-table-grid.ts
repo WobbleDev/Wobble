@@ -4,6 +4,7 @@ import { expect, isReplay } from './fixtures.ts';
 import {
 	contentColumnNeedRem,
 	contentColumnRem,
+	mobileContentColumnRem,
 	nameColumnRem,
 	workersColumnMinRem
 } from '../src/lib/features/workers/data-table/columns/workers-table-width.ts';
@@ -260,6 +261,31 @@ export function workersMinFloorRem(): number {
 		0
 	);
 	return fixed + languages + attributes;
+}
+
+/**
+ * The narrower standard fixture's floor below `lg`, in rem: the pinned columns plus each
+ * content column widened to keep its whole header beside 44px sort and filter controls.
+ */
+export function workersMobileFloorRem(): number {
+	const fixed = 2.75 + nameColumnRem(workerNames);
+	const assessment = Math.max(
+		9,
+		mobileContentColumnRem('Assessment', assessmentOptions, { swatch: true })
+	);
+	const languages = Math.max(
+		contentColumnRem(['Spanish', 'Polish', 'Vietnamese']),
+		mobileContentColumnRem('Languages', ['Spanish', 'Polish', 'Vietnamese'], { multi: true })
+	);
+	const attributes = attributeDefs.reduce((sum, attribute) => {
+		const preferred = contentColumnRem(attribute.options);
+		const mobile = mobileContentColumnRem(attribute.name, attribute.options, {
+			multi: attribute.kind === 'tag',
+			emptyLabel: `No ${attribute.name}`
+		});
+		return sum + Math.max(preferred, mobile);
+	}, 0);
+	return fixed + assessment + languages + attributes;
 }
 
 /**

@@ -67,6 +67,8 @@ export type DataTableColumnMeta = {
 	width?: string;
 	/** The narrowest a shrinkable column gets before the table scrolls. */
 	minWidth?: string;
+	/** Below `lg`, the width that keeps the full header and its 44px controls. */
+	mobileWidth?: string;
 	/** Pinned columns stay in view while the table scrolls sideways. */
 	pin?: 'select' | 'name';
 	/** How a cell's value reads to assistive technology, in configured names. */

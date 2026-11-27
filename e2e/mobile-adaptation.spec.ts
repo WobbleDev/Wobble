@@ -5,6 +5,14 @@ import { seedWorkers } from './workers-table-grid.ts';
 import { wireDefinitions, wireWorkerAttributes } from './answer-wire.ts';
 import { addAttribute, openAttributeEditor, workerColumn } from './configuration-outline.ts';
 
+// Pin the media features the layout depends on, as the other specs do.
+test.use({
+	colorScheme: 'light',
+	reducedMotion: 'reduce',
+	forcedColors: 'none',
+	contrast: 'no-preference'
+});
+
 test('mobile navigation opens and closes after a route change', async ({ page }) => {
 	await page.setViewportSize({ width: 390, height: 844 });
 	await page.goto('/overview');
@@ -475,9 +483,15 @@ async function expectMobileHeader(
 	expect(headerBox.height, 'header is one phone row').toBeLessThanOrEqual(68);
 
 	const crumbs = await page.locator('[data-slot="breadcrumb-list"] > *').evaluateAll((items) =>
-		items.map((item) => {
-			const box = item.getBoundingClientRect();
-			return { centre: box.top + box.height / 2, text: (item.textContent ?? '').trim() };
+		items.flatMap((item) => {
+			// A Range measures the crumb TEXT, not the list item: the Worksite link keeps a
+			// 44px hit height, so its item box is centred even when its text is not.
+			const range = document.createRange();
+			range.selectNodeContents(item);
+			const text = range.toString().trim();
+			if (!text) return [];
+			const box = range.getBoundingClientRect();
+			return [{ centre: box.top + box.height / 2, text }];
 		})
 	);
 	expect(crumbs.length, 'breadcrumb items').toBeGreaterThanOrEqual(hasWorksite ? 2 : 1);
@@ -490,10 +504,16 @@ async function expectMobileHeader(
 	if (hasWorksite) {
 		const worksite = page.locator('[data-slot="breadcrumb-list"] a[href="/overview"]');
 		await expect(worksite).toHaveAttribute('title', LONG_WORKSITE);
+		const worksiteText = worksite.locator('span');
+		await expect(worksiteText).toHaveText(LONG_WORKSITE);
 		expect(
-			await worksite.evaluate((element) => element.scrollWidth > element.clientWidth + 1),
+			await worksiteText.evaluate((element) => element.scrollWidth > element.clientWidth + 1),
 			'Worksite segment truncates'
 		).toBe(true);
+		expect(
+			await worksiteText.evaluate((element) => getComputedStyle(element).textOverflow),
+			'Worksite segment shows an ellipsis'
+		).toBe('ellipsis');
 	}
 
 	if (!importable) {
@@ -592,6 +612,27 @@ test('at 390x844 Workers filters, select all and the empty state stay inside the
 	await expectTapTarget(page.getByRole('button', { name: 'Filter Languages' }), 'Filter Languages');
 	const selectAll = page.getByRole('checkbox', { name: 'Select all matching workers' });
 	await expectTapTarget(selectAll.locator('xpath=..'), 'Select all');
+
+	// Below lg each header carries a 44px sort and a 44px filter beside a whole title.
+	for (const title of ['Name', 'Assessment', 'Languages', 'Department', 'Role']) {
+		const header = page.getByRole('columnheader', { name: title });
+		await expect(header, `${title} column header`).toBeAttached();
+		const sort = header.getByRole('button').first();
+		await expectTapTarget(sort, `${title} sort`);
+		const label = sort.locator('span[title]');
+		await expect(label).toHaveText(title);
+		const measured = await label.evaluate((element) => ({
+			scrollWidth: element.scrollWidth,
+			clientWidth: element.clientWidth
+		}));
+		expect(
+			measured.scrollWidth,
+			`${title} title is not truncated (${measured.scrollWidth}px in ${measured.clientWidth}px)`
+		).toBeLessThanOrEqual(measured.clientWidth + 1);
+
+		const filter = header.getByRole('button', { name: `Filter ${title}` });
+		if (await filter.count()) await expectTapTarget(filter, `Filter ${title}`);
+	}
 });
 
 test('at 390x844 Mapping zoom controls meet the tap floor and the route does not overflow', async ({
@@ -641,6 +682,11 @@ test('at 390x844 Configuration meets the tap floor on every control in its attri
 			.getByRole('button', { name: /^(Rename |Switch from |Reorder |Toggle options for )/ })
 			.count()
 	).toBe(12);
+
+	// The Agitations chips' rename buttons are at least 44px wide below md.
+	for (const name of ['Edit Hours', 'Edit Pay']) {
+		await expectTapTarget(page.getByRole('button', { name, exact: true }), name);
+	}
 });
 
 test('at 390x844 Settings search results meet the tap floor with no route overflow', async ({

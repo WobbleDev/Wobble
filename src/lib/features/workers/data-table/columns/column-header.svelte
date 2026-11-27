@@ -109,7 +109,7 @@
 	<span class="inline-flex max-w-full min-w-0 items-center gap-0.5">
 		<Button
 			variant="ghost"
-			class="-mx-1.5 h-7 min-h-tap min-w-0 shrink gap-1 px-1.5 font-mono text-xs font-medium tracking-key uppercase lg:min-h-7"
+			class="-mx-1.5 h-7 min-h-tap min-w-tap shrink gap-1 px-1.5 font-mono text-xs font-medium tracking-key uppercase lg:min-h-7 lg:min-w-0"
 			onclick={column.getToggleSortingHandler()}
 		>
 			<span class="min-w-0 truncate" {title}>{title}</span>

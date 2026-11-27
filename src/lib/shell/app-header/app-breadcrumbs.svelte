@@ -31,11 +31,15 @@
 		{:else}
 			{#if worksiteName}
 				<Breadcrumb.Item class="min-w-0 shrink">
+					<!-- The link keeps the component's inline-flex centring; the text itself
+					     truncates, so the segment stays on the crumbs' line at every width. -->
 					<Breadcrumb.Link
 						href="/overview"
-						class="block max-w-full truncate lg:max-w-[48ch]"
-						title={worksiteName}>{worksiteName}</Breadcrumb.Link
+						class="max-w-full min-w-0 lg:max-w-[48ch]"
+						title={worksiteName}
 					>
+						<span class="block min-w-0 truncate">{worksiteName}</span>
+					</Breadcrumb.Link>
 				</Breadcrumb.Item>
 				<Breadcrumb.Separator class="shrink-0" />
 			{/if}

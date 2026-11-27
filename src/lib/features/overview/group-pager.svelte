@@ -61,7 +61,7 @@
 		<Button
 			variant="ghost"
 			size="sm"
-			class="min-h-tap px-2 transition-colors md:min-h-8"
+			class="min-h-tap min-w-tap px-2 transition-colors md:min-h-8 md:min-w-0"
 			disabled={page === 0}
 			aria-label={previousLabel}
 			onclick={(event) => onprevious(event.currentTarget)}
@@ -72,7 +72,7 @@
 		<Button
 			variant="ghost"
 			size="sm"
-			class="min-h-tap px-2 transition-colors md:min-h-8"
+			class="min-h-tap min-w-tap px-2 transition-colors md:min-h-8 md:min-w-0"
 			disabled={page >= pageCount - 1}
 			aria-label={nextLabel}
 			onclick={(event) => onnext(event.currentTarget)}

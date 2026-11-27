@@ -62,6 +62,12 @@ const MULTI_MORE_REM = 1.5;
  */
 const HEADER_REM_PER_CHARACTER = 0.5;
 const HEADER_CHROME_REM = 4.25;
+/**
+ * Below `lg` the header's sort and filter controls are both physical 44px targets, so a
+ * column cannot use the compact chrome above: the cell padding, the sort button's padding
+ * and icon, the 44px filter button and the gap between them need this much more room.
+ */
+const MOBILE_HEADER_CHROME_REM = 5.5;
 
 /** The width a column needs to show its longest option without breaking it. */
 export function contentColumnRem(options: readonly string[]): number {
@@ -123,6 +129,21 @@ export function contentColumnNeedRem(
 	options: ContentColumnValueOptions = {}
 ): number {
 	const header = label.length * HEADER_REM_PER_CHARACTER + HEADER_CHROME_REM;
+	const need = Math.max(CONTENT_MIN_REM, header, contentValueNeedRem(values, options));
+	return Math.min(CONTENT_MAX_REM, Math.ceil(need * 4) / 4);
+}
+
+/**
+ * The width a content column keeps below `lg`, where the sort and filter controls are
+ * 44px each. It is the same value-and-label need as `contentColumnNeedRem`, with the
+ * mobile header chrome, so the title stays whole and its controls stay tappable.
+ */
+export function mobileContentColumnRem(
+	label: string,
+	values: readonly string[],
+	options: ContentColumnValueOptions = {}
+): number {
+	const header = label.length * HEADER_REM_PER_CHARACTER + MOBILE_HEADER_CHROME_REM;
 	const need = Math.max(CONTENT_MIN_REM, header, contentValueNeedRem(values, options));
 	return Math.min(CONTENT_MAX_REM, Math.ceil(need * 4) / 4);
 }

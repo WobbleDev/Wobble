@@ -224,6 +224,7 @@
 				: undefined}
 			onfocus={() => grid && onActivate(row.original.id, cell.column.id)}
 			data-column-id={cell.column.id}
+			data-workers-mobile-width={meta?.mobileWidth ? '' : undefined}
 			tabindex={grid ? (cell.column.id === activeColumnId ? 0 : -1) : undefined}
 			data-pin={meta?.pin}
 			style={columnStyle(meta)}
