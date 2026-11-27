@@ -23,27 +23,41 @@ test('Dark Mode paints the tonal ladder and the top-edge highlight', async ({ pa
 	await appReady(page);
 	await expect(page.locator('html')).toHaveClass(/\bdark\b/);
 
-	const surfaces = await page.evaluate(() => {
-		const canvas = document.createElement('canvas');
-		canvas.width = canvas.height = 1;
-		const context = canvas.getContext('2d', { willReadFrequently: true })!;
-		const resolve = (selector: string) => {
-			const element = document.querySelector(selector);
-			if (!element) throw new Error(`no ${selector}`);
-			const css = getComputedStyle(element).backgroundColor;
-			context.clearRect(0, 0, 1, 1);
-			context.fillStyle = css;
-			context.fillRect(0, 0, 1, 1);
-			return [...context.getImageData(0, 0, 1, 1).data];
-		};
-		return {
-			page: resolve('body'),
-			panel: resolve('[data-well]'),
-			inset: resolve('[data-well] [data-selectable]'),
-			rail: resolve("[data-slot='sidebar-inner']"),
-			elevatedShadow: getComputedStyle(document.querySelector('[data-well]')!).boxShadow
-		};
-	});
+	const readSurfaces = () =>
+		page.evaluate(() => {
+			const canvas = document.createElement('canvas');
+			canvas.width = canvas.height = 1;
+			const context = canvas.getContext('2d', { willReadFrequently: true })!;
+			const resolve = (selector: string) => {
+				const element = document.querySelector(selector);
+				if (!element) throw new Error(`no ${selector}`);
+				const css = getComputedStyle(element).backgroundColor;
+				context.clearRect(0, 0, 1, 1);
+				context.fillStyle = css;
+				context.fillRect(0, 0, 1, 1);
+				return [...context.getImageData(0, 0, 1, 1).data];
+			};
+			return {
+				page: resolve('body'),
+				panel: resolve('[data-well]'),
+				inset: resolve('[data-well] [data-selectable]'),
+				rail: resolve("[data-slot='sidebar-inner']"),
+				elevatedShadow: getComputedStyle(document.querySelector('[data-well]')!).boxShadow
+			};
+		});
+
+	// Every surface carries `transition: all`, so a colour read in the frame after the
+	// theme flips can still be the light one. Wait for the ladder to settle first.
+	await expect
+		.poll(async () => (await readSurfaces()).page, { message: 'page ground settles' })
+		.toEqual([14, 15, 16, 255]);
+	await expect
+		.poll(async () => (await readSurfaces()).panel, { message: 'panel settles' })
+		.toEqual([28, 29, 31, 255]);
+	await expect
+		.poll(async () => (await readSurfaces()).inset, { message: 'inset field settles' })
+		.toEqual([20, 21, 23, 255]);
+	const surfaces = await readSurfaces();
 
 	expect(surfaces.page, 'page ground').toEqual([14, 15, 16, 255]);
 	expect(surfaces.panel, 'panel').toEqual([28, 29, 31, 255]);
