@@ -48,7 +48,15 @@ test('Dark Mode paints the tonal ladder and the top-edge highlight', async ({ pa
 	expect(surfaces.page, 'page ground').toEqual([14, 15, 16, 255]);
 	expect(surfaces.panel, 'panel').toEqual([28, 29, 31, 255]);
 	expect(surfaces.inset, 'inset field').toEqual([20, 21, 23, 255]);
-	expect(surfaces.rail.slice(0, 3), 'navigation rail tone').toEqual([28, 29, 31]);
+	// The rail is the panel tone through 80% glass, and the canvas rounds a
+	// translucent fill by a channel. Compare it to the panel it mirrors with one
+	// step of slack; the opaque surfaces above stay exact.
+	const railTone = surfaces.rail.slice(0, 3);
+	const panelTone = surfaces.panel.slice(0, 3);
+	expect(
+		railTone.every((channel, index) => Math.abs(channel - panelTone[index]) <= 1),
+		`navigation rail tone ${railTone.join(',')} matches panel ${panelTone.join(',')} within 1`
+	).toBe(true);
 	expect(surfaces.rail[3], 'rail is solid or 80% glass').toBeGreaterThanOrEqual(204);
 	expect(surfaces.elevatedShadow, 'elevated surface highlight').toContain('inset');
 	expect(surfaces.elevatedShadow).toMatch(/rgba\(255, 255, 255, 0\.055\)/);
