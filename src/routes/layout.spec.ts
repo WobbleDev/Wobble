@@ -62,11 +62,12 @@ const vellumRoles = [
 	'focus'
 ];
 
-/** The six shared material roles, declared in both themes. */
+/** The seven shared material roles, declared in both themes. */
 const materialRoles = [
 	'surface-glass',
 	'surface-glass-solid',
 	'surface-blur',
+	'surface-edge',
 	'surface-shadow',
 	'rail-shadow',
 	'wash'
@@ -100,6 +101,20 @@ function luminanceOf(hex: string): number {
 function contrastRatio(a: string, b: string): number {
 	const [hi, lo] = [luminanceOf(a), luminanceOf(b)].sort((x, y) => y - x);
 	return (hi + 0.05) / (lo + 0.05);
+}
+
+/** A translucent fill of `hex` over `base`, as the Frosted cards composite it. */
+function composite(hex: string, base: string, alpha: number): string {
+	const top = hex.slice(1);
+	const under = base.slice(1);
+	const channel = (offset: number) =>
+		Math.round(
+			alpha * Number.parseInt(top.slice(offset, offset + 2), 16) +
+				(1 - alpha) * Number.parseInt(under.slice(offset, offset + 2), 16)
+		)
+			.toString(16)
+			.padStart(2, '0');
+	return `#${channel(0)}${channel(2)}${channel(4)}`;
 }
 
 /** Read one role from both themes, failing loudly if either is missing. */
@@ -204,6 +219,65 @@ describe('the material roles', () => {
 		for (const role of materialRoles) {
 			pairOf(role);
 		}
+	});
+});
+
+describe('the Dark Mode open surface ladder', () => {
+	it('declares the approved tones for the page, panel, navigation and inset', () => {
+		for (const [role, value] of Object.entries({
+			page: '#0e0f10',
+			panel: '#1c1d1f',
+			nav: '#1c1d1f',
+			inset: '#141517',
+			hover: '#26282b',
+			toolbar: '#141517',
+			rule: '#2a2c2f',
+			wash: '#0a0b0c'
+		})) {
+			expect(declaredIn(dark, role), `.dark ${role}`).toBe(value);
+		}
+
+		expect(declaredIn(dark, 'surface-glass-solid')).toBe('#1c1d1f');
+		expect(declaredIn(dark, 'surface-glass')).toBe('color-mix(in srgb, #1c1d1f 80%, transparent)');
+	});
+
+	it('composes the soft top-edge highlight into the elevation stacks only', () => {
+		expect(declaredIn(dark, 'surface-edge')).toBe('inset 0 1px 0 rgba(255, 255, 255, 0.055)');
+		// Light stays pixel-identical: its layer paints nothing and its shadows keep
+		// their old stacks.
+		expect(declaredIn(root, 'surface-edge')).toBe('0 0 #0000');
+		expect(declaredIn(root, 'surface-shadow')).not.toContain('surface-edge');
+		expect(declaredIn(root, 'rail-shadow')).not.toContain('surface-edge');
+		for (const role of ['surface-shadow', 'rail-shadow']) {
+			expect(declaredIn(dark, role), `.dark ${role}`).toMatch(/^var\(--surface-edge\), /);
+		}
+	});
+
+	it('holds every ink step at 4.5:1 on the page, panel, inset and hover fills', () => {
+		for (const ink of ['ink', 'ink-2', 'ink-3']) {
+			for (const surface of ['page', 'panel', 'inset', 'hover']) {
+				const ratio = contrastRatio(declaredIn(dark, ink) ?? '', declaredIn(dark, surface) ?? '');
+				expect(ratio, `${ink} on ${surface}`).toBeGreaterThanOrEqual(4.5);
+			}
+		}
+	});
+
+	it('holds the control boundary at 3:1 on the panel, hover fill and Frosted 84% card', () => {
+		for (const surface of ['panel', 'hover']) {
+			const ratio = contrastRatio(
+				declaredIn(dark, 'rule-strong') ?? '',
+				declaredIn(dark, surface) ?? ''
+			);
+			expect(ratio, `rule-strong on ${surface}`).toBeGreaterThanOrEqual(3);
+		}
+
+		// Overview cards paint 84% of the panel over whatever is behind them; over
+		// the page that is the lightest reading surface they sit on.
+		const card = composite(declaredIn(dark, 'panel') ?? '', declaredIn(dark, 'page') ?? '', 0.84);
+		expect(
+			contrastRatio(declaredIn(dark, 'rule-strong') ?? '', card),
+			`rule-strong on Frosted 84% card ${card}`
+		).toBeGreaterThanOrEqual(3);
 	});
 });
 
@@ -343,7 +417,7 @@ describe('the Increase contrast override', () => {
 		light: blockAt("html[data-contrast='on']"),
 		dark: blockAt(".dark[data-contrast='on']")
 	};
-	const surfaces = { light: '#ffffff', dark: '#181818' };
+	const surfaces = { light: '#ffffff', dark: '#1c1d1f' };
 
 	it('declares the rule and ink roles in both themes', () => {
 		for (const theme of ['light', 'dark'] as const) {
