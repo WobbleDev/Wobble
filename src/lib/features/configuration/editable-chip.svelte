@@ -150,7 +150,7 @@
 			bind:this={textButton}
 			type="button"
 			class={cn(
-				'min-h-tap min-w-0 text-left underline decoration-transparent underline-offset-4 hover:decoration-ink-3 focus-visible:decoration-ink md:min-h-(--control-h-sm)',
+				'min-h-tap min-w-0 text-left underline decoration-transparent underline-offset-4 hover:decoration-ink-3 max-md:min-w-tap md:min-h-(--control-h-sm)',
 				variant === 'row' ? 'w-full truncate' : 'break-words'
 			)}
 			aria-label={editLabel}

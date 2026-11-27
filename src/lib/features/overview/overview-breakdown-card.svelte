@@ -54,7 +54,7 @@
 				<Select.Trigger
 					size="sm"
 					aria-label={attribute.name}
-					class="section-title mr-auto -ml-1 h-auto border-0 bg-transparent px-1 py-0 !text-ink shadow-none [&_*]:!text-ink"
+					class="section-title mr-auto -ml-1 h-auto min-h-tap min-w-tap border-0 bg-transparent px-1 py-0 !text-ink shadow-none lg:min-h-0 lg:min-w-0 [&_*]:!text-ink"
 					>{attribute?.name}</Select.Trigger
 				>
 				<Select.Content>

@@ -64,24 +64,25 @@
 	</div>
 	<div
 		data-tauri-drag-region
-		class="pointer-events-auto col-span-3 flex min-w-0 items-center gap-2 lg:order-2 lg:col-auto lg:ml-auto"
+		class="pointer-events-auto col-start-3 row-start-1 flex items-center gap-1 lg:order-3 lg:col-auto lg:row-auto lg:ml-auto lg:gap-2"
 	>
 		{#if worksite && isDataView}
-			<Button
-				variant="outline"
-				size="sm"
-				class="min-h-tap min-w-0 flex-1 px-2 whitespace-nowrap lg:min-h-9 lg:flex-none lg:px-3"
-				onclick={() => (importOpen = true)}
-			>
-				<UploadIcon data-icon="inline-start" />
-				{m.shell_import_contacts()}
-			</Button>
+			<IconTip label={m.shell_import_contacts()}>
+				{#snippet child({ props })}
+					<Button
+						{...props}
+						variant="outline"
+						size="sm"
+						class="min-h-tap min-w-tap shrink-0 p-0 whitespace-nowrap lg:h-8 lg:min-h-9 lg:w-auto lg:min-w-0 lg:px-3"
+						aria-label={m.shell_import_contacts()}
+						onclick={() => (importOpen = true)}
+					>
+						<UploadIcon data-icon="inline-start" />
+						<span class="hidden lg:inline">{m.shell_import_contacts()}</span>
+					</Button>
+				{/snippet}
+			</IconTip>
 		{/if}
-	</div>
-	<div
-		data-tauri-drag-region
-		class="pointer-events-auto col-start-3 row-start-1 lg:order-3 lg:col-auto lg:row-auto"
-	>
 		<ThemeSwitcher />
 	</div>
 </header>

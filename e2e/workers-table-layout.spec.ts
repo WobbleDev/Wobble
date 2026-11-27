@@ -4,6 +4,7 @@ import { appReady } from './page-ready.ts';
 import {
 	gridReport,
 	workersMinFloorRem,
+	workersMobileFloorRem,
 	workersNameRem,
 	seedWorkers,
 	widthOf
@@ -107,10 +108,11 @@ test('columns hold the content-derived floor and share the spare width with the 
 	const at1920 = await measure(1920);
 
 	// At a phone width even the minimum sum does not fit, so the table floors at
-	// the shrink minima (workersMinFloorRem) and the scrollport scrolls.
+	// the widths that keep each header whole beside its 44px controls, and the
+	// scrollport scrolls.
 	expect(atNarrow.overflowX).toBe(true);
 	expect(
-		Math.abs(atNarrow.tableScrollWidth - workersMinFloorRem() * atNarrow.rootFont)
+		Math.abs(atNarrow.tableScrollWidth - workersMobileFloorRem() * atNarrow.rootFont)
 	).toBeLessThanOrEqual(2);
 
 	// Name is pinned to its longest name, and the checkbox holds

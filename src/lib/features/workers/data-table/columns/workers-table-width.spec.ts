@@ -5,6 +5,7 @@ import {
 	WORKERS_SELECT_REM,
 	contentColumnNeedRem,
 	contentColumnRem,
+	mobileContentColumnRem,
 	workersColumnMinRem,
 	workersColumnRem,
 	workersMinWidth,
@@ -42,6 +43,19 @@ describe('contentColumnNeedRem', () => {
 
 	it('caps a value that is too long for the widest allowed column', () => {
 		expect(contentColumnNeedRem('Notes', ['x'.repeat(40)])).toBe(15);
+	});
+});
+
+describe('mobileContentColumnRem', () => {
+	it('keeps the full header beside two 44px controls', () => {
+		expect(mobileContentColumnRem('Assessment', ['Supporter'], { swatch: true })).toBe(10.5);
+		expect(mobileContentColumnRem('Languages', ['Spanish'], { multi: true })).toBe(10);
+		expect(mobileContentColumnRem('Department', ['Front of House'])).toBe(10.5);
+	});
+
+	it('wins over the compact content width only when the full header needs it', () => {
+		expect(mobileContentColumnRem('Role', ['Server'])).toBe(7.5);
+		expect(mobileContentColumnRem('Role', ['x'.repeat(40)])).toBe(15);
 	});
 });
 

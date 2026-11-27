@@ -264,7 +264,7 @@
 		data-testid="attribute-reorder"
 		data-action="reorder"
 		class={cn(
-			`flex size-7 shrink-0 touch-none items-center justify-center rounded-sm text-ink-3 hover:bg-hover focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-30 coarse:size-tap ${reordering ? 'cursor-grabbing' : 'cursor-grab'}`,
+			`flex size-7 shrink-0 touch-none items-center justify-center rounded-sm text-ink-3 hover:bg-hover focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-30 max-md:size-tap coarse:size-tap ${reordering ? 'cursor-grabbing' : 'cursor-grab'}`,
 			extra
 		)}
 		aria-label={m.configuration_attribute_reorder_handle({ name: displayName })}
@@ -281,7 +281,7 @@
 	<button
 		type="button"
 		class={cn(
-			'flex shrink-0 items-center justify-center rounded-sm text-ink-3 hover:bg-state-error/10 hover:text-state-error focus-visible:text-state-error focus-visible:ring-2 focus-visible:ring-ring coarse:min-h-tap coarse:min-w-tap [@media(hover:hover)]:opacity-0 [@media(hover:hover)]:group-focus-within/row:opacity-100 [@media(hover:hover)]:group-hover/row:opacity-100',
+			'flex shrink-0 items-center justify-center rounded-sm text-ink-3 hover:bg-state-error/10 hover:text-state-error focus-visible:text-state-error focus-visible:ring-2 focus-visible:ring-ring max-md:min-h-tap max-md:min-w-tap coarse:min-h-tap coarse:min-w-tap [@media(hover:hover)]:opacity-0 [@media(hover:hover)]:group-focus-within/row:opacity-100 [@media(hover:hover)]:group-hover/row:opacity-100',
 			extra
 		)}
 		aria-label={m.configuration_delete_named({
@@ -344,7 +344,7 @@
 					bind:this={nameButton}
 					type="button"
 					class={cn(
-						'max-w-full min-w-0 truncate rounded-sm text-left underline decoration-transparent underline-offset-4 hover:decoration-ink-3 focus-visible:decoration-ink coarse:min-h-tap',
+						'max-w-full min-w-0 truncate rounded-sm text-left underline decoration-transparent underline-offset-4 hover:decoration-ink-3 focus-visible:decoration-ink max-md:min-h-tap max-md:min-w-tap coarse:min-h-tap',
 						heading ? 'text-base leading-6 font-semibold' : 'text-sm font-medium',
 						!heading && placement.isDestination(attribute.id, '') && 'bg-hover'
 					)}
@@ -448,7 +448,7 @@
 		{:else}
 			<button
 				type="button"
-				class="group flex size-8 items-center justify-center rounded-item p-0 coarse:size-tap"
+				class="group flex size-8 items-center justify-center rounded-item p-0 max-md:size-tap coarse:size-tap"
 				aria-label={m.configuration_attribute_toggle({ name: displayName })}
 				aria-expanded={expanded}
 				aria-controls={`${attribute.id}-answers`}
@@ -467,7 +467,7 @@
 					{#if !editingName}
 						<button
 							type="button"
-							class="shrink-0 rounded-full bg-inset px-2.5 text-xs leading-6 text-ink-2 hover:bg-hover focus-visible:ring-2 focus-visible:ring-ring coarse:min-h-tap"
+							class="shrink-0 rounded-full bg-inset px-2.5 text-xs leading-6 text-ink-2 hover:bg-hover focus-visible:ring-2 focus-visible:ring-ring max-md:min-h-tap max-md:min-w-tap coarse:min-h-tap"
 							aria-label={m.configuration_attribute_type_toggle({
 								current: attributeType,
 								next: attribute.type === 'category' ? m.domain_tag() : m.domain_category()
@@ -524,7 +524,7 @@
 						<button
 							type="button"
 							class={cn(
-								'min-h-7 rounded-sm px-3 text-[0.8125rem] text-ink-2 hover:bg-hover focus-visible:ring-2 focus-visible:ring-ring coarse:min-h-tap',
+								'min-h-7 rounded-sm px-3 text-[0.8125rem] text-ink-2 hover:bg-hover focus-visible:ring-2 focus-visible:ring-ring max-md:min-h-tap max-md:min-w-tap coarse:min-h-tap',
 								on && 'bg-hover font-semibold text-ink'
 							)}
 							aria-label={on

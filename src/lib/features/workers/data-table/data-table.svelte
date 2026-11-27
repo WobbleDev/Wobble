@@ -607,6 +607,41 @@
 	}
 </script>
 
+{#snippet workersEmptyState()}
+	<div class="mx-auto flex max-w-prose flex-col items-center gap-1 text-center">
+		{#if data.length === 0}
+			<p class="text-sm font-medium">{m.workers_empty_title()}</p>
+			<p class="text-sm text-muted-foreground">{m.workers_empty_body()}</p>
+			<Button
+				class="mt-2 min-h-tap lg:min-h-8"
+				data-add-first-worker
+				onclick={() => editModel.requestNewWorker()}
+			>
+				{m.workers_add_first_worker()}
+			</Button>
+		{:else}
+			<p class="text-sm font-medium">
+				{m.workers_no_match({
+					filters: formatList(urlFilters.activeFilterNames)
+				})}
+			</p>
+			<p class="text-sm text-muted-foreground">
+				{m.workers_clear_filters_hint({ count: data.length })}
+			</p>
+			<div class="mt-2 flex flex-wrap justify-center gap-2">
+				{#if nameSearchActive}
+					<Button variant="outline" class="min-h-tap lg:min-h-8" onclick={clearSearch}>
+						{m.workers_clear_search()}
+					</Button>
+				{/if}
+				<Button variant="outline" class="min-h-tap lg:min-h-8" onclick={clearFilters}>
+					{m.workers_clear_filters()}
+				</Button>
+			</div>
+		{/if}
+	</div>
+{/snippet}
+
 <!-- Padding leaves room for the panel's ring and shadow; nothing above this clips overflow.
      The record card overhangs the table card by the same 0.625rem at its top and its bottom.
      The bottom edge sits where the Mapping canvas's does: flush with the shell's gutter.
@@ -655,7 +690,10 @@
 					onkeydown={onViewportKeydown}
 					onfocus={onViewportFocus}
 					style="--workers-table-name-w: {nameRem}rem;"
-					class="min-h-0 min-w-0 flex-1 overflow-x-auto overflow-y-auto overscroll-x-none **:data-[slot=table-container]:overflow-visible! [&[data-overflow=true]_[data-pin=name]]:shadow-[inset_-1px_0_0_var(--rule)]"
+					class={cn(
+						'min-h-0 min-w-0 flex-1 overflow-x-auto overflow-y-auto overscroll-x-none **:data-[slot=table-container]:overflow-visible! [&[data-overflow=true]_[data-pin=name]]:shadow-[inset_-1px_0_0_var(--rule)]',
+						mobileViewport.current && rows.length === 0 && !newWorker.open && 'max-lg:flex-none'
+					)}
 				>
 					<Table.Root
 						role={mobileViewport.current ? undefined : 'grid'}
@@ -674,6 +712,7 @@
 										<Table.Head
 											colspan={header.colSpan}
 											data-column-id={header.column.id}
+											data-workers-mobile-width={meta?.mobileWidth ? '' : undefined}
 											draggable={columnOrder.isMovableColumn(header.column.id) ? 'true' : undefined}
 											data-dragging={columnOrder.draggingColumnId === header.column.id || undefined}
 											data-drop-target={columnOrder.dropTargetColumnId === header.column.id ||
@@ -727,6 +766,8 @@
 									{#each table.getVisibleLeafColumns() as column (column.id)}
 										{@const meta = column.columnDef.meta}
 										<Table.Cell
+											data-column-id={column.id}
+											data-workers-mobile-width={meta?.mobileWidth ? '' : undefined}
 											data-pin={meta?.pin}
 											style={columnStyle(meta)}
 											class={cn(meta?.widthClass, pinClass(meta))}
@@ -738,49 +779,10 @@
 									{/each}
 								</Table.Row>
 							{/if}
-							{#if rows.length === 0 && !newWorker.open}
+							{#if rows.length === 0 && !newWorker.open && !mobileViewport.current}
 								<Table.Row>
 									<Table.Cell colspan={tableColspan} class="h-32">
-										<div class="mx-auto flex max-w-prose flex-col items-center gap-1 text-center">
-											{#if data.length === 0}
-												<p class="text-sm font-medium">{m.workers_empty_title()}</p>
-												<p class="text-sm text-muted-foreground">{m.workers_empty_body()}</p>
-												<Button
-													class="mt-2 min-h-tap lg:min-h-8"
-													data-add-first-worker
-													onclick={() => editModel.requestNewWorker()}
-												>
-													{m.workers_add_first_worker()}
-												</Button>
-											{:else}
-												<p class="text-sm font-medium">
-													{m.workers_no_match({
-														filters: formatList(urlFilters.activeFilterNames)
-													})}
-												</p>
-												<p class="text-sm text-muted-foreground">
-													{m.workers_clear_filters_hint({ count: data.length })}
-												</p>
-												<div class="mt-2 flex flex-wrap justify-center gap-2">
-													{#if nameSearchActive}
-														<Button
-															variant="outline"
-															class="min-h-tap lg:min-h-8"
-															onclick={clearSearch}
-														>
-															{m.workers_clear_search()}
-														</Button>
-													{/if}
-													<Button
-														variant="outline"
-														class="min-h-tap lg:min-h-8"
-														onclick={clearFilters}
-													>
-														{m.workers_clear_filters()}
-													</Button>
-												</div>
-											{/if}
-										</div>
+										{@render workersEmptyState()}
 									</Table.Cell>
 								</Table.Row>
 							{:else}
@@ -822,6 +824,14 @@
 						</Table.Body>
 					</Table.Root>
 				</div>
+				{#if rows.length === 0 && !newWorker.open && mobileViewport.current}
+					<div
+						class="grid min-h-0 flex-1 place-items-center overflow-hidden p-4"
+						data-testid="workers-empty-state"
+					>
+						{@render workersEmptyState()}
+					</div>
+				{/if}
 				{#if columnFit.overflowing && !columnFit.scrolledToEnd}
 					<div
 						data-testid="workers-scroll-fade"
@@ -945,3 +955,15 @@
 		}}
 	/>
 {/if}
+
+<style>
+	/* Below lg every header carries two 44px controls, so the column keeps the width the
+	   cell declared for its full label. The value rides each cell's custom property; the
+	   table's fit logic and its desktop widths are untouched. */
+	@media (width < 64rem) {
+		:global([data-testid='workers-scroll-viewport'] th[data-workers-mobile-width]),
+		:global([data-testid='workers-scroll-viewport'] td[data-workers-mobile-width]) {
+			width: var(--workers-table-mobile-w) !important;
+		}
+	}
+</style>

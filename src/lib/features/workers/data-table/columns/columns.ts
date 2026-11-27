@@ -42,6 +42,7 @@ import {
 	WORKERS_SELECT_REM,
 	contentColumnNeedRem,
 	contentColumnRem,
+	mobileContentColumnRem,
 	workersColumnMinRem,
 	workersColumnRem,
 	type ContentColumnValueOptions
@@ -76,17 +77,22 @@ export function columnStyle(meta: DataTableColumnMeta | undefined): string | und
 		const width = meta.grow
 			? `calc(${meta.width} + var(--workers-table-slack, 0px) * ${parseFloat(meta.width)} / var(--workers-table-grow-rem, 1))`
 			: meta.width;
-		return `width:${width};${left}`;
+		return `width:${width};${left}${mobileWidthProperty(meta)}`;
 	}
 	// A shrinkable column rests between its minimum and its preferred width;
 	// rem lengths times the unitless `--workers-table-t` is a valid length.
 	const shrunk = `calc(${meta.minWidth} + (${meta.width} - ${meta.minWidth}) * var(--workers-table-t, 1))`;
-	if (!meta.grow) return `width:${shrunk};${left}`;
+	if (!meta.grow) return `width:${shrunk};${left}${mobileWidthProperty(meta)}`;
 	// A growing column takes its share of the spare width (`--workers-table-slack`,
 	// over the growing columns' total, `--workers-table-grow-rem`) on top of its own.
 	const rem = parseFloat(meta.width);
 	const width = `calc(${shrunk} + var(--workers-table-slack, 0px) * ${rem} / var(--workers-table-grow-rem, 1))`;
-	return `width:${width};${left}`;
+	return `width:${width};${left}${mobileWidthProperty(meta)}`;
+}
+
+/** The phone width a cell carries for the table's `max-lg` override; desktop ignores it. */
+function mobileWidthProperty(meta: DataTableColumnMeta): string {
+	return meta.mobileWidth ? `--workers-table-mobile-w:${meta.mobileWidth};` : '';
 }
 
 /** Pinned cells stick to the left and stay opaque so scrolled columns never show through. */
@@ -245,22 +251,30 @@ export function createColumns(
 	 */
 	const readableFloors = attributes.length >= WIDE_ATTRIBUTES_MIN;
 
-	/** A content column's preferred width and shrink floor. */
+	/** A content column's preferred width and shrink floor, plus its phone width. */
 	function contentWidths(
 		columnId: string,
 		label: string,
 		values: readonly string[],
 		preferredRem: number,
 		options: ContentColumnValueOptions = {}
-	): { width: string; minWidth: string } {
+	): { width: string; minWidth: string; mobileWidth: string } {
+		// Below lg the sort and filter buttons are 44px each, so the column keeps enough
+		// width for its whole label and both controls; above lg the fit logic is untouched.
+		const mobileWidth = `${Math.max(preferredRem, mobileContentColumnRem(label, values, options))}rem`;
 		if (!readableFloors) {
 			return {
 				width: `${preferredRem}rem`,
-				minWidth: `${workersColumnMinRem(columnId, preferredRem)}rem`
+				minWidth: `${workersColumnMinRem(columnId, preferredRem)}rem`,
+				mobileWidth
 			};
 		}
 		const need = contentColumnNeedRem(label, values, options);
-		return { width: `${Math.max(preferredRem, need)}rem`, minWidth: `${need}rem` };
+		return {
+			width: `${Math.max(preferredRem, need)}rem`,
+			minWidth: `${need}rem`,
+			mobileWidth: `${Math.max(preferredRem, need, mobileContentColumnRem(label, values, options))}rem`
+		};
 	}
 
 	return columnHelper.columns([

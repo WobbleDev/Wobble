@@ -113,7 +113,7 @@
      matrix below. The By list pages whole rows; the matrix scrolls vertically
      inside its card, so the page itself never scrolls on the no-scroll surface. -->
 <div
-	class="relative -m-4 flex min-h-0 flex-1 flex-col lg:-m-6"
+	class="relative -m-2 flex min-h-0 flex-1 flex-col lg:-m-6"
 	data-dashboard-root
 	class:fitted-dashboard={!view.shown}
 	data-focused={focus.focused}

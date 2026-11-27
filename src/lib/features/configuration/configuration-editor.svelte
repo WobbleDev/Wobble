@@ -188,7 +188,7 @@
 						type="button"
 						variant="outline"
 						size="sm"
-						class="shrink-0 coarse:min-h-tap"
+						class="shrink-0 max-md:min-h-tap max-md:min-w-tap coarse:min-h-tap"
 						data-testid="add-attribute"
 						disabled={draftState.saving}
 						onclick={() => draftState.openAddForm()}

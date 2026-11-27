@@ -179,7 +179,7 @@
 	<button
 		type="button"
 		data-placement-handle={answer.id}
-		class="flex size-7 shrink-0 touch-none items-center justify-center rounded-sm text-ink-3 hover:bg-hover focus-visible:ring-2 focus-visible:ring-ring coarse:size-tap"
+		class="flex size-7 shrink-0 touch-none items-center justify-center rounded-sm text-ink-3 hover:bg-hover focus-visible:ring-2 focus-visible:ring-ring max-md:size-tap coarse:size-tap"
 		class:cursor-grabbing={placement.isDraggingAnswer(answer.id) && !placement.refusal}
 		class:cursor-not-allowed={placement.isDraggingAnswer(answer.id) && Boolean(placement.refusal)}
 		aria-label={m.configuration_placement_handle({
@@ -254,7 +254,7 @@
 	<div class="flex items-center justify-end gap-0.5">
 		<button
 			type="button"
-			class="flex size-7 shrink-0 items-center justify-center rounded-sm p-0 text-ink-3 hover:bg-hover focus-visible:ring-2 focus-visible:ring-ring coarse:size-tap [@media(hover:hover)]:opacity-0 [@media(hover:hover)]:group-focus-within/row:opacity-100 [@media(hover:hover)]:group-hover/row:opacity-100 [@media(hover:hover)]:[[role=treeitem]:focus>[data-reorder-row]_&]:opacity-100"
+			class="flex size-7 shrink-0 items-center justify-center rounded-sm p-0 text-ink-3 hover:bg-hover focus-visible:ring-2 focus-visible:ring-ring max-md:size-tap coarse:size-tap [@media(hover:hover)]:opacity-0 [@media(hover:hover)]:group-focus-within/row:opacity-100 [@media(hover:hover)]:group-hover/row:opacity-100 [@media(hover:hover)]:[[role=treeitem]:focus>[data-reorder-row]_&]:opacity-100"
 			aria-label={m.configuration_add_child_value({ name: chipLabel })}
 			title={m.configuration_add_child_value({ name: chipLabel })}
 			data-action="add-child"
@@ -266,7 +266,7 @@
 		</button>
 		<button
 			type="button"
-			class="flex size-7 shrink-0 items-center justify-center rounded-sm p-0 text-ink-3 hover:bg-state-error/10 hover:text-state-error focus-visible:text-state-error focus-visible:ring-2 focus-visible:ring-ring coarse:size-tap [@media(hover:hover)]:opacity-0 [@media(hover:hover)]:group-focus-within/row:opacity-100 [@media(hover:hover)]:group-hover/row:opacity-100 [@media(hover:hover)]:[[role=treeitem]:focus>[data-reorder-row]_&]:opacity-100"
+			class="flex size-7 shrink-0 items-center justify-center rounded-sm p-0 text-ink-3 hover:bg-state-error/10 hover:text-state-error focus-visible:text-state-error focus-visible:ring-2 focus-visible:ring-ring max-md:size-tap coarse:size-tap [@media(hover:hover)]:opacity-0 [@media(hover:hover)]:group-focus-within/row:opacity-100 [@media(hover:hover)]:group-hover/row:opacity-100 [@media(hover:hover)]:[[role=treeitem]:focus>[data-reorder-row]_&]:opacity-100"
 			aria-label={m.configuration_remove_value({ name: chipLabel })}
 			title={m.configuration_remove_value({ name: chipLabel })}
 			data-action="remove"
@@ -379,7 +379,7 @@
 				{#if expandable}
 					<button
 						type="button"
-						class="key shrink-0 rounded-sm px-1 hover:bg-hover focus-visible:ring-2 focus-visible:ring-ring coarse:min-h-tap"
+						class="key shrink-0 rounded-sm px-1 hover:bg-hover focus-visible:ring-2 focus-visible:ring-ring max-md:min-h-tap max-md:min-w-tap coarse:min-h-tap"
 						data-testid="answer-select-mode"
 						aria-label={m.configuration_select_mode_toggle({
 							name: label,
@@ -405,7 +405,7 @@
 			{#if expandable}
 				<button
 					type="button"
-					class="flex size-8 items-center justify-center rounded-item p-0 hover:bg-hover coarse:size-tap"
+					class="flex size-8 items-center justify-center rounded-item p-0 hover:bg-hover max-md:size-tap coarse:size-tap"
 					aria-label={m.configuration_answer_toggle({ name: label })}
 					aria-expanded={expanded}
 					aria-controls={`${answer.id}-answers`}
@@ -426,7 +426,7 @@
 				{#if expandable}
 					<button
 						type="button"
-						class="shrink-0 rounded-full bg-inset px-2 text-xs leading-6 text-ink-2 hover:bg-hover focus-visible:ring-2 focus-visible:ring-ring @max-[24rem]:order-3 coarse:min-h-tap"
+						class="shrink-0 rounded-full bg-inset px-2 text-xs leading-6 text-ink-2 hover:bg-hover focus-visible:ring-2 focus-visible:ring-ring max-md:min-h-tap max-md:min-w-tap @max-[24rem]:order-3 coarse:min-h-tap"
 						data-testid="answer-select-mode"
 						aria-label={m.configuration_select_mode_toggle({
 							name: label,

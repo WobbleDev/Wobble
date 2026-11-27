@@ -5,6 +5,14 @@ import { seedWorkers } from './workers-table-grid.ts';
 import { wireDefinitions, wireWorkerAttributes } from './answer-wire.ts';
 import { addAttribute, openAttributeEditor, workerColumn } from './configuration-outline.ts';
 
+// Pin the media features the layout depends on, as the other specs do.
+test.use({
+	colorScheme: 'light',
+	reducedMotion: 'reduce',
+	forcedColors: 'none',
+	contrast: 'no-preference'
+});
+
 test('mobile navigation opens and closes after a route change', async ({ page }) => {
 	await page.setViewportSize({ width: 390, height: 844 });
 	await page.goto('/overview');
@@ -325,8 +333,14 @@ test('at 400px the bulk bar is pinned to the viewport bottom with no dead band u
 	// the plain corner inset instead of keeping a stale gap.
 	await bar.getByRole('button', { name: 'Clear selection' }).click();
 	await expect(bar).toHaveCount(0);
-	const clearedBox = await statusLine.boundingBox();
-	expect(Math.abs(844 - 16 - (clearedBox!.y + clearedBox!.height))).toBeLessThanOrEqual(1);
+	// The line reads the bar's height from a style the table resets after the bar leaves
+	// the DOM, so it settles a frame later: wait for the inset rather than read it mid-move.
+	await expect
+		.poll(async () => {
+			const clearedBox = await statusLine.boundingBox();
+			return Math.abs(844 - 16 - (clearedBox!.y + clearedBox!.height));
+		})
+		.toBeLessThanOrEqual(1);
 });
 
 test('at 400px tapping the bulk bar count opens the sheet on the selection summary', async ({
@@ -391,4 +405,318 @@ test('mobile Workers opens the record sheet only on a row tap, never from a resi
 	// Widening again never reopens it either.
 	await page.setViewportSize({ width: 800, height: 800 });
 	await expect(page.getByRole('dialog', { name: /^Worker details/ })).toHaveCount(0);
+});
+
+/**
+ * The five routes the issue covers, each measured at the phone every mobile screenshot
+ * uses. The helpers below describe the shell and page frame in one place, so a route
+ * test only names the controls it owns.
+ */
+const PHONE = { width: 390, height: 844 };
+const LONG_WORKSITE = 'A Very Long Worksite Name That Will Not Fit On A Phone Breadcrumb';
+
+async function renameWorksite(request: import('@playwright/test').APIRequestContext) {
+	const renamed = await request.put('/api/worksite', { data: { name: LONG_WORKSITE } });
+	expect(renamed.ok(), await renamed.text()).toBeTruthy();
+}
+
+/** The page and every shell viewport stay inside the phone; a panel may scroll itself. */
+async function expectNoHorizontalOverflow(page: import('@playwright/test').Page) {
+	const report = await page.evaluate(() => ({
+		document: {
+			client: document.documentElement.clientWidth,
+			scroll: document.documentElement.scrollWidth
+		},
+		viewports: [...document.querySelectorAll<HTMLElement>('[data-scroll-viewport]')].map(
+			(viewport) => ({
+				client: viewport.clientWidth,
+				scroll: viewport.scrollWidth
+			})
+		)
+	}));
+	expect(report.document.scroll, 'document scrollWidth').toBeLessThanOrEqual(PHONE.width);
+	expect(report.viewports.length).toBeGreaterThan(0);
+	for (const viewport of report.viewports) {
+		expect(viewport.scroll, '[data-scroll-viewport] scrollWidth').toBeLessThanOrEqual(
+			viewport.client
+		);
+	}
+}
+
+/** The accessible names of visible controls below the 44px physical floor. */
+async function tapTargetOffenders(controls: import('@playwright/test').Locator): Promise<string[]> {
+	return controls.evaluateAll((elements) =>
+		elements.flatMap((element) => {
+			const box = element.getBoundingClientRect();
+			const style = getComputedStyle(element);
+			if (box.width === 0 || box.height === 0) return [];
+			if (style.display === 'none' || style.visibility === 'hidden') return [];
+			if (element.closest('.sr-only')) return [];
+			if (box.width >= 44 && box.height >= 44) return [];
+			const name =
+				element.getAttribute('aria-label') ||
+				element.getAttribute('title') ||
+				(element.textContent ?? '').trim().replace(/\s+/g, ' ').slice(0, 60) ||
+				element.tagName.toLowerCase();
+			return [`${name} (${Math.round(box.width)}×${Math.round(box.height)})`];
+		})
+	);
+}
+
+async function expectTapTarget(
+	locator: import('@playwright/test').Locator,
+	what: string
+): Promise<void> {
+	await expect(locator, what).toBeVisible();
+	const box = await locator.boundingBox();
+	expect(box, `${what} has a box`).not.toBeNull();
+	expect(box!.width, `${what} width`).toBeGreaterThanOrEqual(44);
+	expect(box!.height, `${what} height`).toBeGreaterThanOrEqual(44);
+}
+
+/**
+ * The header is one phone row: the breadcrumb items share one vertical centre, the
+ * Worksite segment truncates its long name, and the compact Import control sits in the
+ * row beside the theme control whenever the route can import.
+ */
+async function expectMobileHeader(
+	page: import('@playwright/test').Page,
+	{ importable, worksite: hasWorksite = true }: { importable: boolean; worksite?: boolean }
+): Promise<void> {
+	const header = page.locator('header').first();
+	await expect(header).toBeVisible();
+	const headerBox = (await header.boundingBox())!;
+	expect(headerBox.height, 'header is one phone row').toBeLessThanOrEqual(68);
+
+	const crumbs = await page.locator('[data-slot="breadcrumb-list"] > *').evaluateAll((items) =>
+		items.flatMap((item) => {
+			// A Range measures the crumb TEXT, not the list item: the Worksite link keeps a
+			// 44px hit height, so its item box is centred even when its text is not.
+			const range = document.createRange();
+			range.selectNodeContents(item);
+			const text = range.toString().trim();
+			if (!text) return [];
+			const box = range.getBoundingClientRect();
+			return [{ centre: box.top + box.height / 2, text }];
+		})
+	);
+	expect(crumbs.length, 'breadcrumb items').toBeGreaterThanOrEqual(hasWorksite ? 2 : 1);
+	const centres = crumbs.map((crumb) => crumb.centre);
+	expect(
+		Math.max(...centres) - Math.min(...centres),
+		`breadcrumb items share one line: ${crumbs.map((crumb) => crumb.text).join(' > ')}`
+	).toBeLessThanOrEqual(1);
+
+	if (hasWorksite) {
+		const worksite = page.locator('[data-slot="breadcrumb-list"] a[href="/overview"]');
+		await expect(worksite).toHaveAttribute('title', LONG_WORKSITE);
+		const worksiteText = worksite.locator('span');
+		await expect(worksiteText).toHaveText(LONG_WORKSITE);
+		expect(
+			await worksiteText.evaluate((element) => element.scrollWidth > element.clientWidth + 1),
+			'Worksite segment truncates'
+		).toBe(true);
+		expect(
+			await worksiteText.evaluate((element) => getComputedStyle(element).textOverflow),
+			'Worksite segment shows an ellipsis'
+		).toBe('ellipsis');
+	}
+
+	if (!importable) {
+		await expect(page.getByRole('button', { name: 'Import contacts' })).toHaveCount(0);
+		return;
+	}
+
+	const importButton = page.getByRole('button', { name: 'Import contacts' });
+	await expect(importButton).toBeVisible();
+	const importBox = (await importButton.boundingBox())!;
+	expect(importBox.width, 'compact Import trigger width').toBeLessThanOrEqual(48);
+	expect(importBox.height, 'compact Import trigger height').toBeGreaterThanOrEqual(44);
+	expect(importBox.y, 'Import is in the header').toBeGreaterThanOrEqual(headerBox.y);
+	expect(importBox.y + importBox.height, 'Import is in the header').toBeLessThanOrEqual(
+		headerBox.y + headerBox.height
+	);
+	// The label is present for the accessible name but visually hidden below lg.
+	await expect(importButton.locator('span')).toBeHidden();
+}
+
+test('at 390x844 Overview fits the viewport and keeps its switcher and coverage tappable', async ({
+	page,
+	request
+}) => {
+	await seedWorkers(request);
+	await renameWorksite(request);
+	await page.setViewportSize(PHONE);
+	await page.goto('/overview');
+	await appReady(page);
+
+	await expectNoHorizontalOverflow(page);
+	await expectMobileHeader(page, { importable: true });
+	await expectTapTarget(
+		page.getByRole('button', { name: 'Department', exact: true }),
+		'Department switcher'
+	);
+	await expectTapTarget(
+		page.locator('[data-coverage-card] [data-coverage-marks]'),
+		'Committee coverage'
+	);
+});
+
+test('at 390x844 the empty Overview coverage control meets the tap floor too', async ({ page }) => {
+	await page.setViewportSize(PHONE);
+	await page.goto('/overview');
+	await appReady(page);
+
+	await expectNoHorizontalOverflow(page);
+	await expectTapTarget(
+		page.locator('[data-coverage-card] [data-coverage-marks]'),
+		'Empty coverage control'
+	);
+});
+
+test('at 390x844 Workers filters, select all and the empty state stay inside the viewport', async ({
+	page,
+	request
+}) => {
+	const departmentId = randomUUID();
+	const roleId = randomUUID();
+	const configured = await request.put('/api/attributes', {
+		data: wireDefinitions([
+			{
+				id: departmentId,
+				name: 'Department',
+				kind: 'category',
+				options: ['Front of House', 'Back of House']
+			},
+			{ id: roleId, name: 'Role', kind: 'category', options: ['Server', 'Cook'] }
+		])
+	});
+	expect(configured.ok(), await configured.text()).toBeTruthy();
+	for (const name of ['Spanish', 'Polish', 'Vietnamese']) {
+		const created = await request.post('/api/languages', { data: { name } });
+		expect(created.ok(), await created.text()).toBeTruthy();
+	}
+	await renameWorksite(request);
+
+	await page.setViewportSize(PHONE);
+	await page.goto('/workers');
+	await appReady(page);
+
+	await expectNoHorizontalOverflow(page);
+	await expectMobileHeader(page, { importable: true });
+
+	const emptyState = page.getByTestId('workers-empty-state');
+	await expect(emptyState).toBeVisible();
+	const emptyTitle = emptyState.getByText('No workers in this worksite yet.');
+	const emptyBox = (await emptyTitle.boundingBox())!;
+	expect(
+		Math.abs(emptyBox.x + emptyBox.width / 2 - PHONE.width / 2),
+		'empty state centre'
+	).toBeLessThanOrEqual(2);
+
+	await expectTapTarget(
+		page.getByRole('button', { name: 'Filter Assessment' }),
+		'Filter Assessment'
+	);
+	await expectTapTarget(page.getByRole('button', { name: 'Filter Languages' }), 'Filter Languages');
+	const selectAll = page.getByRole('checkbox', { name: 'Select all matching workers' });
+	await expectTapTarget(selectAll.locator('xpath=..'), 'Select all');
+
+	// Below lg each header carries a 44px sort and a 44px filter beside a whole title.
+	for (const title of ['Name', 'Assessment', 'Languages', 'Department', 'Role']) {
+		const header = page.getByRole('columnheader', { name: title });
+		await expect(header, `${title} column header`).toBeAttached();
+		const sort = header.getByRole('button').first();
+		await expectTapTarget(sort, `${title} sort`);
+		const label = sort.locator('span[title]');
+		await expect(label).toHaveText(title);
+		const measured = await label.evaluate((element) => ({
+			scrollWidth: element.scrollWidth,
+			clientWidth: element.clientWidth
+		}));
+		expect(
+			measured.scrollWidth,
+			`${title} title is not truncated (${measured.scrollWidth}px in ${measured.clientWidth}px)`
+		).toBeLessThanOrEqual(measured.clientWidth + 1);
+
+		const filter = header.getByRole('button', { name: `Filter ${title}` });
+		if (await filter.count()) await expectTapTarget(filter, `Filter ${title}`);
+	}
+});
+
+test('at 390x844 Mapping zoom controls meet the tap floor and the route does not overflow', async ({
+	page,
+	request
+}) => {
+	await seedWorkers(request);
+	await renameWorksite(request);
+	await page.setViewportSize(PHONE);
+	await page.goto('/mapping');
+	await appReady(page);
+	await expect(page.getByTestId('relationship-map-canvas')).toBeVisible();
+
+	await expectNoHorizontalOverflow(page);
+	await expectMobileHeader(page, { importable: true });
+	for (const name of ['Zoom out', 'Zoom in', 'Reset zoom']) {
+		await expectTapTarget(page.getByRole('button', { name }), name);
+	}
+});
+
+test('at 390x844 Configuration meets the tap floor on every control in its attribute column', async ({
+	page,
+	request
+}) => {
+	await seedWorkers(request);
+	// A fresh Worksite has no Agitations; the rename buttons measured below need two.
+	for (const text of ['Hours', 'Pay']) {
+		const created = await request.post('/api/agitations', { data: { text } });
+		expect(created.ok(), await created.text()).toBeTruthy();
+	}
+	await renameWorksite(request);
+	await page.setViewportSize(PHONE);
+	await page.goto('/configuration');
+	await appReady(page);
+	await page.evaluate(() => document.fonts.ready);
+
+	await expectNoHorizontalOverflow(page);
+	await expectMobileHeader(page, { importable: false });
+
+	// Add attribute, each Attribute's fold, rename, type switch and reorder handle.
+	await expectTapTarget(page.getByTestId('add-attribute'), 'Add attribute');
+	const column = page.getByTestId('worker-column');
+	expect(await tapTargetOffenders(column.getByRole('button'))).toEqual([]);
+	// Toggle Agitations shares the fold heading, below the Attributes column.
+	await expectTapTarget(
+		page.getByRole('button', { name: 'Toggle Agitations' }),
+		'Toggle Agitations'
+	);
+	// Twelve per-Attribute controls plus Add attribute and Toggle Agitations.
+	expect(
+		await column
+			.getByRole('button', { name: /^(Rename |Switch from |Reorder |Toggle options for )/ })
+			.count()
+	).toBe(12);
+
+	// The Agitations chips' rename buttons are at least 44px wide below md.
+	for (const name of ['Edit Hours', 'Edit Pay']) {
+		await expectTapTarget(page.getByRole('button', { name, exact: true }), name);
+	}
+});
+
+test('at 390x844 Settings search results meet the tap floor with no route overflow', async ({
+	page
+}) => {
+	await page.setViewportSize(PHONE);
+	await page.goto('/settings');
+	await appReady(page);
+
+	await expectNoHorizontalOverflow(page);
+	await expectMobileHeader(page, { importable: false, worksite: false });
+
+	const search = page.getByRole('searchbox', { name: 'Search settings' });
+	await search.fill('data');
+	const results = page.getByRole('list', { name: 'Matching sections' }).getByRole('link');
+	await expect(results.first()).toBeVisible();
+	expect(await results.count()).toBeGreaterThan(0);
+	expect(await tapTargetOffenders(results)).toEqual([]);
 });
