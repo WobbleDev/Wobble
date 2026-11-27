@@ -2243,6 +2243,36 @@ test('New Worker creates a named Worker in name order and keeps it selected', as
 	await expect(attributeReading(created, 'Shifts')).toContainText('Brunch');
 });
 
+test('New Worker does not drag the page sideways while the card slides in', async ({
+	page,
+	request
+}) => {
+	await openWorkersTable(page, request, { seed: seedInspectorWorkers });
+	// The card slides in from beyond the page's right edge; focusing its Name input mid-slide must
+	// not scroll the page's scroller to reach it (the table lurched left and snapped back).
+	await page.evaluate(() => {
+		const scroller = document.querySelector('[data-testid="tab-scroll-viewport"]') as HTMLElement;
+		const seen = { maxScrollLeft: 0, done: false };
+		(window as unknown as { __slide: typeof seen }).__slide = seen;
+		const start = performance.now();
+		const sample = () => {
+			seen.maxScrollLeft = Math.max(seen.maxScrollLeft, scroller.scrollLeft);
+			if (performance.now() - start < 600) requestAnimationFrame(sample);
+			else seen.done = true;
+		};
+		requestAnimationFrame(sample);
+	});
+	await page.getByRole('button', { name: 'New Worker', exact: true }).click();
+	await expect(inspector(page, 'Unnamed worker').getByLabel('Name')).toBeFocused();
+	await page.waitForFunction(
+		() => (window as unknown as { __slide: { done: boolean } }).__slide.done
+	);
+	const seen = await page.evaluate(
+		() => (window as unknown as { __slide: { maxScrollLeft: number } }).__slide
+	);
+	expect(seen.maxScrollLeft).toBe(0);
+});
+
 test('Escape on New Worker removes the placeholder and selects the previous Worker again', async ({
 	page,
 	request

@@ -259,7 +259,10 @@
 
 	function focusInput() {
 		void tick().then(() => {
-			input?.focus();
+			// New Worker mounts this input inside the record card while it is still sliding in from
+			// beyond the page's right edge. A scrolling focus would drag the page's scroller
+			// sideways to reach it, so the table lurches left and snaps back when the slide ends.
+			input?.focus({ preventScroll: true });
 			// Selecting after typing has begun would make the next keystroke replace it.
 			if (draft === openedWith) input?.select();
 		});
