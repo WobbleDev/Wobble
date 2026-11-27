@@ -174,6 +174,7 @@
 				leaders={coverage.leaders}
 				needed={coverage.needed}
 				size="size-4"
+				class="min-h-tap min-w-tap justify-center lg:min-h-4 lg:min-w-0"
 				label={coverageLabel}
 				tooltip={coverageTooltip}
 				detail={coverageBasis}

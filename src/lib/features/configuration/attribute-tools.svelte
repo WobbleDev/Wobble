@@ -45,7 +45,7 @@
 		<button
 			type="button"
 			data-placement-handle={`pending-${attribute.id}`}
-			class="flex size-7 shrink-0 touch-none items-center justify-center rounded-sm text-ink-3 hover:bg-hover focus-visible:ring-2 focus-visible:ring-ring coarse:size-tap"
+			class="flex size-7 shrink-0 touch-none items-center justify-center rounded-sm text-ink-3 hover:bg-hover focus-visible:ring-2 focus-visible:ring-ring max-md:size-tap coarse:size-tap"
 			class:cursor-grabbing={placement.isDraggingPending(attribute.id)}
 			aria-label={m.configuration_placement_pending_handle({
 				name: attribute.newOption.trim()

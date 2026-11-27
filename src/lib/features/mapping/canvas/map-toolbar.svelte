@@ -770,7 +770,7 @@
 						{...props}
 						variant="ghost"
 						size="icon-sm"
-						class="size-auto h-full w-tap p-0 hover:bg-hover md:w-9"
+						class="size-auto h-full min-h-tap w-tap p-0 hover:bg-hover md:min-h-0 md:w-9"
 						aria-label={m.mapping_zoom_out()}
 						onclick={() => panZoom.zoomOut()}
 					>
@@ -788,7 +788,7 @@
 						{...props}
 						variant="ghost"
 						size="icon-sm"
-						class="size-auto h-full w-tap p-0 hover:bg-hover md:w-9"
+						class="size-auto h-full min-h-tap w-tap p-0 hover:bg-hover md:min-h-0 md:w-9"
 						aria-label={m.mapping_zoom_in()}
 						onclick={() => panZoom.zoomIn()}
 					>
@@ -803,7 +803,7 @@
 						{...props}
 						variant="ghost"
 						size="icon-sm"
-						class="size-auto h-full w-tap p-0 hover:bg-hover md:w-9"
+						class="size-auto h-full min-h-tap w-tap p-0 hover:bg-hover md:min-h-0 md:w-9"
 						aria-label={m.mapping_reset_zoom()}
 						onclick={onResetFrame}
 					>

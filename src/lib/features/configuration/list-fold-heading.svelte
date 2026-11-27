@@ -22,7 +22,7 @@
 <div class="sticky top-0 z-10 -mx-6 flex items-center gap-2 bg-panel px-6 pt-6 pb-1">
 	<button
 		type="button"
-		class="flex min-h-9 min-w-0 flex-1 items-center gap-1 rounded-sm text-left focus-visible:ring-2 focus-visible:ring-ring coarse:min-h-tap"
+		class="flex min-h-9 min-w-0 flex-1 items-center gap-1 rounded-sm text-left focus-visible:ring-2 focus-visible:ring-ring max-md:min-h-tap max-md:min-w-tap coarse:min-h-tap"
 		aria-expanded={open}
 		aria-controls={controls}
 		aria-label={m.configuration_list_toggle({ name: title })}

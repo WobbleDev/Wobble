@@ -252,7 +252,7 @@
 									event.preventDefault();
 									jumpTo(section.id);
 								}}
-								class="block rounded-control px-3 py-1.5 text-sm text-ink-2 shadow-surface hover:bg-hover"
+								class="inline-flex min-h-tap min-w-tap items-center rounded-control px-3 py-1.5 text-sm text-ink-2 shadow-surface hover:bg-hover"
 								>{section.label}</a
 							>
 						</li>

@@ -23,22 +23,24 @@
 	<!-- The list inherits the trail's label voice; its own default re-declares
 	     body size in ink-muted, which is what made the trail render at 14px
 	     instead of the 11px the root declares (the recorded divergence). -->
-	<Breadcrumb.List class="text-xs text-ink">
+	<Breadcrumb.List class="min-w-0 flex-nowrap items-center text-xs text-ink">
 		{#if onSettings}
-			<Breadcrumb.Item>
+			<Breadcrumb.Item class="shrink-0">
 				<Breadcrumb.Page>{currentTitle}</Breadcrumb.Page>
 			</Breadcrumb.Item>
 		{:else}
 			{#if worksiteName}
-				<Breadcrumb.Item>
-					<Breadcrumb.Link href="/overview" class="block max-w-[48ch] truncate" title={worksiteName}
-						>{worksiteName}</Breadcrumb.Link
+				<Breadcrumb.Item class="min-w-0 shrink">
+					<Breadcrumb.Link
+						href="/overview"
+						class="block max-w-full truncate lg:max-w-[48ch]"
+						title={worksiteName}>{worksiteName}</Breadcrumb.Link
 					>
 				</Breadcrumb.Item>
-				<Breadcrumb.Separator />
+				<Breadcrumb.Separator class="shrink-0" />
 			{/if}
 			{#if onCommittee}
-				<Breadcrumb.Item>
+				<Breadcrumb.Item class="shrink-0">
 					<button
 						type="button"
 						data-breadcrumb-back
@@ -48,12 +50,12 @@
 						{currentTitle}
 					</button>
 				</Breadcrumb.Item>
-				<Breadcrumb.Separator />
-				<Breadcrumb.Item>
+				<Breadcrumb.Separator class="shrink-0" />
+				<Breadcrumb.Item class="shrink-0">
 					<Breadcrumb.Page>{m.overview_committee_title()}</Breadcrumb.Page>
 				</Breadcrumb.Item>
 			{:else}
-				<Breadcrumb.Item>
+				<Breadcrumb.Item class="shrink-0">
 					<Breadcrumb.Page>{currentTitle}</Breadcrumb.Page>
 				</Breadcrumb.Item>
 			{/if}

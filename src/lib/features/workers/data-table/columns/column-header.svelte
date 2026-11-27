@@ -88,7 +88,7 @@
 					size="icon"
 					aria-label={m.workers_filter_aria({ title })}
 					aria-pressed={selected.length > 0}
-					class={`relative size-7 min-h-tap p-0 hover:bg-ink/10 aria-expanded:bg-ink/10 lg:min-h-7 ${selected.length ? 'text-primary' : 'text-muted-foreground'}`}
+					class={`relative size-7 min-h-tap min-w-tap p-0 hover:bg-ink/10 aria-expanded:bg-ink/10 lg:min-h-7 lg:min-w-7 ${selected.length ? 'text-primary' : 'text-muted-foreground'}`}
 				>
 					<FunnelIcon class="size-3" />
 					{#if selected.length}

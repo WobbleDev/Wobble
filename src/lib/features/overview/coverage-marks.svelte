@@ -6,6 +6,7 @@
 	 * may say more.
 	 */
 	import * as Tooltip from '#lib/components/ui/tooltip/index.ts';
+	import { cn } from '#lib/utils.ts';
 
 	let {
 		leaders,
@@ -14,7 +15,9 @@
 		tooltip = label,
 		detail,
 		size = 'size-3.5',
-		cap = 30
+		cap = 30,
+		/** Extra classes for the trigger, e.g. a mobile tap-target floor. */
+		class: className = undefined
 	}: {
 		leaders: number;
 		needed: number;
@@ -26,6 +29,7 @@
 		detail?: string;
 		size?: string;
 		cap?: number;
+		class?: string;
 	} = $props();
 
 	const total = $derived(Math.max(leaders, needed));
@@ -35,7 +39,10 @@
 
 <Tooltip.Root>
 	<Tooltip.Trigger
-		class="inline-flex min-h-4 max-w-full min-w-0 flex-wrap items-center gap-1 rounded-sm focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+		class={cn(
+			'inline-flex min-h-4 max-w-full min-w-0 flex-wrap items-center gap-1 rounded-sm focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none',
+			className
+		)}
 		aria-label={label}
 		data-coverage-marks
 		data-leaders={leaders}
