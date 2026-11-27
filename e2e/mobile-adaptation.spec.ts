@@ -333,8 +333,14 @@ test('at 400px the bulk bar is pinned to the viewport bottom with no dead band u
 	// the plain corner inset instead of keeping a stale gap.
 	await bar.getByRole('button', { name: 'Clear selection' }).click();
 	await expect(bar).toHaveCount(0);
-	const clearedBox = await statusLine.boundingBox();
-	expect(Math.abs(844 - 16 - (clearedBox!.y + clearedBox!.height))).toBeLessThanOrEqual(1);
+	// The line reads the bar's height from a style the table resets after the bar leaves
+	// the DOM, so it settles a frame later: wait for the inset rather than read it mid-move.
+	await expect
+		.poll(async () => {
+			const clearedBox = await statusLine.boundingBox();
+			return Math.abs(844 - 16 - (clearedBox!.y + clearedBox!.height));
+		})
+		.toBeLessThanOrEqual(1);
 });
 
 test('at 400px tapping the bulk bar count opens the sheet on the selection summary', async ({
