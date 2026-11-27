@@ -546,7 +546,10 @@ test('at 390x844 Overview fits the viewport and keeps its switcher and coverage 
 
 	await expectNoHorizontalOverflow(page);
 	await expectMobileHeader(page, { importable: true });
-	await expectTapTarget(page.getByRole('combobox', { name: 'Department' }), 'Department switcher');
+	await expectTapTarget(
+		page.getByRole('button', { name: 'Department', exact: true }),
+		'Department switcher'
+	);
 	await expectTapTarget(
 		page.locator('[data-coverage-card] [data-coverage-marks]'),
 		'Committee coverage'
@@ -658,6 +661,11 @@ test('at 390x844 Configuration meets the tap floor on every control in its attri
 	request
 }) => {
 	await seedWorkers(request);
+	// A fresh Worksite has no Agitations; the rename buttons measured below need two.
+	for (const text of ['Hours', 'Pay']) {
+		const created = await request.post('/api/agitations', { data: { text } });
+		expect(created.ok(), await created.text()).toBeTruthy();
+	}
 	await renameWorksite(request);
 	await page.setViewportSize(PHONE);
 	await page.goto('/configuration');
