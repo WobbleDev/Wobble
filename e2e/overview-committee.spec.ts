@@ -195,6 +195,9 @@ test('locks the Committee card and both header lines as the Committee grows', as
 	request
 }) => {
 	expect((await request.put('/api/attributes', { data: wireDefinitions([]) })).ok()).toBeTruthy();
+	// One Worker per Leader, so every Leader is also needed and the last reading is the
+	// widest the card holds: 120 / 120 Leaders.
+	expect((await request.put('/api/worksite', { data: { committeeGoal: 1 } })).ok()).toBeTruthy();
 	await page.setViewportSize({ width: 1024, height: 640 });
 	await page.goto('/overview');
 	await appReady(page);
@@ -426,43 +429,46 @@ test('flips colliding pinned tie name tags clear of one another', async ({ page,
 
 	const tags = page.locator('[data-dot-name]');
 	await expect(tags).toHaveCount(6);
-	// The tags are measured after they render; the first frame leaves them all
-	// above, then the colliding ties move below or beside their dots.
-	await expect
-		.poll(() =>
-			tags.evaluateAll(
-				(nodes) => nodes.filter((node) => node.getAttribute('data-tag-side') !== 'above').length
-			)
-		)
-		.toBeGreaterThan(0);
+	// Dot positions follow the Workers' generated ids, so whether any two tags collide
+	// above their dots differs from run to run. What must always hold, once the tags are
+	// measured, is that none covers another and the Leader keeps the place above.
+	// (Which way a colliding tie moves is covered by tag-placement.spec.ts.)
+	const readBoxes = () =>
+		tags.evaluateAll((nodes) =>
+			nodes.map((node) => {
+				const box = node.getBoundingClientRect();
+				return {
+					id: node.getAttribute('data-dot-name') as string,
+					side: node.getAttribute('data-tag-side'),
+					left: box.left,
+					top: box.top,
+					right: box.right,
+					bottom: box.bottom
+				};
+			})
+		);
+	type Box = Awaited<ReturnType<typeof readBoxes>>[number];
+	const overlapping = (boxes: Box[]) => {
+		const pairs: string[] = [];
+		for (let first = 0; first < boxes.length; first += 1) {
+			for (let second = first + 1; second < boxes.length; second += 1) {
+				const a = boxes[first];
+				const b = boxes[second];
+				if (
+					Math.min(a.right, b.right) - Math.max(a.left, b.left) > 0 &&
+					Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top) > 0
+				)
+					pairs.push(`${a.id}/${b.id}`);
+			}
+		}
+		return pairs;
+	};
 
-	const boxes = await tags.evaluateAll((nodes) =>
-		nodes.map((node) => {
-			const box = node.getBoundingClientRect();
-			return {
-				id: node.getAttribute('data-dot-name') as string,
-				side: node.getAttribute('data-tag-side'),
-				left: box.left,
-				top: box.top,
-				right: box.right,
-				bottom: box.bottom
-			};
-		})
-	);
-
+	// The first frame leaves every tag above; the placement settles once each is measured.
+	await expect.poll(async () => overlapping(await readBoxes())).toEqual([]);
+	const boxes = await readBoxes();
 	// The selected Leader keeps the preferred place above its dot.
 	expect(boxes.find((box) => box.id === leaderId)?.side).toBe('above');
-
-	for (let first = 0; first < boxes.length; first += 1) {
-		for (let second = first + 1; second < boxes.length; second += 1) {
-			const a = boxes[first];
-			const b = boxes[second];
-			const overlap =
-				Math.min(a.right, b.right) - Math.max(a.left, b.left) > 0 &&
-				Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top) > 0;
-			expect(overlap, `tags ${a.id} and ${b.id} stay apart`).toBe(false);
-		}
-	}
 });
 
 test('the Committee column takes glass, the label floor and a 2px focus outline', async ({
