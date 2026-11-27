@@ -46,6 +46,13 @@ describe('OverviewSupportCard', () => {
 		expect(card()).toMatch(/75<span class="pct-sign[^"]*">%<\/span>/);
 	});
 
+	it('titles the card Committee and leaves the old metric wording off the card', () => {
+		const body = card();
+		expect(body).toMatch(/aria-label="Committee"/);
+		expect(body).toMatch(/<h2[^>]*>\s*Committee\s*<\/h2>/);
+		expect(body).not.toContain('Committee coverage');
+	});
+
 	it('names the support count and the coverage fraction from the same readings', () => {
 		const body = card();
 		expect(body).toContain('3 of 4');
