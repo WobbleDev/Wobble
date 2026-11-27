@@ -347,8 +347,10 @@ test('a parent merge names and remaps the saved value and both draft surfaces', 
 	await expect(preview.getByRole('heading', { name: 'Merge Central into North' })).toBeVisible();
 	await expect(preview.getByLabel(`Resolution for ${alexName} Worker value`)).toBeVisible();
 	await expect(preview.getByLabel(`Resolution for ${danaName} Worker value`)).toBeVisible();
-	await expect(preview.getByLabel(`Resolution for ${danaName} Worker draft update`)).toBeVisible();
-	await expect(preview.getByLabel(`Resolution for ${danaName} Worker draft base`)).toBeVisible();
+	await expect(preview.getByLabel(`Resolution for ${danaName} Unsaved worker draft`)).toBeVisible();
+	await expect(
+		preview.getByLabel(`Resolution for ${danaName} Draft starting values`)
+	).toBeVisible();
 	await preview.getByRole('button', { name: 'Save changes', exact: true }).click();
 	await expect(preview).toHaveCount(0);
 

@@ -693,7 +693,7 @@ test('at 390x844 Configuration meets the tap floor on every control in its attri
 	// Twelve per-Attribute controls plus Add attribute and Toggle Agitations.
 	expect(
 		await column
-			.getByRole('button', { name: /^(Rename |Switch from |Reorder |Toggle options for )/ })
+			.getByRole('button', { name: /^(Rename |Switch from |Reorder |Toggle values for )/ })
 			.count()
 	).toBe(12);
 

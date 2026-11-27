@@ -115,7 +115,7 @@ test('hiding an Assessment in the key removes its rows', async ({ page, request 
 	await page.goto('/mapping');
 	await showTable(page);
 	await expect(page.locator('[data-map-table-row]')).toHaveCount(3);
-	await page.getByRole('button', { name: 'Hostile, 1 workers, shown' }).click();
+	await page.getByRole('button', { name: 'Hostile, 1 worker, shown' }).click();
 	await expect(page.locator('[data-map-table-row]')).toHaveCount(2);
 	await expect(page.getByRole('cell', { name: 'Cy', exact: true })).toHaveCount(0);
 });
@@ -125,8 +125,8 @@ test('a row opens the record panel', async ({ page, request }) => {
 	await page.goto('/mapping');
 	await showTable(page);
 	await page.locator('[data-map-table-row]').filter({ hasText: 'Ada' }).dispatchEvent('click');
-	await expect(page.getByRole('region', { name: 'Worker record' })).toBeVisible();
-	await expect(page.getByRole('region', { name: 'Worker record' })).toContainText('Ada');
+	await expect(page.getByRole('region', { name: 'Worker details' })).toBeVisible();
+	await expect(page.getByRole('region', { name: 'Worker details' })).toContainText('Ada');
 });
 
 test('headers sort by keyboard', async ({ page, request }) => {
@@ -145,8 +145,8 @@ test('filtering out the selected worker closes the record panel', async ({ page,
 	await page.goto('/mapping');
 	await showTable(page);
 	await page.locator('[data-map-table-row]').filter({ hasText: 'Cy' }).dispatchEvent('click');
-	await expect(page.getByRole('region', { name: 'Worker record' })).toBeVisible();
-	await page.getByRole('button', { name: 'Hostile, 1 workers, shown' }).click();
-	await expect(page.getByRole('region', { name: 'Worker record' })).toHaveCount(0);
+	await expect(page.getByRole('region', { name: 'Worker details' })).toBeVisible();
+	await page.getByRole('button', { name: 'Hostile, 1 worker, shown' }).click();
+	await expect(page.getByRole('region', { name: 'Worker details' })).toHaveCount(0);
 	await expect(page.locator('[data-map-table-row]').filter({ hasText: 'Cy' })).toHaveCount(0);
 });

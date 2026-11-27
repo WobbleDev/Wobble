@@ -396,7 +396,7 @@ test('an empty Worksite says how to bring workers in', async ({ page }) => {
 	await appReady(page);
 
 	await expect(page.getByText('No workers in this worksite yet.')).toBeVisible();
-	await expect(page.getByText('or use Import contacts to bring in a list.')).toBeVisible();
+	await expect(page.getByText('New Worker adds the first one.')).toBeVisible();
 });
 
 /** The header labels the grid shows left to right, the selection checkbox first. */

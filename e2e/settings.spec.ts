@@ -1465,6 +1465,7 @@ test('@product-gap-14 disables unfinished operations and leaves live settings wo
 	expect(sectionIds.slice(0, 3)).toEqual(['data', 'backups', 'privacy']);
 	expect(sectionIds.slice(-2)).toEqual(['unavailable', 'reset']);
 	await expect(page.locator('#unavailable details')).not.toHaveAttribute('open', '');
+	await expect(page.locator('#unavailable details summary')).toHaveText('2 planned features');
 	await expect(page.locator('#unavailable button, #unavailable input')).toHaveCount(0);
 	for (const row of ['upd', 'prv-lock']) {
 		await expect(settingsRow(page, row)).toHaveAttribute('data-unavailable', 'true');
@@ -1643,11 +1644,11 @@ test('About lists the open-source licences and filters them', async ({ page }) =
 	await appReady(page);
 
 	await expect(settingsRow(page, 'about-licences')).not.toHaveAttribute('data-unavailable', 'true');
-	await settingsRow(page, 'about-licences').getByRole('button', { name: 'View licences…' }).click();
+	await settingsRow(page, 'about-licences').getByRole('button', { name: 'View licenses…' }).click();
 
-	const dialog = page.getByRole('dialog', { name: 'Open-source licences' });
-	await expect(dialog).toContainText('each with its licence text');
-	await dialog.getByRole('searchbox', { name: 'Search packages and licences' }).fill('svelte');
+	const dialog = page.getByRole('dialog', { name: 'Open-source licenses' });
+	await expect(dialog).toContainText('each with its license text');
+	await dialog.getByRole('searchbox', { name: 'Search packages and licenses' }).fill('svelte');
 	const entry = dialog.locator('[data-licence="svelte"]');
 	await expect(entry).toBeVisible();
 	await entry.locator('summary').click();
@@ -1668,7 +1669,7 @@ test('search narrows the index and Enter jumps to the first match', async ({ pag
 	await search.fill('passphrase');
 	await expect(index.getByRole('link')).toHaveText(['Privacy']);
 
-	await search.fill('licences');
+	await search.fill('licenses');
 	await expect(index.getByRole('link')).toHaveText(['About']);
 	await search.press('Enter');
 	await expect(index.getByRole('link', { name: 'About' })).toHaveAttribute(

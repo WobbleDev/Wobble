@@ -13,7 +13,9 @@
 
 <SettingsWell id="unavailable" title={m.settings_not_available()}>
 	<details bind:open class="border-t border-rule px-6 py-3">
-		<summary class="cursor-pointer text-sm text-ink-3">{items.length}</summary>
+		<summary class="cursor-pointer text-sm text-ink-3"
+			>{m.settings_planned_features({ count: items.length })}</summary
+		>
 		<ul class="mt-2 grid gap-1">
 			{#each items as item (item.id)}
 				<li data-row={item.id} data-unavailable="true" class="py-1 text-sm text-ink-2">

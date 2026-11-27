@@ -137,12 +137,12 @@ test('reads Spanish Mapping controls, the Map table, and an Isolated selection',
 
 	// Selecting a Worker opens the Spanish record and its actions.
 	await page.locator('svg g[role="button"][data-node-id]').first().click();
-	const record = page.getByRole('region', { name: 'Ficha del trabajador' });
+	const record = page.getByRole('region', { name: 'Detalles del trabajador' });
 	await expect(record).toBeVisible();
 	await expect(record.getByRole('button', { name: 'Aislar' })).toBeVisible();
 	await expect(record.getByRole('link', { name: 'Abrir en Trabajadores' })).toBeVisible();
 	await expect(record).toContainText('Idiomas');
-	await expect(record).toContainText('No hay idiomas registrados.');
+	await expect(record).toContainText('Aún no hay idiomas.');
 
 	// Isolate narrows both the drawing and the table to the same membership.
 	await record.getByRole('button', { name: 'Aislar' }).click();

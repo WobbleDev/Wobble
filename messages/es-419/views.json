@@ -32,7 +32,7 @@
 	"views_place_visibility": "Visibilidad",
 	"views_place_highlight": "Resaltado",
 	"views_problem_attribute": "El atributo ya no existe",
-	"views_problem_answer": "La respuesta ya no existe en {attribute}",
+	"views_problem_answer": "El valor ya no existe en {attribute}",
 	"views_problem_language": "El idioma ya no existe",
 	"views_problem_agitation": "El asunto laboral ya no existe",
 	"views_problem_assessment": "Evaluación no reconocida",

@@ -471,8 +471,8 @@ test.describe('in Spanish', () => {
 		await expect(page.getByRole('heading', { name: 'Por', exact: true })).toBeVisible();
 		await expect(page.getByLabel('Front of House: líderes 1 de 1')).toBeVisible();
 		await expect(page.getByRole('columnheader', { name: 'Todos' })).toBeVisible();
-		await expect(page.getByRole('region', { name: 'Agitaciones' })).toBeVisible();
-		const matrix = page.getByRole('region', { name: 'Agitaciones' });
+		await expect(page.getByRole('region', { name: 'Asuntos laborales' })).toBeVisible();
+		const matrix = page.getByRole('region', { name: 'Asuntos laborales' });
 		await expect(matrix).toContainText(
 			'Trabajadores por Department. Selecciona una cifra para ver a los trabajadores.'
 		);

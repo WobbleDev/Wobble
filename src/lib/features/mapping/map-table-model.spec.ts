@@ -144,7 +144,7 @@ describe('mapTableRows', () => {
 		expect(rows.find(({ id }) => id === 'alex')?.languages).toBe('English');
 		// The node's recorded order does not decide the reading; vocabulary order does.
 		expect(rows.find(({ id }) => id === 'casey')?.languages).toBe('English, Spanish');
-		expect(rows.find(({ id }) => id === 'drew')?.languages).toBe('No languages recorded.');
+		expect(rows.find(({ id }) => id === 'drew')?.languages).toBe('No languages yet.');
 	});
 
 	it('marks a row as matching the highlight only when its Worker is in highlightIds', () => {

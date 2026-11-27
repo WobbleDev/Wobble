@@ -300,7 +300,7 @@ test('the worker card docks below the control strip, which never reflows', async
 			.evaluateAll((nodes) => nodes.map((node) => Math.round(node.getBoundingClientRect().y)));
 
 		await clickWorker(page, /^Layout Worker, /);
-		const card = page.getByRole('region', { name: 'Worker record' });
+		const card = page.getByRole('region', { name: 'Worker details' });
 		await expect(card).toBeVisible();
 
 		const after = (await strip.boundingBox())!;
@@ -334,7 +334,7 @@ test('a tall card scrolls inside itself and stays clear of the strip', async ({
 	await page.goto('/mapping');
 	await waitForMapReady(page);
 	await selectOnMap(page, workerId);
-	const card = page.getByRole('region', { name: 'Worker record' });
+	const card = page.getByRole('region', { name: 'Worker details' });
 	await expect(card).toBeVisible();
 	const strip = (await stripOf(page).boundingBox())!;
 	const cardBox = (await card.boundingBox())!;
@@ -452,7 +452,7 @@ test('a drag pans with the worker card open, while a click still closes it', asy
 	await seedRelatedPair(request);
 	await openMap(page);
 
-	const card = page.getByRole('region', { name: 'Worker record' });
+	const card = page.getByRole('region', { name: 'Worker details' });
 	await clickWorker(page, /^Ada, /);
 	await expect(card).toBeVisible();
 
@@ -515,7 +515,7 @@ async function freeCanvasBox(page: Page, options: { card?: boolean } = {}): Prom
 		.boundingBox())!;
 	const strip = (await stripOf(page).boundingBox())!;
 	const right = options.card
-		? (await page.getByRole('region', { name: 'Worker record' }).boundingBox())!.x - 1
+		? (await page.getByRole('region', { name: 'Worker details' }).boundingBox())!.x - 1
 		: surface.x + surface.width;
 	const top = strip.y + strip.height - 1;
 	const bottom = surface.y + surface.height;
@@ -563,7 +563,7 @@ test('Reset zoom recovers a panned-away map inside the free canvas', async ({ pa
 	// With the card open the map centres in the canvas the card leaves, rather
 	// than behind it.
 	await clickWorker(page, /^Ada, /);
-	await expect(page.getByRole('region', { name: 'Worker record' })).toBeVisible();
+	await expect(page.getByRole('region', { name: 'Worker details' })).toBeVisible();
 	await dragMapAway();
 	await page.getByRole('button', { name: 'Reset zoom' }).click();
 	await expect

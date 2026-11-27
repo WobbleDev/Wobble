@@ -255,7 +255,7 @@ test('bulk Delete removes the selection and offers no Undo', async ({ page, requ
 
 	const dialog = page.getByRole('alertdialog');
 	await expect(dialog).toHaveAccessibleName('Delete 2 workers?');
-	await expect(dialog).toContainText('their recorded Relationships');
+	await expect(dialog).toContainText('their saved Relationships');
 	await expect(dialog).toContainText('This cannot be undone');
 	await dialog.getByRole('button', { name: 'Delete' }).click();
 

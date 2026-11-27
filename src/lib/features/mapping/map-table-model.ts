@@ -121,7 +121,7 @@ export function mapTableRows(
  */
 function languageReading(node: WorkerGraphNode, languages: readonly Language[]): string {
 	const recorded = languages.filter(({ id }) => node.languages?.includes(id));
-	if (recorded.length === 0) return 'No languages recorded.';
+	if (recorded.length === 0) return 'No languages yet.';
 
 	return recorded.map(({ name }) => name).join(', ');
 }

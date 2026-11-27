@@ -32,7 +32,7 @@
 	"views_place_visibility": "Visibility",
 	"views_place_highlight": "Highlight",
 	"views_problem_attribute": "Attribute no longer exists",
-	"views_problem_answer": "Answer no longer exists in {attribute}",
+	"views_problem_answer": "Value no longer exists in {attribute}",
 	"views_problem_language": "Language no longer exists",
 	"views_problem_agitation": "Agitation no longer exists",
 	"views_problem_assessment": "Assessment not recognized",

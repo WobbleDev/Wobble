@@ -116,7 +116,7 @@ test('opening Configuration selects the first Attribute inside a hairline-divide
 
 	// The first Attribute opens with its values beside the list; no empty pick pane is shown.
 	const first = page.getByTestId('attribute-row').first();
-	await expect(first.getByRole('button', { name: /^Toggle options for/ })).toHaveAttribute(
+	await expect(first.getByRole('button', { name: /^Toggle values for/ })).toHaveAttribute(
 		'aria-expanded',
 		'true'
 	);

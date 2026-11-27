@@ -96,7 +96,7 @@ test('Relationships show a count and open the Worker on the Mapping', async ({ p
 	await openWorkersTable(page, request, { seed });
 	const record = await open(page, 'Ada Lovelace');
 
-	await expect(record.getByTestId('relationship-count')).toHaveText('1 linked');
+	await expect(record.getByTestId('relationship-count')).toHaveText('1 relationship');
 	await record.getByRole('button', { name: 'Show on Mapping' }).click();
 	await expect(page).toHaveURL(/\/mapping/);
 	expect(new URL(page.url()).search).not.toContain('Ada');

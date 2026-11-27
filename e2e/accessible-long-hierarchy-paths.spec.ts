@@ -602,7 +602,7 @@ test('Mapping names long groups in its controls, detail and table without breaki
 	const caseyNode = page.getByRole('button', { name: /^Rachel Carson, / });
 	await caseyNode.focus();
 	await caseyNode.press('Enter');
-	const record = page.getByRole('region', { name: 'Worker record' });
+	const record = page.getByRole('region', { name: 'Worker details' });
 	await expect(record).toBeVisible();
 	await expect(record).toContainText(frontAPath);
 

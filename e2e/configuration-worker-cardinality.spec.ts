@@ -215,8 +215,8 @@ test('@ticket-15 previews and resolves saved value, draft update, and draft base
 	// The conversion names the saved value, draft update and draft base independently.
 	await expect(preview.getByText('Change Shift to Single-Select')).toBeVisible();
 	await expect(preview.getByText(alex + ' — Worker value')).toBeVisible();
-	await expect(preview.getByText(alex + ' — Worker draft update')).toBeVisible();
-	await expect(preview.getByText(alex + ' — Worker draft base')).toBeVisible();
+	await expect(preview.getByText(alex + ' — Unsaved worker draft')).toBeVisible();
+	await expect(preview.getByText(alex + ' — Draft starting values')).toBeVisible();
 	await expect(
 		preview.getByTestId('configuration-resolutions').getByText('Shift: Trainer, Steward')
 	).toBeVisible();
@@ -235,15 +235,15 @@ test('@ticket-15 previews and resolves saved value, draft update, and draft base
 
 	// The confirm stays disabled until every lossy surface has its own retained answer.
 	await expect(confirmButton(page)).toBeDisabled();
-	await choose(preview.getByLabel('Retained value for ' + alex + ' value'), {
+	await choose(preview.getByLabel('Retained value for ' + alex + ': value'), {
 		label: 'Keep Steward'
 	});
 	await expect(confirmButton(page)).toBeDisabled();
-	await choose(preview.getByLabel('Retained value for ' + alex + ' draft update'), {
+	await choose(preview.getByLabel('Retained value for ' + alex + ': unsaved worker draft'), {
 		label: 'Keep Trainer'
 	});
 	await expect(confirmButton(page)).toBeDisabled();
-	await choose(preview.getByLabel('Retained value for ' + alex + ' draft base'), {
+	await choose(preview.getByLabel('Retained value for ' + alex + ': draft starting values'), {
 		label: 'Keep Lead'
 	});
 	await expect(confirmButton(page)).toBeEnabled();
@@ -347,8 +347,8 @@ test('an unsafe conversion shows validation feedback and leaves every stored sel
 	await expect(preview.getByText('Change Shift to Single-Select')).toBeVisible();
 	await expect(preview.getByTestId('configuration-resolutions')).toBeVisible();
 	await expect(preview.getByText(alex + ' — Worker value')).toBeVisible();
-	await expect(preview.getByText(alex + ' — Worker draft update')).toBeVisible();
-	await expect(preview.getByText(alex + ' — Worker draft base')).toBeVisible();
+	await expect(preview.getByText(alex + ' — Unsaved worker draft')).toBeVisible();
+	await expect(preview.getByText(alex + ' — Draft starting values')).toBeVisible();
 	await expect(confirmButton(page)).toBeDisabled();
 
 	await preview.getByRole('button', { name: 'Cancel' }).click();
@@ -400,8 +400,8 @@ test('@ticket-15 keeps an explicit no-value choice on all lossy surfaces', async
 	const preview = previewDialog(page);
 	await expect(preview).toBeVisible();
 	await expect(confirmButton(page)).toBeDisabled();
-	for (const surface of ['value', 'draft update', 'draft base']) {
-		await choose(preview.getByLabel('Retained value for ' + alex + ' ' + surface), {
+	for (const surface of ['value', 'unsaved worker draft', 'draft starting values']) {
+		await choose(preview.getByLabel('Retained value for ' + alex + ': ' + surface), {
 			label: 'No value'
 		});
 	}
@@ -451,7 +451,7 @@ test('@ticket-15 single-select to multi-select stays lossless and needs no choic
 	const preview = previewDialog(page);
 	await expect(preview).toBeVisible();
 	await expect(preview.getByTestId('configuration-resolutions')).toHaveCount(0);
-	await expect(preview.getByText('Each Worker keeps the value they recorded.')).toBeVisible();
+	await expect(preview.getByText('Each Worker keeps their current value.')).toBeVisible();
 	expect(writes).toEqual([]);
 	await preview.getByRole('button', { name: 'Save changes' }).click();
 	await expect(preview).toHaveCount(0);
@@ -511,10 +511,10 @@ test('@ticket-15 a Worker value change after the preview is refused as stale', a
 	await expect(preview).toBeVisible();
 	for (const [surface, keep] of [
 		['value', 'Keep Steward'],
-		['draft update', 'Keep Trainer'],
-		['draft base', 'Keep Lead']
+		['unsaved worker draft', 'Keep Trainer'],
+		['draft starting values', 'Keep Lead']
 	]) {
-		await choose(preview.getByLabel('Retained value for ' + alex + ' ' + surface), {
+		await choose(preview.getByLabel('Retained value for ' + alex + ': ' + surface), {
 			label: keep
 		});
 	}
@@ -674,7 +674,7 @@ test('[folded from product-gap-12] converting Roles to Single-Select explains re
 	await expect(preview.getByText('Change Roles to Single-Select')).toBeVisible();
 	await expect(
 		preview.getByText(
-			'3 Workers affected; 1 value discarded. Every affected Worker value, draft update, and draft base keeps the value chosen here; the others are discarded.'
+			'3 Workers affected; 1 value discarded. Every affected Worker value and unsaved draft keeps the value chosen here; the others are discarded.'
 		)
 	).toBeVisible();
 	expect(writes).toEqual([]);
