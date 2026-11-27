@@ -67,6 +67,7 @@
 	"overview_breakdown_previous_label": "Previous support breakdown page",
 	"overview_breakdown_next_label": "Next support breakdown page",
 	"overview_breakdown_page_label": "Support breakdown page",
+	"overview_coverage_unit_other": "● = {count} Leaders",
 	"overview_coverage_units": "{leaders} / {needed} Leaders",
 	"overview_coverage_tooltip": "Leaders: {leaders} of {needed}",
 	"overview_segment_link_all": "{count} {standing}, of all Workers. Open in Workers",

@@ -67,6 +67,7 @@
 	"overview_breakdown_previous_label": "Página anterior del desglose de apoyo",
 	"overview_breakdown_next_label": "Página siguiente del desglose de apoyo",
 	"overview_breakdown_page_label": "Página del desglose de apoyo",
+	"overview_coverage_unit_other": "● = {count} Líderes",
 	"overview_coverage_units": "{leaders} / {needed} líderes",
 	"overview_coverage_tooltip": "Líderes: {leaders} de {needed}",
 	"overview_segment_link_all": "{count} {standing}, de todos los trabajadores. Abrir en Trabajadores",

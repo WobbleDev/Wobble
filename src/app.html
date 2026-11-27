@@ -111,7 +111,7 @@
 				overscroll-behavior: none;
 			}
 			html.dark {
-				background: #0f0f0f;
+				background: #0e0f10;
 			}
 			#splash {
 				position: fixed;
@@ -141,10 +141,10 @@
 					sans-serif;
 			}
 			.dark #splash {
-				background-color: #0f0f0f;
+				background-color: #0e0f10;
 				background-image: radial-gradient(
 					80rem 60rem at 0% 0%,
-					color-mix(in srgb, #090909 55%, transparent),
+					color-mix(in srgb, #0a0b0c 55%, transparent),
 					transparent 60%
 				);
 				color: #a4a4a4;
@@ -152,13 +152,13 @@
 			/* A first launch has no cached theme: follow the system until the app knows. */
 			@media (prefers-color-scheme: dark) {
 				html:not([data-theme]) {
-					background: #0f0f0f;
+					background: #0e0f10;
 				}
 				html:not([data-theme]) #splash {
-					background-color: #0f0f0f;
+					background-color: #0e0f10;
 					background-image: radial-gradient(
 						80rem 60rem at 0% 0%,
-						color-mix(in srgb, #090909 55%, transparent),
+						color-mix(in srgb, #0a0b0c 55%, transparent),
 						transparent 60%
 					);
 					color: #a4a4a4;

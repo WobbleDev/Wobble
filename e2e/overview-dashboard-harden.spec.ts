@@ -17,7 +17,7 @@ import { createWorker } from './api.ts';
  */
 
 const overallCard = (page: Page) => page.getByRole('region', { name: 'Overall support' });
-const coverageCard = (page: Page) => page.getByRole('region', { name: 'Committee coverage' });
+const coverageCard = (page: Page) => page.getByRole('region', { name: 'Committee' });
 const byCard = (page: Page) => page.getByRole('region', { name: /^By/ });
 const agitationsCard = (page: Page) => page.getByRole('region', { name: 'Agitations' });
 

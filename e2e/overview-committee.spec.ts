@@ -190,6 +190,108 @@ test('coverage marks stay inside their card at the narrow floor', async ({ page,
 	expect(outside).toBe(0);
 });
 
+test('locks the Committee card and both header lines as the Committee grows', async ({
+	page,
+	request
+}) => {
+	expect((await request.put('/api/attributes', { data: wireDefinitions([]) })).ok()).toBeTruthy();
+	// One Worker per Leader, so every Leader is also needed and the last reading is the
+	// widest the card holds: 120 / 120 Leaders.
+	expect((await request.put('/api/worksite', { data: { committeeGoal: 1 } })).ok()).toBeTruthy();
+	await page.setViewportSize({ width: 1024, height: 640 });
+	await page.goto('/overview');
+	await appReady(page);
+
+	const sizes = [3, 12, 28, 120];
+	const readings: {
+		width: number;
+		height: number;
+		row1Height: number;
+		headingHeight: number;
+		headingLine: number;
+		headingOffset: number;
+		figureHeight: number;
+		figureLine: number;
+		figureOffset: number;
+		headingClipped: boolean;
+		figureClipped: boolean;
+		figureOverflow: number;
+		figureLines: number;
+		figureText: string;
+		figureHasCheck: boolean;
+		caption: string | null;
+	}[] = [];
+	let created = 0;
+	for (const size of sizes) {
+		for (; created < size; created += 1) {
+			await createWorker(request, { name: `Leader ${created}`, assessment: 'Leader' });
+		}
+		await page.reload();
+		await appReady(page);
+		readings.push(
+			await page.evaluate(() => {
+				const card = document.querySelector('[data-coverage-card]') as HTMLElement;
+				const dashboard = document.querySelector('[data-dashboard]') as HTMLElement;
+				const cardBox = card.getBoundingClientRect();
+				const heading = card.querySelector('h2') as HTMLElement;
+				const figure = card.querySelector('[data-coverage-figure]') as HTMLElement;
+				const units = card.querySelector('[data-coverage-units]') as HTMLElement;
+				const sections = [...dashboard.querySelectorAll(':scope > section')] as HTMLElement[];
+				const top = Math.min(...sections.map((section) => section.getBoundingClientRect().top));
+				const row1 = sections.filter(
+					(section) => Math.abs(section.getBoundingClientRect().top - top) < 1
+				);
+				const row1Height =
+					Math.max(...row1.map((section) => section.getBoundingClientRect().bottom)) - top;
+				const range = document.createRange();
+				range.selectNodeContents(units);
+				return {
+					width: cardBox.width,
+					height: cardBox.height,
+					row1Height,
+					headingHeight: heading.getBoundingClientRect().height,
+					headingLine: parseFloat(getComputedStyle(heading).lineHeight),
+					headingOffset: heading.getBoundingClientRect().top - cardBox.top,
+					figureHeight: figure.getBoundingClientRect().height,
+					figureLine: parseFloat(getComputedStyle(figure).lineHeight),
+					figureOffset: figure.getBoundingClientRect().top - cardBox.top,
+					headingClipped: heading.scrollWidth > heading.clientWidth + 1,
+					figureClipped: units.scrollWidth > units.clientWidth + 1,
+					figureOverflow: units.scrollWidth - units.clientWidth,
+					figureLines: new Set([...range.getClientRects()].map((line) => Math.round(line.top)))
+						.size,
+					figureText: units.textContent?.trim() ?? '',
+					figureHasCheck: Boolean(figure.querySelector('svg')),
+					caption: card.textContent?.match(/= \d+ Leaders/)?.[0] ?? null
+				};
+			})
+		);
+	}
+
+	const baseline = readings[0];
+	for (const reading of readings) {
+		expect(reading.width).toBeCloseTo(baseline.width, 0);
+		expect(reading.height).toBeCloseTo(baseline.height, 0);
+		expect(reading.row1Height).toBeCloseTo(baseline.row1Height, 0);
+		expect(reading.headingHeight).toBeCloseTo(reading.headingLine, 0);
+		expect(reading.figureHeight).toBeCloseTo(reading.figureLine, 0);
+		expect(reading.headingOffset).toBeCloseTo(baseline.headingOffset, 0);
+		expect(reading.figureOffset).toBeCloseTo(baseline.figureOffset, 0);
+		expect(reading.headingClipped).toBe(false);
+		expect(reading.figureClipped).toBe(false);
+	}
+	expect(readings[3].caption).toMatch(/= \d+ Leaders/);
+
+	// 120 / 120 Leaders is the longest reading the card must hold whole: it keeps to one
+	// line, without an ellipsis, with the target-met check beside it.
+	const long = readings[3];
+	expect(long.figureText).toBe('120 / 120 Leaders');
+	expect(long.figureClipped).toBe(false);
+	expect(long.figureOverflow).toBeLessThanOrEqual(1);
+	expect(long.figureLines).toBe(1);
+	expect(long.figureHasCheck).toBe(true);
+});
+
 test('the coverage card carries the way in, flies in as the column head, and the page title follows', async ({
 	page,
 	request
@@ -327,43 +429,46 @@ test('flips colliding pinned tie name tags clear of one another', async ({ page,
 
 	const tags = page.locator('[data-dot-name]');
 	await expect(tags).toHaveCount(6);
-	// The tags are measured after they render; the first frame leaves them all
-	// above, then the colliding ties move below or beside their dots.
-	await expect
-		.poll(() =>
-			tags.evaluateAll(
-				(nodes) => nodes.filter((node) => node.getAttribute('data-tag-side') !== 'above').length
-			)
-		)
-		.toBeGreaterThan(0);
+	// Dot positions follow the Workers' generated ids, so whether any two tags collide
+	// above their dots differs from run to run. What must always hold, once the tags are
+	// measured, is that none covers another and the Leader keeps the place above.
+	// (Which way a colliding tie moves is covered by tag-placement.spec.ts.)
+	const readBoxes = () =>
+		tags.evaluateAll((nodes) =>
+			nodes.map((node) => {
+				const box = node.getBoundingClientRect();
+				return {
+					id: node.getAttribute('data-dot-name') as string,
+					side: node.getAttribute('data-tag-side'),
+					left: box.left,
+					top: box.top,
+					right: box.right,
+					bottom: box.bottom
+				};
+			})
+		);
+	type Box = Awaited<ReturnType<typeof readBoxes>>[number];
+	const overlapping = (boxes: Box[]) => {
+		const pairs: string[] = [];
+		for (let first = 0; first < boxes.length; first += 1) {
+			for (let second = first + 1; second < boxes.length; second += 1) {
+				const a = boxes[first];
+				const b = boxes[second];
+				if (
+					Math.min(a.right, b.right) - Math.max(a.left, b.left) > 0 &&
+					Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top) > 0
+				)
+					pairs.push(`${a.id}/${b.id}`);
+			}
+		}
+		return pairs;
+	};
 
-	const boxes = await tags.evaluateAll((nodes) =>
-		nodes.map((node) => {
-			const box = node.getBoundingClientRect();
-			return {
-				id: node.getAttribute('data-dot-name') as string,
-				side: node.getAttribute('data-tag-side'),
-				left: box.left,
-				top: box.top,
-				right: box.right,
-				bottom: box.bottom
-			};
-		})
-	);
-
+	// The first frame leaves every tag above; the placement settles once each is measured.
+	await expect.poll(async () => overlapping(await readBoxes())).toEqual([]);
+	const boxes = await readBoxes();
 	// The selected Leader keeps the preferred place above its dot.
 	expect(boxes.find((box) => box.id === leaderId)?.side).toBe('above');
-
-	for (let first = 0; first < boxes.length; first += 1) {
-		for (let second = first + 1; second < boxes.length; second += 1) {
-			const a = boxes[first];
-			const b = boxes[second];
-			const overlap =
-				Math.min(a.right, b.right) - Math.max(a.left, b.left) > 0 &&
-				Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top) > 0;
-			expect(overlap, `tags ${a.id} and ${b.id} stay apart`).toBe(false);
-		}
-	}
 });
 
 test('the Committee column takes glass, the label floor and a 2px focus outline', async ({

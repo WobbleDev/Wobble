@@ -101,6 +101,10 @@
 	--surface-glass: color-mix(in srgb, #ffffff 68%, transparent);
 	--surface-glass-solid: #f3f3f3;
 	--surface-blur: 24px;
+	/* The top-edge highlight is a Dark Mode material: on a light surface a white
+	   inner line would disappear, so light declares a transparent layer and the
+	   shadows below keep their exact stacks. */
+	--surface-edge: 0 0 #0000;
 	--surface-shadow: 0 5px 20px #3957780a, 0 1px 3px #39577805;
 	--rail-shadow: 0 8px 26px #3957780d;
 	--wash: #eeeeee;
@@ -198,23 +202,28 @@
    table. The ramp keeps its order and stays declared once in :root, so a stop
    number is the same tone in either theme and only the roles move. */
 .dark {
-	--page: #0f0f0f;
-	--panel: #181818;
-	--inset: #090909;
-	--nav: #181818;
-	--hover: #252525;
-	/* A touch stronger than light: on a hovered row (--hover) 9% ink is ~0.04 lighter. */
-	--chip: color-mix(in oklab, var(--ink) 24%, var(--panel));
-	--toolbar: #0f0f0f;
+	/* The ladder separates by tone rather than by outline: the page sits at the
+	   bottom, the inset steps up a little, and the panel and navigation share the
+	   brightest neutral. Every step is a solid literal, so the surfaces stay
+	   legible over the fixed wash and the softer --rule can remain a hairline. */
+	--page: #0e0f10;
+	--panel: #1c1d1f;
+	--inset: #141517;
+	--nav: #1c1d1f;
+	--hover: #26282b;
+	/* 16% ink keeps the chip a visible step above a hovered row (--hover) without
+	   turning the fill into a second control. */
+	--chip: color-mix(in oklab, var(--ink) 16%, var(--panel));
+	--toolbar: #141517;
 
 	--ink: #eeeeee;
 	--ink-2: #cacaca;
 	--ink-3: #a4a4a4;
 	--ink-inverse: #101419;
 
-	--rule: #2e2e2e;
-	/* Dark: #717171 measures 3.64:1 on the dark panel and 3.14:1 on the
-	   hover/selected-row fills the boundary also paints on. */
+	--rule: #2a2c2f;
+	/* Dark: #717171 measures 3.46:1 on the #1c1d1f panel and 3.03:1 on the
+	   #26282b hover/selected-row fills the boundary also paints on. */
 	--rule-strong: #717171;
 
 	--action: #eeeeee;
@@ -223,12 +232,16 @@
 	--focus: #eeeeee;
 
 	/* --- Tier 2 · material roles ------------------------------------- */
-	--surface-glass: color-mix(in srgb, #181818 74%, transparent);
-	--surface-glass-solid: #181818;
+	--surface-glass: color-mix(in srgb, #1c1d1f 80%, transparent);
+	--surface-glass-solid: #1c1d1f;
 	--surface-blur: 24px;
-	--surface-shadow: 0 5px 20px #0000004d, 0 1px 3px #00000033;
-	--rail-shadow: 0 8px 26px #00000059;
-	--wash: #090909;
+	/* A soft 1px highlight on the top edge is what separates an elevated surface
+	   from the panel it rests on; it is composed first in both elevation stacks,
+	   so every --surface-shadow / --rail-shadow consumer gets it. */
+	--surface-edge: inset 0 1px 0 rgba(255, 255, 255, 0.055);
+	--surface-shadow: var(--surface-edge), 0 6px 22px #00000059, 0 1px 3px #0000004d;
+	--rail-shadow: var(--surface-edge), 0 10px 30px #00000073;
+	--wash: #0a0b0c;
 
 	--state-error: var(--err-300);
 	--data-support: var(--assess-leader);

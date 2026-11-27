@@ -86,7 +86,7 @@
 	"domain_category": "Single-Select",
 	"domain_tag": "Multi-Select",
 	"domain_committee": "Organizing Committee",
-	"domain_committee_coverage": "Committee coverage",
+	"domain_committee_coverage": "Committee",
 	"common_save": "Save",
 	"common_cancel": "Cancel",
 	"common_delete": "Delete",
