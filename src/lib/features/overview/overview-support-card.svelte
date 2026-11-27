@@ -187,7 +187,7 @@
 		<div class="mt-1 flex h-7 min-w-0 shrink-0 items-center gap-2.5 leading-7" data-coverage-figure>
 			<span
 				bind:this={units}
-				class="block min-w-0 truncate text-[clamp(1rem,8.5cqw,1.75rem)] leading-none font-semibold tracking-headline whitespace-nowrap tabular-nums"
+				class="-my-1 block min-w-0 truncate py-1 text-[clamp(1rem,8.5cqw,1.75rem)] leading-none font-semibold tracking-headline whitespace-nowrap tabular-nums"
 				data-coverage-units
 				>{m.overview_coverage_units({
 					leaders: coverage.leaders,
