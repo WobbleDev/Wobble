@@ -80,7 +80,21 @@
 	function jumpTo(id: string) {
 		if (id === 'unavailable') unavailableOpen = true;
 		selectSection(id);
-		document.getElementById(id)?.scrollIntoView({ block: 'start' });
+		scrollWellToTop(id);
+	}
+
+	/* Scrolls the page's own scroller and nothing above it. scrollIntoView also scrolls every
+	   ancestor that can scroll, and the shell's main column is overflow-hidden: that still
+	   counts, so the jump slid the header, the title and the rail's frame up out of view and
+	   left them there, on Configuration too, until the app was reloaded. */
+	function scrollWellToTop(id: string) {
+		const well = document.getElementById(id);
+		const viewport = document.querySelector<HTMLElement>('[data-scroll-viewport]');
+		if (!well || !viewport) return;
+
+		const margin = parseFloat(getComputedStyle(well).scrollMarginTop) || 0;
+		const offset = well.getBoundingClientRect().top - viewport.getBoundingClientRect().top;
+		viewport.scrollTo({ top: viewport.scrollTop + offset - margin });
 	}
 
 	function onSearchKeydown(event: KeyboardEvent) {

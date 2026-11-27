@@ -295,6 +295,39 @@ test('clicking a section in the index selects it at the foot of the page', async
 	await expect(link('About')).toHaveAttribute('aria-current', 'location');
 });
 
+test('jumping to a section scrolls the page, not the window frame', async ({ page }) => {
+	await page.setViewportSize({ width: 1400, height: 800 });
+	await page.goto('/settings');
+	await appReady(page);
+
+	const main = page.locator('#main-content');
+	const title = page.getByRole('heading', { name: 'Settings', exact: true });
+	const index = page.getByRole('navigation', { name: 'Settings sections' });
+	const titleTop = (await title.boundingBox())!.y;
+
+	// The shell's main column is overflow-hidden, which scrollIntoView still scrolls: the
+	// jump used to slide the header and title out of view and leave them there.
+	for (const name of ['Backups', 'Theme', 'About', 'Reset', 'Data']) {
+		// A real pointer click: Playwright's own click scrolls ancestors into view when it
+		// retries, which would move the overflow-hidden column on its own.
+		const box = (await index.getByRole('link', { name, exact: true }).boundingBox())!;
+		await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
+		await expect(index.getByRole('link', { name, exact: true })).toHaveAttribute(
+			'aria-current',
+			'location'
+		);
+		expect(await main.evaluate((node) => node.scrollTop)).toBe(0);
+		expect((await title.boundingBox())!.y).toBe(titleTop);
+	}
+
+	// The frame was also thrown off on the next page, which the shell keeps mounted.
+	await page.getByRole('link', { name: 'Configuration', exact: true }).click();
+	const configurationTitle = page.getByRole('heading', { name: 'Configuration', exact: true });
+	await expect(configurationTitle).toBeVisible();
+	expect(await main.evaluate((node) => node.scrollTop)).toBe(0);
+	expect((await configurationTitle.boundingBox())!.y).toBe(titleTop);
+});
+
 test('a failed preference save reports an error and restores the saved choice', async ({
 	page
 }) => {
