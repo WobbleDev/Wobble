@@ -133,10 +133,16 @@
 	{/if}
 </section>
 
-<section class="panel" aria-label={m.domain_committee_coverage()} data-coverage-card>
-	<div>
-		<div class="flex items-start justify-between gap-2">
-			<h2 class="section-title">{m.domain_committee_coverage()}</h2>
+<section
+	class="panel flex flex-col overflow-hidden"
+	aria-label={m.domain_committee_coverage()}
+	data-coverage-card
+>
+	<div class="flex min-h-0 flex-1 flex-col">
+		<div class="flex h-7 shrink-0 items-start justify-between gap-2">
+			<h2 class="section-title min-w-0 truncate whitespace-nowrap">
+				{m.domain_committee_coverage()}
+			</h2>
 			{#if canFocus}
 				<Tooltip.Root>
 					<Tooltip.Trigger
@@ -152,9 +158,9 @@
 				</Tooltip.Root>
 			{/if}
 		</div>
-		<div class="mt-1 flex items-center gap-2.5" data-coverage-figure>
+		<div class="mt-1 flex h-7 min-w-0 shrink-0 items-center gap-2.5 leading-7" data-coverage-figure>
 			<span
-				class="text-[clamp(1.25rem,10cqw,1.75rem)] leading-none font-semibold tracking-headline tabular-nums"
+				class="block min-w-0 truncate text-[clamp(1rem,8.5cqw,1.75rem)] leading-none font-semibold tracking-headline whitespace-nowrap tabular-nums"
 				data-coverage-units
 				>{m.overview_coverage_units({
 					leaders: coverage.leaders,
@@ -169,11 +175,10 @@
 				/>
 			{/if}
 		</div>
-		<div class="mt-2">
+		<div class="mt-2 min-h-0 flex-1">
 			<CoverageMarks
 				leaders={coverage.leaders}
 				needed={coverage.needed}
-				size="size-4"
 				label={coverageLabel}
 				tooltip={coverageTooltip}
 				detail={coverageBasis}
@@ -183,6 +188,13 @@
 </section>
 
 <style>
+	/* The card is locked: a large Committee adapts inside the dot zone, never by
+	   growing Row 1 and squeezing the panels below. */
+	section[data-coverage-card] {
+		--coverage-card-h: 7.75rem;
+		height: var(--coverage-card-h);
+		align-self: start;
+	}
 	/* The sign rides at the figure's cap height, a step down, so the number leads. */
 	.pct-sign {
 		font-size: 0.55em;

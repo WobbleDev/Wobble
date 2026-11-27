@@ -114,7 +114,7 @@ async function seedDashboard(request: APIRequestContext): Promise<DashboardSeed>
 }
 
 const overallCard = (page: Page) => page.getByRole('region', { name: 'Overall support' });
-const coverageCard = (page: Page) => page.getByRole('region', { name: 'Committee coverage' });
+const coverageCard = (page: Page) => page.getByRole('region', { name: 'Committee' });
 const byCard = (page: Page, name: string) => page.getByRole('region', { name: 'By ' + name });
 const agitationsCard = (page: Page) => page.getByRole('region', { name: 'Agitations' });
 const chartBackdrop = (page: Page) => page.locator('[data-bullseye-base]');
@@ -135,6 +135,7 @@ test('shows Overall support and Committee coverage figures', async ({ page, requ
 	await expect(overall.getByRole('link', { name: /^3 Supporters, of all Workers/ })).toBeVisible();
 
 	const coverage = coverageCard(page);
+	await expect(coverage.getByRole('heading', { name: 'Committee', exact: true })).toBeVisible();
 	const marks = coverage.locator('[data-coverage-marks]');
 	await expect(marks).toHaveAttribute('aria-label', /Leaders: 1 of 2 · .*short of target/);
 	await expect(coverage.locator('[data-mark="leader"]')).toHaveCount(1);

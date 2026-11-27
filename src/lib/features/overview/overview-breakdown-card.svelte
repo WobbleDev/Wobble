@@ -141,8 +141,7 @@
 						<CoverageMarks
 							leaders={group.leaders}
 							needed={group.needed}
-							size="size-2.5"
-							cap={20}
+							maxDiameter={10}
 							label={m.overview_group_coverage({
 								leaders: group.leaders,
 								needed: group.needed,

@@ -190,6 +190,85 @@ test('coverage marks stay inside their card at the narrow floor', async ({ page,
 	expect(outside).toBe(0);
 });
 
+test('locks the Committee card and both header lines as the Committee grows', async ({
+	page,
+	request
+}) => {
+	expect((await request.put('/api/attributes', { data: wireDefinitions([]) })).ok()).toBeTruthy();
+	await page.setViewportSize({ width: 1024, height: 640 });
+	await page.goto('/overview');
+	await appReady(page);
+
+	const sizes = [3, 12, 28, 120];
+	const readings: {
+		width: number;
+		height: number;
+		row1Height: number;
+		headingHeight: number;
+		headingLine: number;
+		headingOffset: number;
+		figureHeight: number;
+		figureLine: number;
+		figureOffset: number;
+		headingClipped: boolean;
+		figureClipped: boolean;
+		caption: string | null;
+	}[] = [];
+	let created = 0;
+	for (const size of sizes) {
+		for (; created < size; created += 1) {
+			await createWorker(request, { name: `Leader ${created}`, assessment: 'Leader' });
+		}
+		await page.reload();
+		await appReady(page);
+		readings.push(
+			await page.evaluate(() => {
+				const card = document.querySelector('[data-coverage-card]') as HTMLElement;
+				const dashboard = document.querySelector('[data-dashboard]') as HTMLElement;
+				const cardBox = card.getBoundingClientRect();
+				const heading = card.querySelector('h2') as HTMLElement;
+				const figure = card.querySelector('[data-coverage-figure]') as HTMLElement;
+				const units = card.querySelector('[data-coverage-units]') as HTMLElement;
+				const sections = [...dashboard.querySelectorAll(':scope > section')] as HTMLElement[];
+				const top = Math.min(...sections.map((section) => section.getBoundingClientRect().top));
+				const row1 = sections.filter(
+					(section) => Math.abs(section.getBoundingClientRect().top - top) < 1
+				);
+				const row1Height =
+					Math.max(...row1.map((section) => section.getBoundingClientRect().bottom)) - top;
+				return {
+					width: cardBox.width,
+					height: cardBox.height,
+					row1Height,
+					headingHeight: heading.getBoundingClientRect().height,
+					headingLine: parseFloat(getComputedStyle(heading).lineHeight),
+					headingOffset: heading.getBoundingClientRect().top - cardBox.top,
+					figureHeight: figure.getBoundingClientRect().height,
+					figureLine: parseFloat(getComputedStyle(figure).lineHeight),
+					figureOffset: figure.getBoundingClientRect().top - cardBox.top,
+					headingClipped: heading.scrollWidth > heading.clientWidth + 1,
+					figureClipped: units.scrollWidth > units.clientWidth + 1,
+					caption: card.textContent?.match(/= \d+ Leaders/)?.[0] ?? null
+				};
+			})
+		);
+	}
+
+	const baseline = readings[0];
+	for (const reading of readings) {
+		expect(reading.width).toBeCloseTo(baseline.width, 0);
+		expect(reading.height).toBeCloseTo(baseline.height, 0);
+		expect(reading.row1Height).toBeCloseTo(baseline.row1Height, 0);
+		expect(reading.headingHeight).toBeCloseTo(reading.headingLine, 0);
+		expect(reading.figureHeight).toBeCloseTo(reading.figureLine, 0);
+		expect(reading.headingOffset).toBeCloseTo(baseline.headingOffset, 0);
+		expect(reading.figureOffset).toBeCloseTo(baseline.figureOffset, 0);
+		expect(reading.headingClipped).toBe(false);
+		expect(reading.figureClipped).toBe(false);
+	}
+	expect(readings[3].caption).toMatch(/= \d+ Leaders/);
+});
+
 test('the coverage card carries the way in, flies in as the column head, and the page title follows', async ({
 	page,
 	request
