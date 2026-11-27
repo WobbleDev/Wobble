@@ -96,7 +96,7 @@
 	<div bind:this={zone} class="absolute inset-0 flex min-w-0 items-center" data-coverage-zone>
 		<Tooltip.Root>
 			<Tooltip.Trigger
-				class="flex h-full w-full min-w-0 items-center rounded-sm focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+				class="flex h-full w-full min-w-0 items-center rounded-sm focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none max-lg:min-h-tap"
 				aria-label={label}
 				data-coverage-marks
 				data-leaders={leaders}
