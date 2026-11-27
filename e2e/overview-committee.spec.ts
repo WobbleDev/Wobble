@@ -212,6 +212,10 @@ test('locks the Committee card and both header lines as the Committee grows', as
 		figureOffset: number;
 		headingClipped: boolean;
 		figureClipped: boolean;
+		figureOverflow: number;
+		figureLines: number;
+		figureText: string;
+		figureHasCheck: boolean;
 		caption: string | null;
 	}[] = [];
 	let created = 0;
@@ -236,6 +240,8 @@ test('locks the Committee card and both header lines as the Committee grows', as
 				);
 				const row1Height =
 					Math.max(...row1.map((section) => section.getBoundingClientRect().bottom)) - top;
+				const range = document.createRange();
+				range.selectNodeContents(units);
 				return {
 					width: cardBox.width,
 					height: cardBox.height,
@@ -248,6 +254,11 @@ test('locks the Committee card and both header lines as the Committee grows', as
 					figureOffset: figure.getBoundingClientRect().top - cardBox.top,
 					headingClipped: heading.scrollWidth > heading.clientWidth + 1,
 					figureClipped: units.scrollWidth > units.clientWidth + 1,
+					figureOverflow: units.scrollWidth - units.clientWidth,
+					figureLines: new Set([...range.getClientRects()].map((line) => Math.round(line.top)))
+						.size,
+					figureText: units.textContent?.trim() ?? '',
+					figureHasCheck: Boolean(figure.querySelector('svg')),
 					caption: card.textContent?.match(/= \d+ Leaders/)?.[0] ?? null
 				};
 			})
@@ -267,6 +278,15 @@ test('locks the Committee card and both header lines as the Committee grows', as
 		expect(reading.figureClipped).toBe(false);
 	}
 	expect(readings[3].caption).toMatch(/= \d+ Leaders/);
+
+	// 120 / 120 Leaders is the longest reading the card must hold whole: it keeps to one
+	// line, without an ellipsis, with the target-met check beside it.
+	const long = readings[3];
+	expect(long.figureText).toBe('120 / 120 Leaders');
+	expect(long.figureClipped).toBe(false);
+	expect(long.figureOverflow).toBeLessThanOrEqual(1);
+	expect(long.figureLines).toBe(1);
+	expect(long.figureHasCheck).toBe(true);
 });
 
 test('the coverage card carries the way in, flies in as the column head, and the page title follows', async ({

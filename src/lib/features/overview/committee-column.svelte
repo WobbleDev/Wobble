@@ -231,6 +231,7 @@
 				<CoverageMarks
 					leaders={reading.coverage.leaders}
 					needed={reading.coverage.needed}
+					size="size-4"
 					label={m.overview_coverage_tooltip({
 						leaders: reading.coverage.leaders,
 						needed: reading.coverage.needed
