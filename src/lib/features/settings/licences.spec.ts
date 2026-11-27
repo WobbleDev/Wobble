@@ -36,6 +36,12 @@ describe('generated licence data', () => {
 		}
 	});
 
+	it('lists each package once, because the dialog keys its rows by ecosystem, name and version', async () => {
+		const data = await loadLicences();
+		const keys = data.packages.map((p) => `${p.ecosystem}:${p.name}@${p.version}`);
+		expect(keys.filter((key, index) => keys.indexOf(key) !== index)).toEqual([]);
+	});
+
 	it('keeps email addresses out of the texts', async () => {
 		const data = await loadLicences();
 		const email = /[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)+/;

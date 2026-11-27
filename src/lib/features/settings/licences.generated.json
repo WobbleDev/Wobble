@@ -1,5 +1,5 @@
 {
-	"count": 347,
+	"count": 346,
 	"packages": [
 		{
 			"name": "@dagrejs/dagre",
@@ -581,15 +581,6 @@
 			"license": "MIT",
 			"texts": [
 				"3d4e475e4b6d"
-			]
-		},
-		{
-			"name": "commander",
-			"version": "7.2.0",
-			"ecosystem": "npm",
-			"license": "MIT",
-			"texts": [
-				"959454ac00e7"
 			]
 		},
 		{
