@@ -202,7 +202,7 @@ test('toggles the bullseye focus from the edge control, and Escape returns', asy
 
 	await edge(page).click();
 	// Focused, the way back is the button in the column's head, and the dashboard has cleared.
-	await expect(edge(page)).toHaveAccessibleName('Show dashboard');
+	await expect(edge(page)).toHaveAccessibleName('Show Overview');
 	await expect(page.locator('[data-dashboard-root]')).toHaveAttribute('data-focused', 'true');
 	await expect(dashboard(page)).toHaveCSS('opacity', '0');
 	// Escape returns to the dashboard.
@@ -595,7 +595,7 @@ test.describe('in Spanish', () => {
 
 		await expect(edge(page)).toHaveAccessibleName('Enfocar la diana');
 		await edge(page).click();
-		await expect(edge(page)).toHaveAccessibleName('Mostrar el panel');
+		await expect(edge(page)).toHaveAccessibleName('Mostrar Resumen');
 	});
 });
 

@@ -65,7 +65,7 @@ export function attributeRowByName(page: Page, name: string): Locator {
 
 /** Unfolds an Attribute's answers (idempotent: an already-open Attribute is left open). */
 export async function expandAttribute(page: Page, name: string): Promise<void> {
-	const toggle = page.getByRole('button', { name: `Toggle options for ${name}` });
+	const toggle = page.getByRole('button', { name: `Toggle values for ${name}` });
 	if ((await toggle.getAttribute('aria-expanded')) === 'true') return;
 	await toggle.click();
 	await expect(toggle).toHaveAttribute('aria-expanded', 'true');

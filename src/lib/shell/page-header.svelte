@@ -11,7 +11,7 @@
 	import type { Snippet } from 'svelte';
 	import { overviewFocus } from '#lib/features/overview/overview-focus.svelte.ts';
 	import { m } from '#lib/paraglide/messages.js';
-	import { routeSubtitle, routeTitle } from '#lib/i18n/route-copy.ts';
+	import { routeTitle } from '#lib/i18n/route-copy.ts';
 
 	let { titleAccessory, titleTrailing }: { titleAccessory?: Snippet; titleTrailing?: Snippet } =
 		$props();
@@ -22,10 +22,9 @@
 	const title = $derived(
 		onCommittee ? m.overview_committee_title() : routeTitle(page.data.titleKey)
 	);
-	const subtitle = $derived(routeSubtitle(page.data.titleKey));
 </script>
 
-<header class="grid gap-1">
+<header>
 	<div class="flex items-center gap-2">
 		{#key title}
 			<h1 class="page-title text-2xl font-semibold tracking-display">{title}</h1>
@@ -33,16 +32,6 @@
 		{@render titleAccessory?.()}
 		{@render titleTrailing?.()}
 	</div>
-	{#if subtitle}
-		<!-- Kept in the flow while the column speaks, so the page below does not move. -->
-		<p
-			class="max-w-prose text-sm text-ink-3"
-			class:invisible={onCommittee}
-			aria-hidden={onCommittee ? 'true' : undefined}
-		>
-			{subtitle}
-		</p>
-	{/if}
 </header>
 
 <style>

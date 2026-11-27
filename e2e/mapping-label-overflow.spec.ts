@@ -10,7 +10,7 @@ import density from './fixtures/mapping-density-clipping.json' with { type: 'jso
  * The desktop floor: at 1024×640 a dense drawing can run out of clear spots for a
  * resting name, so the desktop contract drops a colliding resting name rather than
  * overprinting it. This pins the rendered no-overprint rule and the hover reveal at the
- * floor, and the Worker record's cue for Relationships below the list fold. The drop and
+ * floor, and the Worker details panel's cue for Relationships below the list fold. The drop and
  * fine-search contract itself is pinned by graph-label-placement.spec.ts.
  */
 test.use({ reducedMotion: 'reduce' });
@@ -65,7 +65,7 @@ test(`dense ${FLOOR.width}×${FLOOR.height} names never overprint; an unnamed Wo
 	await expect(page.locator(`text[data-node-label="${dropped}"]`)).toHaveCount(1);
 });
 
-test('a Worker record says how many Relationships sit below the list fold', async ({
+test('a Worker details panel says how many Relationships sit below the list fold', async ({
 	page,
 	request
 }) => {
@@ -77,7 +77,7 @@ test('a Worker record says how many Relationships sit below the list fold', asyn
 	const worker = page.getByRole('button', { name: /^Seven Ties, Unassessed, 7 relationships/ });
 	await expect(worker).toBeAttached();
 	await worker.click();
-	const card = page.getByRole('region', { name: 'Worker record' });
+	const card = page.getByRole('region', { name: 'Worker details' });
 	await expect(card.getByRole('heading', { name: 'Seven Ties' })).toBeVisible();
 	await expect(card.locator('ul li button')).toHaveCount(7);
 

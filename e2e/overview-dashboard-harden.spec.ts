@@ -395,7 +395,7 @@ test.describe('in Spanish', () => {
 		await expect(page.getByLabel(/: líderes 2 de 1$/)).toBeVisible();
 		await expect(page.getByLabel(/: líderes 0 de 1$/)).toBeVisible();
 		await expect(page.getByRole('columnheader', { name: 'Todos' })).toBeVisible();
-		await expect(page.getByRole('region', { name: 'Agitaciones' })).toBeVisible();
+		await expect(page.getByRole('region', { name: 'Asuntos laborales' })).toBeVisible();
 		await expectNoPageScroll(page);
 
 		await page.setViewportSize({ width: 1024, height: 640 });

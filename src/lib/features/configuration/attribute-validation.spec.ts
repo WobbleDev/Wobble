@@ -147,7 +147,7 @@ describe('getAttributeOptionError', () => {
 	});
 
 	it('asks for a value when the option is blank', () => {
-		expect(getAttributeOptionError(shifts, { id: 'a3', value: '  ' })).toBe('Enter an option.');
+		expect(getAttributeOptionError(shifts, { id: 'a3', value: '  ' })).toBe('Enter a value.');
 	});
 
 	it('rejects a value another option already has', () => {

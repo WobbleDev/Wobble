@@ -339,8 +339,10 @@ test('@ticket-12 a Worker-scoped parent removal resolves the saved value and bot
 	await expect(preview.getByText('Remove the Central value')).toBeVisible();
 	await expect(preview.getByLabel(`Resolution for ${alexName} Worker value`)).toBeVisible();
 	await expect(preview.getByLabel(`Resolution for ${danaName} Worker value`)).toBeVisible();
-	await expect(preview.getByLabel(`Resolution for ${danaName} Worker draft update`)).toBeVisible();
-	await expect(preview.getByLabel(`Resolution for ${danaName} Worker draft base`)).toBeVisible();
+	await expect(preview.getByLabel(`Resolution for ${danaName} Unsaved worker draft`)).toBeVisible();
+	await expect(
+		preview.getByLabel(`Resolution for ${danaName} Draft starting values`)
+	).toBeVisible();
 	expect(await worksiteDataset(request)).toEqual(before);
 	expect((await (await request.get(`/api/worker-drafts/${dana}`)).json()).draft).toEqual(
 		draftBefore
@@ -348,8 +350,8 @@ test('@ticket-12 a Worker-scoped parent removal resolves the saved value and bot
 
 	await choose(preview.getByLabel(`Resolution for ${alexName} Worker value`), ids.storeA);
 	await choose(preview.getByLabel(`Resolution for ${danaName} Worker value`), ids.north);
-	await choose(preview.getByLabel(`Resolution for ${danaName} Worker draft update`), ids.north);
-	await choose(preview.getByLabel(`Resolution for ${danaName} Worker draft base`), '__none__');
+	await choose(preview.getByLabel(`Resolution for ${danaName} Unsaved worker draft`), ids.north);
+	await choose(preview.getByLabel(`Resolution for ${danaName} Draft starting values`), '__none__');
 	await preview.getByRole('button', { name: 'Save and discard values' }).click();
 	await expect(preview).toHaveCount(0);
 
@@ -548,7 +550,7 @@ test('[folded from product-gap-13] mixed removals count a shared Worker once and
 	// Alex is affected by both removals but counts once; the three lost values count.
 	await expect(
 		preview.getByText(
-			'2 Workers affected. Each saved value, draft update, and draft base needs an explicit resolution.'
+			'2 Workers affected. Each saved value and draft needs an explicit resolution.'
 		)
 	).toBeVisible();
 	await expect(preview.getByText('Remove the Equipment Agitation')).toBeVisible();
@@ -557,7 +559,7 @@ test('[folded from product-gap-13] mixed removals count a shared Worker once and
 		preview.getByText('Removes it from the Worksite and discards 2 values from 2 Workers.')
 	).toBeVisible();
 	await expect(
-		preview.getByText('1 Worker affected; each saved value and draft surface needs a resolution.')
+		preview.getByText('1 Worker affected; each saved value and draft needs a resolution.')
 	).toBeVisible();
 	expect(writes).toEqual([]);
 

@@ -30,7 +30,7 @@ async function seedDepartments(request: APIRequestContext, values: string[]) {
 }
 
 const field = (row: Locator, name: string) =>
-	row.getByRole('textbox', { name: `Abbreviation of ${name}`, exact: true });
+	row.getByRole('textbox', { name: `Short form of ${name}`, exact: true });
 
 /** Three levels plus a root sibling, so nesting depth and a Single-Select badge both show. */
 async function seedHierarchy(request: APIRequestContext, id: string) {
@@ -86,7 +86,7 @@ test('a new value shows a greyed suggestion, typing makes it edited, and eleven 
 	// The short-code boxes carry a visible column header (#152). The first Attribute is
 	// already selected on a wide layout, so do not toggle it closed.
 	await expandAttribute(page, 'Department');
-	await expect(page.getByTestId('abbreviation-header')).toHaveText('Abbr');
+	await expect(page.getByTestId('abbreviation-header')).toHaveText('Short form');
 	await addValue(page, 'Department', 'Customer Service');
 
 	const row = answerRow(page, 'Customer Service', 'Department');

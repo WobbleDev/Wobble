@@ -251,7 +251,7 @@ test('keeps the empty message with no page controls when nothing is held', async
 	await openOverview(page);
 
 	const card = agitationsCard(page);
-	await expect(card).toContainText('No Workers in this worksite have Agitations recorded.');
+	await expect(card).toContainText('No Workers in this worksite have Agitations.');
 	await expect(card.locator('table')).toHaveCount(0);
 	await expect(pageControls(page)).toHaveCount(0);
 });

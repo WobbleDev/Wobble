@@ -663,7 +663,7 @@ test('[folded from product-gap-13] merging Trainer then removing Steward reports
 	await expect(preview.getByText('Merge Trainer into Steward', { exact: true })).toHaveCount(0);
 	await expect(
 		preview.getByText(
-			'3 Workers affected. Each saved value, draft update, and draft base needs an explicit resolution.'
+			'3 Workers affected. Each saved value and draft needs an explicit resolution.'
 		)
 	).toBeVisible();
 	await expect(preview.getByRole('button', { name: 'Save and discard values' })).toBeVisible();

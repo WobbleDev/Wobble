@@ -112,8 +112,8 @@
 	"settings_update_notes_button": "Notas de la versión",
 	"settings_shortcuts_title": "Atajos de teclado",
 	"settings_shortcuts_description": "Los atajos son fijos por ahora. Usan Ctrl en lugar de ⌘ en Windows y Linux.",
-	"settings_shortcuts_records": "Registros y notas",
-	"settings_shortcuts_close_record": "Cerrar el registro abierto",
+	"settings_shortcuts_records": "Detalles y notas",
+	"settings_shortcuts_close_record": "Cerrar el panel abierto",
 	"settings_shortcuts_save_note": "Guardar una nota",
 	"settings_shortcuts_cancel_note": "Cancelar la edición de una nota",
 	"settings_shortcuts_mapping": "Mapa",
@@ -134,7 +134,7 @@
 	"settings_log_level_standard": "Estándar",
 	"settings_log_level_verbose": "Detallado (para soporte)",
 	"settings_log_files_title": "Archivos de registro",
-	"settings_log_files_description": "Un registro breve de lo que hizo la app y de lo que salió mal, guardado en este equipo. Contiene eventos, identificadores y códigos de error, nunca nombres, correos u otros datos. Las entradas antiguas se reemplazan solas.",
+	"settings_log_files_description": "Un historial breve de lo que hizo la app y de lo que salió mal, guardado en este equipo. Contiene eventos, identificadores y códigos de error, nunca nombres, correos u otros datos. Las entradas antiguas se reemplazan solas.",
 	"settings_copy_logs": "Copiar registros recientes",
 	"settings_logs_empty": "Todavía no hay entradas en el registro.",
 	"settings_logs_error": "No se pudo leer el registro.",
@@ -150,18 +150,7 @@
 	"settings_privacy_description": "Protección y acceso a la base de datos.",
 	"settings_lock_title": "Bloqueo automático",
 	"settings_lock_off": "Wobble permanece desbloqueado hasta que se cierra.",
-	"settings_lock_creating": "Elige una contraseña abajo para terminar de activarlo.",
-	"settings_lock_on": "Activado. Wobble pide la contraseña antes de mostrar cualquier cosa.",
-	"settings_current_password": "Contraseña actual",
-	"settings_new_password": "Nueva contraseña",
 	"settings_password": "Frase de contraseña",
-	"settings_password_description": "Al menos {count} caracteres. Unas cuantas palabras sin relación son más fáciles de recordar que los símbolos.",
-	"settings_confirm_password": "Escríbela de nuevo",
-	"settings_password_too_short": "Usa al menos {count} caracteres.",
-	"settings_password_mismatch": "Las dos contraseñas no coinciden.",
-	"settings_password_warning": "Wobble no puede restablecer una contraseña olvidada. Guárdala en un lugar seguro y conserva un respaldo reciente.",
-	"settings_save_new_password": "Guardar contraseña nueva",
-	"settings_turn_on_lock": "Activar bloqueo con contraseña",
 	"settings_lock_automatically": "Bloquear automáticamente",
 	"settings_lock_automatically_description": "El bloqueo automático no está disponible.",
 	"settings_lock_only_open": "Solo cuando se abre Wobble",
@@ -211,8 +200,6 @@
 	"settings_erase_confirm_label": "Escribe {token} para confirmar",
 	"settings_erasing": "Borrando…",
 	"settings_erase_everything": "Borrar todo",
-	"settings_lock_off_dialog_title": "¿Desactivar el bloqueo con contraseña?",
-	"settings_lock_off_dialog_description": "Wobble se abrirá sin pedir una contraseña. Ingresa tu contraseña actual para confirmar.",
 	"settings_keep_lock": "Mantener el bloqueo",
 	"settings_turn_off_lock": "Desactivar bloqueo",
 	"settings_data_error_read_path": "No se pudo leer la ruta de la base de datos.",
@@ -263,5 +250,15 @@
 	"settings_passphrase_changed": "Se cambió la frase de contraseña.",
 	"settings_search_label": "Buscar en Ajustes",
 	"settings_search_results": "Secciones coincidentes",
-	"settings_search_none": "Sin coincidencias."
+	"settings_search_none": "Sin coincidencias.",
+	"settings_planned_features": [
+		{
+			"declarations": ["input count", "local countPlural = count: plural"],
+			"selectors": ["countPlural"],
+			"match": {
+				"countPlural=one": "{count} función planificada",
+				"countPlural=other": "{count} funciones planificadas"
+			}
+		}
+	]
 }

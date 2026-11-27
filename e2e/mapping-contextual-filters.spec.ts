@@ -622,7 +622,7 @@ test('@ticket-21 filtering out the selected Worker closes the record and the dra
 	const seeded = await seed(request);
 	await openMapping(page, '/mapping');
 	await selectOnMap(page, seeded.workers.dana);
-	await expect(page.getByRole('region', { name: 'Worker record' })).toContainText('Dian Fossey');
+	await expect(page.getByRole('region', { name: 'Worker details' })).toContainText('Dian Fossey');
 
 	// Narrow to Store B in the open map: the selection is private memory a reload would
 	// drop, so the condition is chosen in place.
@@ -638,7 +638,7 @@ test('@ticket-21 filtering out the selected Worker closes the record and the dra
 	await expect(panel).toBeHidden();
 
 	// Dana holds no Territory value, so the Store B population excludes and deselects her.
-	await expect(page.getByRole('region', { name: 'Worker record' })).toHaveCount(0);
+	await expect(page.getByRole('region', { name: 'Worker details' })).toHaveCount(0);
 	await expect
 		.poll(() => nodeIds(page))
 		.toEqual(

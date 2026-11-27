@@ -33,12 +33,12 @@ test('the Configuration tab speaks Attributes', async ({ page }) => {
 	const firstToggle = page
 		.getByTestId('attribute-row')
 		.first()
-		.getByRole('button', { name: /^Toggle options for/ });
+		.getByRole('button', { name: /^Toggle values for/ });
 	if ((await firstToggle.getAttribute('aria-expanded')) !== 'true') await firstToggle.click();
 	await expect(firstToggle).toHaveAttribute('aria-expanded', 'true');
 	// The one count column counts Workers, never assignments.
 	await expect(workerColumn(page).getByTestId('worker-count-header')).toHaveText('Workers');
-	await expect(workerColumn(page).getByTestId('abbreviation-header')).toHaveText('Abbr');
+	await expect(workerColumn(page).getByTestId('abbreviation-header')).toHaveText('Short form');
 	await expect(workerColumn(page).getByText(/assignment/i)).toHaveCount(0);
 });
 
@@ -174,7 +174,7 @@ test('partial configuration saves retry only unsaved sections', async ({ page })
 
 	await page.getByRole('button', { name: 'Discard' }).click();
 	await expect(
-		page.getByRole('button', { name: `Toggle options for ${attributeName}` })
+		page.getByRole('button', { name: `Toggle values for ${attributeName}` })
 	).toBeVisible();
 	await expect(page.getByText(agitationName, { exact: true })).toHaveCount(0);
 });

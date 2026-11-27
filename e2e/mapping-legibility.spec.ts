@@ -194,7 +194,7 @@ async function hitAt(page: Page, x: number, y: number): Promise<string | undefin
 
 /** The record card's heading, which names the Worker the map has selected. */
 function cardName(page: Page) {
-	return page.getByRole('region', { name: 'Worker record' }).getByRole('heading');
+	return page.getByRole('region', { name: 'Worker details' }).getByRole('heading');
 }
 
 async function selectWorker(page: Page, name: string) {
@@ -255,7 +255,7 @@ test('card lists neighbours alphabetically with relationship counts', async ({ p
 	await seedLegibleWorksite(request);
 	await openMap(page, 6);
 	await selectWorker(page, 'Ada');
-	const rows = page.getByRole('region', { name: 'Worker record' }).locator('ul li button');
+	const rows = page.getByRole('region', { name: 'Worker details' }).locator('ul li button');
 	await expect(rows).toHaveCount(2);
 	await expect(rows.nth(0)).toContainText('Bo');
 	await expect(rows.nth(0)).toContainText('1');

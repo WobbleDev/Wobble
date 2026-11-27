@@ -28,11 +28,11 @@ test('shows Spanish Configuration controls and keeps an entered Worksite name ve
 	const firstToggle = page
 		.getByTestId('attribute-row')
 		.first()
-		.getByRole('button', { name: /^Mostrar u ocultar opciones de/ });
+		.getByRole('button', { name: /^Mostrar u ocultar valores de/ });
 	// The first Attribute is already selected on a wide layout, so only open it when needed.
 	if ((await firstToggle.getAttribute('aria-expanded')) !== 'true') await firstToggle.click();
 	await expect(firstToggle).toHaveAttribute('aria-expanded', 'true');
-	await expect(workerColumn(page).getByTestId('abbreviation-header')).toHaveText('Abrev.');
+	await expect(workerColumn(page).getByTestId('abbreviation-header')).toHaveText('Forma corta');
 	await expect(page.getByRole('heading', { name: 'Asuntos laborales', exact: true })).toBeVisible();
 	await expect(page.getByRole('heading', { name: 'Idiomas', exact: true })).toBeVisible();
 	await expect(page.getByRole('heading', { name: 'Zona de peligro', exact: true })).toBeVisible();
@@ -88,11 +88,11 @@ test('edits an Attribute through Spanish labels and validation', async ({ page }
 	await page.getByLabel('Nombre visible').fill('Turno');
 	await form.getByRole('button', { name: 'Agregar atributo', exact: true }).click();
 	await expect(
-		page.getByRole('button', { name: 'Mostrar u ocultar opciones de Turno' })
+		page.getByRole('button', { name: 'Mostrar u ocultar valores de Turno' })
 	).toBeVisible();
 
 	await page.getByRole('button', { name: 'Descartar' }).click();
 	await expect(
-		page.getByRole('button', { name: 'Mostrar u ocultar opciones de Turno' })
+		page.getByRole('button', { name: 'Mostrar u ocultar valores de Turno' })
 	).toHaveCount(0);
 });

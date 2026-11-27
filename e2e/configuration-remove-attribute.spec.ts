@@ -217,7 +217,7 @@ test('previews and resolves a removed Attribute before saving', async ({ page, r
 	await expect(preview.getByTestId('configuration-resolutions')).toBeVisible();
 	await expect(preview.getByText(alex + ' — Worker value')).toBeVisible();
 	await expect(preview.getByText(blair + ' — Worker value')).toBeVisible();
-	await expect(preview.getByText(casey + ' — Worker draft update')).toBeVisible();
+	await expect(preview.getByText(casey + ' — Unsaved worker draft')).toBeVisible();
 	await expect(preview.getByText(dana + ' — Worker value')).toBeVisible();
 
 	// A preview is an observation: nothing was written, and the saved records are intact.
@@ -304,7 +304,7 @@ test('a removal prunes saved values and Worker drafts', async ({ page, request }
 	await expect(preview).toBeVisible();
 	await expect(preview.getByRole('heading', { name: 'Remove the Shift Attribute' })).toBeVisible();
 	await expect(preview.getByText(alex + ' — Worker value')).toBeVisible();
-	await expect(preview.getByText(alex + ' — Worker draft update')).toBeVisible();
+	await expect(preview.getByText(alex + ' — Unsaved worker draft')).toBeVisible();
 	// A whole-Attribute removal needs only its acknowledgement; no holder picks a replacement.
 	await expect(confirmButton(page)).toBeEnabled();
 	expect(writes).toEqual([]);
@@ -674,7 +674,7 @@ test('[folded from product-gap-12] removing Department previews 3/3/3 and saves 
 	await expect(preview).toBeVisible();
 	await expect(
 		preview.getByText(
-			'3 Workers affected. Each saved value, draft update, and draft base needs an explicit resolution.'
+			'3 Workers affected. Each saved value and draft needs an explicit resolution.'
 		)
 	).toBeVisible();
 	const departmentRow = preview
@@ -683,7 +683,7 @@ test('[folded from product-gap-12] removing Department previews 3/3/3 and saves 
 	await expect(departmentRow).toBeVisible();
 	await expect(
 		preview.getByText(
-			'Removes every value and branch; each saved value and draft surface needs an explicit result.'
+			'Removes every value and branch; each saved value and draft needs an explicit result.'
 		)
 	).toBeVisible();
 	await expect(preview.getByRole('button', { name: 'Save and discard values' })).toBeVisible();
@@ -768,7 +768,7 @@ test('[folded from product-gap-12] removing an unused Attribute explains the def
 	).toBeVisible();
 	await expect(
 		preview.getByText(
-			'0 Workers affected. Each saved value, draft update, and draft base needs an explicit resolution.'
+			'0 Workers affected. Each saved value and draft needs an explicit resolution.'
 		)
 	).toHaveCount(0);
 	await expect(preview.getByText('Remove the Shifts Attribute')).toBeVisible();
@@ -855,9 +855,7 @@ test('[folded from product-gap-13] a mixed Attribute and shared draft previews a
 	await expect(preview).toBeVisible();
 	await expect(preview.getByText('Remove the Packing value')).toBeVisible();
 	await expect(
-		preview.getByText(
-			'1 Worker affected. Each saved value, draft update, and draft base needs an explicit resolution.'
-		)
+		preview.getByText('1 Worker affected. Each saved value and draft needs an explicit resolution.')
 	).toBeVisible();
 	expect(writes).toEqual([]);
 

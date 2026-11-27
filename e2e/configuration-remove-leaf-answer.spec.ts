@@ -195,11 +195,11 @@ test('previews and resolves a removed leaf answer before saving', async ({ page,
 	await expect(confirmButton(page)).toBeDisabled();
 	for (const label of [
 		`Resolution for ${alex} Worker value`,
-		`Resolution for ${alex} Worker draft update`,
-		`Resolution for ${alex} Worker draft base`,
+		`Resolution for ${alex} Unsaved worker draft`,
+		`Resolution for ${alex} Draft starting values`,
 		`Resolution for ${blair} Worker value`,
 		`Resolution for ${casey} Worker value`,
-		`Resolution for ${dana} Worker draft update`
+		`Resolution for ${dana} Unsaved worker draft`
 	]) {
 		await expect(preview.getByLabel(label)).toBeVisible();
 	}
@@ -215,10 +215,10 @@ test('previews and resolves a removed leaf answer before saving', async ({ page,
 	await expect(preview).toBeVisible();
 	for (const label of [
 		`Resolution for ${alex} Worker value`,
-		`Resolution for ${alex} Worker draft update`,
-		`Resolution for ${alex} Worker draft base`,
+		`Resolution for ${alex} Unsaved worker draft`,
+		`Resolution for ${alex} Draft starting values`,
 		`Resolution for ${casey} Worker value`,
-		`Resolution for ${dana} Worker draft update`
+		`Resolution for ${dana} Unsaved worker draft`
 	]) {
 		await choose(preview.getByLabel(label), { label: 'Replace with Sales' });
 	}
@@ -582,13 +582,11 @@ test('[folded from product-gap-12] removing Packing previews one lost value and 
 	const preview = previewDialog(page);
 	await expect(preview).toBeVisible();
 	await expect(
-		preview.getByText(
-			'1 Worker affected. Each saved value, draft update, and draft base needs an explicit resolution.'
-		)
+		preview.getByText('1 Worker affected. Each saved value and draft needs an explicit resolution.')
 	).toBeVisible();
 	await expect(preview.getByText('Remove the Packing value')).toBeVisible();
 	await expect(
-		preview.getByText('1 Worker affected; each saved value and draft surface needs a resolution.')
+		preview.getByText('1 Worker affected; each saved value and draft needs a resolution.')
 	).toBeVisible();
 	await expect(preview.getByRole('button', { name: 'Save and discard values' })).toBeVisible();
 	expect(writes).toEqual([]);
@@ -653,9 +651,7 @@ test('[folded from product-gap-12] a changed draft discards the late preview ins
 	await expect(preview).toBeVisible();
 	await expect(preview.getByText('Remove the Packing value')).toBeVisible();
 	await expect(
-		preview.getByText(
-			'1 Worker affected. Each saved value, draft update, and draft base needs an explicit resolution.'
-		)
+		preview.getByText('1 Worker affected. Each saved value and draft needs an explicit resolution.')
 	).toBeVisible();
 	await preview.getByRole('button', { name: 'Cancel' }).click();
 	await expect(preview).toHaveCount(0);

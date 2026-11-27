@@ -2711,7 +2711,7 @@ test.describe('E6 folds product-gap-08 selected Worker', () => {
 test.describe('E6 folds product-gap-10 Languages card', () => {
 	type Seeded = { languages: Record<string, string>; workerIds: Record<string, string> };
 
-	const record = (page: Page) => page.getByRole('region', { name: 'Worker record' });
+	const record = (page: Page) => page.getByRole('region', { name: 'Worker details' });
 
 	async function seedFixture(request: APIRequestContext): Promise<Seeded> {
 		const [departmentId] = await addAttributes(request, [
@@ -2783,7 +2783,7 @@ test.describe('E6 folds product-gap-10 Languages card', () => {
 
 		// Moving selection does not retain the previous Worker's Languages.
 		await selectWorker(page, 'Drew');
-		await expect(record(page)).toContainText('No languages recorded.');
+		await expect(record(page)).toContainText('No languages yet.');
 		await expect(record(page)).not.toContainText('English');
 		await expect(record(page)).not.toContainText('Spanish');
 
@@ -2823,7 +2823,7 @@ test.describe('E6 folds product-gap-10 Languages card', () => {
 		await selectWorker(page, 'Blair');
 		await expect(record(page)).toContainText('Español');
 		await selectWorker(page, 'Drew');
-		await expect(record(page)).toContainText('No languages recorded.');
+		await expect(record(page)).toContainText('No languages yet.');
 	});
 
 	test('@product-gap-10 reading Languages issues no mutation requests', async ({

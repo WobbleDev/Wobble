@@ -683,7 +683,7 @@ test.describe('E6 folds product-gap-11 Highlight queries', () => {
 		await expectUnfaded(page, seeded, ['Alex']);
 		await expect(highlightKey(page)).toContainText('Highlighting 1 of 4 Workers');
 		expect(await settled(() => mapGeometry(page))).toEqual(before);
-		await expect(page.getByRole('region', { name: 'Worker record' })).toContainText('Alex');
+		await expect(page.getByRole('region', { name: 'Worker details' })).toContainText('Alex');
 		await expect(page.getByRole('button', { name: /^Alex, / })).toHaveAttribute(
 			'aria-pressed',
 			'true'
