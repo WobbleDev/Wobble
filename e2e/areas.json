@@ -33,7 +33,8 @@
 		"**/mobile-adaptation.spec.ts",
 		"**/no-scroll-surfaces.spec.ts",
 		"**/semantics-long-content.spec.ts",
-		"**/boot-lifecycle.spec.ts"
+		"**/boot-lifecycle.spec.ts",
+		"**/dark-surfaces.spec.ts"
 	],
 	"cross-area": [
 		"**/i18n-overview-mapping.spec.ts",
